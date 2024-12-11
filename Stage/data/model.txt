@@ -24,7 +24,7 @@ TEXTURE_FILENAME = data/TEXTURE/grass000.png		# [5]草テクスチャ
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 5
+NUM_MODEL = 7
 
 #------------------------------------------------------------------------------
 # モデルファイル名
@@ -34,6 +34,8 @@ MODEL_FILENAME = data/MODEL/player.x		# [1]壁
 MODEL_FILENAME = data/MODEL/bill_01.x		# [2]ビル01
 MODEL_FILENAME = data/MODEL/bill_02.x		# [3]ビル02
 MODEL_FILENAME = data/MODEL/dentyu.x		# [4]ビル02
+MODEL_FILENAME = data/MODEL/rubble_01.x		# [5]ビル02
+MODEL_FILENAME = data/MODEL/streetlight.x	# [6]ビル02
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -128,36 +130,50 @@ END_WALLSET
 # モデル配置情報
 #------------------------------------------------------------------------------
 MODELSET
-	TYPE = 1
+	TYPE = 0
 	POS = 0 0 250
 	ROT = 0 135 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
-	TYPE = 2
+	TYPE = 1
 	POS = 100 0 250
 	ROT = 0 135 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
-	TYPE = 3
+	TYPE = 2
 	POS = -300 0 250
 	ROT = 0 135 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
-	TYPE = 4
+	TYPE = 3
 	POS = -300 0 0
 	ROT = 0 135 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
-	TYPE = 5
+	TYPE = 4
 	POS = -400 0 50
+	ROT = 0 135 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 5
+	POS = -600 0 50
+	ROT = 0 135 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 6
+	POS = -400 0 150
 	ROT = 0 135 0
 	SHADOW = 0
 END_MODELSET
