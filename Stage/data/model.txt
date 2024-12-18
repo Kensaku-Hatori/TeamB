@@ -9,7 +9,7 @@ SCRIPT			# この行は絶対消さないこと！
 #------------------------------------------------------------------------------
 # テクスチャ数
 #------------------------------------------------------------------------------
-NUM_TEXTURE = 6
+NUM_TEXTURE = 8
 
 #------------------------------------------------------------------------------
 # テクスチャファイル名
@@ -17,9 +17,11 @@ NUM_TEXTURE = 6
 TEXTURE_FILENAME = data/TEXTURE/sky000.jpg			# [0]空テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/mountain000.png		# [1]山テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/field000.jpg		# [2]地面テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/wall100.jpg			# [4]壁テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/tree000.png			# [5]木テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/grass000.png		# [6]草テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/street1.png			# [3]道路テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/street2.png			# [4]交差テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/wall100.jpg			# [5]壁テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/tree000.png			# [6]木テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/grass000.png		# [7]草テクスチャ
 
 #------------------------------------------------------------------------------
 # モデル数
@@ -89,11 +91,19 @@ FIELDSET
 	SIZE = 120 120
 END_FIELDSET
 
+FIELDSET
+	TEXTYPE = 3
+	POS = -500 0 650
+	ROT = 0 0 0
+	BLOCK = 1 1
+	SIZE = 500 220
+END_FIELDSET
+
 #------------------------------------------------------------------------------
 # 壁情報
 #------------------------------------------------------------------------------
 WALLSET
-	TEXTYPE = 3
+	TEXTYPE = 5
 	POS = 0 -80 960
 	ROT = 0 180 0
 	BLOCK = 16 1
@@ -101,7 +111,7 @@ WALLSET
 END_WALLSET
 
 WALLSET
-	TEXTYPE = 3
+	TEXTYPE = 5
 	POS = 960 -80 0
 	ROT = 0 270 0
 	BLOCK = 16 1
@@ -109,7 +119,7 @@ WALLSET
 END_WALLSET
 
 WALLSET
-	TEXTYPE = 3
+	TEXTYPE = 5
 	POS = 0 -80 -960
 	ROT = 0 0 0
 	BLOCK = 16 1
@@ -117,7 +127,7 @@ WALLSET
 END_WALLSET
 
 WALLSET
-	TEXTYPE = 3
+	TEXTYPE = 5
 	POS = -960 -80 0
 	ROT = 0 90 0
 	BLOCK = 16 1
@@ -182,7 +192,7 @@ END_MODELSET
 # ビルボード配置情報
 #------------------------------------------------------------------------------
 BILLBOARDSET
-	TEXTYPE = 4
+	TEXTYPE = 6
 	POS = -200 0 150
 	SIZE = 100 100
 	ORIGIN = 50 0
