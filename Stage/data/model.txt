@@ -17,9 +17,9 @@ NUM_TEXTURE = 6
 TEXTURE_FILENAME = data/TEXTURE/sky000.jpg			# [0]空テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/mountain000.png		# [1]山テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/field000.jpg		# [2]地面テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/wall100.jpg			# [3]壁テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/tree000.png			# [4]木テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/grass000.png		# [5]草テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/wall100.jpg			# [4]壁テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/tree000.png			# [5]木テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/grass000.png		# [6]草テクスチャ
 
 #------------------------------------------------------------------------------
 # モデル数
@@ -29,13 +29,13 @@ NUM_MODEL = 7
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/Skeleton.x		# [0]壁
-MODEL_FILENAME = data/MODEL/player.x		# [1]壁
+MODEL_FILENAME = data/MODEL/Skeleton.x		# [0]スケルトン
+MODEL_FILENAME = data/MODEL/player.x		# [1]プレイヤー
 MODEL_FILENAME = data/MODEL/bill_01.x		# [2]ビル01
 MODEL_FILENAME = data/MODEL/bill_02.x		# [3]ビル02
-MODEL_FILENAME = data/MODEL/dentyu.x		# [4]ビル02
-MODEL_FILENAME = data/MODEL/rubble_01.x		# [5]ビル02
-MODEL_FILENAME = data/MODEL/streetlight.x	# [6]ビル02
+MODEL_FILENAME = data/MODEL/dentyu.x		# [4]電柱
+MODEL_FILENAME = data/MODEL/rubble_01.x		# [5]瓦礫
+MODEL_FILENAME = data/MODEL/streetlight.x	# [6]街灯
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -145,8 +145,8 @@ END_MODELSET
 
 MODELSET
 	TYPE = 2
-	POS = -300 0 250
-	ROT = 0 135 0
+	POS = -800 0 850
+	ROT = 0 -90 0
 	SHADOW = 0
 END_MODELSET
 
