@@ -14,9 +14,7 @@
 #include "score.h"
 #include "game.h"
 #include "particle.h"
-#include "balltimer.h"
 #include "polygon.h"
-#include "killcount.h"
 #include "tutorial.h"
 
 //ƒOƒ[ƒoƒ‹•Ï”
@@ -471,7 +469,6 @@ void UpdateEnemy(void)
 					pPlayer->nCntKill++;
 					SetPositionShadow(g_Enemy[nCntEnemy].nIdxShadow, g_Enemy[nCntEnemy].pos, g_Enemy[nCntEnemy].bUse);
 					AddScore(100);
-					AddKillCount(1);
 					g_Enemy[nCntEnemy].pos.y = 0.0f;
 				}
 
@@ -656,7 +653,6 @@ void CollisionEnemy(void)
 				else if (pPlayer->type == PLAYERTYPE_HITO)
 				{
 					AddScore(-1);
-					AddBallTimer(-1);
 				}
 			}
 		}

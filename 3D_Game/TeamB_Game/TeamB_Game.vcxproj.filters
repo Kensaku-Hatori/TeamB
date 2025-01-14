@@ -39,12 +39,6 @@
     <ClCompile Include="title.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ballgauge.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="balltimer.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="billboard.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -58,9 +52,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="explosion.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="killcount.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="meshcylinder.cpp">
@@ -134,12 +125,6 @@
     <ClInclude Include="title.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ballgauge.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="balltimer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="billboard.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -153,9 +138,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="explosion.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="killcount.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="meshcylinder.h">

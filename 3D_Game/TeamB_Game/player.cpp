@@ -13,7 +13,6 @@
 #include "block.h"
 #include "wall.h"
 #include "enemy.h"
-#include "balltimer.h"
 #include "motion.h"
 #include "timer.h"
 #include "polygon.h"
@@ -565,7 +564,6 @@ void UpdatePlayer(void)
 		if (g_player.nCntPin >= PIN_CONDITION && g_player.type != PLAYERTYPE_SUPERBALL)
 		{
 			g_player.type = PLAYERTYPE_SUPERBALL;
-			SetBallTimer(MAX_BALLTIME + 100);
 			//PlaySound(SOUND_LABEL_BALL);
 		}
 
@@ -574,7 +572,6 @@ void UpdatePlayer(void)
 		{
 			if (g_player.type == PLAYERTYPE_SUPERBALL)
 			{
-				SetBallTimer(0);
 				g_player.nCntPin = 0;
 				StopSound(SOUND_LABEL_BALL);
 			}

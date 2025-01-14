@@ -141,8 +141,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ballgauge.cpp" />
-    <ClCompile Include="balltimer.cpp" />
     <ClCompile Include="billboard.cpp" />
     <ClCompile Include="block.cpp" />
     <ClCompile Include="camera.cpp" />
@@ -152,7 +150,6 @@
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="input.cpp" />
-    <ClCompile Include="killcount.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="meshcylinder.cpp" />
@@ -174,8 +171,6 @@
     <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ballgauge.h" />
-    <ClInclude Include="balltimer.h" />
     <ClInclude Include="billboard.h" />
     <ClInclude Include="block.h" />
     <ClInclude Include="camera.h" />
@@ -185,7 +180,6 @@
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="input.h" />
-    <ClInclude Include="killcount.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="meshcylinder.h" />
