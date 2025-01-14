@@ -16,7 +16,7 @@ Biillboard g_Biillboard[MAX_BILLBOARD];
 void InitBiillboard(void)
 {
 	LPDIRECT3DDEVICE9 pDevice;
-	//デバイスの取得
+	//デバイスの取得ああ
 	pDevice = GetDevice();
 
 	for (int nCnt = 0; nCnt < MAX_BILLBOARD; nCnt++)
