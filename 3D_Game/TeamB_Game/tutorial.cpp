@@ -23,10 +23,7 @@
 #include "sound.h"
 #include "enemy.h"
 #include "score.h"
-#include "balltimer.h"
-#include "ballgauge.h"
 #include "particle.h"
-#include "killcount.h"
 
 //グローバル変数
 TUTORIAL g_tutorial = TUTORIAL_NONE;
@@ -42,20 +39,12 @@ void InitTutorial(void)
 	InitShadow();
 
 	InitBlock();
-	SetBlock(D3DXVECTOR3(-300.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), BLOCKTYPE_NORMAL);
 
 	InitPlayer();
 
 	InitEnemy();
-	SetEnemy(D3DXVECTOR3(150.0f, 300.0f, 150.0f));
 
 	InitBiillboard();
-	SetBiillboard(D3DXVECTOR3(0.0f, 50.0f, 100.0f));	// 移動
-	SetBiillboard(D3DXVECTOR3(-350.0f, 50.0f, -50.0f)); // ジャンプ
-	SetBiillboard(D3DXVECTOR3(130.0f, 50.0f, 100.0f));	// アクション
-	SetBiillboard(D3DXVECTOR3(0.0f, 150.0f, 100.0f));	// タイトルに戻る
-	SetBiillboard(D3DXVECTOR3(-130.0f, 50.0f, 100.0f));	// 視点移動
-	SetBiillboard(D3DXVECTOR3(0.0f, 50.0f, -300.0f));	// ストライク
 
 	InitEffect();
 
@@ -67,15 +56,8 @@ void InitTutorial(void)
 
 	InitWall();
 
-	SetWall(D3DXVECTOR3(0.0f, -WALL_HEIGHT, POLYGON_Y), D3DXVECTOR3(0.0f, D3DX_PI, 0.0f), 1.0f);//外 0
-	SetWall(D3DXVECTOR3(0.0f, -WALL_HEIGHT, -POLYGON_Y), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 1.0f);//外 1
-	SetWall(D3DXVECTOR3(POLYGON_X, -WALL_HEIGHT, 0.0f), D3DXVECTOR3(0.0f, -D3DX_PI / 2, 0.0f), 1.0f);//外 2
-	SetWall(D3DXVECTOR3(-POLYGON_X, -WALL_HEIGHT, 0.0f), D3DXVECTOR3(0.0f, D3DX_PI / 2, 0.0f), 1.0f);//外 3
 
 	InitMeshWall();
-
-	SetMeshWall(D3DXVECTOR3(-3000.0f, -500.0f, 3000.0f), D3DXVECTOR3(D3DX_PI / 2, 0.0f, 0.0f));// 床
-	SetMeshWall(D3DXVECTOR3(-3000.0f, 1500.0f, -3000.0f), D3DXVECTOR3(-D3DX_PI / 2, 0.0f, 0.0f));// 天井
 
 	InitCamera();
 
@@ -86,14 +68,6 @@ void InitTutorial(void)
 
 	InitScore();
 	SetScore(0);
-
-	InitBallTimer();
-	SetBallTimer(MAX_BALLTIME);
-
-	InitBallGauge();
-
-	InitKillCount();
-	SetKillCount(0);
 
 	g_tutorial = TUTORIAL_NORMAL;
 	g_nCounterTUTORIAL = 0;
@@ -134,12 +108,6 @@ void UninitTutorial(void)
 	UninitTimer();
 
 	UninitScore();
-
-	UninitBallGauge();
-
-	UninitBallTimer();
-
-	UninitKillCount();
 }
 //===========
 // 更新処理
@@ -185,12 +153,6 @@ void UpdateTutorial(void)
 	UpdateTimer();
 
 	UpdateScore();
-
-	UpdateBallGauge();
-
-	UpdateBallTimer();
-
-	UpdateKillCount();
 
 	switch (g_tutorial)
 	{
@@ -247,14 +209,6 @@ void DrawTutorial(void)
 	DrawTimer();
 
 	DrawScore();
-
-	DrawBallGauge();
-
-#ifdef _DEBUG
-	DrawBallTimer();
-#endif
-
-	DrawKillCount();
 }
 //===============
 // ゲームの状態
