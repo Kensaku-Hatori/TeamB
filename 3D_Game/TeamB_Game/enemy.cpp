@@ -462,11 +462,6 @@ void UpdateEnemy(void)
 				{
 					SetExplosion(g_Enemy[nCntEnemy].pos, g_Enemy[nCntEnemy].rot);
 					g_Enemy[nCntEnemy].bUse = false;
-					if (pPlayer->type == PLAYERTYPE_BALL)
-					{
-						pPlayer->nCntPin++;
-					}
-					pPlayer->nCntKill++;
 					SetPositionShadow(g_Enemy[nCntEnemy].nIdxShadow, g_Enemy[nCntEnemy].pos, g_Enemy[nCntEnemy].bUse);
 					AddScore(100);
 					g_Enemy[nCntEnemy].pos.y = 0.0f;
