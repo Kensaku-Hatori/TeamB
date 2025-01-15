@@ -61,7 +61,7 @@ END_CAMERASET
 #------------------------------------------------------------------------------
 LIGHTSET
 	DIRECTION = 0.22 -0.87 0.44		# •ûŒü
-	DIFFUSE = 1.0 1.0 1.0			# ŠgŽUŒõ
+	DIFFUSE = 1.0 1.0 0.80			# ŠgŽUŒõ
 END_LIGHTSET
 
 LIGHTSET
