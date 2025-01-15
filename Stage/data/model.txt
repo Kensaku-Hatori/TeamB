@@ -21,12 +21,12 @@ TEXTURE_FILENAME = data/TEXTURE/street1.png			# [3]道路テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/street2.png			# [4]交差テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/wall100.jpg			# [5]壁テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/tree000.png			# [6]木テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/grass000.png		# [7]草テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/grass001.png		# [7]草テクスチャ
 
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 9
+NUM_MODEL = 11
 
 #------------------------------------------------------------------------------
 # モデルファイル名
@@ -40,6 +40,8 @@ MODEL_FILENAME = data/MODEL/rubble_01.x		# [5]瓦礫
 MODEL_FILENAME = data/MODEL/streetlight.x	# [6]街灯
 MODEL_FILENAME = data/MODEL/fence.x			# [7]ガードレール
 MODEL_FILENAME = data/MODEL/bill_03.x		# [8]ビル03
+MODEL_FILENAME = data/MODEL/car000.x		# [9]車00
+MODEL_FILENAME = data/MODEL/car001.x		# [10]車01
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -567,6 +569,20 @@ MODELSET
 	TYPE = 8
 	POS = 840 90 371
 	ROT = 0 15 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 9
+	POS = 0 0 0
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 10
+	POS = 0 80 0
+	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 
