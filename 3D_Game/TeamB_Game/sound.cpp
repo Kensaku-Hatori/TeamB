@@ -34,8 +34,6 @@ DWORD g_aSizeAudio[SOUND_LABEL_MAX] = {};					// オーディオデータサイズ
 SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 {
 	{"data/SOUND/pause.wav", -1},		  // BGM
-	{"data/SOUND/basilisk01.wav", -1},      // BGM
-	{"data/SOUND/game.wav", -1},      // BGM
 
 };
 

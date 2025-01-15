@@ -172,7 +172,6 @@ void UpdateTutorial(void)
 	if (KeyboardTrigger(DIK_P) == true || GetJoypadTrigger(JOYKEY_START) == true)
 	{
 		SetFade(MODE_TITLE);
-		StopSound(SOUND_LABEL_GAME);
 	}
 }
 //===========

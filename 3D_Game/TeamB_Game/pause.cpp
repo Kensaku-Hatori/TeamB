@@ -211,12 +211,10 @@ void UpdatePause(void)
 			if (g_pauseMenu == PAUSE_MENU_CONTNUE)
 			{	//ContnueÇ…Ç¢ÇÈèÍçá
 				SetEnablePause(false);
-				PlaySound(SOUND_LABEL_GAME);
 			}
 			else if (g_pauseMenu == PAUSE_MENU_RETRY)
 			{	//RETRYÇ…Ç¢ÇÈèÍçá
 				SetFade(MODE_GAME);
-				PlaySound(SOUND_LABEL_GAME);
 			}
 			else if (g_pauseMenu == PAUSE_MENU_QUIT)
 			{	//QUITÇ…Ç¢ÇÈèÍçá
