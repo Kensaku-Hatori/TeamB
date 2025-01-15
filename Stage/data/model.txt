@@ -9,7 +9,7 @@ SCRIPT			# この行は絶対消さないこと！
 #------------------------------------------------------------------------------
 # テクスチャ数
 #------------------------------------------------------------------------------
-NUM_TEXTURE = 8
+NUM_TEXTURE = 11
 
 #------------------------------------------------------------------------------
 # テクスチャファイル名
@@ -21,7 +21,10 @@ TEXTURE_FILENAME = data/TEXTURE/street1.png			# [3]道路テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/street2.png			# [4]交差テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/wall100.jpg			# [5]壁テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/tree000.png			# [6]木テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/grass001.png		# [7]草テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/deadtree01.png		# [7]木テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/deadtree02.png		# [8]木テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/deadtree03.png		# [9]木テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/grass001.png		# [10]草テクスチャ
 
 #------------------------------------------------------------------------------
 # モデル数
@@ -575,15 +578,31 @@ MODELSET
 END_MODELSET
 
 
-
 #------------------------------------------------------------------------------
 # ビルボード配置情報
 #------------------------------------------------------------------------------
 BILLBOARDSET
-	TEXTYPE = 6
-	POS = -200 0 150
+	TEXTYPE = 7
+	POS = -100 0 150
 	SIZE = 100 100
 	ORIGIN = 50 0
+	SHADOW = 0
+END_BILLBOARDSET
+
+BILLBOARDSET
+	TEXTYPE = 8
+	POS = -200 0 -150
+	SIZE = 100 100
+	ORIGIN = 50 0
+	SHADOW = 0
+END_BILLBOARDSET
+
+BILLBOARDSET
+	TEXTYPE = 9
+	POS = 200 0 -150
+	SIZE = 100 100
+	ORIGIN = 50 0
+	SHADOW = 0
 END_BILLBOARDSET
 
 #------------------------------------------------------------------------------
@@ -599,7 +618,7 @@ END_PLAYERSET
 # 草配置情報
 #------------------------------------------------------------------------------
 GRASSSET
-	TEXTYPE = 7
+	TEXTYPE = 10
 	POS = 0 0 0
 	RANGE = 480 1000
 	NUM = 500
