@@ -390,6 +390,13 @@ END_MODELSET
 
 MODELSET
 	TYPE = 3
+	POS = 604 0 77
+	ROT = 0 15 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 3
 	POS = -829 0 135
 	ROT = 0 175 0
 	SHADOW = 0
@@ -525,6 +532,25 @@ MODELSET
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
+MODELSET
+	TYPE = 8
+	POS = 579 90 -862
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+MODELSET
+	TYPE = 8
+	POS = 600 75 -187
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+MODELSET
+	TYPE = 8
+	POS = 861 90 -210
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+
 
 #------------------------------------------------------------------------------
 # ビルボード配置情報
