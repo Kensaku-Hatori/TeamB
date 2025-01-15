@@ -16,7 +16,7 @@ NUM_TEXTURE = 8
 #------------------------------------------------------------------------------
 TEXTURE_FILENAME = data/TEXTURE/sky000.jpg			# [0]空テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/mountain000.png		# [1]山テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/field000.jpg		# [2]地面テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/field00.jpg			# [2]地面テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/street1.png			# [3]道路テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/street2.png			# [4]交差テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/wall100.jpg			# [5]壁テクスチャ
@@ -279,7 +279,7 @@ END_MODELSET
 MODELSET
 	TYPE = 2
 	POS = -800 0 850
-	ROT = 0 -90 0
+	ROT = 0 -90 50
 	SHADOW = 0
 END_MODELSET
 
@@ -292,15 +292,15 @@ END_MODELSET
 
 MODELSET
 	TYPE = 2
-	POS = 100 0 850
-	ROT = 0 90 0
+	POS = 100 -20 850
+	ROT = -10 90 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
 	TYPE = 2
-	POS = -838 0 -870
-	ROT = 0 90 0
+	POS = -838 -30 -870
+	ROT = 25 90 5
 	SHADOW = 0
 END_MODELSET
 
@@ -327,15 +327,15 @@ END_MODELSET
 
 MODELSET
 	TYPE = 2
-	POS = 596 0 -386
-	ROT = 0 -95 0
+	POS = 620 -100 -386
+	ROT = 20 -95 -45
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
 	TYPE = 3
-	POS = -100 0 850
-	ROT = 0 0 0
+	POS = -100 -50 850
+	ROT = 0 0 -10
 	SHADOW = 0
 END_MODELSET
 
@@ -355,8 +355,8 @@ END_MODELSET
 
 MODELSET
 	TYPE = 3
-	POS = -110 0 -857
-	ROT = 0 0 0
+	POS = -110 -80 -857
+	ROT = 0 0 20
 	SHADOW = 0
 END_MODELSET
 
@@ -370,7 +370,7 @@ END_MODELSET
 MODELSET
 	TYPE = 3
 	POS = -575 0 105
-	ROT = 0 170 0
+	ROT = 0 100 0
 	SHADOW = 0
 END_MODELSET
 
@@ -390,15 +390,8 @@ END_MODELSET
 
 MODELSET
 	TYPE = 3
-	POS = 604 0 77
-	ROT = 0 15 0
-	SHADOW = 0
-END_MODELSET
-
-MODELSET
-	TYPE = 3
 	POS = -829 0 135
-	ROT = 0 175 0
+	ROT = 0 75 0
 	SHADOW = 0
 END_MODELSET
 
@@ -554,13 +547,13 @@ MODELSET
 END_MODELSET
 MODELSET
 	TYPE = 8
-	POS = 600 75 -187
+	POS = 600 75 0
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 MODELSET
 	TYPE = 8
-	POS = 861 90 -210
+	POS = 861 90 0
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
@@ -599,5 +592,12 @@ END_PLAYERSET
 #------------------------------------------------------------------------------
 # 草配置情報
 #------------------------------------------------------------------------------
+GRASSSET
+	TEXTYPE = 7
+	POS = 0 0 0
+	RANGE = 480 1000
+	NUM = 500
+	SIZE = 30 3
+END_GRASSSET	
 
 END_SCRIPT		# この行は絶対消さないこと！
