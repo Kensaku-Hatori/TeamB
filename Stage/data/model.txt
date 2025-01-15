@@ -16,7 +16,7 @@ NUM_TEXTURE = 8
 #------------------------------------------------------------------------------
 TEXTURE_FILENAME = data/TEXTURE/sky000.jpg			# [0]空テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/mountain000.png		# [1]山テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/field000.jpg		# [2]地面テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/field001.jpg		# [2]地面テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/street1.png			# [3]道路テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/street2.png			# [4]交差テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/wall100.jpg			# [5]壁テクスチャ
