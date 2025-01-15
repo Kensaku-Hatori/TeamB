@@ -122,8 +122,6 @@ void UpdateGame(void)
 
 	if (KeyboardTrigger(DIK_P) == true || GetJoypadTrigger(JOYKEY_START) == true)
 	{//ポーズキーが押された
-		StopSound(SOUND_LABEL_GAME);
-		PlaySound(SOUND_LABEL_PAUSE);
 		g_bPause = g_bPause ? false : true;
 	}
 
