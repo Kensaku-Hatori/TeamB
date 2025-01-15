@@ -38,15 +38,15 @@ MODEL_FILENAME = data/MODEL/Skeleton.x		# [0]スケルトン
 MODEL_FILENAME = data/MODEL/player.x		# [1]プレイヤー
 MODEL_FILENAME = data/MODEL/bill_01.x		# [2]ビル01
 MODEL_FILENAME = data/MODEL/bill_02.x		# [3]ビル02
-MODEL_FILENAME = data/MODEL/dentyu.x		# [4]電柱
-MODEL_FILENAME = data/MODEL/rubble_01.x		# [5]瓦礫01
-MODEL_FILENAME = data/MODEL/streetlight.x	# [6]街灯
-MODEL_FILENAME = data/MODEL/fence.x			# [7]ガードレール
-MODEL_FILENAME = data/MODEL/bill_03.x		# [8]ビル03
-MODEL_FILENAME = data/MODEL/car000.x		# [9]車00
-MODEL_FILENAME = data/MODEL/car001.x		# [10]車01
-MODEL_FILENAME = data/MODEL/rubble_02.x		# [11]瓦礫02
-MODEL_FILENAME = data/MODEL/rubble_03.x		# [12]瓦礫03
+MODEL_FILENAME = data/MODEL/bill_03.x		# [4]ビル03
+MODEL_FILENAME = data/MODEL/dentyu.x		# [5]電柱
+MODEL_FILENAME = data/MODEL/rubble_01.x		# [6]瓦礫01
+MODEL_FILENAME = data/MODEL/rubble_02.x		# [7]瓦礫02
+MODEL_FILENAME = data/MODEL/rubble_03.x		# [8]瓦礫03
+MODEL_FILENAME = data/MODEL/streetlight.x	# [9]街灯
+MODEL_FILENAME = data/MODEL/fence.x			# [10]ガードレール
+MODEL_FILENAME = data/MODEL/car001.x		# [11]車01
+MODEL_FILENAME = data/MODEL/car002.x		# [12]車02
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -269,6 +269,10 @@ END_WALLSET
 #------------------------------------------------------------------------------
 # モデル配置情報
 #------------------------------------------------------------------------------
+
+#-----------------------------------
+# スケルトン
+#-----------------------------------
 MODELSET
 	TYPE = 0
 	POS = 0 0 250
@@ -276,6 +280,9 @@ MODELSET
 	SHADOW = 0
 END_MODELSET
 
+#-----------------------------------
+# プレイヤー
+#-----------------------------------
 MODELSET
 	TYPE = 1
 	POS = 100 0 250
@@ -283,6 +290,9 @@ MODELSET
 	SHADOW = 0
 END_MODELSET
 
+#-----------------------------------
+# ビル01(一方向ぐるん)
+#-----------------------------------
 MODELSET
 	TYPE = 2
 	POS = -800 0 850
@@ -339,6 +349,9 @@ MODELSET
 	SHADOW = 0
 END_MODELSET
 
+#-----------------------------------
+# ビル02(えぐれビル)
+#-----------------------------------
 MODELSET
 	TYPE = 3
 	POS = -100 -50 850
@@ -416,167 +429,204 @@ MODELSET
 	SHADOW = 0
 END_MODELSET
 
+#-----------------------------------
+# ビル03(全方位ぐるん)
+#-----------------------------------
 MODELSET
 	TYPE = 4
+	POS = 572 90 884
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 4
+	POS = 579 90 -862
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 4
+	POS = 600 75 0
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 4
+	POS = 861 90 0
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 4
+	POS = 874 90 69
+	ROT = 0 15 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 4
+	POS = 840 90 371
+	ROT = 0 15 0
+	SHADOW = 0
+END_MODELSET
+
+#-----------------------------------
+# 電柱
+#-----------------------------------
+MODELSET
+	TYPE = 5
 	POS = -480 0 760
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
-	TYPE = 4
+	TYPE = 5
 	POS = 230 0 760
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
-	TYPE = 4
+	TYPE = 5
 	POS = 940 0 760
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
-	TYPE = 4
+	TYPE = 5
 	POS = 474 0 -535
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
-	TYPE = 4
+	TYPE = 5
 	POS = 474 0 -340
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
-	TYPE = 4
+	TYPE = 5
 	POS = 474 -10 -187
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
-	TYPE = 4
+	TYPE = 5
 	POS = 474 0 -48
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
-	TYPE = 4
+	TYPE = 5
 	POS = 474 0 77
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
-	TYPE = 4
+	TYPE = 5
 	POS = 474 -10 218
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
-	TYPE = 4
+	TYPE = 5
 	POS = 474 0 340
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 
+#-----------------------------------
+# 瓦礫01(小)
+#-----------------------------------
 MODELSET
-	TYPE = 5
+	TYPE = 6
 	POS = -600 0 50
 	ROT = 0 135 0
 	SHADOW = 0
 END_MODELSET
 
+#-----------------------------------
+# 瓦礫02(中)
+#-----------------------------------
+
+#-----------------------------------
+# 瓦礫03(大)
+#-----------------------------------
+
+#-----------------------------------
+# 街灯
+#-----------------------------------
 MODELSET
-	TYPE = 6
+	TYPE = 9
 	POS = -680 0 760
 	ROT = 0 90 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
-	TYPE = 6
+	TYPE = 9
 	POS = 10 0 760
 	ROT = 0 90 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
-	TYPE = 6
+	TYPE = 9
 	POS = 650 0 760
 	ROT = 0 90 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
-	TYPE = 6
+	TYPE = 9
 	POS = -476 0 319
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
-	TYPE = 6
+	TYPE = 9
 	POS = -476 0 229
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
+
+#-----------------------------------
+# ガードレール
+#-----------------------------------
 MODELSET
-	TYPE = 7
+	TYPE = 10
 	POS = 233 0 452
 	ROT = 0 180 0
 	SHADOW = 0
 END_MODELSET
+
 MODELSET
-	TYPE = 7
+	TYPE = 10
 	POS = -227 0 439
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 
-MODELSET
-	TYPE = 8
-	POS = 572 90 884
-	ROT = 0 0 0
-	SHADOW = 0
-END_MODELSET
-MODELSET
-	TYPE = 8
-	POS = 579 90 -862
-	ROT = 0 0 0
-	SHADOW = 0
-END_MODELSET
-MODELSET
-	TYPE = 8
-	POS = 600 75 0
-	ROT = 0 0 0
-	SHADOW = 0
-END_MODELSET
-MODELSET
-	TYPE = 8
-	POS = 861 90 0
-	ROT = 0 0 0
-	SHADOW = 0
-END_MODELSET
-MODELSET
-	TYPE = 8
-	POS = 874 90 69
-	ROT = 0 15 0
-	SHADOW = 0
-END_MODELSET
-MODELSET
-	TYPE = 8
-	POS = 840 90 371
-	ROT = 0 15 0
-	SHADOW = 0
-END_MODELSET
+#-----------------------------------
+# 車01(単発凹)
+#-----------------------------------
 
+#-----------------------------------
+# 車02(いっぱい凹)
+#-----------------------------------
 
 #------------------------------------------------------------------------------
 # ビルボード配置情報
