@@ -10,14 +10,9 @@
 #include "main.h"
 #include "model.h"
 
-#define PLAYER_HITOSPEED (2)		//人型の速度
-#define PLAYER_BALLSPEED (4)		//ボールの速度
-#define PLAYER_SUPERBALLSPEED (7)	//スーパーボールの速度
-#define PLAYER_HITOJUMP (10)		//人型のジャンプ量
-#define PLAYER_BALLJUMP (5)			//ボールのジャンプ量
+#define PLAYER_SPEED (4)		//ボールの速度
+#define PLAYER_JUMP (5)			//ボールのジャンプ量
 #define PLAYER_RADIUS (3)			//プレイヤーの半径
-#define MAX_BALLTIME (200)			//ボールでいられる時間
-#define PIN_CONDITION (10)			//スーパーボールになる条件
 #define MOTIONFILE_PLAYER  ("data\\MOTION\\motionBallMan.txt")//プレイヤーのモーションファイル
 
 //プレイヤーの状態
@@ -37,13 +32,6 @@ typedef enum
 	MOTIONTYPE_ACTION,
 	MOTIONTYPE_JUMP,
 	MOTIONTYPE_LANDING,
-
-	MOTIONTYPE_BALLNEUTRAL,
-	MOTIONTYPE_BALLMOVE,
-	MOTIONTYPE_BALLACTION,
-	MOTIONTYPE_BALLJUMP,
-	MOTIONTYPE_BALLLANDING,
-
 	MOTIONTYPE_MAX
 }MOTIONTYPE;
 
@@ -87,11 +75,7 @@ typedef struct
 	PLAYERTYPE type;
 	int nIdxShadow;		//影
 	int nJump;			//ジャンプ量
-	int nBallTime;		//ボールでいられる時間
-	int nCntKill;		//何体倒したか
-	int nCntPin;		//スーパーボールになる条件用カウンタ―
 	float fSpeed;		//速度
-	bool bBall;			//ボールになれるかどうか
 	bool bJump;			//ジャンプできるかどうか
 	bool bUse;
 	//モデル

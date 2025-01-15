@@ -26,7 +26,7 @@ TEXTURE_FILENAME = data/TEXTURE/grass000.png		# [7]草テクスチャ
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 7
+NUM_MODEL = 9
 
 #------------------------------------------------------------------------------
 # モデルファイル名
@@ -38,6 +38,8 @@ MODEL_FILENAME = data/MODEL/bill_02.x		# [3]ビル02
 MODEL_FILENAME = data/MODEL/dentyu.x		# [4]電柱
 MODEL_FILENAME = data/MODEL/rubble_01.x		# [5]瓦礫
 MODEL_FILENAME = data/MODEL/streetlight.x	# [6]街灯
+MODEL_FILENAME = data/MODEL/fence.x			# [7]ガードレール
+MODEL_FILENAME = data/MODEL/bill_03.x		# [8]ビル03
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -388,6 +390,13 @@ END_MODELSET
 
 MODELSET
 	TYPE = 3
+	POS = 604 0 77
+	ROT = 0 15 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 3
 	POS = -829 0 135
 	ROT = 0 175 0
 	SHADOW = 0
@@ -511,6 +520,37 @@ MODELSET
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
+MODELSET
+	TYPE = 7
+	POS = 254 0 446
+	ROT = 0 180 0
+	SHADOW = 0
+END_MODELSET
+MODELSET
+	TYPE = 8
+	POS = 572 90 884
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+MODELSET
+	TYPE = 8
+	POS = 579 90 -862
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+MODELSET
+	TYPE = 8
+	POS = 600 75 -187
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+MODELSET
+	TYPE = 8
+	POS = 861 90 -210
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+
 
 #------------------------------------------------------------------------------
 # ビルボード配置情報

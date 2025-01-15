@@ -80,11 +80,8 @@ void InitPlayer(void)
 	g_player.rotDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.nIdxShadow = SetShadow(g_player.pos, g_player.rot);//影
 	g_player.type = PLAYERTYPE_HITO;
-	g_player.fSpeed = PLAYER_HITOSPEED;
-	g_player.nJump = PLAYER_HITOJUMP;
-	g_player.nBallTime = MAX_BALLTIME;
-	g_player.nCntKill = 0;
-	g_player.nCntPin = 0;
+	g_player.fSpeed = PLAYER_SPEED;
+	g_player.nJump = PLAYER_JUMP;
 	//モーション関連
 	g_player.motionType = MOTIONTYPE_NEUTRAL;
 	g_player.bLoopMotion = true;//ループ
@@ -93,7 +90,6 @@ void InitPlayer(void)
 	g_player.nKey = 0;//現在のキーNo
 	g_player.nNumModel = 13;//パーツの総数
 
-	g_player.bBall = true;
 	g_player.bJump = false;//ジャンプ
 	g_player.bUse = true;
 
@@ -376,12 +372,6 @@ void UpdatePlayer(void)
 	{
 		SetPositionShadow(g_player.nIdxShadow, g_player.pos, g_player.bUse);//影
 
-		//SetEffect(g_player.pos,g_player.move, g_player.rot);
-
-		if (g_player.bJump == true)
-		{
-			g_player.fSpeed /= 1.5;
-		}
 		//移動
 		if (GetKeyboardPress(DIK_D) == true)
 		{
@@ -460,39 +450,11 @@ void UpdatePlayer(void)
 
 		g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
 
-		//モード変更
-		if (KeyboardTrigger(DIK_RETURN) == true)
-		{
-			//g_player.motionType = MOTIONTYPE_ACTION;
-
-			if (g_player.type == PLAYERTYPE_HITO)
-			{//人の時
-				if (g_player.bBall == true && g_player.nBallTime > 0)
-				{//ボール使用可能時
-					g_player.type = PLAYERTYPE_BALL;
-				}
-			}
-			else if (g_player.type == PLAYERTYPE_BALL)
-			{//ボールの時
-				g_player.type = PLAYERTYPE_HITO;
-			}
-		}
-
 		//ジャンプ
 		if (KeyboardTrigger(DIK_SPACE) == true)
 		{// SPACE
 			if (g_player.bJump == false)
 			{
-				//if (g_player.type == PLAYERTYPE_HITO)
-				//{
-				//	g_player.motionType = MOTIONTYPE_JUMP;
-				//}
-				//else
-				//{
-				//	g_player.motionType = MOTIONTYPE_BALLJUMP;
-				//}
-				//g_player.motionType = MOTIONTYPE_JUMP;
-
 				g_player.bJump = true;
 				g_player.move.y += g_player.nJump;
 			}
@@ -519,14 +481,6 @@ void UpdatePlayer(void)
 		{
 			if (g_player.bJump == true)
 			{
-				//if (g_player.type == PLAYERTYPE_HITO)
-				//{
-				//	g_player.motionType = MOTIONTYPE_LANDING;
-				//}
-				//else
-				//{
-				//	g_player.motionType = MOTIONTYPE_BALLLANDING;
-				//}
 				g_player.bJump = false;
 			}
 			g_player.pos.y = 0.0;
@@ -537,47 +491,6 @@ void UpdatePlayer(void)
 		g_player.move.x = 0.0f;
 		g_player.move.z = 0.0f;
 
-		//ボール状態なら
-		if (g_player.type == PLAYERTYPE_BALL)
-		{
-			SetEffect(D3DXVECTOR3(g_player.pos.x, g_player.pos.y + 10.0f, g_player.pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f,1.0f,0.0f,1.0f), EFFECT_LIFE, EFFECT_SIZE);
-			g_player.fSpeed = PLAYER_BALLSPEED;
-			g_player.nJump = PLAYER_BALLJUMP;
-		}
-		//人型なら
-		else if (g_player.type == PLAYERTYPE_HITO)
-		{
-			g_player.fSpeed = PLAYER_HITOSPEED;
-			g_player.nJump = PLAYER_HITOJUMP;
-		}
-		//スーパーボールなら
-		else if (g_player.type == PLAYERTYPE_SUPERBALL)
-		{
-			SetEffect(D3DXVECTOR3(g_player.pos.x + 10.0f, g_player.pos.y + 5.0f, g_player.pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.8f, 0.0f, 1.0f, 1.0f), EFFECT_LIFE, EFFECT_SIZE);
-			SetEffect(D3DXVECTOR3(g_player.pos.x, g_player.pos.y + 5.0f, g_player.pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 0.8f, 0.0f, 1.0f), EFFECT_LIFE, EFFECT_SIZE);
-			SetEffect(D3DXVECTOR3(g_player.pos.x - 10.0f, g_player.pos.y + 5.0f, g_player.pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.8f, 0.0f, 1.0f, 1.0f), EFFECT_LIFE, EFFECT_SIZE);
-			g_player.fSpeed = PLAYER_SUPERBALLSPEED;
-			g_player.nJump = PLAYER_HITOJUMP;
-		}
-
-		//１０体倒したら
-		if (g_player.nCntPin >= PIN_CONDITION && g_player.type != PLAYERTYPE_SUPERBALL)
-		{
-			g_player.type = PLAYERTYPE_SUPERBALL;
-			//PlaySound(SOUND_LABEL_BALL);
-		}
-
-		//もしボール時間が０になったら
-		if (g_player.nBallTime <= 0)
-		{
-			if (g_player.type == PLAYERTYPE_SUPERBALL)
-			{
-				g_player.nCntPin = 0;
-				StopSound(SOUND_LABEL_BALL);
-			}
-			g_player.type = PLAYERTYPE_HITO;
-			g_player.bBall = false;
-		}
 
 #ifdef _DEBUG
 
