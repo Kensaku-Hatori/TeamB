@@ -39,7 +39,7 @@ void InitRanking(void)
 	pDevice = GetDevice();
 
 	//テクスチャ
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking.jpg", &g_pTextureBack);        //順位
+	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking.jpg", &g_pTextureBack);        //順位
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\flag.png", &g_pTextureRank);           //順位
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number003.png", &g_pTextureRankScore); //スコア
 

@@ -29,7 +29,7 @@ void InitTitle(void)
 	pDevice = GetDevice();
 
 	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\title01.jpg", &g_pTextureTitle[0]); //背景
+	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\title01.jpg", &g_pTextureTitle[0]); //背景
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\stage.png", &g_pTextureTitle[1]); //START
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\rank.png", &g_pTextureTitle[2]); //ランキング
 

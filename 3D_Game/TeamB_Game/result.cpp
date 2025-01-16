@@ -27,7 +27,7 @@ void InitResult(void)
 	pDevice = GetDevice();
 
 	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\result03.jpg", &g_pTextureResult[0]); //クリア
+	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\result03.jpg", &g_pTextureResult[0]); //クリア
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
 	//頂点バッファの生成
