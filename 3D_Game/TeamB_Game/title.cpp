@@ -12,7 +12,7 @@
 #include "fade.h"
 //#include "tutorial.h"
 #include "sound.h"
-#define MAX_TEXTURE (4)
+#define MAX_TEXTURE (3)
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureTitle[MAX_TEXTURE] = {};
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTitle = NULL;
@@ -31,8 +31,7 @@ void InitTitle(void)
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\title01.jpg", &g_pTextureTitle[0]); //背景
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\stage.png", &g_pTextureTitle[1]); //START
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\rule.png", &g_pTextureTitle[2]); //説明画面
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\rank.png", &g_pTextureTitle[3]); //ランキング
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\rank.png", &g_pTextureTitle[2]); //ランキング
 
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
@@ -130,8 +129,6 @@ void UpdateTitle(void)
 {
 	FADE g_fade;
 	g_fade = GetFade();
-	//TUTORIAL g_Rule;
-	//g_Rule = GetTutorial();
 
 	VERTEX_2D* pVtx;
 	//頂点バッファをロックし、頂点情報へのポインタを取得
@@ -145,21 +142,12 @@ void UpdateTitle(void)
 	}
 	else if ((KeyboardTrigger(DIK_S) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_TitleMenu == TITLE_START)
 	{
-		g_TitleMenu = TITLE_RULE;
-	}
-	//RULEにいる場合
-	else if ((KeyboardTrigger(DIK_W) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_TitleMenu == TITLE_RULE)
-	{
-		g_TitleMenu = TITLE_START;
-	}
-	else if ((KeyboardTrigger(DIK_S) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_TitleMenu == TITLE_RULE)
-	{
 		g_TitleMenu = TITLE_RANK;
 	}
 	//RANKにいる場合
 	else if ((KeyboardTrigger(DIK_W) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_TitleMenu == TITLE_RANK)
 	{
-		g_TitleMenu = TITLE_RULE;
+		g_TitleMenu = TITLE_START;
 	}
 	else if ((KeyboardTrigger(DIK_S) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_TitleMenu == TITLE_RANK)
 	{
@@ -184,7 +172,7 @@ void UpdateTitle(void)
 		pVtx[14].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 		pVtx[15].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 	}
-	else if (g_TitleMenu == TITLE_RULE)
+	else if (g_TitleMenu == TITLE_RANK)
 	{	//RULEにいる場合
 		pVtx[4].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 		pVtx[5].col = D3DCOLOR_RGBA(255, 255, 255, 255);
@@ -202,23 +190,6 @@ void UpdateTitle(void)
 		pVtx[15].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 
 	}
-	else if (g_TitleMenu == TITLE_RANK)
-	{	//RANKにいる場合
-		pVtx[4].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[5].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[6].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[7].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-
-		pVtx[8].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[9].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[10].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[11].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-
-		pVtx[12].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		pVtx[13].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		pVtx[14].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		pVtx[15].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-	}
 
 	//頂点バッファをアンロック
 	g_pVtxBuffTitle->Unlock();
@@ -229,17 +200,11 @@ void UpdateTitle(void)
 		if (g_TitleMenu == TITLE_START)
 		{	//STARTにいる場合
 			SetFade(MODE_GAME);
-			//PlaySound(SOUND_LABEL_GAME);
 		}
 		else if (g_TitleMenu == TITLE_RANK)
 		{	//RANKにいる場合
 			SetFade(MODE_RANK);
 			SetRankMode(RANKMODE_TITLE);
-		}
-		else if (g_TitleMenu == TITLE_RULE)
-		{	//RULEにいる場合
-			SetFade(MODE_RULE);
-			//PlaySound(SOUND_LABEL_GAME);
 		}
 	}
 }

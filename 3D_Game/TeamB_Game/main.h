@@ -55,7 +55,6 @@ typedef struct
 typedef enum
 {
 	MODE_TITLE = 0,
-	MODE_RULE,
 	MODE_GAME,
 	MODE_RESULT,
 	MODE_RANK,

@@ -12,19 +12,19 @@
 #include "input.h"
 #include "player.h"
 #include "shadow.h"
-#include "wall.h"
-#include "explosion.h"
-#include "effect.h"
-#include "block.h"
-#include "meshwall.h"
-#include "meshcylinder.h"
+//#include "wall.h"
+//#include "explosion.h"
+//#include "effect.h"
+//#include "block.h"
+//#include "meshwall.h"
+//#include "meshcylinder.h"
 #include "fade.h"
 #include "timer.h"
 #include "pause.h"
-#include "sound.h"
-#include "enemy.h"
+//#include "sound.h"
+//#include "enemy.h"
 #include "score.h"
-#include "particle.h"
+//#include "particle.h"
 
 //ÉOÉçÅ[ÉoÉãïœêî
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -40,23 +40,23 @@ void InitGame(void)
 
 	InitShadow();
 
-	InitBlock();
+	//InitBlock();
 
 	InitPlayer();
 
-	InitEnemy();
+	//InitEnemy();
 
-	InitEffect();
+	//InitEffect();
 
-	InitParticle();
+	//InitParticle();
 
-	InitExplosion();
+	//InitExplosion();
 
-	InitMeshCylinder();
+	//InitMeshCylinder();
 
-	InitWall();
+	//InitWall();
 
-	InitMeshWall();
+	//InitMeshWall();
 	
 	InitCamera();
 
@@ -86,23 +86,23 @@ void UninitGame(void)
 
 	UninitPlayer();
 
-	UninitEnemy();
+	//UninitEnemy();
 
-	UninitEffect();
+	//UninitEffect();
 
-	UninitParticle();
+	//UninitParticle();
 
-	UninitBlock();
+	//UninitBlock();
 
 	UninitPolygon();
 
-	UninitExplosion();
+	//UninitExplosion();
 
-	UninitMeshCylinder();
+	//UninitMeshCylinder();
 
-	UninitWall();
+	//UninitWall();
 
-	UninitMeshWall();
+	//UninitMeshWall();
 
 	UninitCamera();
 
@@ -138,21 +138,21 @@ void UpdateGame(void)
 
 		UpdatePlayer();
 
-		UpdateEnemy();
+		//UpdateEnemy();
 
-		UpdateEffect();
+		//UpdateEffect();
 
-		UpdateParticle();
+		//UpdateParticle();
 
-		UpdateBlock();
+		//UpdateBlock();
 
-		UpdateExplosion();
+		//UpdateExplosion();
 
-		UpdateMeshCylinder();
+		//UpdateMeshCylinder();
 
-		UpdateWall();
+		//UpdateWall();
 
-		UpdateMeshWall();
+		//UpdateMeshWall();
 
 		UpdateCamera();
 
@@ -196,23 +196,23 @@ void DrawGame(void)
 
 	DrawShadow();
 
-	DrawBlock();
+	//DrawBlock();
 
 	DrawPlayer();
 
-	DrawEnemy();
+	//DrawEnemy();
 
-	DrawExplosion();
+	//DrawExplosion();
 
-	DrawEffect();
+	//DrawEffect();
 
-	DrawParticle();
+	//DrawParticle();
 
-	DrawMeshCylinder();
+	//DrawMeshCylinder();
 
-	DrawWall();
+	//DrawWall();
 
-	DrawMeshWall();
+	//DrawMeshWall();
 
 	DrawTimer();
 

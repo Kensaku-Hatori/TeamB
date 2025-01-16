@@ -15,7 +15,6 @@
 typedef enum
 {
 	TITLE_START = 0,//ƒQ[ƒ€START
-	TITLE_RULE,		//à–¾‰æ–Ê
 	TITLE_RANK,		//ƒ‰ƒ“ƒLƒ“ƒO
 	TITLE_MAX,
 }TITLE;
