@@ -37,24 +37,6 @@ void InitBlock(void)
 			&g_Block[nCntBlockBlock].aModel[BLOCKTYPE_NORMAL].dwNumMat,
 			&g_Block[nCntBlockBlock].aModel[BLOCKTYPE_NORMAL].pMesh);
 
-		D3DXLoadMeshFromX("data\\MODEL\\wall00.x",
-			D3DXMESH_SYSTEMMEM,
-			pDevice,
-			NULL,
-			&g_Block[nCntBlockBlock].aModel[BLOCKTYPE_WALL].pBuffMat,
-			NULL,
-			&g_Block[nCntBlockBlock].aModel[BLOCKTYPE_WALL].dwNumMat,
-			&g_Block[nCntBlockBlock].aModel[BLOCKTYPE_WALL].pMesh);
-
-		D3DXLoadMeshFromX("data\\MODEL\\block02.x",
-			D3DXMESH_SYSTEMMEM,
-			pDevice,
-			NULL,
-			&g_Block[nCntBlockBlock].aModel[BLOCKTYPE_PILLAR].pBuffMat,
-			NULL,
-			&g_Block[nCntBlockBlock].aModel[BLOCKTYPE_PILLAR].dwNumMat,
-			&g_Block[nCntBlockBlock].aModel[BLOCKTYPE_PILLAR].pMesh);
-
 
 		int nNumVtx;   //頂点数
 		DWORD sizeFVF; //頂点フォーマットのサイズ
