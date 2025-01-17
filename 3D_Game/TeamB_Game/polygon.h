@@ -9,8 +9,8 @@
 
 #include "main.h"
 
-#define POLYGON_X (800)
-#define POLYGON_Y (800)
+#define POLYGON_X (100)
+#define POLYGON_Y (100)
 
 //プロトタイプ宣言
 void InitPolygon(void);

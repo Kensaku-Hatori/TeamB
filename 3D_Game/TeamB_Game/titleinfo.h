@@ -9,6 +9,14 @@
 
 #include"main.h"
 
+#define TITLESELECT_HEIGHT (100)
+#define TITLESELECT_WIDTH (400)
+
+#define TITLELOGO_HEIGHT (200)
+#define TITLELOGO_WIDTH (600)
+
+#define LOGO_END_Y (200)
+
 //ポーズメニュー
 typedef enum
 {

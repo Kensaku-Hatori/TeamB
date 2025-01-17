@@ -15,6 +15,12 @@
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTexturetitleinfo[MAX_TEXTURE] = {};
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBufftitleinfo = NULL;
+D3DXVECTOR3 g_Selectpos;
+//ロゴ
+LPDIRECT3DTEXTURE9 g_pTexturetitleinfoLogo = NULL;
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBufftitleinfoLogo = NULL;
+D3DXVECTOR3 g_Logopos;
+
 TITLEINFO g_titleinfoMenu=TITLE_START;
 //============
 //初期化処理
@@ -27,10 +33,12 @@ void InitTitleInfo(void)
 	//デバイスの取得
 	pDevice = GetDevice();
 
+	g_Selectpos = D3DXVECTOR3(640.0f, 360.0f, 0.0f);
+
 	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\stage.png", &g_pTexturetitleinfo[0]); //START
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\rank.png", &g_pTexturetitleinfo[1]); //ランキング
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\fin.png", &g_pTexturetitleinfo[2]); //ランキング
+	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\stage.png", &g_pTexturetitleinfo[0]); //START
+	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\rank.png", &g_pTexturetitleinfo[1]); //ランキング
+	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\fin.png", &g_pTexturetitleinfo[2]); //ランキング
 
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
@@ -47,10 +55,10 @@ void InitTitleInfo(void)
 	for (int nCnt = 0; nCnt < MAX_TEXTURE; nCnt++)
 	{//メニュー
 		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(400.0f, 300.0f + (nCnt * 150), 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(800.0f, 300.0f + (nCnt * 150), 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(400.0f, 400.0f + (nCnt * 150), 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(800.0f, 400.0f + (nCnt * 150), 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(g_Selectpos.x - TITLESELECT_WIDTH / 2, g_Selectpos.y - TITLESELECT_HEIGHT / 2, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(g_Selectpos.x + TITLESELECT_WIDTH / 2, g_Selectpos.y - TITLESELECT_HEIGHT / 2, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(g_Selectpos.x - TITLESELECT_WIDTH / 2, g_Selectpos.y + TITLESELECT_HEIGHT / 2, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(g_Selectpos.x + TITLESELECT_WIDTH / 2, g_Selectpos.y + TITLESELECT_HEIGHT / 2, 0.0f);
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;
@@ -67,10 +75,51 @@ void InitTitleInfo(void)
 		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
 		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
+		g_Selectpos.y += 120.0f;
 		pVtx += 4;
 	}
 	//頂点バッファをアンロック
 	g_pVtxBufftitleinfo->Unlock();
+
+
+	//ロゴ
+	g_Logopos = D3DXVECTOR3(640.0f, 0.0f, 0.0f);
+
+	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\stage.png", &g_pTexturetitleinfoLogo); //START
+	//頂点バッファの生成
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
+		D3DUSAGE_WRITEONLY,
+		FVF_VERTEX_2D,
+		D3DPOOL_MANAGED,
+		&g_pVtxBufftitleinfoLogo,
+		NULL);
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	g_pVtxBufftitleinfoLogo->Lock(0, 0, (void**)&pVtx, 0);
+
+	//頂点座標の設定
+	pVtx[0].pos = D3DXVECTOR3(g_Logopos.x - TITLELOGO_WIDTH / 2, g_Logopos.y - TITLELOGO_HEIGHT / 2, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(g_Logopos.x + TITLELOGO_WIDTH / 2, g_Logopos.y - TITLELOGO_HEIGHT / 2, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(g_Logopos.x - TITLELOGO_WIDTH / 2, g_Logopos.y + TITLELOGO_HEIGHT / 2, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(g_Logopos.x + TITLELOGO_WIDTH / 2, g_Logopos.y + TITLELOGO_HEIGHT / 2, 0.0f);
+	//rhwの設定
+	pVtx[0].rhw = 1.0f;
+	pVtx[1].rhw = 1.0f;
+	pVtx[2].rhw = 1.0f;
+	pVtx[3].rhw = 1.0f;
+	//頂点カラーの設定
+	pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	//テクスチャ座標の設定
+	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+
+	//頂点バッファをアンロック
+	g_pVtxBufftitleinfoLogo->Unlock();
+
 }
 //==========
 //終了処理
@@ -86,11 +135,20 @@ void UninitTitleInfo(void)
 			g_pTexturetitleinfo[nCnt] = NULL;
 		}
 	}
+	//テクスチャの破棄
+	if (g_pTexturetitleinfoLogo != NULL)
+	{
+		g_pTexturetitleinfoLogo->Release();
+		g_pTexturetitleinfoLogo = NULL;
+	}
+
 	//頂点バッファの破棄
-	if (g_pVtxBufftitleinfo != NULL)
+	if (g_pVtxBufftitleinfo != NULL && g_pVtxBufftitleinfoLogo != NULL)
 	{
 		g_pVtxBufftitleinfo->Release();
 		g_pVtxBufftitleinfo = NULL;
+		g_pVtxBufftitleinfoLogo->Release();
+		g_pVtxBufftitleinfoLogo = NULL;
 	}
 }
 //==========
@@ -210,7 +268,28 @@ void UpdateTitleInfo(void)
 		}
 	}
 
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	g_pVtxBufftitleinfoLogo->Lock(0, 0, (void**)&pVtx, 0);
 
+	if (g_Logopos.y <= LOGO_END_Y)
+	{
+		g_Logopos.y++;
+	}
+	if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true) && g_fade == FADE_NONE)
+	{
+		g_Logopos.y = LOGO_END_Y;
+	}
+
+
+	//頂点座標の設定
+	pVtx[0].pos = D3DXVECTOR3(g_Logopos.x - TITLELOGO_WIDTH / 2, g_Logopos.y - TITLELOGO_HEIGHT / 2, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(g_Logopos.x + TITLELOGO_WIDTH / 2, g_Logopos.y - TITLELOGO_HEIGHT / 2, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(g_Logopos.x - TITLELOGO_WIDTH / 2, g_Logopos.y + TITLELOGO_HEIGHT / 2, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(g_Logopos.x + TITLELOGO_WIDTH / 2, g_Logopos.y + TITLELOGO_HEIGHT / 2, 0.0f);
+
+
+	//頂点バッファをアンロック
+	g_pVtxBufftitleinfoLogo->Unlock();
 }
 //===========
 //描画処理
@@ -235,4 +314,12 @@ void DrawTitleInfo(void)
 		//プレイヤーの描画
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
 	}
+
+	//頂点バッファをデータストリームに設定
+	pDevice->SetStreamSource(0, g_pVtxBufftitleinfoLogo, 0, sizeof(VERTEX_2D));
+	//テクスチャの設定
+	pDevice->SetTexture(0, g_pTexturetitleinfoLogo);
+	//プレイヤーの描画
+	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+
 }
