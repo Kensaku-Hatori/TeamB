@@ -46,7 +46,7 @@ void InitTitle(void)
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffTitle->Lock(0, 0, (void**)&pVtx, 0);
 	for (int nCnt = 0; nCnt < MAX_TEXTURE; nCnt++)
-	{//ポーズメニュー
+	{//メニュー
 		//頂点座標の設定
 		pVtx[0].pos = D3DXVECTOR3(400.0f, 300.0f + (nCnt * 150), 0.0f);
 		pVtx[1].pos = D3DXVECTOR3(800.0f, 300.0f + (nCnt * 150), 0.0f);

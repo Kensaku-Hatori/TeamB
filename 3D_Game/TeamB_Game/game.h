@@ -20,6 +20,16 @@ typedef enum
 	GAMESTATE_MAX
 }GAMESTATE;
 
+typedef enum
+{
+	STAGE_NO_0 = 0,
+	STAGE_NO_1,
+	STAGE_NO_2,
+	STAGE_NO_3,
+	STAGE_NO_MAX,
+
+}STAGE_NO;
+
 //プロトタイプ宣言
 void InitGame(void);
 void UninitGame(void);
