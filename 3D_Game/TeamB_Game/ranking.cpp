@@ -289,16 +289,23 @@ void UpdateRanking(void)
 	}
 	if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true) && g_fade == FADE_NONE)
 	{
-		if (g_RankMode == RANKMODE_RESULT)
-		{
+		if (g_RankMode == RANKMODE_RESULT || g_RankMode == RANKMODE_SELECT)
+		{//リザルト・選択からきた
 			StopSound();
+			SetFade(MODE_TITLE);
 		}
-		else if (g_RankMode == RANKMODE_TITLE)
-		{
-			StopSound();
-		}
-		SetFade(MODE_TITLE);
 	}
+	if (g_RankMode == RANKMODE_TITLE)
+	{//タイトルからきた
+		g_nTimerRanking++;
+		if (g_nTimerRanking >= RANKING_TIME)
+		{
+			//タイトルに戻る
+			SetFade(MODE_TITLE);
+			g_nTimerRanking = 0;
+		}
+	}
+
 	//頂点バッファをアンロック
 	g_pVtxBuffRankScore->Unlock();
 }

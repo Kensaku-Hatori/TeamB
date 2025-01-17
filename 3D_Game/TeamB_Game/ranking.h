@@ -10,11 +10,13 @@
 #include"main.h"
 
 #define MAX_RANKING (5) //•\¦‡ˆÊ”
+#define RANKING_TIME (600)//ƒ‰ƒ“ƒLƒ“ƒO‚ÌŠÔ
 
 typedef enum
 {
 	RANKMODE_RESULT = 0,
 	RANKMODE_TITLE,
+	RANKMODE_SELECT,
 	RANKMODE_MAX,
 }RANK_MODE;
 
