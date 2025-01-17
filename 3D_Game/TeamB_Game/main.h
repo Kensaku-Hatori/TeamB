@@ -58,6 +58,7 @@ typedef enum
 	MODE_GAME,
 	MODE_RESULT,
 	MODE_RANK,
+	MODE_END,
 	MODE_MAX
 }MODE;
 

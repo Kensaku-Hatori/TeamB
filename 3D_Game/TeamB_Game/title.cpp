@@ -29,7 +29,6 @@ void InitTitle(void)
 	pDevice = GetDevice();
 
 	//テクスチャの読み込み
-	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\title01.jpg", &g_pTextureTitle[0]); //背景
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\stage.png", &g_pTextureTitle[0]); //START
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\rank.png", &g_pTextureTitle[1]); //ランキング
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\fin.png", &g_pTextureTitle[2]); //ランキング
@@ -109,29 +108,29 @@ void UpdateTitle(void)
 
 	//メニューの選択(上下)
 	//STARTにいる場合
-	if ((KeyboardTrigger(DIK_W) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_TitleMenu==TITLE_START)
+	if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_TitleMenu==TITLE_START)
 	{
 		g_TitleMenu = TITLE_FIN;
 	}
-	else if ((KeyboardTrigger(DIK_S) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_TitleMenu == TITLE_START)
+	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_TitleMenu == TITLE_START)
 	{
 		g_TitleMenu = TITLE_RANK;
 	}
 	//RANKにいる場合
-	else if ((KeyboardTrigger(DIK_W) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_TitleMenu == TITLE_RANK)
+	else if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_TitleMenu == TITLE_RANK)
 	{
 		g_TitleMenu = TITLE_START;
 	}
-	else if ((KeyboardTrigger(DIK_S) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_TitleMenu == TITLE_RANK)
+	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_TitleMenu == TITLE_RANK)
 	{
 		g_TitleMenu = TITLE_FIN;
 	}
 	//FINにいる場合
-	else if ((KeyboardTrigger(DIK_W) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_TitleMenu == TITLE_FIN)
+	else if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_TitleMenu == TITLE_FIN)
 	{
 		g_TitleMenu = TITLE_RANK;
 	}
-	else if ((KeyboardTrigger(DIK_S) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_TitleMenu == TITLE_FIN)
+	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_TitleMenu == TITLE_FIN)
 	{
 		g_TitleMenu = TITLE_START;
 	}
@@ -208,7 +207,7 @@ void UpdateTitle(void)
 		}
 		else if (g_TitleMenu == TITLE_FIN)
 		{	//FINにいる場合
-
+			SetMode(MODE_END);
 		}
 	}
 }
