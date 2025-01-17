@@ -18,6 +18,8 @@
 #include "xaudio2.h"
 
 #include<time.h>
+#include "string.h"
+#include "stdlib.h"
 //ƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒŠƒ“ƒN
 #pragma comment(lib,"d3d9.lib")
 #pragma comment(lib,"d3dx9.lib")

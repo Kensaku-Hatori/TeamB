@@ -12,6 +12,7 @@
 #include "camera.h"
 #include "light.h"
 #include "polygon.h"
+#include "loadstage.h"
 //グローバル変数
 int g_nTimeTitle; //タイトルからランキングへの時間
 
@@ -30,6 +31,8 @@ void InitTitle(void)
 
 
 	InitTitleInfo();
+
+	LoadModelViewer();
 }
 //==========
 //終了処理
