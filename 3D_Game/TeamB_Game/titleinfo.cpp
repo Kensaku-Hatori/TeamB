@@ -36,9 +36,9 @@ void InitTitleInfo(void)
 	g_Selectpos = D3DXVECTOR3(640.0f, 360.0f, 0.0f);
 
 	//テクスチャの読み込み
-	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\stage.png", &g_pTexturetitleinfo[0]); //START
-	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\rank.png", &g_pTexturetitleinfo[1]); //ランキング
-	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\fin.png", &g_pTexturetitleinfo[2]); //ランキング
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\stage.png", &g_pTexturetitleinfo[0]); //START
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\rank.png", &g_pTexturetitleinfo[1]); //ランキング
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\fin.png", &g_pTexturetitleinfo[2]); //ランキング
 
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
@@ -85,7 +85,7 @@ void InitTitleInfo(void)
 	//ロゴ
 	g_Logopos = D3DXVECTOR3(640.0f, 0.0f, 0.0f);
 
-	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\stage.png", &g_pTexturetitleinfoLogo); //START
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\stage.png", &g_pTexturetitleinfoLogo); //START
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
 		D3DUSAGE_WRITEONLY,
@@ -271,13 +271,9 @@ void UpdateTitleInfo(void)
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBufftitleinfoLogo->Lock(0, 0, (void**)&pVtx, 0);
 
-	if (g_Logopos.y <= LOGO_END_Y)
+	if (g_Logopos.y < LOGO_END_Y)
 	{
 		g_Logopos.y++;
-	}
-	if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true) && g_fade == FADE_NONE)
-	{
-		g_Logopos.y = LOGO_END_Y;
 	}
 
 
