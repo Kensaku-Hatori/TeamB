@@ -6,6 +6,7 @@
 //================================
 #include "game.h"
 #include "result.h"
+#include "resultinfo.h"
 #include "polygon.h"
 #include "camera.h"
 #include "light.h"
@@ -167,22 +168,41 @@ void UpdateGame(void)
 		{
 		case GAMESTATE_NORMAL:
 			break;
-		case GAMESTATE_TIMEOVER:
+		case GAMESTATE_CLEAR:
 			g_nCounterGameState++;
 			if (g_nCounterGameState >= 30)
 			{
 				g_gamestate = GAMESTATE_NONE;
 				//モードをリザルトにする
 				SetFade(MODE_RESULT);
+				SetResult(RESULT_CLEAR);
 			}
 			break;
+		case GAMESTATE_GAMEOVER:
+			g_nCounterGameState++;
+			if (g_nCounterGameState >= 30)
+			{
+				g_gamestate = GAMESTATE_NONE;
+				//モードをリザルトにする
+				SetFade(MODE_RESULT);
+				SetResult(RESULT_GAMEOVER);
+			}
+			break;
+
 		}
 
 		//リザルトに飛ぶ
 		if (KeyboardTrigger(DIK_1) == true || GetJoypadTrigger(JOYKEY_START) == true)
 		{
 			SetFade(MODE_RESULT);
+			SetResult(RESULT_CLEAR);
 		}
+		if (KeyboardTrigger(DIK_2) == true || GetJoypadTrigger(JOYKEY_START) == true)
+		{
+			SetFade(MODE_RESULT);
+			SetResult(RESULT_GAMEOVER);
+		}
+
 	}
 }
 //===========

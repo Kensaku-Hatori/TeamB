@@ -109,7 +109,7 @@ void UpdateTimer(void)
 	{	
 		if (gamestate == GAMESTATE_NORMAL)
 		{
-			SetGameState(GAMESTATE_TIMEOVER);
+			SetGameState(GAMESTATE_GAMEOVER);
 		}		
 		
 		g_nTimer = 0;
