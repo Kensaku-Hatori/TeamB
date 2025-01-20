@@ -31,7 +31,7 @@ void InitTitle(void)
 
 	InitTitleInfo();
 
-	//LoadModelViewer();
+	LoadModelViewer();
 }
 //==========
 //I—¹ˆ—
