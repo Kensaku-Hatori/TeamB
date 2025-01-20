@@ -13,6 +13,8 @@
 #define RANKING_TIME (600)//ƒ‰ƒ“ƒLƒ“ƒO‚ÌŽžŠÔ
 #define RANKSCORE_TIME (25)
 
+#define RANK_SIZE (50)
+
 typedef enum
 {
 	RANKMODE_RESULT = 0,
