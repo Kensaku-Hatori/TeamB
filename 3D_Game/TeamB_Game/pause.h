@@ -8,6 +8,8 @@
 #define _PAUSE_H_
 
 #include "main.h"
+#define PAUSESELECT_HEIGHT (100)
+#define PAUSESELECT_WIDTH (400)
 
 //ポーズメニュー
 typedef enum
