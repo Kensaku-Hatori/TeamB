@@ -9,14 +9,21 @@
 
 #include "main.h"
 
+#define CAMERA "END_CAMERASET"
+#define LIGHT "END_LIGHTSET"
+#define SKY "END_SKYSET"
+#define MOUNTAIN "END_MOUNTAINSET"
+#define FIELD "END_FIELDSET"
+#define WALL "END_WALLSET"
+#define MODEL "END_MODELSET"
+#define BILLBOARD "END_BILLBOARDSET"
+
 void LoadModelViewer();				// スクリプト以前を読み込む処理
 void SkipComment(FILE* pFile);		// シャープ以降を飛ばす関数
 void LoadStart(FILE* pFile);		// スクリプト以降の読み込み処理
 void SkipEqual(FILE* pFile);		//  = を読み飛ばす処理
-void LoadTextureNum(FILE* pFile);	// テクスチャの種類を読み込む処理
-void LoadTexturePath(FILE* pFile);	// テクスチャのパスを読み込む処理
-void LoadModelNum(FILE* pFile);		// モデルの種類を読み込む処理
-void LoadModelPath(FILE* pFile);	// モデルのパスを読み込む処理
-int LoadInt(FILE* pFile);
-char *LoadPath(FILE* pFile);
+int LoadInt(FILE* pFile);			// 整数を読み込む処理
+float LoadFloat(FILE* pFile);		// 小数点を読み込む処理
+char *LoadPath(FILE* pFile);		// 文字列を読み込む処理
+char* LoadDecision(FILE* pFile);		// 文字列を判断する処理
 #endif // !LOADSTAGE_H_
