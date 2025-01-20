@@ -19,7 +19,7 @@ typedef struct
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureBack = NULL;
 LPDIRECT3DTEXTURE9 g_pTextureRank = NULL;
-LPDIRECT3DTEXTURE9 g_pTextureRankScore = NULL;
+LPDIRECT3DTEXTURE9 g_pTextureRankScore[4] = {};
 
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffRank = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffRankScore = NULL;
@@ -39,9 +39,9 @@ void InitRanking(void)
 	pDevice = GetDevice();
 
 	//テクスチャ
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking.jpg", &g_pTextureBack);        //順位
+	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking.jpg", &g_pTextureBack);        //背景
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\flag.png", &g_pTextureRank);           //順位
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number003.png", &g_pTextureRankScore); //スコア
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number003.png", &g_pTextureRankScore[0]); //スコア
 
 	for (int nCnt = 0; nCnt < MAX_RANKING; nCnt++)
 	{
@@ -199,8 +199,11 @@ void UninitRanking(void)
 		g_pTextureBack = NULL;
 		g_pTextureRank->Release();
 		g_pTextureRank = NULL;
-		g_pTextureRankScore->Release();
-		g_pTextureRankScore = NULL;
+		for (int nCnt = 0; nCnt < 4; nCnt++)
+		{
+			g_pTextureRankScore[nCnt]->Release();
+			g_pTextureRankScore[nCnt] = NULL;
+		}
 	}
 	if (g_pVtxBuffRank != NULL && g_pVtxBuffRankBack != NULL && g_pVtxBuffRankScore != NULL)
 	{
@@ -289,16 +292,23 @@ void UpdateRanking(void)
 	}
 	if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true) && g_fade == FADE_NONE)
 	{
-		if (g_RankMode == RANKMODE_RESULT)
-		{
+		if (g_RankMode == RANKMODE_RESULT || g_RankMode == RANKMODE_SELECT)
+		{//リザルト・選択からきた
 			StopSound();
+			SetFade(MODE_TITLE);
 		}
-		else if (g_RankMode == RANKMODE_TITLE)
-		{
-			StopSound();
-		}
-		SetFade(MODE_TITLE);
 	}
+	if (g_RankMode == RANKMODE_TITLE)
+	{//タイトルからきた
+		g_nTimerRanking++;
+		if (g_nTimerRanking >= RANKING_TIME)
+		{
+			//タイトルに戻る
+			SetFade(MODE_TITLE);
+			g_nTimerRanking = 0;
+		}
+	}
+
 	//頂点バッファをアンロック
 	g_pVtxBuffRankScore->Unlock();
 }
@@ -340,7 +350,7 @@ void DrawRanking(void)
 	for (int nCnt = 0; nCnt < MAX_RANKING * MAX_SCORE; nCnt++)
 	{
 		//テクスチャの設定
-		pDevice->SetTexture(0, g_pTextureRankScore);
+		pDevice->SetTexture(0, g_pTextureRankScore[0]);
 		//プレイヤーの描画
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
 	}

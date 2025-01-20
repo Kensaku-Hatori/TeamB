@@ -9,16 +9,7 @@
 
 #include"main.h"
 
-#define MAX_TITLE (450)
-
-//ポーズメニュー
-typedef enum
-{
-	TITLE_START = 0,//ゲームSTART
-	TITLE_RULE,		//説明画面
-	TITLE_RANK,		//ランキング
-	TITLE_MAX,
-}TITLE;
+#define MAX_TITLE (600)
 
 //プロトタイプ宣言
 void InitTitle(void);

@@ -15,7 +15,6 @@
 #include "game.h"
 #include "particle.h"
 #include "polygon.h"
-#include "tutorial.h"
 
 //ÉOÉçÅ[ÉoÉãïœêî
 Enemy g_Enemy[MAX_ENEMY];
@@ -367,7 +366,6 @@ void UninitEnemy(void)
 void UpdateEnemy(void)
 {
 	GAMESTATE Gamestate = GetGameSatate();
-	TUTORIAL Tutorial = GetTutorialSatate();
 
 	Player* pPlayer = GetPlayer();
 
@@ -375,7 +373,7 @@ void UpdateEnemy(void)
 	{
 		if (g_Enemy[nCntEnemy].bUse == true)
 		{
-			if (Gamestate == GAMESTATE_NORMAL || Tutorial == TUTORIAL_NORMAL)
+			if (Gamestate == GAMESTATE_NORMAL)
 			{
 				SetPositionShadow(g_Enemy[nCntEnemy].nIdxShadow, g_Enemy[nCntEnemy].pos, g_Enemy[nCntEnemy].bUse);
 

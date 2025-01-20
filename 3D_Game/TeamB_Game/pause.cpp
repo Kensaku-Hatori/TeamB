@@ -14,6 +14,7 @@
 LPDIRECT3DTEXTURE9 g_pTexturePause[MAX_TEXTURE] = {};
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPause = NULL;
 PAUSE_MENU g_pauseMenu=PAUSE_MENU_CONTNUE;
+D3DXVECTOR3 g_Pausepos;
 //============
 //初期化処理
 //============
@@ -26,10 +27,12 @@ void InitPause(void)
 	pDevice = GetDevice();
 
 	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\pause.jpg", &g_pTexturePause[0]); //ポーズの背景
+	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\pause.jpg", &g_pTexturePause[0]); //ポーズの背景
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\contnue001.png", &g_pTexturePause[1]); //戻る
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\retry001.png", &g_pTexturePause[2]); //やり直し
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\fin.png", &g_pTexturePause[3]); //タイトルに戻る
+
+	g_Pausepos = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - PAUSESELECT_HEIGHT, 0.0f);
 
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
@@ -44,7 +47,6 @@ void InitPause(void)
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffPause->Lock(0, 0, (void**)&pVtx, 0);
 
-	int nData=0;
 	for (int nCnt = 0; nCnt < MAX_TEXTURE ; nCnt++)
 	{//ポーズメニュー
 		if (nCnt == 0)
@@ -54,26 +56,33 @@ void InitPause(void)
 			pVtx[1].pos = D3DXVECTOR3(1280.0f, 0.0f, 0.0f);
 			pVtx[2].pos = D3DXVECTOR3(0.0f, 720.0f, 0.0f);
 			pVtx[3].pos = D3DXVECTOR3(1280.0f, 720.0f, 0.0f);
+			//頂点カラーの設定
+			pVtx[0].col = D3DCOLOR_RGBA(1, 1, 1, 127);
+			pVtx[1].col = D3DCOLOR_RGBA(1, 1, 1, 127);
+			pVtx[2].col = D3DCOLOR_RGBA(1, 1, 1, 127);
+			pVtx[3].col = D3DCOLOR_RGBA(1, 1, 1, 127);
+
 		}
 		else
 		{
 			//頂点座標の設定
-			pVtx[0].pos = D3DXVECTOR3(150.0f, 160.0f + (nData * 130), 0.0f);
-			pVtx[1].pos = D3DXVECTOR3(550.0f, 160.0f + (nData * 130), 0.0f);
-			pVtx[2].pos = D3DXVECTOR3(150.0f, 300.0f + (nData * 130), 0.0f);
-			pVtx[3].pos = D3DXVECTOR3(550.0f, 300.0f + (nData * 130), 0.0f);
-			nData++;
+			pVtx[0].pos = D3DXVECTOR3(g_Pausepos.x - (PAUSESELECT_WIDTH / 2), g_Pausepos.y - (PAUSESELECT_HEIGHT / 2), 0.0f);
+			pVtx[1].pos = D3DXVECTOR3(g_Pausepos.x + (PAUSESELECT_WIDTH / 2), g_Pausepos.y - (PAUSESELECT_HEIGHT / 2), 0.0f);
+			pVtx[2].pos = D3DXVECTOR3(g_Pausepos.x - (PAUSESELECT_WIDTH / 2), g_Pausepos.y + (PAUSESELECT_HEIGHT / 2), 0.0f);
+			pVtx[3].pos = D3DXVECTOR3(g_Pausepos.x + (PAUSESELECT_WIDTH / 2), g_Pausepos.y + (PAUSESELECT_HEIGHT / 2), 0.0f);
+			g_Pausepos.y += PAUSESELECT_HEIGHT;
+
+			//頂点カラーの設定
+			pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 		}
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;
 		pVtx[2].rhw = 1.0f;
 		pVtx[3].rhw = 1.0f;
-		//頂点カラーの設定
-		pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 		//テクスチャ座標の設定
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
 		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);

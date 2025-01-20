@@ -10,6 +10,7 @@
 #include"main.h"
 
 #define MAX_RANKING (5) //•\¦‡ˆÊ”
+#define RANKING_TIME (600)//ƒ‰ƒ“ƒLƒ“ƒO‚ÌŠÔ
 
 typedef enum
 {

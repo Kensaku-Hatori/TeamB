@@ -18,6 +18,8 @@
 #include "xaudio2.h"
 
 #include<time.h>
+#include "string.h"
+#include "stdlib.h"
 //ライブラリのリンク
 #pragma comment(lib,"d3d9.lib")
 #pragma comment(lib,"d3dx9.lib")
@@ -28,7 +30,7 @@
 
 //マクロ定義
 #define CLASS_NAME "WindowsClass"
-#define WINDOW_NAME "BOWLIMG"
+#define WINDOW_NAME "DEVASTATED CITY"
 #define SCREEN_WIDTH (1280)
 #define SCREEN_HEIGHT (720)
 #define FVF_VERTEX_2D (D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1)
@@ -55,10 +57,10 @@ typedef struct
 typedef enum
 {
 	MODE_TITLE = 0,
-	MODE_RULE,
 	MODE_GAME,
 	MODE_RESULT,
 	MODE_RANK,
+	MODE_END,
 	MODE_MAX
 }MODE;
 

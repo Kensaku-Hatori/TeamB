@@ -25,12 +25,7 @@ void InitBiillboard(void)
 		g_Biillboard[nCnt].bUse = false;
 	}
 
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\move.jpg", &g_apTextureBiillboard[0]); // 移動
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\jump.jpg", &g_apTextureBiillboard[1]); // ジャンプ
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\action.jpg", &g_apTextureBiillboard[2]); // アクション
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\return.jpg", &g_apTextureBiillboard[3]); // タイトルに戻る
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\look.jpg", &g_apTextureBiillboard[4]); // 視点移動
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\strike.jpg", &g_apTextureBiillboard[5]); // ストライク
+	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\move.jpg", &g_apTextureBiillboard[0]); // 移動
 
 
 	//頂点バッファの生成

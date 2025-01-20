@@ -26,7 +26,7 @@ void InitPolygon(void)
 	g_posPolygon = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_rotPolygon = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\yuka00.jpg", &g_apTexturePolygon[0]); //1
+	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\yuka00.jpg", &g_apTexturePolygon[0]); //1
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 4,

@@ -12,7 +12,6 @@
 #include "game.h"
 #include "ranking.h"
 #include "sound.h"
-#include "tutorial.h"
 
 //グローバル変数宣言
 LPDIRECT3D9 g_pD3D = NULL;
@@ -128,6 +127,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hInstancePrev, _
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	int nID;
+
+	//switch (g_mode)
+	//{
+	//case MODE_END:
+	//	DestroyWindow(hWnd);
+	//	break;
+
+	//default:
+	//	break;
+	//}
+
 
 	switch (uMsg)
 	{
@@ -315,9 +325,6 @@ void Update(void)
 	case MODE_RESULT:
 		UpdateResult();
 		break;
-	case MODE_RULE:
-		UpdateTutorial();
-		break;
 	case MODE_RANK:
 		UpdateRanking();
 		break;
@@ -346,7 +353,7 @@ void Draw(void)
 	//画面クリア
 	g_pD3DDevice->Clear(0, NULL,
 		                (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER),
-		                D3DCOLOR_RGBA(200, 200, 200, 0), 1.0f ,0);
+		                D3DCOLOR_RGBA(0, 0, 0, 0), 1.0f ,0);
 	//描画開始
 	if (SUCCEEDED(g_pD3DDevice->BeginScene()))
 	{//描画開始成功時
@@ -363,9 +370,6 @@ void Draw(void)
 			break;
 		case MODE_RESULT:
 			DrawResult();
-			break;
-		case MODE_RULE:
-			DrawTutorial();
 			break;
 		case MODE_RANK:
 			DrawRanking();
@@ -396,9 +400,6 @@ void SetMode(MODE mode)
 	case MODE_RESULT:
 		UninitResult();
 		break;
-	case MODE_RULE:
-		UninitTutorial();
-		break;
 	case MODE_RANK:
 		UninitRanking();
 		break;
@@ -417,9 +418,6 @@ void SetMode(MODE mode)
 		break;
 	case MODE_RESULT:
 		InitResult();
-		break;
-	case MODE_RULE:
-		InitTutorial();
 		break;
 	case MODE_RANK:
 		InitRanking();

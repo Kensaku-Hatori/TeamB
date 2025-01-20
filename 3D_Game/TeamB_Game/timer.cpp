@@ -9,7 +9,6 @@
 #include "result.h"
 #include "fade.h"
 #include "game.h"
-#include "tutorial.h"
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureTimer = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTimer = NULL;
@@ -96,7 +95,6 @@ void UninitTimer(void)
 void UpdateTimer(void)
 {
 	GAMESTATE gamestate = GetGameSatate();
-	TUTORIAL tutorial = GetTutorialSatate();
 
 	g_nSeconds++;
 	//一秒経過
@@ -111,13 +109,8 @@ void UpdateTimer(void)
 	{	
 		if (gamestate == GAMESTATE_NORMAL)
 		{
-			SetGameState(GAMESTATE_TIMEOVER);
-		}
-		else if (tutorial == TUTORIAL_NORMAL)
-		{
-			SetTutorialState(TUTORIAL_TIMEOVER);
-		}
-		
+			SetGameState(GAMESTATE_GAMEOVER);
+		}		
 		
 		g_nTimer = 0;
 	}
