@@ -25,6 +25,8 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffRank = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffRankScore = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffRankBack = NULL;
 
+D3DXVECTOR3 g_Rankpos;
+
 RankScore g_aRankScore[MAX_RANKING]; //ランキングスコア情報
 int g_nRankUpdata = -1;              //更新ランクNo.
 int g_nTimerRanking = 0;             //ランキング画面表示タイマー
@@ -44,11 +46,11 @@ void InitRanking(void)
 	//テクスチャ
 	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking1.png", &g_pTextureBack);        //背景
 
-	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking1.png", &g_pTextureRank[0]);     //順位
-	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking2.png", &g_pTextureRank[1]);     //順位
-	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking3.png", &g_pTextureRank[2]);     //順位
-	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking4.png", &g_pTextureRank[3]);     //順位
-	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking5.png", &g_pTextureRank[4]);     //順位
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking1.png", &g_pTextureRank[0]);     //順位
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking2.png", &g_pTextureRank[1]);     //順位
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking3.png", &g_pTextureRank[2]);     //順位
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking4.png", &g_pTextureRank[3]);     //順位
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking5.png", &g_pTextureRank[4]);     //順位
 
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number003.png", &g_pTextureRankScore);	 //スコア
 
@@ -100,6 +102,8 @@ void InitRanking(void)
 
 
 	//順位
+	g_Rankpos = D3DXVECTOR3(300.0f, 150.0f, 0.0f);
+
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_RANKING,
 		D3DUSAGE_WRITEONLY,
@@ -112,10 +116,10 @@ void InitRanking(void)
 	for (int nCnt = 0; nCnt < MAX_RANKING; nCnt++)
 	{
 		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(280.0f, 60.0f + (nCnt * 120.0f), 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(340.0f, 60.0f + (nCnt * 120.0f), 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(280.0f, 180.0f + (nCnt * 120.0f), 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(340.0f, 180.0f + (nCnt * 120.0f), 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(g_Rankpos.x - RANK_SIZE, g_Rankpos.y - RANK_SIZE, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(g_Rankpos.x + RANK_SIZE, g_Rankpos.y - RANK_SIZE, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(g_Rankpos.x - RANK_SIZE, g_Rankpos.y + RANK_SIZE, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(g_Rankpos.x + RANK_SIZE, g_Rankpos.y + RANK_SIZE, 0.0f);
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;
@@ -131,6 +135,7 @@ void InitRanking(void)
 		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
 		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
 		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+		g_Rankpos.y += 120.0f;
 		pVtx += 4;
 	}
 	//頂点バッファをアンロック

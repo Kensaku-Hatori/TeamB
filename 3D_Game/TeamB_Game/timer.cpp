@@ -15,6 +15,7 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTimer = NULL;
 D3DXVECTOR3 g_posTimer;
 int g_nTimer = 0;
 int g_nSeconds = 0;
+int g_nMinutes = 0;
 //=============
 //初期化処理
 //=============
@@ -29,6 +30,7 @@ void InitTimer(void)
 
 	g_posTimer = D3DXVECTOR3(550.0f,0.0f,0.0f);
 	g_nTimer = 0;
+	g_nMinutes = GAME_MINUTES;
 
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
@@ -115,6 +117,10 @@ void UpdateTimer(void)
 		g_nTimer = 0;
 	}
 
+	if (g_nTimer <= 0 && g_nMinutes <= 0)
+	{
+
+	}
 }
 //===========
 //描画処理
