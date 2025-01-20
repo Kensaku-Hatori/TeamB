@@ -42,13 +42,13 @@ void InitRanking(void)
 	pDevice = GetDevice();
 
 	//テクスチャ
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking1.png", &g_pTextureBack);        //背景
+	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking1.png", &g_pTextureBack);        //背景
 
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking1.png", &g_pTextureRank[0]);           //順位
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking2.png", &g_pTextureRank[1]);           //順位
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking3.png", &g_pTextureRank[2]);           //順位
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking4.png", &g_pTextureRank[3]);           //順位
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking5.png", &g_pTextureRank[4]);           //順位
+	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking1.png", &g_pTextureRank[0]);           //順位
+	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking2.png", &g_pTextureRank[1]);           //順位
+	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking3.png", &g_pTextureRank[2]);           //順位
+	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking4.png", &g_pTextureRank[3]);           //順位
+	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking5.png", &g_pTextureRank[4]);           //順位
 
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number003.png", &g_pTextureRankScore); //スコア
 
