@@ -18,8 +18,8 @@ typedef struct
 }RankScore;
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureBack = NULL;
-LPDIRECT3DTEXTURE9 g_pTextureRank = NULL;
-LPDIRECT3DTEXTURE9 g_pTextureRankScore[4] = {};
+LPDIRECT3DTEXTURE9 g_pTextureRank[MAX_RANKING] = {};
+LPDIRECT3DTEXTURE9 g_pTextureRankScore = NULL;
 
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffRank = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffRankScore = NULL;
@@ -42,9 +42,15 @@ void InitRanking(void)
 	pDevice = GetDevice();
 
 	//テクスチャ
-	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking.jpg", &g_pTextureBack);        //背景
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\flag.png", &g_pTextureRank);           //順位
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number003.png", &g_pTextureRankScore[0]); //スコア
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking1.png", &g_pTextureBack);        //背景
+
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking1.png", &g_pTextureRank[0]);           //順位
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking2.png", &g_pTextureRank[1]);           //順位
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking3.png", &g_pTextureRank[2]);           //順位
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking4.png", &g_pTextureRank[3]);           //順位
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking5.png", &g_pTextureRank[4]);           //順位
+
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number003.png", &g_pTextureRankScore); //スコア
 
 	for (int nCnt = 0; nCnt < MAX_RANKING; nCnt++)
 	{
@@ -121,10 +127,10 @@ void InitRanking(void)
 		pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 		pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 		//テクスチャ座標の設定
-		pVtx[0].tex = D3DXVECTOR2(0.0f + (nCnt * 0.2f), 0.0f);
-		pVtx[1].tex = D3DXVECTOR2(0.2f + (nCnt * 0.2f), 0.0f);
-		pVtx[2].tex = D3DXVECTOR2(0.0f + (nCnt * 0.2f), 1.0f);
-		pVtx[3].tex = D3DXVECTOR2(0.2f + (nCnt * 0.2f), 1.0f);
+		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 		pVtx += 4;
 	}
 	//頂点バッファをアンロック
@@ -198,16 +204,19 @@ void InitRanking(void)
 //==========
 void UninitRanking(void)
 {
-	if (g_pTextureBack != NULL && g_pTextureRank != NULL && g_pTextureRankScore != NULL)
+	if (g_pTextureBack != NULL && g_pTextureRankScore != NULL)
 	{
 		g_pTextureBack->Release();
 		g_pTextureBack = NULL;
-		g_pTextureRank->Release();
-		g_pTextureRank = NULL;
-		for (int nCnt = 0; nCnt < 4; nCnt++)
+		g_pTextureRankScore->Release();
+		g_pTextureRankScore = NULL;
+	}
+	for (int nCnt = 0; nCnt < MAX_RANKING; nCnt++)
+	{
+		if (g_pTextureRank[nCnt] != NULL)
 		{
-			g_pTextureRankScore[nCnt]->Release();
-			g_pTextureRankScore[nCnt] = NULL;
+			g_pTextureRank[nCnt]->Release();
+			g_pTextureRank[nCnt] = NULL;
 		}
 	}
 	if (g_pVtxBuffRank != NULL && g_pVtxBuffRankBack != NULL && g_pVtxBuffRankScore != NULL)
@@ -356,7 +365,7 @@ void DrawRanking(void)
 	for (int nCnt = 0; nCnt < MAX_RANKING; nCnt++)
 	{
 		//テクスチャの設定
-		pDevice->SetTexture(0, g_pTextureRank);
+		pDevice->SetTexture(0, g_pTextureRank[nCnt]);
 		//プレイヤーの描画
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
 	}
@@ -367,7 +376,7 @@ void DrawRanking(void)
 	for (int nCnt = 0; nCnt < MAX_RANKING * MAX_SCORE; nCnt++)
 	{
 		//テクスチャの設定
-		pDevice->SetTexture(0, g_pTextureRankScore[0]);
+		pDevice->SetTexture(0, g_pTextureRankScore);
 		//プレイヤーの描画
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
 	}
