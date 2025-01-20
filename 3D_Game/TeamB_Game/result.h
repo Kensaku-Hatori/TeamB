@@ -12,9 +12,7 @@
 typedef enum
 {
 	RESULT_NONE = 0,
-	RESULT_CLEAR1,
-	RESULT_CLEAR2,
-	RESULT_PERFECT,
+	RESULT_CLEAR,
 	RESULT_GAMEOVER,
 	RESULT_MAX,
 }RESULT;
@@ -24,6 +22,5 @@ void InitResult(void);
 void UninitResult(void);
 void UpdateResult(void);
 void DrawResult(void);
-void SetResult(RESULT result);
 
 #endif

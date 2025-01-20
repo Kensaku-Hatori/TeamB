@@ -42,7 +42,7 @@ void UpdateCamera(void)
 
 	MODE pMode;
 	pMode = GetMode();
-
+	
 	g_camera.posRDest.x = pPlayer->pos.x + sinf(pPlayer->rot.x) * (pPlayer->pos.x - g_camera.posR.x);
 	g_camera.posRDest.y = pPlayer->pos.y;
 	g_camera.posRDest.z = pPlayer->pos.z + cosf(pPlayer->rot.z) * (pPlayer->pos.z - g_camera.posR.z);
@@ -57,15 +57,19 @@ void UpdateCamera(void)
 
 	g_camera.posV.x += (g_camera.posVDest.x - g_camera.posV.x) * 0.08f;
 	g_camera.posV.z += (g_camera.posVDest.z - g_camera.posV.z) * 0.08f;
-	
+
+
 	//タイトルとリザルトの時
 	if (pMode == MODE_TITLE || pMode == MODE_RESULT)
 	{//カメラの自動回転
+		pPlayer->pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//プレイヤーの位置を０に
+
 		g_camera.rot.y += 0.01f;
 	}
 	//それ以外
 	else
 	{
+
 		//視点の旋回
 		if (GetKeyboardPress(DIK_Z) == true)
 		{

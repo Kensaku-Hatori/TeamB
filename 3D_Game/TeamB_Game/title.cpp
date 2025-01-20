@@ -58,7 +58,6 @@ void UpdateTitle(void)
 
 	UpdateLight();
 
-
 	UpdateTitleInfo();
 
 	g_nTimeTitle++;
