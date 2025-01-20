@@ -251,31 +251,43 @@ void UpdateTitleInfo(void)
 	g_pVtxBufftitleinfo->Unlock();
 
 	if ((KeyboardTrigger(DIK_RETURN) == true|| GetJoypadTrigger(JOYKEY_A) == true) && g_fade == FADE_NONE)
-	{
-		//メニューに合わせてモードの切り替え
-		if (g_titleinfoMenu == TITLE_START)
-		{	//STARTにいる場合
-			SetFade(MODE_GAME);
+	{//ENTERが押された
+		if (g_Logopos.y < LOGO_END_Y)
+		{//ロゴが下りてきている時
+			g_Logopos.y += LOGO_END_Y;
 		}
-		else if (g_titleinfoMenu == TITLE_RANK)
-		{	//RANKにいる場合
-			SetFade(MODE_RANK);
-			SetRankMode(RANKMODE_SELECT);
-		}
-		else if (g_titleinfoMenu == TITLE_FIN)
-		{	//FINにいる場合
-			SetMode(MODE_END);
+		else
+		{//ロゴがおり切ったとき
+			//メニューに合わせてモードの切り替え
+			if (g_titleinfoMenu == TITLE_START)
+			{	//STARTにいる場合
+				SetFade(MODE_GAME);
+			}
+			else if (g_titleinfoMenu == TITLE_RANK)
+			{	//RANKにいる場合
+				SetFade(MODE_RANK);
+				SetRankMode(RANKMODE_SELECT);
+			}
+			else if (g_titleinfoMenu == TITLE_FIN)
+			{	//FINにいる場合
+				SetMode(MODE_END);
+			}
 		}
 	}
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBufftitleinfoLogo->Lock(0, 0, (void**)&pVtx, 0);
 
+	//ロゴを下げる
 	if (g_Logopos.y < LOGO_END_Y)
 	{
 		g_Logopos.y++;
 	}
-
+	//ロゴのY制限
+	if (g_Logopos.y >= LOGO_END_Y)
+	{
+		g_Logopos.y = LOGO_END_Y;
+	}
 
 	//頂点座標の設定
 	pVtx[0].pos = D3DXVECTOR3(g_Logopos.x - TITLELOGO_WIDTH / 2, g_Logopos.y - TITLELOGO_HEIGHT / 2, 0.0f);

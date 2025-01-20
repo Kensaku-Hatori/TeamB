@@ -52,14 +52,9 @@ void UninitTitle(void)
 //==========
 void UpdateTitle(void)
 {
-	Camera* pCamera;
-	pCamera = GetCamera();
-
 	UpdatePolygon();
 
 	UpdateCamera();
-
-	pCamera->rot.y += 0.01f;
 
 	UpdateLight();
 
