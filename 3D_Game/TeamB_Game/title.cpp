@@ -29,10 +29,9 @@ void InitTitle(void)
 
 	InitLight();
 
-
 	InitTitleInfo();
 
-	LoadModelViewer();
+	//LoadModelViewer();
 }
 //==========
 //I—¹ˆ—
