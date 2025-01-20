@@ -11,6 +11,7 @@
 
 #define MAX_RANKING (5) //•\¦‡ˆÊ”
 #define RANKING_TIME (600)//ƒ‰ƒ“ƒLƒ“ƒO‚ÌŠÔ
+#define RANKSCORE_TIME (25)
 
 typedef enum
 {

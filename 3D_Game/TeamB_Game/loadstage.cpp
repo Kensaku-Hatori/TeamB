@@ -61,13 +61,14 @@ void LoadStart(FILE* pFile)
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
+	char *cData2[32] = { NULL };
 	int nData;
 	char *FilePath[5][32];
 
 	while (1)
 	{
 		fgets(cData, 2, pFile);
-		if (cData[0] != 0x0a && cData[0] != '#' && cData[0] != ' ')
+		if (cData[0] != 0x0a && cData[0] != '#' && cData[0] != ' ' && cData[0] != 0x09)
 		{
 			strcat(cData1, cData);
 			if (strcmp(&cData1[0], "NUM_TEXTURE") == 0)
@@ -79,7 +80,108 @@ void LoadStart(FILE* pFile)
 			{
 				SkipEqual(pFile);
 				FilePath[0][0] = LoadPath(pFile);
-				int i = 0;
+			}
+			else if (strcmp(&cData1[0], "NUM_MODEL") == 0)
+			{
+				SkipEqual(pFile);
+				nData = LoadInt(pFile);
+			}
+			else if (strcmp(&cData1[0], "MODEL_FILENAME") == 0)
+			{
+				SkipEqual(pFile);
+				FilePath[0][0] = LoadPath(pFile);
+			}
+			else if (strcmp(&cData1[0], "CAMERASET") == 0)
+			{
+				while (1)
+				{
+					cData2[0] = LoadDecision(pFile);
+					if (strcmp(cData2[0], CAMERA) == 0)
+					{
+						break;
+					}
+				}
+			}
+			else if (strcmp(&cData1[0], "LIGHTSET") == 0)
+			{
+				while (1)
+				{
+					cData2[0] = LoadDecision(pFile);
+					if (strcmp(cData2[0], LIGHT) == 0)
+					{
+						break;
+					}
+				}
+			}
+			else if (strcmp(&cData1[0], "SKYSET") == 0)
+			{
+				while (1)
+				{
+					cData2[0] = LoadDecision(pFile);
+					if (strcmp(cData2[0], SKY) == 0)
+					{
+						break;
+					}
+				}
+			}
+			else if (strcmp(&cData1[0], "MOUNTAINSET") == 0)
+			{
+				while (1)
+				{
+					cData2[0] = LoadDecision(pFile);
+					if (strcmp(cData2[0], MOUNTAIN) == 0)
+					{
+						break;
+					}
+				}
+			}
+			else if (strcmp(&cData1[0], "FIELDSET") == 0)
+			{
+				while (1)
+				{
+					cData2[0] = LoadDecision(pFile);
+					if (strcmp(cData2[0], FIELD) == 0)
+					{
+						break;
+					}
+				}
+			}
+			else if (strcmp(&cData1[0], "WALLSET") == 0)
+			{
+				while (1)
+				{
+					cData2[0] = LoadDecision(pFile);
+					if (strcmp(cData2[0], WALL) == 0)
+					{
+						break;
+					}
+				}
+			}
+			else if (strcmp(&cData1[0], "MODELSET") == 0)
+			{
+				while (1)
+				{
+					cData2[0] = LoadDecision(pFile);
+					if (strcmp(cData2[0], MODEL) == 0)
+					{
+						break;
+					}
+				}
+			}
+			else if (strcmp(&cData1[0], "BILLBOARDSET") == 0)
+			{
+				while (1)
+				{
+					cData2[0] = LoadDecision(pFile);
+					if (strcmp(cData2[0], BILLBOARD) == 0)
+					{
+						break;
+					}
+				}
+			}
+			else if (strcmp(&cData1[0], "END_SCRIPT") == 0)
+			{
+				break;
 			}
 		}
 		else
@@ -95,68 +197,16 @@ void LoadStart(FILE* pFile)
 void SkipEqual(FILE* pFile)
 {
 	int nData;
+	char cData;
 	nData = fgetc(pFile);
+	cData = (char)nData;
 	nData = fgetc(pFile);
+	cData = (char)nData;
 	nData = fgetc(pFile);
-}
-//*******************************
-// テクスチャの種類を読み込む処理
-//*******************************
-void LoadTextureNum(FILE* pFile)
-{
-	char cData[2] = { NULL };
-	char cData1[128] = { NULL };
-	int texturenum;
-
-	while (1)
-	{
-		fgets(cData, 2, pFile);
-		if (cData[0] != 0x0a && cData[0] != '#' && cData[0] != ' ' && cData[0] != 0x09)
-		{
-			strcat(cData1, cData);
-		}
-		else
-		{
-			texturenum = atoi(cData1);
-			cData1[0] = { NULL };
-			if (*cData != '#')
-			{
-				SkipComment(pFile);
-			}
-			break;
-		}
-	}
-}
-//***********************************
-// テクスチャのパスを読み込む処理処理
-//***********************************
-void LoadTexturePath(FILE* pFile)
-{
-	char cData[2] = { NULL };
-	char cData1[128] = { NULL };
-	char filepath[32] = { NULL };
-
-	while (1)
-	{
-		fgets(cData, 2, pFile);
-		if (cData[0] != 0x0a && cData[0] != '#' && cData[0] != ' ' && cData[0] != 0x09)
-		{
-			strcat(cData1, cData);
-		}
-		else
-		{
-			strcpy(filepath,cData1);
-			cData1[0] = { NULL };
-			if (*cData != '#')
-			{
-				SkipComment(pFile);
-			}
-			break;
-		}
-	}
+	cData = (char)nData;
 }
 //***************************
-// モデルの種類を読み込む処理
+// 整数を読み込む処理
 //***************************
 int LoadInt(FILE* pFile)
 {
@@ -175,7 +225,7 @@ int LoadInt(FILE* pFile)
 		{
 			nData = atoi(cData1);
 			cData1[0] = { NULL };
-			if (*cData != '#')
+			if (*cData == '#')
 			{
 				SkipComment(pFile);
 			}
@@ -184,14 +234,14 @@ int LoadInt(FILE* pFile)
 	}
 	return nData;
 }
-//******************************
-// // モデルのパスを読み込む処理
-//******************************
-char *LoadPath(FILE* pFile)
+//*********************
+// 小数点を読み込む処理
+//*********************
+float LoadFloat(FILE* pFile)
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
-	char filepath[32] = { NULL };
+	float fData;
 
 	while (1)
 	{
@@ -202,9 +252,38 @@ char *LoadPath(FILE* pFile)
 		}
 		else
 		{
+			fData = (float)atof(cData1);
+			cData1[0] = { NULL };
+			if (*cData == '#')
+			{
+				SkipComment(pFile);
+			}
+			break;
+		}
+	}
+	return fData;
+}
+//******************************
+// // 文字列を読み込む処理
+//******************************
+char *LoadPath(FILE* pFile)
+{
+	char cData[2] = { NULL };
+	char cData1[128] = { NULL };
+	char filepath[32] = { NULL };
+
+	while (1)
+	{
+		fgets(cData, 2, pFile);
+		if (cData[0] != 0x0a && cData[0] != 0x23 && cData[0] != 0x20 && cData[0] != 0x09)
+		{
+			strcat(cData1, cData);
+		}
+		else
+		{
 			strcpy(filepath, cData1);
 			cData1[0] = { NULL };
-			if (*cData != '#')
+			if (*cData == '#')
 			{
 				SkipComment(pFile);
 			}
@@ -212,4 +291,150 @@ char *LoadPath(FILE* pFile)
 		}
 	}
 	return &filepath[0];
+}
+//*************************************
+// 空白以外が読み込めるまで読み込む処理
+//*************************************
+char *LoadDecision(FILE* pFile)
+{
+	char cData[2] = { NULL };
+	char cData1[128] = { NULL };
+	char cData2[64] = { NULL };
+	int nData;
+	float fData;
+
+	while (1)
+	{
+		fgets(cData, 2, pFile);
+		if (cData[0] == 0x20 || cData[0] == 0x09 || cData[0] == 0x23 || cData[0] == 0x0a)
+		{
+			strcat(cData2, cData);
+			if (*cData == '#')
+			{
+				SkipComment(pFile);
+			}
+		}
+		else
+		{
+			strcat(cData1, cData);
+			if (strcmp(&cData1[0], "POS") == 0)
+			{
+				SkipEqual(pFile);
+				fData = LoadFloat(pFile);
+				fData = LoadFloat(pFile);
+				fData = LoadFloat(pFile);
+				break;
+			}
+			else if (strcmp(&cData1[0], "ROT") == 0)
+			{
+				SkipEqual(pFile);
+				fData = LoadFloat(pFile);
+				fData = LoadFloat(pFile);
+				fData = LoadFloat(pFile);
+				break;
+			}
+			else if(strcmp(&cData1[0], "REF") == 0)
+			{
+				SkipEqual(pFile);
+				fData = LoadFloat(pFile);
+				fData = LoadFloat(pFile);
+				fData = LoadFloat(pFile);
+				break;
+			}
+			else if (strcmp(&cData1[0], "BLOCK") == 0)
+			{
+				SkipEqual(pFile);
+				nData = LoadInt(pFile);
+				nData = LoadInt(pFile);
+				break;
+			}
+			else if (strcmp(&cData1[0], "SIZE") == 0)
+			{
+				SkipEqual(pFile);
+				nData = LoadInt(pFile);
+				nData = LoadInt(pFile);
+				break;
+			}
+			else if (strcmp(&cData1[0], "END_CAMERASET") == 0)
+			{
+				break;
+			}
+			else if (strcmp(&cData1[0], "DIRECTION") == 0)
+			{
+				SkipEqual(pFile);
+				fData = LoadFloat(pFile);
+				fData = LoadFloat(pFile);
+				fData = LoadFloat(pFile);
+				break;
+			}
+			else if (strcmp(&cData1[0], "DIFFUSE") == 0)
+			{
+				SkipEqual(pFile);
+				fData = LoadFloat(pFile);
+				fData = LoadFloat(pFile);
+				fData = LoadFloat(pFile);
+				break;
+			}
+			else if (strcmp(&cData1[0], "END_LIGHTSET") == 0)
+			{
+				break;
+			}
+			else if (strcmp(&cData1[0], "TEXTYPE") == 0)
+			{
+				SkipEqual(pFile);
+				nData = LoadInt(pFile);
+				break;
+			}
+			else if (strcmp(&cData1[0], "TYPE") == 0)
+			{
+				SkipEqual(pFile);
+				nData = LoadInt(pFile);
+				break;
+			}
+			else if (strcmp(&cData1[0], "MOVE") == 0)
+			{
+				SkipEqual(pFile);
+				fData = LoadFloat(pFile);
+				break;
+			}
+			else if (strcmp(&cData1[0], "SHADOW") == 0)
+			{
+				SkipEqual(pFile);
+				nData = LoadInt(pFile);
+				break;
+			}
+			else if (strcmp(&cData1[0], "ORIGIN") == 0)
+			{
+				SkipEqual(pFile);
+				nData = LoadInt(pFile);
+				nData = LoadInt(pFile);
+				break;
+			}
+			else if (strcmp(&cData1[0], "END_SKYSET") == 0)
+			{
+				break;
+			}
+			else if (strcmp(&cData1[0], "END_MOUNTAINSET") == 0)
+			{
+				break;
+			}
+			else if (strcmp(&cData1[0], "END_FIELDSET") == 0)
+			{
+				break;
+			}
+			else if (strcmp(&cData1[0], "END_WALLSET") == 0)
+			{
+				break;
+			}
+			else if (strcmp(&cData1[0], "END_MODELSET") == 0)
+			{
+				break;
+			}
+			else if (strcmp(&cData1[0], "END_BILLBOARDSET") == 0)
+			{
+				break;
+			}
+		}
+	}
+	return &cData1[0];
 }
