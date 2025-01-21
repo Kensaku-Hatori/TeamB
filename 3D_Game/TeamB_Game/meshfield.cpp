@@ -28,6 +28,9 @@ void InitMeshfield(void)
 {
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	maxVtx = 0.0f;
+	polyNum = 0.0f;
+	indexNum = 0.0f;
 
 	for (int nCnt = 0; nCnt < MESH_NUM_MAX; nCnt++)
 	{
