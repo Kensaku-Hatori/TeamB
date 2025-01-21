@@ -70,7 +70,7 @@ void InitPause(void)
 			pVtx[1].pos = D3DXVECTOR3(g_Pausepos.x + (PAUSESELECT_WIDTH / 2), g_Pausepos.y - (PAUSESELECT_HEIGHT / 2), 0.0f);
 			pVtx[2].pos = D3DXVECTOR3(g_Pausepos.x - (PAUSESELECT_WIDTH / 2), g_Pausepos.y + (PAUSESELECT_HEIGHT / 2), 0.0f);
 			pVtx[3].pos = D3DXVECTOR3(g_Pausepos.x + (PAUSESELECT_WIDTH / 2), g_Pausepos.y + (PAUSESELECT_HEIGHT / 2), 0.0f);
-			g_Pausepos.y += PAUSESELECT_HEIGHT;
+			g_Pausepos.y += PAUSESELECT_HEIGHT * 1.25;
 
 			//í∏ì_ÉJÉâÅ[ÇÃê›íË
 			pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
