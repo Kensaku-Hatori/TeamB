@@ -16,7 +16,7 @@
 void InitUi(void)
 {
 	InitTimer();
-	SetTimer(0);
+	SetTimer(0,0);
 
 	InitScore();
 	SetScore(0);

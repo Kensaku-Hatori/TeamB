@@ -19,8 +19,9 @@ void InitTimer(void);
 void UninitTimer(void);
 void UpdateTimer(void);
 void DrawTimer(void);
-void SetTimer(int nTimer);
+void SetTimer(int nTimer, int nMinutes);
 void AddTimer(int nValue);
 int GetTimer(void);
+void AddTimerMinutes(int nValue);
 
 #endif
