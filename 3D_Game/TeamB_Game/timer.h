@@ -12,6 +12,7 @@
 
 #define MAX_TIME (MAX_GAMETIME * 60)
 #define MAX_TIMER (3)
+#define GAME_MINUTES (2)
 
 //プロトタイプ宣言
 void InitTimer(void);

@@ -128,6 +128,17 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	int nID;
 
+	//switch (g_mode)
+	//{
+	//case MODE_END:
+	//	DestroyWindow(hWnd);
+	//	break;
+
+	//default:
+	//	break;
+	//}
+
+
 	switch (uMsg)
 	{
 	case WM_DESTROY:

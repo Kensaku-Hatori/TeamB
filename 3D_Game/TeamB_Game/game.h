@@ -16,9 +16,20 @@ typedef enum
 {
 	GAMESTATE_NONE = 0,	//何もしていない状態
 	GAMESTATE_NORMAL,	//通常状態（ゲームプレイ中）
-	GAMESTATE_TIMEOVER,	// クリア
+	GAMESTATE_CLEAR,	//クリア
+	GAMESTATE_GAMEOVER,	//ゲームオーバー
 	GAMESTATE_MAX
 }GAMESTATE;
+
+typedef enum
+{
+	STAGE_NO_0 = 0,
+	STAGE_NO_1,
+	STAGE_NO_2,
+	STAGE_NO_3,
+	STAGE_NO_MAX,
+
+}STAGE_NO;
 
 //プロトタイプ宣言
 void InitGame(void);
