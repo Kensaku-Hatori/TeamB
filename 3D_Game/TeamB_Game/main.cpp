@@ -128,16 +128,15 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	int nID;
 
-	//switch (g_mode)
-	//{
-	//case MODE_END:
-	//	DestroyWindow(hWnd);
-	//	break;
+	switch (g_mode)
+	{
+	case MODE_END:
+		DestroyWindow(hWnd);
+		break;
 
-	//default:
-	//	break;
-	//}
-
+	default:
+		break;
+	}
 
 	switch (uMsg)
 	{
@@ -160,7 +159,6 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			{
 				return 0;
 			}
-
 		default:
 			break;
 		}
@@ -374,6 +372,8 @@ void Draw(void)
 		case MODE_RANK:
 			DrawRanking();
 			break;
+		case MODE_END:
+			break;
 		}
 		DrawFade();
 
@@ -422,9 +422,12 @@ void SetMode(MODE mode)
 	case MODE_RANK:
 		InitRanking();
 		break;
+	case MODE_END:
+		break;
 	default:
 		break;
 	}
+
 	g_mode = mode;
 }
 //=============
