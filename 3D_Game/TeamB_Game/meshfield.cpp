@@ -13,6 +13,7 @@ LPDIRECT3DTEXTURE9 g_pTextureMeshfield[MESH_NUM_MAX] = {};				//テクスチャへのポ
 LPDIRECT3DINDEXBUFFER9 g_pIdxBuffMeshField = NULL;						//インデックスバッファへのポインタ
 
 MeshField g_Meshfield[MESH_NUM_MAX];									//ポリゴン(横)の構造体
+float maxVtx = 0.0f, polyNum = 0.0f, indexNum = 0.0f;					
 
 //ファイル格納
 static const char* MESHFIELD_TEXTURE[] =
@@ -27,7 +28,6 @@ void InitMeshfield(void)
 {
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-	float maxVtx = 0.0f, polyNum = 0.0f, indexNum = 0.0f;//保存用
 
 	for (int nCnt = 0; nCnt < MESH_NUM_MAX; nCnt++)
 	{
@@ -210,7 +210,7 @@ void DrawMeshfield(void)
 			pDevice->SetTexture(0, g_pTextureMeshfield[g_Meshfield[nCnt].textype]);
 
 			//メッシュ床を描画
-			pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, MAX_VTX, 0, POLYGON_NO);
+			pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, maxVtx, 0, polyNum);
 		}
 	}
 }
