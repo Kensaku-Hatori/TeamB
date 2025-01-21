@@ -17,6 +17,7 @@
 #include "timer.h"
 #include "polygon.h"
 #include "sound.h"
+#include "skill.h"
 
 //グローバル変数
 Player g_player;
@@ -157,64 +158,24 @@ void UpdatePlayer(void)
 		//移動
 		if (GetKeyboardPress(DIK_D) == true)
 		{
-			//if (g_player.type == PLAYERTYPE_HITO)
-			//{
-			//	g_player.motionType = MOTIONTYPE_MOVE;
-			//}
-			//else
-			//{
-			//	g_player.motionType = MOTIONTYPE_BALLMOVE;
-			//}
-			//g_player.motionType = MOTIONTYPE_MOVE;
-
 			g_player.move.z += sinf(pCamera->rot.y - D3DX_PI) * g_player.fSpeed;
 			g_player.move.x -= cosf(pCamera->rot.y - D3DX_PI) * g_player.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y - D3DX_PI / 2;
 		}
 		if (GetKeyboardPress(DIK_A) == true)
 		{
-			//if (g_player.type == PLAYERTYPE_HITO)
-			//{
-			//	g_player.motionType = MOTIONTYPE_MOVE;
-			//}
-			//else
-			//{
-			//	g_player.motionType = MOTIONTYPE_BALLMOVE;
-			//}
-			//g_player.motionType = MOTIONTYPE_MOVE;
-
 			g_player.move.z -= sinf(pCamera->rot.y - D3DX_PI) * g_player.fSpeed;
 			g_player.move.x += cosf(pCamera->rot.y - D3DX_PI) * g_player.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y + D3DX_PI / 2;
 		}
 		if (GetKeyboardPress(DIK_W) == true)
 		{
-			//if (g_player.type == PLAYERTYPE_HITO)
-			//{
-			//	g_player.motionType = MOTIONTYPE_MOVE;
-			//}
-			//else
-			//{
-			//	g_player.motionType = MOTIONTYPE_BALLMOVE;
-			//}
-			//g_player.motionType = MOTIONTYPE_MOVE;
-
 			g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI) * g_player.fSpeed;
 			g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI) * g_player.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y - D3DX_PI;
 		}
 		if (GetKeyboardPress(DIK_S) == true)
 		{
-			//if (g_player.type == PLAYERTYPE_HITO)
-			//{
-			//	g_player.motionType = MOTIONTYPE_MOVE;
-			//}
-			//else
-			//{
-			//	g_player.motionType = MOTIONTYPE_BALLMOVE;
-			//}
-			//g_player.motionType = MOTIONTYPE_MOVE;
-
 			g_player.move.x += sinf(pCamera->rot.y - D3DX_PI) * g_player.fSpeed;
 			g_player.move.z += cosf(pCamera->rot.y - D3DX_PI) * g_player.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y;
@@ -231,6 +192,11 @@ void UpdatePlayer(void)
 		//}
 
 		g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
+
+		if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true))
+		{
+			SetSkill(g_player.pos, g_player.move, g_player.rot);
+		}
 
 		//ジャンプ
 		if (KeyboardTrigger(DIK_SPACE) == true)

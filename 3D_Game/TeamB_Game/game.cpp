@@ -26,6 +26,7 @@
 //#include "enemy.h"
 #include "score.h"
 //#include "particle.h"
+#include "skill.h"
 
 //ÉOÉçÅ[ÉoÉãïœêî
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -46,6 +47,8 @@ void InitGame(void)
 	InitPlayer();
 
 	//InitEnemy();
+
+	InitSkill();
 
 	//InitEffect();
 
@@ -88,6 +91,8 @@ void UninitGame(void)
 	UninitPlayer();
 
 	//UninitEnemy();
+
+	UninitSkill();
 
 	//UninitEffect();
 
@@ -140,6 +145,8 @@ void UpdateGame(void)
 		UpdatePlayer();
 
 		//UpdateEnemy();
+
+		UpdateSkill();
 
 		//UpdateEffect();
 
@@ -223,6 +230,8 @@ void DrawGame(void)
 	//DrawEnemy();
 
 	//DrawExplosion();
+
+	DrawSkill();
 
 	//DrawEffect();
 
