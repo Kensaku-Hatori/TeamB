@@ -6,20 +6,17 @@
 //==============================================
 
 #include "meshfield.h"
+#include <string.h>
 
 //グローバル変数宣言
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffMeshfield = NULL;						//頂点情報へのポインタ
-LPDIRECT3DTEXTURE9 g_pTextureMeshfield[MESH_NUM_MAX] = {};				//テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureMeshfield[MAX_TEX] = {};					//テクスチャへのポインタ
 LPDIRECT3DINDEXBUFFER9 g_pIdxBuffMeshField = NULL;						//インデックスバッファへのポインタ
 
 MeshField g_Meshfield[MESH_NUM_MAX];									//ポリゴン(横)の構造体
-float maxVtx = 0.0f, polyNum = 0.0f, indexNum = 0.0f;					
+static char texName[MAX_TEX][32] = { NULL };							//テクスチャファイル名保存用
+int maxVtx = 0.0f, polyNum = 0.0f, indexNum = 0.0f;
 
-//ファイル格納
-static const char* MESHFIELD_TEXTURE[] =
-{
-	NULL
-};
 
 //=================================
 // メッシュ床の初期化処理
@@ -47,7 +44,7 @@ void InitMeshfield(void)
 
 		//テクスチャの読込
 		D3DXCreateTextureFromFile(pDevice,
-			MESHFIELD_TEXTURE[g_Meshfield[nCnt].textype],
+			&texName[g_Meshfield[nCnt].textype][0],
 			&g_pTextureMeshfield[nCnt]);
 
 		maxVtx += (g_Meshfield[nCnt].nDiviX + 1) * (g_Meshfield[nCnt].nDiviZ + 1);											//頂点数
@@ -249,4 +246,26 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 			break;
 		}
 	}
+}
+
+//===============================
+// メッシュ床のテクスチャ設定処理
+//===============================
+void SetTexture(char texfileName[32])
+{
+
+	for (int nCnt = 0; nCnt < MAX_TEX; nCnt++)
+	{
+		if (texName[nCnt][0] == NULL)
+		{
+			strcpy(&texName[nCnt][0], &texfileName[0]);
+			break;
+		}
+	}
+
+	////ファイル格納
+	//static const char* MESHFIELD_TEXTURE[MAX_TEX] =
+	//{
+
+	//};
 }
