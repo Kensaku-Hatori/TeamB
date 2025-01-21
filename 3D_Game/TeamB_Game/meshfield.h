@@ -10,25 +10,8 @@
 #include "main.h"
 
 //マクロ定義
-#define MESHVTX_X (15)//横
-#define MESHVTX_Z (15)//縦
-
-#define MAX_VTX ((MESHVTX_X + 1) * (MESHVTX_Z + 1))//頂点数
-
-#define POLYGON_NO (MESHVTX_X * MESHVTX_Z * 2 + (MESHVTX_Z - 1) * 4)//ポリゴン数
-
-#define INDEX_NO ((MESHVTX_X + 1) * 2 * MESHVTX_Z + (MESHVTX_Z - 1) * 2)//インデックス数
-
-#define MESH_SIZE (150.0f)
-
 #define MESH_NUM_MAX (1)//メッシュフィールドの数
-
-
-//ファイル格納
-static const char* MESHFIELD_TEXTURE[] =
-{
-	NULL
-};
+#define MAX_TEX (64)//テクスチャの最大数
 
 //ポリゴン(横)の構造体
 typedef struct
@@ -36,7 +19,7 @@ typedef struct
 	D3DXVECTOR3 pos;						//位置
 	D3DXVECTOR3 rot;						//向き
 	D3DXMATRIX mtxWorld;					//ワールドマトリックス
-	int textype;						//テクスチャのタイプ
+	int textype;							//テクスチャのタイプ
 	int nDiviX;								//分割数x
 	int nDiviY;								//分割数y
 	int nDiviZ;								//分割数z

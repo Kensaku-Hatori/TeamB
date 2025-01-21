@@ -14,6 +14,12 @@ LPDIRECT3DINDEXBUFFER9 g_pIdxBuffMeshField = NULL;						//インデックスバッファへ
 
 MeshField g_Meshfield[MESH_NUM_MAX];									//ポリゴン(横)の構造体
 
+//ファイル格納
+static const char* MESHFIELD_TEXTURE[] =
+{
+	NULL
+};
+
 //=================================
 // メッシュ床の初期化処理
 //=================================
@@ -29,11 +35,11 @@ void InitMeshfield(void)
 		g_Meshfield[nCnt].pos = D3DXVECTOR3(-900.0f, 0.0f, 900.0f);		//位置
 		g_Meshfield[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			//向き
 		g_Meshfield[nCnt].textype = 0;									//テクスチャタイプ
-		g_Meshfield[nCnt].nDiviX = 0;									//分割数x
+		g_Meshfield[nCnt].nDiviX = 1;									//分割数x(0にしたらnullptr)
 		g_Meshfield[nCnt].nDiviY = 0;									//分割数y
-		g_Meshfield[nCnt].nDiviZ = 0;									//分割数z
-		g_Meshfield[nCnt].fWidth = 0;									//幅
-		g_Meshfield[nCnt].fHeight = 0;									//高さ
+		g_Meshfield[nCnt].nDiviZ = 1;									//分割数z(0にしたらnullptr)
+		g_Meshfield[nCnt].fWidth = 150;									//幅
+		g_Meshfield[nCnt].fHeight = 150;								//高さ
 		g_Meshfield[nCnt].bUse = false;									//使用していない状態にする
 
 		//テクスチャの読込
@@ -42,8 +48,8 @@ void InitMeshfield(void)
 			&g_pTextureMeshfield[nCnt]);
 
 		maxVtx += (g_Meshfield[nCnt].nDiviX + 1) * (g_Meshfield[nCnt].nDiviZ + 1);											//頂点数
-		polyNum += g_Meshfield[nCnt].nDiviX * g_Meshfield[nCnt].nDiviZ * 2 + (g_Meshfield[nCnt].nDiviZ - 1) * 4;			//ポリゴン数
-		indexNum += (g_Meshfield[nCnt].nDiviX + 1) * 2 * g_Meshfield[nCnt].nDiviZ + (g_Meshfield[nCnt].nDiviZ - 1) * 2;		//インデックス
+		polyNum += (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ - 1) * 2);		//ポリゴン数
+		indexNum += (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ * 2) - 1);		//インデックス
 	}
 
 	//頂点バッファの生成
@@ -63,13 +69,13 @@ void InitMeshfield(void)
 		NULL);
 
 	VERTEX_3D* pVtx = NULL;
-	WORD* pIdx;
-
-	//頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffMeshfield->Lock(0, 0, (void**)&pVtx, 0);
+	WORD* pIdx = NULL;
 
 	for (int nCnt = 0; nCnt < MESH_NUM_MAX; nCnt++)
 	{
+		//頂点バッファをロックし、頂点情報へのポインタを取得
+		g_pVtxBuffMeshfield->Lock(0, 0, (void**)&pVtx, 0);
+
 		//頂点情報の設定
 		for (int nCntZ = 0; nCntZ <= g_Meshfield[nCnt].nDiviZ; nCntZ++)
 		{
@@ -91,38 +97,8 @@ void InitMeshfield(void)
 			}
 		}
 
-		////円柱
-		//int radius = 150;
-		//int index = 0;
-		//float fAngle = (D3DX_PI * 2) / MESHVTX_X;
-		//
-		//for (int nCntV = 0; nCntV < MESHVTX_Z + 1; nCntV++)
-		//{
-		//	for (int nCntH = 0; nCntH < MESHVTX_X + 1; nCntH++)
-		//	{
-		//		//角度
-		//		float Angle = fAngle * nCntH;
-		//
-		//		//頂点座標の設定
-		//		pVtx[index].pos = D3DXVECTOR3(sinf(Angle) * radius, 50.0f * (nCntV + 1), cosf(Angle) * radius);
-		//		
-		//		D3DXVECTOR3 nor;//位置
-		//		nor = pVtx[index].pos - g_posMeshfield;
-		//		//法線ベクトル
-		//		D3DXVec3Normalize(&pVtx[index].nor,&nor);
-		//		
-		//		//頂点カラーの設定
-		//		pVtx[index].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
-		//		//テクスチャ座標の設定
-		//		pVtx[index].tex = D3DXVECTOR2((1.0f / MESHVTX_X) * nCntH, (1.0f / MESHVTX_Z) * nCntV);
-		//
-		//		index++;
-		//	}
-		//}
-
 		//頂点バッファをアンロック　
 		g_pVtxBuffMeshfield->Unlock();
-
 
 		//インデックスバッファをロック
 		g_pIdxBuffMeshField->Lock(0, 0, (void**)&pIdx, 0);
@@ -148,59 +124,8 @@ void InitMeshfield(void)
 			}
 		}
 
-		////インデックスの設定(床)
-		//pIdx[0] = 3;
-		//pIdx[1] = 0;
-		//
-		//pIdx[2] = 4;
-		//pIdx[3] = 1;
-		//
-		//pIdx[4] = 5;
-		//pIdx[5] = 2;
-		//
-		//pIdx[6] = 2;
-		//pIdx[7] = 6;
-		//
-		//pIdx[8] = 6;
-		//pIdx[9] = 3;
-		//
-		//pIdx[10] = 7;
-		//pIdx[11] = 4;
-		//
-		//pIdx[12] = 8;
-		//pIdx[13] = 5;
-		//
-		////インデックスの設定(円柱)
-		//pIdx[0] = 9;
-		//pIdx[1] = 0;
-		//
-		//pIdx[2] = 10;
-		//pIdx[3] = 1;
-		//
-		//pIdx[4] = 11;
-		//pIdx[5] = 2;
-		//
-		//pIdx[6] = 12;
-		//pIdx[7] = 3;
-		//
-		//pIdx[8] = 13;
-		//pIdx[9] = 4;
-		//
-		//pIdx[10] = 14;
-		//pIdx[11] = 5;
-		//
-		//pIdx[12] = 15;
-		//pIdx[13] = 6;
-		//
-		//pIdx[14] = 16;
-		//pIdx[15] = 7;
-		//
-		//pIdx[16] = 9;
-		//pIdx[17] = 0;
-
 		//インデックスバッファのアンロック
 		g_pIdxBuffMeshField->Unlock();
-
 	}
 }
 
@@ -295,6 +220,9 @@ void DrawMeshfield(void)
 //===============================
 void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int nDiviY, int nDiviZ, int fWidth, int fHeight)
 {
+	//頂点情報へのポインタ
+	VERTEX_3D* pVtx = NULL;
+
 	for (int nCnt = 0; nCnt < MESH_NUM_MAX; nCnt++)
 	{
 		if (g_Meshfield[nCnt].bUse==false)
@@ -308,6 +236,12 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 			g_Meshfield[nCnt].fWidth = fWidth;					//幅
 			g_Meshfield[nCnt].fHeight = fHeight;				//高さ
 			g_Meshfield[nCnt].bUse = true;						//使用している状態にする
+
+			//頂点バッファをロックし、頂点情報へのポインタを取得
+			g_pVtxBuffMeshfield->Lock(0, 0, (void**)&pVtx, 0);
+
+			//頂点バッファをアンロック　
+			g_pVtxBuffMeshfield->Unlock();
 
 			break;
 		}
