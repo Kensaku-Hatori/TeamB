@@ -54,7 +54,7 @@ void InitMeshfield(void)
 		for (int nCntX = 0; nCntX <= MESHVTX_X; nCntX++)
 		{
 			//頂点座標の設定
-			//pVtx[0].pos = D3DXVECTOR3(-MESH_SIZE + (MESH_SIZE * nCntX), 0.0f, MESH_SIZE - (MESH_SIZE * nCntZ));
+			pVtx[0].pos = D3DXVECTOR3(-MESH_SIZE + (MESH_SIZE * nCntX), 0.0f, MESH_SIZE - (MESH_SIZE * nCntZ));
 			pVtx[0].pos = D3DXVECTOR3(-MESH_SIZE + (MESH_SIZE * nCntX), 0.0f, MESH_SIZE - (MESH_SIZE * nCntZ));
 
 			//法線ベクトルの設定
