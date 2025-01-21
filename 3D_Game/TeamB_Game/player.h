@@ -9,6 +9,7 @@
 
 #include "main.h"
 #include "model.h"
+#include "status.h"
 
 #define PLAYER_SPEED (4)		//ボールの速度
 #define PLAYER_JUMP (5)			//ボールのジャンプ量

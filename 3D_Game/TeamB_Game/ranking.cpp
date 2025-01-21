@@ -103,7 +103,7 @@ void InitRanking(void)
 
 
 	//順位
-	g_Rankpos = D3DXVECTOR3(300.0f, 150.0f, 0.0f);
+	g_Rankpos = D3DXVECTOR3(300.0f, 180.0f, 0.0f);
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_RANKING,
@@ -145,7 +145,7 @@ void InitRanking(void)
 
 	int nData = 0,nData2 = 0;
 	//スコア
-	g_Rankscorepos = D3DXVECTOR3(400.0f, 150.0f, 0.0f);
+	g_Rankscorepos = D3DXVECTOR3(400.0f, 180.0f, 0.0f);
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_RANKING * MAX_SCORE,
@@ -159,30 +159,48 @@ void InitRanking(void)
 	for (int nCnt = 0; nCnt < MAX_RANKING * MAX_SCORE; nCnt++)
 	{
 		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(350.0f + nData2 * 70.0f, 60.0f + nData * 120.0f, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(420.0f + nData2 * 70.0f, 60.0f + nData * 120.0f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(350.0f + nData2 * 70.0f, 180.0f + nData * 120.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(420.0f + nData2 * 70.0f, 180.0f + nData * 120.0f, 0.0f);//		
-		nData2++;
+		pVtx[0].pos = D3DXVECTOR3(g_Rankscorepos.x - RANK_SIZE, g_Rankscorepos.y - RANK_SIZE, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(g_Rankscorepos.x + RANK_SIZE, g_Rankscorepos.y - RANK_SIZE, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(g_Rankscorepos.x - RANK_SIZE, g_Rankscorepos.y + RANK_SIZE, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(g_Rankscorepos.x + RANK_SIZE, g_Rankscorepos.y + RANK_SIZE, 0.0f);
+		g_Rankscorepos.x += RANK_SIZE * 2;
+		////頂点座標の設定
+		//pVtx[0].pos = D3DXVECTOR3(350.0f + nData2 * 70.0f, 60.0f + nData * 120.0f, 0.0f);
+		//pVtx[1].pos = D3DXVECTOR3(420.0f + nData2 * 70.0f, 60.0f + nData * 120.0f, 0.0f);
+		//pVtx[2].pos = D3DXVECTOR3(350.0f + nData2 * 70.0f, 180.0f + nData * 120.0f, 0.0f);
+		//pVtx[3].pos = D3DXVECTOR3(420.0f + nData2 * 70.0f, 180.0f + nData * 120.0f, 0.0f);//		
+		//nData2++;
 		if (nCnt == MAX_SCORE - 1)
 		{
 			nData++;
 			nData2 = 0;
+			g_Rankscorepos.x = 400.0f;
+			g_Rankscorepos.y += 120.0f;
+
 		}
 		else if (nCnt == MAX_SCORE * 2 - 1)
 		{
 			nData++;
 			nData2 = 0;
+			g_Rankscorepos.x = 400.0f;
+			g_Rankscorepos.y += 120.0f;
+
 		}
 		else if (nCnt == MAX_SCORE * 3 - 1)
 		{
 			nData++;
 			nData2 = 0;
+			g_Rankscorepos.x = 400.0f;
+			g_Rankscorepos.y += 120.0f;
+
 		}
 		else if (nCnt == MAX_SCORE * 4 - 1)
 		{
 			nData++;
 			nData2 = 0;
+			g_Rankscorepos.x = 400.0f;
+			g_Rankscorepos.y += 120.0f;
+
 		}
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
