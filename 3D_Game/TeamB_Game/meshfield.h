@@ -10,7 +10,7 @@
 #include "main.h"
 
 //マクロ定義
-#define MESH_NUM_MAX (1)//メッシュフィールドの数
+#define MESH_NUM_MAX (16)//メッシュフィールドの数
 #define MAX_TEX (64)//テクスチャの最大数
 
 //ポリゴン(横)の構造体
@@ -23,8 +23,9 @@ typedef struct
 	int nDiviX;								//分割数x
 	int nDiviY;								//分割数y
 	int nDiviZ;								//分割数z
-	int fWidth;								//幅
-	int fHeight;							//高さ
+	int nWidth;								//幅
+	int nHeight;							//高さ
+	int nIndex;								//インテックス保存用
 	bool bUse;								//使用しているかどうか
 }MeshField;
 
