@@ -44,7 +44,6 @@ void UninitTitle(void)
 
 	UninitLight();
 
-
 	UninitTitleInfo();
 }
 //==========

@@ -250,6 +250,7 @@ void UpdateTitleInfo(void)
 	//頂点バッファをアンロック
 	g_pVtxBufftitleinfo->Unlock();
 
+
 	if ((KeyboardTrigger(DIK_RETURN) == true|| GetJoypadTrigger(JOYKEY_A) == true) && g_fade == FADE_NONE)
 	{//ENTERが押された
 		if (g_Logopos.y < LOGO_END_Y)

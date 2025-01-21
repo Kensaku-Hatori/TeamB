@@ -26,10 +26,4 @@ typedef struct
 	LPDIRECT3DTEXTURE9 pTexture[128];
 }Model;
 
-////プロトタイプ宣言
-//void InitModel(void);
-//void UninitModel(void);
-//void UpdateModel(void);
-//void DrawModel(void);
-
 #endif
