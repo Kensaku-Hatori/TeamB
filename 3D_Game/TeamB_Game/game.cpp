@@ -20,13 +20,12 @@
 //#include "meshwall.h"
 //#include "meshcylinder.h"
 #include "fade.h"
-#include "timer.h"
 #include "pause.h"
 //#include "sound.h"
 //#include "enemy.h"
-#include "score.h"
 //#include "particle.h"
 #include "skill.h"
+#include "ui.h"
 
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -66,11 +65,7 @@ void InitGame(void)
 
 	InitLight();
 
-	InitTimer();
-	SetTimer(0);
-
-	InitScore();
-	SetScore(0);
+	InitUi();
 
 	InitPause();
 
@@ -114,18 +109,13 @@ void UninitGame(void)
 
 	UninitLight();
 
-	UninitTimer();
-
-	UninitScore();
-
+	UninitUi();
 }
 //===========
 // 更新処理
 //===========
 void UpdateGame(void)
 {
-	int nTime = GetTimer();
-
 	if (KeyboardTrigger(DIK_P) == true || GetJoypadTrigger(JOYKEY_START) == true)
 	{//ポーズキーが押された
 		g_bPause = g_bPause ? false : true;
@@ -166,10 +156,7 @@ void UpdateGame(void)
 
 		UpdateLight();
 
-		UpdateTimer();
-
-		UpdateScore();
-
+		UpdateUi();
 
 		switch (g_gamestate)
 		{
@@ -243,9 +230,7 @@ void DrawGame(void)
 
 	//DrawMeshWall();
 
-	DrawTimer();
-
-	DrawScore();
+	DrawUi();
 
 	if (g_bPause == true)
 	{//ポーズ中
