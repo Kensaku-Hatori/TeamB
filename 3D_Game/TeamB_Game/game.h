@@ -9,8 +9,6 @@
 
 #include "main.h"
 
-#define MAX_GAMETIME (60)
-
 //ƒQ[ƒ€‚Ìó‘Ô
 typedef enum
 {

@@ -64,7 +64,7 @@ void InitGame(void)
 	InitLight();
 
 	InitTimer();
-	SetTimer(MAX_GAMETIME);
+	SetTimer(0);
 
 	InitScore();
 	SetScore(0);
