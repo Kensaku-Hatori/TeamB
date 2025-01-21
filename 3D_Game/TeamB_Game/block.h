@@ -29,7 +29,7 @@ typedef struct
 
 	D3DXVECTOR3 vtxMinBlock[BLOCKTYPE_MAX];//モデルの最小値
 	D3DXVECTOR3 vtxMaxBlock[BLOCKTYPE_MAX];//モデルの最大値
-	Model aModel[BLOCKTYPE_MAX];
+	MODELINFO aModel[BLOCKTYPE_MAX];
 	BLOCKTYPE type;
 	bool bUse;
 }Block;

@@ -9,6 +9,7 @@
 
 #include "main.h"
 #include "model.h"
+#include "key.h"
 
 #define ENEMY_SPEED (5)		//敵の速度
 #define MAX_ENEMY (30)		//敵の最大数
@@ -75,7 +76,7 @@ typedef struct
 	bool bCollision;
 	bool bUse;
 	//モデル
-	Model aModel[MAX_PARTS];
+	MODELINFO aModel[MAX_PARTS];
 	int nNumModel;
 	//モーション
 	ENEMYMOTION_INFO aMotionInfo[ENEMYMOTIONTYPE_MAX];  //モーション情報

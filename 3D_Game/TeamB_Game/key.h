@@ -1,10 +1,11 @@
 #ifndef KEY_H_
 #define KEY_H_
 
-#define MAX_MODEL (11)
 #define MAX_KEY (10)
+#define MAX_MOTION (5)
 
 #include "main.h"
+#include "model.h"
 
 typedef struct
 {
@@ -19,7 +20,7 @@ typedef struct
 typedef struct
 {
 	int nFrame;
-	KEY aKey[MAX_MODEL];
+	KEY aKey[MAX_PARTS];
 }KEYINFO;
 
 typedef struct
