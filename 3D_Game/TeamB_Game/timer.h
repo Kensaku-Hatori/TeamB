@@ -11,9 +11,9 @@
 #include "game.h"
 
 #define MAX_TIME (MAX_GAMETIME * 60)
-#define MAX_TIMER (3)
-#define GAME_MINUTES (2)
-
+#define MAX_TIMER (2)
+#define TIMER_SIZE (30)
+ 
 //プロトタイプ宣言
 void InitTimer(void);
 void UninitTimer(void);

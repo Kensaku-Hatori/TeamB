@@ -15,7 +15,6 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTimer = NULL;
 D3DXVECTOR3 g_posTimer;
 int g_nTimer = 0;
 int g_nSeconds = 0;
-int g_nMinutes = 0;
 //=============
 //初期化処理
 //=============
@@ -30,7 +29,6 @@ void InitTimer(void)
 
 	g_posTimer = D3DXVECTOR3(550.0f,0.0f,0.0f);
 	g_nTimer = 0;
-	g_nMinutes = GAME_MINUTES;
 
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
@@ -48,10 +46,10 @@ void InitTimer(void)
 	for (nCnt = 0; nCnt < MAX_TIMER; nCnt++)
 	{
 		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(g_posTimer.x + (50 * nCnt), 0.0f, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(g_posTimer.x + (50 * (nCnt + 1)), 0.0f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(g_posTimer.x + (50 * nCnt), 100.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(g_posTimer.x + (50 * (nCnt + 1)), 100.0f, 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y - 0.0f, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y - 0.0f, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y + 100.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y + 100.0f, 0.0f);
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;
@@ -68,6 +66,7 @@ void InitTimer(void)
 		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
 		pVtx[3].tex = D3DXVECTOR2(0.1f, 1.0f);
 
+		g_posTimer.x += TIMER_SIZE * 2;
 		pVtx += 4;
 	}
 	//頂点バッファをアンロック
@@ -105,22 +104,6 @@ void UpdateTimer(void)
 		AddTimer(1);
 		g_nSeconds = 0;
 	}
-	
-	//タイマーが０になった
-	if (g_nTimer <= 0)
-	{	
-		if (gamestate == GAMESTATE_NORMAL)
-		{
-			SetGameState(GAMESTATE_GAMEOVER);
-		}		
-		
-		g_nTimer = 0;
-	}
-
-	if (g_nTimer <= 0 && g_nMinutes <= 0)
-	{
-
-	}
 }
 //===========
 //描画処理
@@ -138,7 +121,7 @@ void DrawTimer(void)
 	pDevice->SetStreamSource(0, g_pVtxBuffTimer, 0, sizeof(VERTEX_2D));
 	
 	int nCnt;
-	for (nCnt = 0; nCnt < MAX_TIME; nCnt++)
+	for (nCnt = 0; nCnt < MAX_TIMER; nCnt++)
 	{
 		//テクスチャの設定
 		pDevice->SetTexture(0, g_pTextureTimer);
@@ -154,8 +137,8 @@ void SetTimer(int nTimer)
 	int aPosTexU[MAX_TIMER]; //桁数分
 	g_nTimer += nTimer;
 
-	int nData = 1000;
-	int nData2 = 100;
+	int nData = 100;
+	int nData2 = 10;
 	int nCnt;
 	for (nCnt = 0; nCnt < MAX_TIMER; nCnt++)
 	{
@@ -186,13 +169,13 @@ void SetTimer(int nTimer)
 void AddTimer(int nValue)
 {
 	int aPosTexU[MAX_TIMER];
-	g_nTimer -= nValue;
+	g_nTimer += nValue;
 	if (g_nTimer <= 0)
 	{
 		g_nTimer = 0;
 	}
-	int nData = 1000;
-	int nData2 = 100;
+	int nData = 100;
+	int nData2 = 10;
 	int nCnt;
 	for (nCnt = 0; nCnt < MAX_TIMER; nCnt++)
 	{

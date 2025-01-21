@@ -36,9 +36,9 @@ void InitTitleInfo(void)
 	g_Selectpos = D3DXVECTOR3(640.0f, 360.0f, 0.0f);
 
 	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\stage.png", &g_pTexturetitleinfo[0]); //START
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\rank.png", &g_pTexturetitleinfo[1]); //ランキング
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\fin.png", &g_pTexturetitleinfo[2]); //ランキング
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\gamestart.png", &g_pTexturetitleinfo[0]); //START
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\titleranking.png", &g_pTexturetitleinfo[1]); //ランキング
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\exit.png", &g_pTexturetitleinfo[2]); //ランキング
 
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
@@ -249,6 +249,7 @@ void UpdateTitleInfo(void)
 
 	//頂点バッファをアンロック
 	g_pVtxBufftitleinfo->Unlock();
+
 
 	if ((KeyboardTrigger(DIK_RETURN) == true|| GetJoypadTrigger(JOYKEY_A) == true) && g_fade == FADE_NONE)
 	{//ENTERが押された

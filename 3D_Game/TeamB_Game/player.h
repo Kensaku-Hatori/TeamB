@@ -9,11 +9,12 @@
 
 #include "main.h"
 #include "model.h"
+#include "status.h"
 
 #define PLAYER_SPEED (4)		//ボールの速度
 #define PLAYER_JUMP (5)			//ボールのジャンプ量
 #define PLAYER_RADIUS (3)			//プレイヤーの半径
-#define MOTIONFILE_PLAYER  ("data\\MOTION\\motionBallMan.txt")//プレイヤーのモーションファイル
+#define MOTIONFILE_PLAYER  ("data\\MOTION\\motion00.txt")//プレイヤーのモーションファイル
 
 //プレイヤーの状態
 typedef enum

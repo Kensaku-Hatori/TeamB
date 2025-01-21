@@ -28,9 +28,9 @@ void InitPause(void)
 
 	//テクスチャの読み込み
 	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\pause.jpg", &g_pTexturePause[0]); //ポーズの背景
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\contnue001.png", &g_pTexturePause[1]); //戻る
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\retry001.png", &g_pTexturePause[2]); //やり直し
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\fin.png", &g_pTexturePause[3]); //タイトルに戻る
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\continue.png", &g_pTexturePause[1]); //戻る
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\retry.png", &g_pTexturePause[2]); //やり直し
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\quit.png", &g_pTexturePause[3]); //タイトルに戻る
 
 	g_Pausepos = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - PAUSESELECT_HEIGHT, 0.0f);
 

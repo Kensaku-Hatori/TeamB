@@ -1,4 +1,5 @@
 #include "loadstage.h"
+#include "loadmotion.h"
 
 //*****************************
 // スクリプト以前を読み込む処理
@@ -192,6 +193,17 @@ void LoadStart(FILE* pFile)
 					}
 				}
 			}
+			else if (strcmp(&cData1[0], "PLAYERSET") == 0)
+			{
+				while (1)
+				{
+					cData2[0] = LoadPlayerInfo(pFile);
+					if (strcmp(cData2[0], PLAYER) == 0)
+					{
+						break;
+					}
+				}
+			}
 			else if (strcmp(&cData1[0], "END_SCRIPT") == 0)
 			{
 				break;
@@ -334,19 +346,19 @@ char* LoadCameraInfo(FILE* pFile)
 			strcat(cData1, cData);
 			if (strcmp(&cData1[0], "POS") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "REF") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "END_CAMERASET") == 0)
 			{
@@ -382,19 +394,19 @@ char* LoadLightInfo(FILE* pFile)
 			strcat(cData1, cData);
 			if (strcmp(&cData1[0], "DIRECTION") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "DIFFUSE") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "END_LIGHTSET") == 0)
 			{
@@ -431,15 +443,15 @@ char* LoadSkyInfo(FILE* pFile)
 			strcat(cData1, cData);
 			if (strcmp(&cData1[0], "TEXTYPE") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				nData = LoadInt(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "MOVE") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				fData = LoadFloat(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "END_SKYSET") == 0)
 			{
@@ -475,9 +487,9 @@ char* LoadMountInfo(FILE* pFile)
 			strcat(cData1, cData);
 			if (strcmp(&cData1[0], "TEXTYPE") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				nData = LoadInt(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "END_MOUNTAINSET") == 0)
 			{
@@ -514,39 +526,39 @@ char* LoadFieldInfo(FILE* pFile)
 			strcat(cData1, cData);
 			if (strcmp(&cData1[0], "POS") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "ROT") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "BLOCK") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				nData = LoadInt(pFile);
 				nData = LoadInt(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "SIZE") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				nData = LoadInt(pFile);
 				nData = LoadInt(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "TEXTYPE") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				nData = LoadInt(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "END_FIELDSET") == 0)
 			{
@@ -583,39 +595,39 @@ char* LoadWallInfo(FILE* pFile)
 			strcat(cData1, cData);
 			if (strcmp(&cData1[0], "POS") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "ROT") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "BLOCK") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				nData = LoadInt(pFile);
 				nData = LoadInt(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "SIZE") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				nData = LoadInt(pFile);
 				nData = LoadInt(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "TEXTYPE") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				nData = LoadInt(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "END_WALLSET") == 0)
 			{
@@ -652,31 +664,31 @@ char* LoadModelInfo(FILE* pFile)
 			strcat(cData1, cData);
 			if (strcmp(&cData1[0], "POS") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "ROT") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "TYPE") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				nData = LoadInt(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "SHADOW") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				nData = LoadInt(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "END_MODELSET") == 0)
 			{
@@ -713,33 +725,89 @@ char* LoadBillBoardInfo(FILE* pFile)
 			strcat(cData1, cData);
 			if (strcmp(&cData1[0], "POS") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
 				fData = LoadFloat(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "SIZE") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				nData = LoadInt(pFile);
 				nData = LoadInt(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "TEXTYPE") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				nData = LoadInt(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "ORIGIN") == 0)
 			{
+				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				nData = LoadInt(pFile);
 				nData = LoadInt(pFile);
-				break;
 			}
 			else if (strcmp(&cData1[0], "END_BILLBOARDSET") == 0)
+			{
+				break;
+			}
+		}
+	}
+	return &cData1[0];
+}
+//*****************************
+// プレイヤー情報を読み込む処理
+//*****************************
+char* LoadPlayerInfo(FILE* pFile)
+{
+	char cData[2] = { NULL };
+	char cData1[128] = { NULL };
+	char cData2[64] = { NULL };
+	char *cData3[64] = { NULL };
+	float fData;
+
+	while (1)
+	{
+		fgets(cData, 2, pFile);
+		if (cData[0] == 0x20 || cData[0] == 0x09 || cData[0] == 0x23 || cData[0] == 0x0a)
+		{
+			strcat(cData2, cData);
+			if (*cData == '#')
+			{
+				SkipComment(pFile);
+			}
+		}
+		else
+		{
+			strcat(cData1, cData);
+			if (strcmp(&cData1[0], "POS") == 0)
+			{
+				cData1[0] = { NULL };
+				SkipEqual(pFile);
+				fData = LoadFloat(pFile);
+				fData = LoadFloat(pFile);
+				fData = LoadFloat(pFile);
+			}
+			else if (strcmp(&cData1[0], "ROT") == 0)
+			{
+				cData1[0] = { NULL };
+				SkipEqual(pFile);
+				fData = LoadFloat(pFile);
+				fData = LoadFloat(pFile);
+				fData = LoadFloat(pFile);
+			}
+			else if (strcmp(&cData1[0], "MOTION_FILENAME") == 0)
+			{
+				cData1[0] = { NULL };
+				SkipEqual(pFile);
+				cData3[0] = LoadPath(pFile);
+				LoadMotionViewer(cData3[0]);
+			}
+			else if (strcmp(&cData1[0], "END_PLAYERSET") == 0)
 			{
 				break;
 			}
