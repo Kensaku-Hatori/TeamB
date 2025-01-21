@@ -372,8 +372,6 @@ void Draw(void)
 		case MODE_RANK:
 			DrawRanking();
 			break;
-		case MODE_END:
-			break;
 		}
 		DrawFade();
 
@@ -423,6 +421,7 @@ void SetMode(MODE mode)
 		InitRanking();
 		break;
 	case MODE_END:
+
 		break;
 	default:
 		break;
