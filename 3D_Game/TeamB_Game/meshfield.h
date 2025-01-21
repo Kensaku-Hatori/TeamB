@@ -24,15 +24,8 @@
 #define MESH_NUM_MAX (1)//メッシュフィールドの数
 
 
-//テクスチャタイプ
-typedef enum
-{
-	MESH_TEX_NULL=0,
-	MESH_TEX_MAX
-}MESH_TEX;
-
 //ファイル格納
-static const char* MESHFIELD_TEXTURE[MESH_TEX_MAX] =
+static const char* MESHFIELD_TEXTURE[] =
 {
 	NULL
 };
@@ -43,12 +36,12 @@ typedef struct
 	D3DXVECTOR3 pos;						//位置
 	D3DXVECTOR3 rot;						//向き
 	D3DXMATRIX mtxWorld;					//ワールドマトリックス
-	MESH_TEX textype;						//テクスチャのタイプ
+	int textype;						//テクスチャのタイプ
 	int nDiviX;								//分割数x
 	int nDiviY;								//分割数y
 	int nDiviZ;								//分割数z
-	float fWidth;								//幅
-	float fHeight;							//高さ
+	int fWidth;								//幅
+	int fHeight;							//高さ
 	bool bUse;								//使用しているかどうか
 }MeshField;
 
@@ -57,6 +50,6 @@ void InitMeshfield(void);
 void UninitMeshfield(void);
 void UpdateMeshfield(void);
 void DrawMeshfield(void);
-void SetMeshfield(D3DXVECTOR3 pos,D3DXVECTOR3 rot,MESH_TEX textype,int nDiviX,int nDiviY,int nDiviZ,float fWidth,float fHeight);//位置、向き、テクスチャ、分割数x、分割数y、分割数z、幅、高さ
+void SetMeshfield(D3DXVECTOR3 pos,D3DXVECTOR3 rot,int textype,int nDiviX,int nDiviY,int nDiviZ,int fWidth,int fHeight);//位置、向き、テクスチャ、分割数x、分割数y、分割数z、幅、高さ
 
 #endif
