@@ -4,12 +4,15 @@
 // Author:kaiti
 //
 //==================================
+
 #include "billboard.h"
 #include "shadow.h"
+
 //グローバル変数宣言
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBiillboard = NULL;
 LPDIRECT3DTEXTURE9 g_apTextureBiillboard[MAX_BILLBOARD] = {};
 Biillboard g_Biillboard[MAX_BILLBOARD];
+
 //=========================
 // ビルボードの初期化処理
 //=========================
@@ -71,6 +74,7 @@ void InitBiillboard(void)
 	//頂点バッファをアンロック
 	g_pVtxBuffBiillboard->Unlock();
 }
+
 //=======================
 // ビルボードの終了処理
 //=======================
@@ -92,12 +96,14 @@ void UninitBiillboard(void)
 		g_pVtxBuffBiillboard = NULL;
 	}
 }
+
 //=======================
 // ビルボードの更新処理
 //=======================
 void UpdateBiillboard(void)
 {
 }
+
 //=======================
 // ビルボードの描画処理
 //=======================
@@ -165,6 +171,7 @@ void DrawBiillboard(void)
 	//ライトを有効に戻す
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 }
+
 //===================
 // ビルボードの設定
 //===================
