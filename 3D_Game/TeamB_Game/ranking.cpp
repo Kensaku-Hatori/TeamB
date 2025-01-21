@@ -53,7 +53,7 @@ void InitRanking(void)
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking4.png", &g_pTextureRank[3]);     //順位
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking5.png", &g_pTextureRank[4]);     //順位
 
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number003.png", &g_pTextureRankScore);	 //スコア
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number001.png", &g_pTextureRankScore);	 //スコア
 
 	for (int nCnt = 0; nCnt < MAX_RANKING; nCnt++)
 	{
