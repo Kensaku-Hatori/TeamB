@@ -28,10 +28,11 @@ void InitMeshfield(void)
 		g_Meshfield[nCnt].pos = D3DXVECTOR3(-900.0f, 0.0f, 900.0f);		//位置
 		g_Meshfield[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			//向き
 		g_Meshfield[nCnt].textype = MESH_TEX_NULL;						//テクスチャタイプ
-		g_Meshfield[nCnt].DiviX = 0;									//分割数x
-		g_Meshfield[nCnt].DiviZ = 0;									//分割数z
-		g_Meshfield[nCnt].fWidth = 0.0f;								//幅
-		g_Meshfield[nCnt].fHeight = 0.0f;								//高さ
+		g_Meshfield[nCnt].nDiviX = 0;									//分割数x
+		g_Meshfield[nCnt].nDiviY = 0;									//分割数y
+		g_Meshfield[nCnt].nDiviZ = 0;									//分割数z
+		g_Meshfield[nCnt].fWidth = 0;									//幅
+		g_Meshfield[nCnt].fHeight = 0;									//高さ
 		g_Meshfield[nCnt].bUse = false;									//使用していない状態にする
 
 		//テクスチャの読込
@@ -66,19 +67,18 @@ void InitMeshfield(void)
 		for (int nCntX = 0; nCntX <= MESHVTX_X; nCntX++)
 		{
 			//頂点座標の設定
-			//pVtx[0].pos = D3DXVECTOR3(-MESH_SIZE + (MESH_SIZE * nCntX), 0.0f, MESH_SIZE - (MESH_SIZE * nCntZ));
 			pVtx[0].pos = D3DXVECTOR3(-MESH_SIZE + (MESH_SIZE * nCntX), 0.0f, MESH_SIZE - (MESH_SIZE * nCntZ));
 
-				//法線ベクトルの設定
-				pVtx[0].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-				//頂点カラーの設定
-				pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-				//テクスチャ座標の設定
-				pVtx[0].tex = D3DXVECTOR2((1.0f / MESHVTX_X) * nCntX, (1.0f / MESHVTX_Z) * nCntZ);
+			//法線ベクトルの設定
+			pVtx[0].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+			//頂点カラーの設定
+			pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			//テクスチャ座標の設定
+			pVtx[0].tex = D3DXVECTOR2((1.0f / MESHVTX_X) * nCntX, (1.0f / MESHVTX_Z) * nCntZ);
 
-				pVtx++;
-			}
+			pVtx++;
 		}
+	}
 
 		////円柱
 		//int radius = 150;
@@ -274,6 +274,30 @@ void DrawMeshfield(void)
 
 			//メッシュ床を描画
 			pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, MAX_VTX, 0, POLYGON_NO);
+		}
+	}
+}
+
+//===============================
+// メッシュ床の設定処理
+//===============================
+void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, MESH_TEX textype, int nDiviX,int nDiviY, int nDiviZ, float fWidth, float fHeight)
+{
+	for (int nCnt = 0; nCnt < MESH_NUM_MAX; nCnt++)
+	{
+		if (g_Meshfield[nCnt].bUse)
+		{
+			g_Meshfield[nCnt].pos = pos;						//位置
+			g_Meshfield[nCnt].rot = rot;						//向き
+			g_Meshfield[nCnt].textype = textype;				//テクスチャタイプ
+			g_Meshfield[nCnt].nDiviX = nDiviX;					//分割数x
+			g_Meshfield[nCnt].nDiviY = nDiviY;					//分割数y
+			g_Meshfield[nCnt].nDiviZ = nDiviZ;					//分割数z
+			g_Meshfield[nCnt].fWidth = fWidth;					//幅
+			g_Meshfield[nCnt].fHeight = fHeight;				//高さ
+			g_Meshfield[nCnt].bUse = true;						//使用している状態にする
+
+			break;
 		}
 	}
 }

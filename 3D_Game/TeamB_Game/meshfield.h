@@ -40,13 +40,14 @@ static const char* MESHFIELD_TEXTURE[MESH_TEX_MAX] =
 //ポリゴン(横)の構造体
 typedef struct
 {
-	D3DXVECTOR3 pos;						//位置division
+	D3DXVECTOR3 pos;						//位置
 	D3DXVECTOR3 rot;						//向き
 	D3DXMATRIX mtxWorld;					//ワールドマトリックス
 	MESH_TEX textype;						//テクスチャのタイプ
-	int DiviX;								//分割数x
-	int DiviZ;								//分割数z
-	float fWidth;							//幅
+	int nDiviX;								//分割数x
+	int nDiviY;								//分割数y
+	int nDiviZ;								//分割数z
+	float fWidth;								//幅
 	float fHeight;							//高さ
 	bool bUse;								//使用しているかどうか
 }MeshField;
@@ -56,5 +57,6 @@ void InitMeshfield(void);
 void UninitMeshfield(void);
 void UpdateMeshfield(void);
 void DrawMeshfield(void);
+void SetMeshfield(D3DXVECTOR3 pos,D3DXVECTOR3 rot,MESH_TEX textype,int nDiviX,int nDiviY,int nDiviZ,float fWidth,float fHeight);//位置、向き、テクスチャ、分割数x、分割数y、分割数z、幅、高さ
 
 #endif
