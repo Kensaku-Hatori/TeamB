@@ -805,7 +805,7 @@ char* LoadPlayerInfo(FILE* pFile)
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				cData3[0] = LoadPath(pFile);
-				LoadMotionViewer(cData3[0]);
+				//LoadMotionViewer(cData3[0]);
 			}
 			else if (strcmp(&cData1[0], "END_PLAYERSET") == 0)
 			{
