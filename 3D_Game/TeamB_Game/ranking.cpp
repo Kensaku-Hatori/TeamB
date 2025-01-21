@@ -44,7 +44,7 @@ void InitRanking(void)
 	pDevice = GetDevice();
 
 	//ÉeÉNÉXÉ`ÉÉ
-	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking1.png", &g_pTextureBack);        //îwåi
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking.jpg", &g_pTextureBack);        //îwåi
 
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking1.png", &g_pTextureRank[0]);     //èáà 
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking2.png", &g_pTextureRank[1]);     //èáà 

@@ -27,8 +27,8 @@ void InitResultInfo(void)
 	pDevice = GetDevice();
 
 	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\rank.png", &g_pTextureResultInfo[0]); //クリア
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\fin.png", &g_pTextureResultInfo[1]); //ゲームオーバー
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\GAMECLEAR.png", &g_pTextureResultInfo[0]); //クリア
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\GAMEOVER.png", &g_pTextureResultInfo[1]); //ゲームオーバー
 	
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
@@ -53,10 +53,10 @@ void InitResultInfo(void)
 	pVtx[2].rhw = 1.0f;
 	pVtx[3].rhw = 1.0f;
 	//頂点カラーの設定
-	pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 127);
-	pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 127);
-	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 127);
-	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 127);
+	pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 	//テクスチャ座標の設定
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
 	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
