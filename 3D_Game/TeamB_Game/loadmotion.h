@@ -3,17 +3,21 @@
 
 #include "main.h"
 #include "loadstage.h"
+#include "key.h"
+#include "model.h"
 
-#define CHARACTOR "END_CHARACTORSET"
+#define CHARACTOR "END_CHARACTERSET"
 #define MOTION "END_MOTIONSET"
 #define PARTS "END_PARTSSET"
+#define KEYPARTS "END_KEY"
 #define KEY "END_KEYSET"
 
-void LoadMotionViewer(char *cMotionPath);				// スクリプト以前を読み込む処理
+void LoadMotionViewer(char *cMotionPath);	// スクリプト以前を読み込む処理
 void LoadMotionStart(FILE* pFile);			// スクリプト以降の読み込み処理
 
-char* LoadCharactorInfo(FILE* pFile);		// カメラ情報を読み込む処理
-char* LoadPartsInfo(FILE* pFile);		// カメラ情報を読み込む処理
-char* LoadMotionInfo(FILE* pFile);		// ライト情報を読み込む処理
-char* LoadKeyInfo(FILE* pFile);		// ライト情報を読み込む処理
+char* LoadCharactorInfo(FILE* pFile,int *nCharactor, int* nParts, MODELINFO*Model);		// キャラクター情報を読み込む処理
+char* LoadPartsInfo(FILE* pFile,int *nParts, MODELINFO* Model);			// パーツ情報を読み込む処理
+char* LoadMotionInfo(FILE* pFile,int *nMotion, int* nKey, int* nKeyParts,MOTIONINFO *Motion);			// モーション情報を読み込む処理
+char* LoadKeyInfo(FILE* pFile, int* nKey, int* nKeyParts, MOTIONINFO* Motion);			// モーション情報を読み込む処理
+char* LoadKeyPartsInfo(FILE* pFile,int *nKey,int *nKeyParts, MOTIONINFO* Motion);				// キー情報を読み込む処理
 #endif // !LOADMOTION_H_
