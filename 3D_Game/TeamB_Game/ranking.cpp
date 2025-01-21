@@ -26,6 +26,7 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffRankScore = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffRankBack = NULL;
 
 D3DXVECTOR3 g_Rankpos;
+D3DXVECTOR3 g_Rankscorepos;
 
 RankScore g_aRankScore[MAX_RANKING]; //ランキングスコア情報
 int g_nRankUpdata = -1;              //更新ランクNo.
@@ -144,6 +145,8 @@ void InitRanking(void)
 
 	int nData = 0,nData2 = 0;
 	//スコア
+	g_Rankscorepos = D3DXVECTOR3(400.0f, 150.0f, 0.0f);
+
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_RANKING * MAX_SCORE,
 		D3DUSAGE_WRITEONLY,
