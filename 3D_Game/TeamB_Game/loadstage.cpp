@@ -64,7 +64,7 @@ void LoadStart(FILE* pFile)
 	char *cData2[32] = { NULL };
 	int nData;
 	char *FilePath[32];
-	NTYPE nType;
+	NTYPE nType = { NULL };
 	int ModelPathCount = 0;
 	int PolygonePathCount = 0;
 
@@ -84,7 +84,10 @@ void LoadStart(FILE* pFile)
 			{
 				SkipEqual(pFile);
 				FilePath[0] = LoadPath(pFile);
-				PolygonePathCount++;
+				if (PolygonePathCount < nType.nPolygoneType)
+				{
+					PolygonePathCount++;
+				}
 			}
 			else if (strcmp(&cData1[0], "NUM_MODEL") == 0)
 			{
@@ -96,7 +99,10 @@ void LoadStart(FILE* pFile)
 			{
 				SkipEqual(pFile);
 				FilePath[0] = LoadPath(pFile);
-				ModelPathCount++;
+				if (ModelPathCount < nType.nModelType)
+				{
+					ModelPathCount++;
+				}
 			}
 			else if (strcmp(&cData1[0], "CAMERASET") == 0)
 			{
