@@ -10,6 +10,7 @@
 #include "main.h"
 #include "model.h"
 #include "status.h"
+#include "key.h"
 
 #define PLAYER_SPEED (4)		//ボールの速度
 #define PLAYER_JUMP (5)			//ボールのジャンプ量
@@ -36,33 +37,6 @@ typedef enum
 	MOTIONTYPE_MAX
 }MOTIONTYPE;
 
-//キーの構造体
-typedef struct
-{
-	float fPosX;
-	float fPosY;
-	float fPosZ;
-
-	float fRotX;
-	float fRotY;
-	float fRotZ;
-}KEY;
-
-//キー情報の構造体
-typedef struct
-{
-	int nFrame;
-	KEY aKey[MAX_PARTS];
-}KEY_INFO;
-
-//モーション情報の構造体
-typedef struct
-{
-	bool bLoop;
-	int nNumKey;
-	KEY_INFO aKeyInfo[MAX_KEY];
-}MOTION_INFO;
-
 //プレイヤーの構造体
 typedef struct
 {
@@ -80,10 +54,10 @@ typedef struct
 	bool bJump;			//ジャンプできるかどうか
 	bool bUse;
 	//モデル
-	Model aModel[MAX_PARTS];
+	MODELINFO aModel[MAX_PARTS];
 	int nNumModel;
 	//モーション
-	MOTION_INFO aMotionInfo[MOTIONTYPE_MAX];//モーション情報
+	MOTIONINFO aMotionInfo[MOTIONTYPE_MAX];//モーション情報
 	int nNumMotion;							//モーションの総数
 	MOTIONTYPE motionType;					//モーションの種類
 	bool bLoopMotion;						//ループするかどうか

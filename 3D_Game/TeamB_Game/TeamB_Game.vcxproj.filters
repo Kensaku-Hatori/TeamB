@@ -111,6 +111,9 @@
     <ClCompile Include="ui.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="loadmotion.cpp">
+      <Filter>ソース ファイル\LoadText</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -213,6 +216,12 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="ui.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="loadmotion.h">
+      <Filter>ソース ファイル\LoadText</Filter>
+    </ClInclude>
+    <ClInclude Include="key.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

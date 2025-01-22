@@ -19,6 +19,7 @@
 //#include "block.h"
 //#include "meshwall.h"
 //#include "meshcylinder.h"
+#include "meshfield.h"
 #include "fade.h"
 #include "pause.h"
 //#include "sound.h"
@@ -37,7 +38,16 @@ bool g_bPause = false;  //É|Å[ÉYíÜÇ©Ç«Ç§Ç©
 //=============
 void InitGame(void)
 {
+	//char cData[32];
+	//strcpy(&cData[0], "data\\TEXTURE\\ranking.jpg");
+
 	InitPolygon();
+
+	//SetTexture(cData);
+	//InitMeshfield();
+	//SetMeshfield(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 0, 0, 0, 150, 150);
+	//SetMeshfield(D3DXVECTOR3(500.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 0, 0, 0, 150, 150);
+
 
 	InitShadow();
 
@@ -96,6 +106,7 @@ void UninitGame(void)
 	//UninitBlock();
 
 	UninitPolygon();
+	//UninitMeshfield();
 
 	//UninitExplosion();
 
@@ -129,6 +140,7 @@ void UpdateGame(void)
 	else if (g_bPause == false)
 	{
 		UpdatePolygon();
+		//UpdateMeshfield();
 
 		UpdateShadow();
 
@@ -207,6 +219,7 @@ void DrawGame(void)
 	SetCamera();
 
 	DrawPolygon();
+	//DrawMeshfield();
 
 	DrawShadow();
 
