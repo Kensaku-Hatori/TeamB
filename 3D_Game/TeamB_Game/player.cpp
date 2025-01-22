@@ -24,6 +24,7 @@ Player g_player;
 D3DXVECTOR3 g_vtxMinPlayer;//プレイヤーの最小値
 D3DXVECTOR3 g_vtxMaxPlayer;//プレイヤーの最大値
 
+int g_nCntHealMP;
 //=====================
 // プレイヤーの初期化
 //=====================
@@ -55,6 +56,9 @@ void InitPlayer(void)
 	g_player.Status.nHP = PLAYER_HP;
 	g_player.Status.nMP = PLAYER_MP;
 	g_player.Status.fSpeed = PLAYER_SPEED;
+
+
+	g_nCntHealMP = 0;
 
 	LoadPlayer();
 
@@ -196,10 +200,22 @@ void UpdatePlayer(void)
 
 		g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
 
+		//魔法発射
 		if (((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true)) && g_player.Status.nMP >= 50)
 		{// MPが５０以上の時
 			SetSkill(g_player.pos, g_player.move, g_player.rot);
 			g_player.Status.nMP -= 50; //MP消費
+		}
+
+		//MP回復
+		if (g_player.Status.nMP < PLAYER_MP)
+		{//MPが減っていたら
+			g_nCntHealMP++;
+		}
+		if (g_nCntHealMP >= 60)
+		{
+			g_player.Status.nMP += 10;
+			g_nCntHealMP = 0;
 		}
 
 		//ジャンプ
@@ -224,9 +240,7 @@ void UpdatePlayer(void)
 
 		//当たり判定
 		g_player.bJump = !CollisionBlock();
-		//CollisionWall();
 		CollisionEnemy();
-		//CollisionPolygon();
 
 		//地面との判定
 		if (g_player.pos.y <= 0)
