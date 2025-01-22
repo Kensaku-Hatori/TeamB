@@ -40,7 +40,6 @@ void InitPlayer(void)
 	g_player.rotDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.nIdxShadow = SetShadow(g_player.pos, g_player.rot);//影
 	g_player.type = PLAYERTYPE_HITO;
-	g_player.fSpeed = PLAYER_SPEED;
 	g_player.nJump = PLAYER_JUMP;
 	//モーション関連
 	g_player.motionType = MOTIONTYPE_NEUTRAL;
@@ -52,6 +51,11 @@ void InitPlayer(void)
 
 	g_player.bJump = false;//ジャンプ
 	g_player.bUse = true;
+
+	//基礎ステータス
+	g_player.Status.nHP = PLAYER_HP;
+	g_player.Status.nMP = PLAYER_MP;
+	g_player.Status.fSpeed = PLAYER_SPEED;
 
 	LoadPlayer();
 
@@ -158,26 +162,26 @@ void UpdatePlayer(void)
 		//移動
 		if (GetKeyboardPress(DIK_D) == true)
 		{
-			g_player.move.z += sinf(pCamera->rot.y - D3DX_PI) * g_player.fSpeed;
-			g_player.move.x -= cosf(pCamera->rot.y - D3DX_PI) * g_player.fSpeed;
+			g_player.move.z += sinf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
+			g_player.move.x -= cosf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y - D3DX_PI / 2;
 		}
 		if (GetKeyboardPress(DIK_A) == true)
 		{
-			g_player.move.z -= sinf(pCamera->rot.y - D3DX_PI) * g_player.fSpeed;
-			g_player.move.x += cosf(pCamera->rot.y - D3DX_PI) * g_player.fSpeed;
+			g_player.move.z -= sinf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
+			g_player.move.x += cosf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y + D3DX_PI / 2;
 		}
 		if (GetKeyboardPress(DIK_W) == true)
 		{
-			g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI) * g_player.fSpeed;
-			g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI) * g_player.fSpeed;
+			g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
+			g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y - D3DX_PI;
 		}
 		if (GetKeyboardPress(DIK_S) == true)
 		{
-			g_player.move.x += sinf(pCamera->rot.y - D3DX_PI) * g_player.fSpeed;
-			g_player.move.z += cosf(pCamera->rot.y - D3DX_PI) * g_player.fSpeed;
+			g_player.move.x += sinf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
+			g_player.move.z += cosf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y;
 		}
 
@@ -193,9 +197,10 @@ void UpdatePlayer(void)
 
 		g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
 
-		if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true))
-		{
+		if (((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true)) && g_player.Status.nMP >= 50)
+		{// MPが５０以上の時
 			SetSkill(g_player.pos, g_player.move, g_player.rot);
+			g_player.Status.nMP -= 50; //MP消費
 		}
 
 		//ジャンプ

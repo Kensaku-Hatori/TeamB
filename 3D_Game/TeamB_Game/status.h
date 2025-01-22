@@ -10,7 +10,7 @@ typedef struct
 	int nHP;
 	float fPower;
 	int nMP;
-	float fSppd;
+	float fSpeed;
 
 }PlayerStatus;
 
@@ -18,7 +18,7 @@ typedef struct
 {
 	int nHP;
 	float fPower;
-	float fSppd;
+	float fSpeed;
 
 }EnemyStatus;
 

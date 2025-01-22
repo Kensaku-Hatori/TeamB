@@ -12,10 +12,13 @@
 #include "status.h"
 #include "key.h"
 
-#define PLAYER_SPEED (4)		//ボールの速度
-#define PLAYER_JUMP (5)			//ボールのジャンプ量
+#define PLAYER_JUMP (5)			//ジャンプ量
 #define PLAYER_RADIUS (3)			//プレイヤーの半径
 #define MOTIONFILE_PLAYER  ("data\\MOTION\\motion00.txt")//プレイヤーのモーションファイル
+
+#define PLAYER_MP (500)		//MP
+#define PLAYER_HP (1000)	//HP
+#define PLAYER_SPEED (4)	//速度
 
 //プレイヤーの状態
 typedef enum
@@ -50,9 +53,9 @@ typedef struct
 	PLAYERTYPE type;
 	int nIdxShadow;		//影
 	int nJump;			//ジャンプ量
-	float fSpeed;		//速度
 	bool bJump;			//ジャンプできるかどうか
 	bool bUse;
+	PlayerStatus Status;//ステータス
 	//モデル
 	MODELINFO aModel[MAX_PARTS];
 	int nNumModel;
