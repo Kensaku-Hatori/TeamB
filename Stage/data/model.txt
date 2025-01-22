@@ -35,19 +35,19 @@ NUM_MODEL = 14
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/Skeleton.x		# [0]スケルトン
-MODEL_FILENAME = data/MODEL/player.x		# [1]プレイヤー
-MODEL_FILENAME = data/MODEL/bill_01.x		# [2]ビル01
-MODEL_FILENAME = data/MODEL/bill_02.x		# [3]ビル02
-MODEL_FILENAME = data/MODEL/bill_03.x		# [4]ビル03
-MODEL_FILENAME = data/MODEL/dentyu.x		# [5]電柱
-MODEL_FILENAME = data/MODEL/rubble_01.x		# [6]瓦礫01
-MODEL_FILENAME = data/MODEL/rubble_02.x		# [7]瓦礫02
-MODEL_FILENAME = data/MODEL/rubble_03.x		# [8]瓦礫03
-MODEL_FILENAME = data/MODEL/streetlight.x	# [9]街灯
-MODEL_FILENAME = data/MODEL/fence.x			# [10]ガードレール
-MODEL_FILENAME = data/MODEL/car001.x		# [11]車01
-MODEL_FILENAME = data/MODEL/car002.x		# [12]車02
+MODEL_FILENAME = data/MODEL/Skeleton.x			# [0]スケルトン
+MODEL_FILENAME = data/MODEL/player.x			# [1]プレイヤー
+MODEL_FILENAME = data/MODEL/bill_01.x			# [2]ビル01
+MODEL_FILENAME = data/MODEL/bill_02.x			# [3]ビル02
+MODEL_FILENAME = data/MODEL/bill_03.x			# [4]ビル03
+MODEL_FILENAME = data/MODEL/dentyu.x			# [5]電柱
+MODEL_FILENAME = data/MODEL/rubble_01.x			# [6]瓦礫01
+MODEL_FILENAME = data/MODEL/rubble_02.x			# [7]瓦礫02
+MODEL_FILENAME = data/MODEL/rubble_03.x			# [8]瓦礫03
+MODEL_FILENAME = data/MODEL/streetlight.x		# [9]街灯
+MODEL_FILENAME = data/MODEL/fence.x				# [10]ガードレール
+MODEL_FILENAME = data/MODEL/car001.x			# [11]車01
+MODEL_FILENAME = data/MODEL/car002.x			# [12]車02
 MODEL_FILENAME = data/MODEL/vendingmachine.x	# [13]自販機
 
 #------------------------------------------------------------------------------
@@ -479,8 +479,8 @@ END_MODELSET
 
 MODELSET
 	TYPE = 4
-	POS = 840 90 371
-	ROT = 0 15 0
+	POS = 840 50 371
+	ROT = 0 15 30
 	SHADOW = 0
 END_MODELSET
 
@@ -724,14 +724,14 @@ END_MODELSET
 #-----------------------------------
 MODELSET
 	TYPE = 13
-	POS = 210 0 480
+	POS = 220 0 480
 	ROT = 0 90 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
 	TYPE = 13
-	POS = 219 0 441
+	POS = 220 0 441
 	ROT = 0 90 0
 	SHADOW = 0
 END_MODELSET
