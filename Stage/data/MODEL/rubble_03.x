@@ -529,7 +529,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student1\\Desktop\\a\\TeamB\\Stage\\data\\TEXTURE\\rubble_01.jpg";
+    "data\\TEXTURE\\rubble_01.jpg";
    }
   }
   Material {
