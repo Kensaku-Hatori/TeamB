@@ -43,7 +43,7 @@ void InitGame(void)
 
 	InitPolygon();
 
-	//SetTexture(cData);
+	//SetfiledTexture(cData);
 	//InitMeshfield();
 	//SetMeshfield(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 0, 0, 0, 150, 150);
 	//SetMeshfield(D3DXVECTOR3(500.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 0, 0, 0, 150, 150);

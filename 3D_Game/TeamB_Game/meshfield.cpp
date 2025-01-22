@@ -10,12 +10,12 @@
 
 //グローバル変数宣言
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffMeshfield = NULL;						//頂点情報へのポインタ
-LPDIRECT3DTEXTURE9 g_pTextureMeshfield[MAX_TEX] = {};					//テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureMeshfield[MAX_TEX_FIELD] = {};				//テクスチャへのポインタ
 LPDIRECT3DINDEXBUFFER9 g_pIdxBuffMeshField = NULL;						//インデックスバッファへのポインタ
 
 MeshField g_Meshfield[MESH_NUM_MAX];									//ポリゴン(横)の構造体
-static char texName[MAX_TEX][32] = { NULL };							//テクスチャファイル名保存用
-int maxVtx = 0, polyNum = 0, indexNum = 0;
+static char fieldtexName[MAX_TEX_FIELD][32] = { NULL };					//テクスチャファイル名保存用
+int flmaxVtx = 0, flpolyNum = 0, flindexNum = 0;								//頂点数、ポリゴン数、インデックス数保存用
 
 
 //=================================
@@ -25,9 +25,9 @@ void InitMeshfield(void)
 {
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-	maxVtx = 0.0f;
-	polyNum = 0.0f;
-	indexNum = 0.0f;
+	flmaxVtx = 0.0f;
+	flpolyNum = 0.0f;
+	flindexNum = 0.0f;
 
 	for (int nCnt = 0; nCnt < MESH_NUM_MAX; nCnt++)
 	{
@@ -45,16 +45,16 @@ void InitMeshfield(void)
 
 		//テクスチャの読込
 		D3DXCreateTextureFromFile(pDevice,
-			&texName[g_Meshfield[nCnt].textype][0],
-			&g_pTextureMeshfield[nCnt]);
+			&fieldtexName[g_Meshfield[nCnt].textype][0],
+			&g_pTextureMeshfield[g_Meshfield[nCnt].textype]);
 
-		maxVtx += (g_Meshfield[nCnt].nDiviX + 1) * (g_Meshfield[nCnt].nDiviZ + 1);											//頂点数
-		polyNum += (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ - 1) * 2);		//ポリゴン数
-		indexNum += (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ * 2) - 1);		//インデックス
+		flmaxVtx += (g_Meshfield[nCnt].nDiviX + 1) * (g_Meshfield[nCnt].nDiviZ + 1);											//頂点数
+		flpolyNum += (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ - 1) * 2);		//ポリゴン数
+		flindexNum += (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ * 2) - 1);		//インデックス
 	}
 
 	//頂点バッファの生成
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * maxVtx,
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * flmaxVtx,
 		D3DUSAGE_WRITEONLY,
 		FVF_VERTEX_3D,
 		D3DPOOL_MANAGED,
@@ -62,7 +62,7 @@ void InitMeshfield(void)
 		NULL);
 
 	//インデックスバッファの生成
-	pDevice->CreateIndexBuffer(sizeof(WORD) * indexNum,
+	pDevice->CreateIndexBuffer(sizeof(WORD) * flindexNum,
 		D3DUSAGE_WRITEONLY,
 		D3DFMT_INDEX16,
 		D3DPOOL_MANAGED,
@@ -136,7 +136,7 @@ void InitMeshfield(void)
 void UninitMeshfield(void)
 {
 	//テクスチャの破棄
-	for (int nCnt = 0; nCnt < MAX_TEX; nCnt++)
+	for (int nCnt = 0; nCnt < MAX_TEX_FIELD; nCnt++)
 	{
 		if (g_pTextureMeshfield[nCnt] != NULL)
 		{
@@ -211,7 +211,7 @@ void DrawMeshfield(void)
 			pDevice->SetTexture(0, g_pTextureMeshfield[g_Meshfield[nCnt].textype]);
 
 			//メッシュ床を描画
-			pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, maxVtx, 0, polyNum);
+			pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, flmaxVtx, 0, flpolyNum);
 		}
 	}
 }
@@ -246,21 +246,15 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 //===============================
 // メッシュ床のテクスチャ設定処理
 //===============================
-void SetTexture(char texfileName[32])
+void SetfieldTexture(char texfileName[32])
 {
 
-	for (int nCnt = 0; nCnt < MAX_TEX; nCnt++)
+	for (int nCnt = 0; nCnt < MAX_TEX_FIELD; nCnt++)
 	{
-		if (texName[nCnt][0] == NULL)
+		if (fieldtexName[nCnt][0] == NULL)
 		{
-			strcpy(&texName[nCnt][0], &texfileName[0]);
+			strcpy(&fieldtexName[nCnt][0], &texfileName[0]);
 			break;
 		}
 	}
-
-	////ファイル格納
-	//static const char* MESHFIELD_TEXTURE[MAX_TEX] =
-	//{
-
-	//};
 }
