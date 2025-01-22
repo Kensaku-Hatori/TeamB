@@ -4,8 +4,8 @@ Format Text Ver 1.0
 Scene {
 	pos -34.8668 28.6683 28869.3281
 	lookat 0.0000 0.0000 0.0000
-	head -41.0574
-	pich 0.4608
+	head -43.9675
+	pich 0.1408
 	bank -0.9300
 	ortho 0
 	zoom2 0.2597
@@ -18,7 +18,7 @@ Scene {
 	}
 }
 Material 2 {
-	"mat1" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("C:\Users\student1\Desktop\a\TeamB\Stage\data\TEXTURE\bill_01.jpg")
+	"mat1" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("C:\Users\student\Desktop\TeamB\TeamB\Stage\data\TEXTURE\bill_01.jpg")
 	"mat2" col(0.533 0.533 0.533 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)
 }
 Object "obj1" {
