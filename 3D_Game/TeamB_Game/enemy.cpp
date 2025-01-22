@@ -337,28 +337,11 @@ void UpdateEnemy(void)
 				SetPositionShadow(g_Enemy[nCntEnemy].nIdxShadow, g_Enemy[nCntEnemy].pos, g_Enemy[nCntEnemy].bUse);
 
 				//ˆÚ“®
-				if (pPlayer->type == PLAYERTYPE_HITO)
-				{//’Ç‚¢‚©‚¯‚é
-					//ˆÚ“®—Ê
-					g_Enemy[nCntEnemy].move.x = (pPlayer->pos.x - g_Enemy[nCntEnemy].pos.x) * 0.01f;
-					g_Enemy[nCntEnemy].move.z = (pPlayer->pos.z - g_Enemy[nCntEnemy].pos.z) * 0.01f;
+				//ˆÚ“®—Ê
+				g_Enemy[nCntEnemy].move.x = (pPlayer->pos.x - g_Enemy[nCntEnemy].pos.x) * 0.01f;
+				g_Enemy[nCntEnemy].move.z = (pPlayer->pos.z - g_Enemy[nCntEnemy].pos.z) * 0.01f;
 
-					g_Enemy[nCntEnemy].rotDest.y = pPlayer->rot.y - D3DX_PI;
-				}
-				else if (pPlayer->type == PLAYERTYPE_BALL)
-				{//“¦‚°‚é
-					//ˆÚ“®—Ê
-					g_Enemy[nCntEnemy].move.x = (pPlayer->pos.x - g_Enemy[nCntEnemy].pos.x) * -0.017f;
-					g_Enemy[nCntEnemy].move.z = (pPlayer->pos.z - g_Enemy[nCntEnemy].pos.z) * -0.017f;
-					g_Enemy[nCntEnemy].rotDest.y = pPlayer->rot.y - D3DX_PI;
-				}
-				else if (pPlayer->type == PLAYERTYPE_SUPERBALL)
-				{//“¦‚°‚é
-					//ˆÚ“®—Ê
-					g_Enemy[nCntEnemy].move.x = (pPlayer->pos.x - g_Enemy[nCntEnemy].pos.x) * -0.005f;
-					g_Enemy[nCntEnemy].move.z = (pPlayer->pos.z - g_Enemy[nCntEnemy].pos.z) * -0.005f;
-					g_Enemy[nCntEnemy].rotDest.y = pPlayer->rot.y - D3DX_PI;
-				}
+				g_Enemy[nCntEnemy].rotDest.y = pPlayer->rot.y - D3DX_PI;
 				////Šp“x‚Ì³‹K‰»
 				//if (g_Enemy[nCntEnemy].rotDest.y > D3DX_PI / 2)
 				//{
@@ -585,27 +568,16 @@ void CollisionEnemy(void)
 
 			if (g_Enemy[nCntEnemy].fDistance <= RADIUS)
 			{
-				if (pPlayer->type == PLAYERTYPE_BALL || pPlayer->type == PLAYERTYPE_SUPERBALL)
+				if (g_Enemy[nCntEnemy].bDamage == false)
 				{
-					if (g_Enemy[nCntEnemy].bDamage == false)
-					{
-						SetParticle(D3DXVECTOR3(g_Enemy[nCntEnemy].pos.x, g_Enemy[nCntEnemy].pos.y + 20.0f, g_Enemy[nCntEnemy].pos.z));
+					SetParticle(D3DXVECTOR3(g_Enemy[nCntEnemy].pos.x, g_Enemy[nCntEnemy].pos.y + 20.0f, g_Enemy[nCntEnemy].pos.z));
 
-						g_Enemy[nCntEnemy].move.y += 8.0f;
+					g_Enemy[nCntEnemy].move.y += 8.0f;
 
-						g_Enemy[nCntEnemy].nLife--;
+					g_Enemy[nCntEnemy].nLife--;
 
-						if (pPlayer->type == PLAYERTYPE_SUPERBALL)
-						{
-							g_Enemy[nCntEnemy].nLife -= 10;
-						}
-						g_Enemy[nCntEnemy].bDamage = true;
-					}
-				}
-				else if (pPlayer->type == PLAYERTYPE_HITO)
-				{
-					AddScore(-1);
-				}
+					g_Enemy[nCntEnemy].bDamage = true;
+				}		
 			}
 		}
 	}

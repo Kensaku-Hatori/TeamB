@@ -13,21 +13,12 @@
 #include "key.h"
 
 #define PLAYER_JUMP (5)			//ジャンプ量
-#define PLAYER_RADIUS (3)			//プレイヤーの半径
+#define PLAYER_RADIUS (3)		//プレイヤーの半径
 #define MOTIONFILE_PLAYER  ("data\\MOTION\\motion00.txt")//プレイヤーのモーションファイル
 
 #define PLAYER_MP (500)		//MP
 #define PLAYER_HP (1000)	//HP
 #define PLAYER_SPEED (4)	//速度
-
-//プレイヤーの状態
-typedef enum
-{
-	PLAYERTYPE_HITO = 0,
-	PLAYERTYPE_BALL,
-	PLAYERTYPE_SUPERBALL,
-	PLAYERTYPE_MAX
-}PLAYERTYPE;
 
 //モーションの種類
 typedef enum
@@ -50,7 +41,6 @@ typedef struct
 	D3DXVECTOR3 rot;	//向き
 	D3DXVECTOR3 rotDest;//向き
 	D3DXMATRIX mtxWorld;//ワールドマトリックス
-	PLAYERTYPE type;
 	int nIdxShadow;		//影
 	int nJump;			//ジャンプ量
 	bool bJump;			//ジャンプできるかどうか
