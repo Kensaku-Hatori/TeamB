@@ -9,8 +9,8 @@
 
 #include"main.h"
 
-#define MAX_SCORE (8)
-#define SCOREDATA (10000000)
+#define MAX_SCORE (6)
+#define SCOREDATA (100000)
 
 //プロトタイプ宣言
 void InitScore(void);

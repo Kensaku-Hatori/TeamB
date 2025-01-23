@@ -41,7 +41,7 @@ void InitTimer(void)
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
 
-	g_posTimer = D3DXVECTOR3(500.0f, 0.0f, 0.0f);
+	g_posTimer = D3DXVECTOR3(550.0f, 0.0f, 0.0f);
 
 	//分タイマー
 	g_nMinutes = 0;

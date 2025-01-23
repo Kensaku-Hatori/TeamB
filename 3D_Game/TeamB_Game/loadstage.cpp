@@ -65,6 +65,8 @@ void LoadStart(FILE* pFile)
 	char *cData2[32] = { NULL };
 	int nData;
 	char *FilePath[32];
+	char FilePathPoly[MAX_FILEPATH][64];
+	char FilePathModel[MAX_FILEPATH][64];
 	NTYPE nType = { NULL };
 	int ModelPathCount = 0;
 	int PolygonePathCount = 0;
@@ -85,6 +87,7 @@ void LoadStart(FILE* pFile)
 			{
 				SkipEqual(pFile);
 				FilePath[0] = LoadPath(pFile);
+				strcpy(&FilePathPoly[PolygonePathCount][0],FilePath[0]);
 				if (PolygonePathCount < nType.nPolygoneType)
 				{
 					PolygonePathCount++;
@@ -100,6 +103,7 @@ void LoadStart(FILE* pFile)
 			{
 				SkipEqual(pFile);
 				FilePath[0] = LoadPath(pFile);
+				strcpy(&FilePathModel[ModelPathCount][0], FilePath[0]);
 				if (ModelPathCount < nType.nModelType)
 				{
 					ModelPathCount++;
@@ -225,13 +229,9 @@ void LoadStart(FILE* pFile)
 void SkipEqual(FILE* pFile)
 {
 	int nData;
-	char cData;
 	nData = fgetc(pFile);
-	cData = (char)nData;
 	nData = fgetc(pFile);
-	cData = (char)nData;
 	nData = fgetc(pFile);
-	cData = (char)nData;
 }
 //***************************
 // 整数を読み込む処理
@@ -321,7 +321,7 @@ char *LoadPath(FILE* pFile)
 	return &filepath[0];
 }
 //*************************************
-// 空白以外が読み込めるまで読み込む処理
+// カメラ情報を読み込む処理
 //*************************************
 char* LoadCameraInfo(FILE* pFile)
 {
@@ -369,7 +369,7 @@ char* LoadCameraInfo(FILE* pFile)
 	return &cData1[0];
 }
 //*************************************
-// 空白以外が読み込めるまで読み込む処理
+// ライト情報を読み込む処理
 //*************************************
 char* LoadLightInfo(FILE* pFile)
 {
@@ -417,7 +417,7 @@ char* LoadLightInfo(FILE* pFile)
 	return &cData1[0];
 }
 //*************************************
-// 空白以外が読み込めるまで読み込む処理
+// 空情報を読み込む処理
 //*************************************
 char* LoadSkyInfo(FILE* pFile)
 {
@@ -462,7 +462,7 @@ char* LoadSkyInfo(FILE* pFile)
 	return &cData1[0];
 }
 //*************************************
-// 空白以外が読み込めるまで読み込む処理
+// 山情報を読み込む処理
 //*************************************
 char* LoadMountInfo(FILE* pFile)
 {
@@ -500,15 +500,16 @@ char* LoadMountInfo(FILE* pFile)
 	return &cData1[0];
 }
 //*************************************
-// 空白以外が読み込めるまで読み込む処理
+// 地面情報を読み込む処理
 //*************************************
 char* LoadFieldInfo(FILE* pFile)
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
 	char cData2[64] = { NULL };
-	int nData;
-	float fData;
+	D3DXVECTOR3 Pos,Rot;
+	D3DXVECTOR2 Block, Size;
+	int nType;
 
 	while (1)
 	{
@@ -528,37 +529,37 @@ char* LoadFieldInfo(FILE* pFile)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
+				Pos.x = LoadFloat(pFile);
+				Pos.y = LoadFloat(pFile);
+				Pos.z = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "ROT") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
+				Rot.x = LoadFloat(pFile);
+				Rot.y = LoadFloat(pFile);
+				Rot.z = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "BLOCK") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				nData = LoadInt(pFile);
-				nData = LoadInt(pFile);
+				Block.x = (float)LoadInt(pFile);
+				Block.y = (float)LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "SIZE") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				nData = LoadInt(pFile);
-				nData = LoadInt(pFile);
+				Size.x = (float)LoadInt(pFile);
+				Size.y = (float)LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "TEXTYPE") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				nData = LoadInt(pFile);
+				nType = LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "END_FIELDSET") == 0)
 			{
@@ -569,15 +570,16 @@ char* LoadFieldInfo(FILE* pFile)
 	return &cData1[0];
 }
 //*************************************
-// 空白以外が読み込めるまで読み込む処理
+// 壁情報を読み込む処理
 //*************************************
 char* LoadWallInfo(FILE* pFile)
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
 	char cData2[64] = { NULL };
-	int nData;
-	float fData;
+	D3DXVECTOR3 Pos, Rot;
+	D3DXVECTOR2 Block, Size;
+	int nType;
 
 	while (1)
 	{
@@ -597,37 +599,37 @@ char* LoadWallInfo(FILE* pFile)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
+				Pos.x = LoadFloat(pFile);
+				Pos.y = LoadFloat(pFile);
+				Pos.z = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "ROT") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
+				Rot.x = LoadFloat(pFile);
+				Rot.y = LoadFloat(pFile);
+				Rot.z = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "BLOCK") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				nData = LoadInt(pFile);
-				nData = LoadInt(pFile);
+				Block.x = (float)LoadInt(pFile);
+				Block.y = (float)LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "SIZE") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				nData = LoadInt(pFile);
-				nData = LoadInt(pFile);
+				Size.x = (float)LoadInt(pFile);
+				Size.y = (float)LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "TEXTYPE") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				nData = LoadInt(pFile);
+				nType = LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "END_WALLSET") == 0)
 			{
@@ -638,15 +640,16 @@ char* LoadWallInfo(FILE* pFile)
 	return &cData1[0];
 }
 //*************************************
-// 空白以外が読み込めるまで読み込む処理
+// モデル情報を読み込む処理
 //*************************************
 char* LoadModelInfo(FILE* pFile)
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
 	char cData2[64] = { NULL };
-	int nData;
-	float fData;
+	D3DXVECTOR3 Pos, Rot;
+	bool bShadow;
+	int nType;
 
 	while (1)
 	{
@@ -666,29 +669,29 @@ char* LoadModelInfo(FILE* pFile)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
+				Pos.x = LoadFloat(pFile);
+				Pos.y = LoadFloat(pFile);
+				Pos.z = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "ROT") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
+				Rot.x = LoadFloat(pFile);
+				Rot.y = LoadFloat(pFile);
+				Rot.z = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "TYPE") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				nData = LoadInt(pFile);
+				nType = LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "SHADOW") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				nData = LoadInt(pFile);
+				bShadow = LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "END_MODELSET") == 0)
 			{
@@ -699,15 +702,16 @@ char* LoadModelInfo(FILE* pFile)
 	return &cData1[0];
 }
 //*************************************
-// 空白以外が読み込めるまで読み込む処理
+// ビルボード情報を読み込む処理
 //*************************************
 char* LoadBillBoardInfo(FILE* pFile)
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
 	char cData2[64] = { NULL };
-	int nData;
-	float fData;
+	D3DXVECTOR3 Pos;
+	D3DXVECTOR2 Size, Origin;
+	int nType;
 
 	while (1)
 	{
@@ -727,29 +731,29 @@ char* LoadBillBoardInfo(FILE* pFile)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
+				Pos.x = LoadFloat(pFile);
+				Pos.y = LoadFloat(pFile);
+				Pos.z = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "SIZE") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				nData = LoadInt(pFile);
-				nData = LoadInt(pFile);
+				Size.x = (float)LoadInt(pFile);
+				Size.y = (float)LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "TEXTYPE") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				nData = LoadInt(pFile);
+				nType = LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "ORIGIN") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				nData = LoadInt(pFile);
-				nData = LoadInt(pFile);
+				Origin.x = (float)LoadInt(pFile);
+				Origin.y = (float)LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "END_BILLBOARDSET") == 0)
 			{
@@ -768,7 +772,8 @@ char* LoadPlayerInfo(FILE* pFile)
 	char cData1[128] = { NULL };
 	char cData2[64] = { NULL };
 	char *cData3[64] = { NULL };
-	float fData;
+	D3DXVECTOR3 Pos,Rot;
+	char cFileName[32];
 
 	while (1)
 	{
@@ -788,24 +793,25 @@ char* LoadPlayerInfo(FILE* pFile)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
+				Pos.x = LoadFloat(pFile);
+				Pos.y = LoadFloat(pFile);
+				Pos.z = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "ROT") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
+				Rot.x = LoadFloat(pFile);
+				Rot.y = LoadFloat(pFile);
+				Rot.z = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "MOTION_FILENAME") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				cData3[0] = LoadPath(pFile);
-				LoadMotionViewer(cData3[0]);
+				strcpy(cFileName, cData3[0]);
+				LoadMotionViewer(cFileName);
 			}
 			else if (strcmp(&cData1[0], "END_PLAYERSET") == 0)
 			{

@@ -4,32 +4,30 @@
 // Author:kaiti
 //
 //===================================
+
 #ifndef _MESHWALL_H
 #define _MESHWALL_H_
 
 #include "main.h"
 
 //マクロ定義
-#define WALLMESHVTX_X (50)//横
-#define WALLMESHVTX_Y (50)//縦
-
-#define WALLMAX_VTX ((WALLMESHVTX_X + 1) * (WALLMESHVTX_Y + 1))//頂点数
-
-#define WALLPOLYGON_NO (WALLMESHVTX_X * WALLMESHVTX_Y * 2 + (WALLMESHVTX_Y - 1) * 4)//ポリゴン数
-
-#define WALLINDEX_NO ((WALLMESHVTX_X + 1) * 2 * WALLMESHVTX_Y + (WALLMESHVTX_Y - 1) * 2)//インデックス数
-
-#define WALLMESH_SIZE (150.0f)
-
 #define MAX_MESHWALL (4)
+#define MAX_TEX_WALL (16)
 
 //影の構造体
 typedef struct
 {
-	D3DXVECTOR3 pos;//位置
-	D3DXVECTOR3 rot;//向き
-	D3DXMATRIX mtxWorld;//ワールドマトリックス
-	bool bUse;
+	D3DXVECTOR3 pos;						//位置
+	D3DXVECTOR3 rot;						//向き
+	D3DXMATRIX mtxWorld;					//ワールドマトリックス
+	int textype;							//テクスチャのタイプ
+	int nDiviX;								//分割数x
+	int nDiviY;								//分割数y
+	int nDiviZ;								//分割数z
+	int nWidth;								//幅
+	int nHeight;							//高さ
+	int nIndex;								//インテックス保存用
+	bool bUse;								//使用しているかどうか
 }MeshWall;
 
 //プロトタイプ宣言
@@ -37,6 +35,7 @@ void InitMeshWall(void);
 void UninitMeshWall(void);
 void UpdateMeshWall(void);
 void DrawMeshWall(void);
-void SetMeshWall(D3DXVECTOR3 pos, D3DXVECTOR3 rot);
+void SetMeshWall(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX, int nDiviY, int nDiviZ, int fWidth, int fHeight);
+void SetwallTexture(char texfileName[32]);		//テクスチャ設定
 
 #endif
