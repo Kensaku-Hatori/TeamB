@@ -41,9 +41,10 @@ void InitGame(void)
 {
 	InitPolygon();
 
-	//InitMeshfield();
-	//SetMeshfield(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 0, 0, 0, 150, 150);
-	//SetMeshfield(D3DXVECTOR3(500.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 0, 0, 0, 150, 150);
+	InitMeshfield();
+
+	SetMeshfield(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 3, 0, 2, 200, 200);
+	SetMeshfield(D3DXVECTOR3(200.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 1, 0, 1, 100, 100);
 
 
 	InitShadow();
@@ -101,7 +102,7 @@ void UninitGame(void)
 	//UninitBlock();
 
 	UninitPolygon();
-	//UninitMeshfield();
+	UninitMeshfield();
 
 	//UninitExplosion();
 
@@ -137,7 +138,7 @@ void UpdateGame(void)
 		else if (g_bPause == false)
 		{
 			UpdatePolygon();
-			//UpdateMeshfield();
+			UpdateMeshfield();
 
 			UpdateShadow();
 
@@ -226,8 +227,8 @@ void DrawGame(void)
 {
 	SetCamera();
 
-	DrawPolygon();
-	//DrawMeshfield();
+	//DrawPolygon();
+	DrawMeshfield();
 
 	DrawShadow();
 
