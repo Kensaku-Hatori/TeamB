@@ -131,7 +131,7 @@ void DrawMeshfield(void)
 			pDevice->SetTexture(0, g_pTextureMeshfield[g_Meshfield[nCnt].textype]);
 
 			//ƒƒbƒVƒ…°‚ð•`‰æ
-			pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, flmaxVtx, g_Meshfield[nCnt].nIndex + 1, flpolyNum);
+			pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, flmaxVtx, 0, flpolyNum);
 		}
 	}
 }

@@ -44,7 +44,7 @@ void InitGame(void)
 	InitMeshfield();
 
 	SetMeshfield(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 3, 0, 2, 200, 200);
-	SetMeshfield(D3DXVECTOR3(200.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 1, 0, 1, 100, 100);
+	//SetMeshfield(D3DXVECTOR3(200.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 1, 0, 1, 100, 100);
 
 
 	InitShadow();
