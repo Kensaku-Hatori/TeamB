@@ -447,3 +447,43 @@ void offWireFrame()
 {
 	g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
+//*******************************
+// ƒ‰ƒWƒAƒ“’l‚©‚çPI‚É•ÏŠ·‚·‚éˆ—
+//*******************************
+D3DXVECTOR3* PitoRadian(D3DXVECTOR3* rot)
+{
+	// ƒ‰ƒWƒAƒ“’l‚©‚çPI‚É•ÏŠ·
+	rot->x = rot->x * TOPI;
+	rot->y = rot->y * TOPI;
+	rot->z = rot->z * TOPI;
+
+	// Šp“x‚Ì³‹K‰»(X)
+	if (rot->x >= D3DX_PI)
+	{
+		rot->x += D3DX_PI * 2.0f;
+	}
+	else if (rot->x <= -D3DX_PI)
+	{
+		rot->x -= D3DX_PI * 2.0f;
+	}
+	// Šp“x‚Ì³‹K‰»(Y)
+	if (rot->y >= D3DX_PI)
+	{
+		rot->y += D3DX_PI * 2.0f;
+	}
+	else if (rot->y <= -D3DX_PI)
+	{
+		rot->y -= D3DX_PI * 2.0f;
+	}
+	// Šp“x‚Ì³‹K‰»(Z)
+	if (rot->z >= D3DX_PI)
+	{
+		rot->z += D3DX_PI * 2.0f;
+	}
+	else if (rot->z <= -D3DX_PI)
+	{
+		rot->z -= D3DX_PI * 2.0f;
+	}
+
+	return rot;
+}

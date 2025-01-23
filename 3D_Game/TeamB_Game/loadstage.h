@@ -44,5 +44,5 @@ char* LoadFieldInfo(FILE* pFile);		// 地面情報を読み込む処理
 char* LoadWallInfo(FILE* pFile);		// 壁情報を読み込む処理
 char* LoadModelInfo(FILE* pFile);		// モデル情報を読み込む処理
 char* LoadBillBoardInfo(FILE* pFile);	// ビルボード情報を読み込む処理
-char* LoadPlayerInfo(FILE* pFile);	// プレイヤー情報を読み込む処理
+char* LoadPlayerInfo(FILE* pFile);		// プレイヤー情報を読み込む処理
 #endif // !LOADSTAGE_H_

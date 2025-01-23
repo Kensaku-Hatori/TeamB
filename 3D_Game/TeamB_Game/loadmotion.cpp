@@ -116,7 +116,7 @@ void LoadMotionStart(FILE* pFile)
 	}
 }
 //*************************************
-// 空白以外が読み込めるまで読み込む処理
+// キャラクター情報を読み込む処理
 //*************************************
 char* LoadCharactorInfo(FILE* pFile,int *nCharactor,int *nParts,MODELINFO *ModelInfo)
 {
@@ -193,7 +193,7 @@ char* LoadCharactorInfo(FILE* pFile,int *nCharactor,int *nParts,MODELINFO *Model
 	return &cData1[0];
 }
 //*************************
-// カメラ情報を読み込む処理
+// パーツ情報を読み込む処理
 //*************************
 char* LoadPartsInfo(FILE* pFile,int *Parts,MODELINFO *ModelInfo)
 {
@@ -253,7 +253,7 @@ char* LoadPartsInfo(FILE* pFile,int *Parts,MODELINFO *ModelInfo)
 	return &cData1[0];
 }
 //*************************************
-// 空白以外が読み込めるまで読み込む処理
+// モーション情報を読み込む処理
 //*************************************
 char* LoadMotionInfo(FILE* pFile,int *Motion,int *Key, int* nKeyParts,MOTIONINFO *MotionInfo)
 {
@@ -355,7 +355,7 @@ char* LoadMotionInfo(FILE* pFile,int *Motion,int *Key, int* nKeyParts,MOTIONINFO
 	return &cData1[0];
 }
 //*****************************
-// モーション情報を読み込む処理
+// キー情報を読み込む処理
 //*****************************
 char* LoadKeyInfo(FILE* pFile, int* nKey, int* nKeyParts, MOTIONINFO* Motion)
 {
@@ -410,7 +410,7 @@ char* LoadKeyInfo(FILE* pFile, int* nKey, int* nKeyParts, MOTIONINFO* Motion)
 	return &cData1[0];
 }
 //*************************************
-// 空白以外が読み込めるまで読み込む処理
+// パーツごとのキー情報を読み込む処理
 //*************************************
 char* LoadKeyPartsInfo(FILE* pFile,int *nKey,int* nKeyParts,MOTIONINFO *MotionInfo)
 {

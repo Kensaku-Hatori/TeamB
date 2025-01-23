@@ -36,6 +36,7 @@
 #define FVF_VERTEX_2D (D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1)
 #define FVF_VERTEX_3D (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_TEX1)//座標・法線・カラー・テクスチャ
 #define MAX_WORD (4096)
+#define TOPI (float)(0.0174f)
 
 //頂点情報(2D)の構造体
 typedef struct
@@ -75,5 +76,5 @@ void offWireFrame();
 void SetMode(MODE mode);
 MODE GetMode(void);
 LPDIRECT3DDEVICE9 GetDevice(void);
-
+D3DXVECTOR3 *PitoRadian(D3DXVECTOR3 *rot);		// ラジアン値からPIに変換する処理
 #endif
