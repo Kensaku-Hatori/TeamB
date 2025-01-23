@@ -120,7 +120,6 @@ void InitMeshfield(void)
 				pIdx += 2;
 			}
 		}
-
 		//インデックスバッファのアンロック
 		g_pIdxBuffMeshField->Unlock();
 	}
@@ -238,7 +237,6 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 		}
 	}
 }
-
 //===============================
 // メッシュ床のテクスチャ設定処理
 //===============================

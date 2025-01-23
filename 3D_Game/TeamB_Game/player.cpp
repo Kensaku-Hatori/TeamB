@@ -50,7 +50,6 @@ void InitPlayer(void)
 	g_player.nNumModel = 13;//パーツの総数
 
 	g_player.bJump = false;//ジャンプ
-	g_player.bUse = true;
 
 	//基礎ステータス
 	g_player.Status.nHP = PLAYER_HP;
@@ -59,74 +58,6 @@ void InitPlayer(void)
 
 
 	g_nCntHealMP = 0;
-
-	LoadPlayer();
-
-	for (int nCnt = 0; nCnt < g_player.nNumModel; nCnt++)
-	{
-		int nNumVtx;   //頂点数
-		DWORD sizeFVF; //頂点フォーマットのサイズ
-		BYTE* pVtxBuff;//頂点バッファへのポインタ
-
-		//頂点数取得
-		nNumVtx = g_player.aModel[nCnt].pMesh->GetNumVertices();
-		//頂点フォーマットのサイズ取得
-		sizeFVF = D3DXGetFVFVertexSize(g_player.aModel[nCnt].pMesh->GetFVF());
-		//頂点バッファのロック
-		g_player.aModel[nCnt].pMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&pVtxBuff);
-
-		for (int nCnt = 0; nCnt < nNumVtx; nCnt++)
-		{
-			//頂点座標の代入
-			D3DXVECTOR3 vtx = *(D3DXVECTOR3*)pVtxBuff;
-
-			//頂点座標を比較してプレイヤーの最小値、最大値を取得
-			//最小値
-			if (vtx.x < g_vtxMinPlayer.x)
-			{
-				g_vtxMinPlayer.x = vtx.x;
-			}
-			if (vtx.y < g_vtxMinPlayer.y)
-			{
-				g_vtxMinPlayer.y = vtx.y;
-			}
-			if (vtx.z < g_vtxMinPlayer.z)
-			{
-				g_vtxMinPlayer.z = vtx.z;
-			}
-			//最大値
-			if (vtx.x > g_vtxMaxPlayer.x)
-			{
-				g_vtxMaxPlayer.x = vtx.x;
-			}
-			if (vtx.y > g_vtxMaxPlayer.y)
-			{
-				g_vtxMaxPlayer.y = vtx.y;
-			}
-			if (vtx.z > g_vtxMaxPlayer.z)
-			{
-				g_vtxMaxPlayer.z = vtx.z;
-			}
-			//頂点フォーマットのサイズ分ポインタを進める
-			pVtxBuff += sizeFVF;
-		}
-
-		g_player.size = D3DXVECTOR3(g_vtxMaxPlayer.x - g_vtxMinPlayer.x, g_vtxMaxPlayer.y - g_vtxMinPlayer.y, g_vtxMaxPlayer.z - g_vtxMinPlayer.z);
-
-		//頂点バッファのアンロック
-		g_player.aModel[nCnt].pMesh->UnlockVertexBuffer();
-
-		D3DXMATERIAL* pMat;//マテリアルへのポインタ
-		pMat = (D3DXMATERIAL*)g_player.aModel[nCnt].pBuffMat->GetBufferPointer();
-
-		for (int nCntMat = 0; nCntMat < (int)g_player.aModel[nCnt].dwNumMat; nCntMat++)
-		{
-			if (pMat[nCntMat].pTextureFilename != NULL)
-			{
-				D3DXCreateTextureFromFile(pDevice, pMat[nCntMat].pTextureFilename, &g_player.aModel[nCnt].pTexture[nCnt]); //1
-			}
-		}
-	}
 }
 //=======================
 // プレイヤーの終了処理
@@ -346,9 +277,9 @@ void DrawPlayer(void)
 			D3DXMatrixMultiply(&g_player.aModel[nCntModel].mtxWorld, &g_player.aModel[nCntModel].mtxWorld, &mtxTransModel);
 
 			//パーツの親のマトリックスの設定
-			if (g_player.aModel[nCntModel].nIdxModelParent != -1)
+			if (g_player.aModel[nCntModel].Parent != -1)
 			{
-				mtxParent = g_player.aModel[g_player.aModel[nCntModel].nIdxModelParent].mtxWorld;
+				mtxParent = g_player.aModel[g_player.aModel[nCntModel].Parent].mtxWorld;
 			}
 			else
 			{
@@ -429,7 +360,7 @@ void SetPlayerMotion(void)
 		rotMotion.z = (g_player.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fRotZ + rotSabun.z * fDis);
 
 
-		g_player.aModel[nCnt].pos += posMotion;
+		//g_player.aModel[nCnt].pos += posMotion;
 		g_player.aModel[nCnt].rot = rotMotion;
 	}
 
@@ -444,194 +375,97 @@ void SetPlayerMotion(void)
 		//g_player.motionType = MOTIONTYPE_NEUTRAL;
 	}
 }
-//=================================
-// プレイヤーのファイル読み込み
-//=================================
-void LoadPlayer(void)
+void SetMesh(char* pFilePath, int Indx)
 {
-	LPDIRECT3DDEVICE9 pDevice;
-	pDevice = GetDevice();
+	//デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	int Index;
-	int nNum_Parts;
-	int nCntModel = 0;
-	int nLoop;
-	int nCntMotion = 0;
-	int nCntParts = 0;
-	int nCntKey = 0;
+	D3DXLoadMeshFromX(pFilePath,
+		D3DXMESH_SYSTEMMEM,
+		pDevice,
+		NULL,
+		&g_player.aModel[Indx].pBuffMat,
+		NULL,
+		&g_player.aModel[Indx].dwNumMat,
+		&g_player.aModel[Indx].pMesh);
 
-	FILE* pFile;
-	pFile = fopen(MOTIONFILE_PLAYER, "r");
+		int nNumVtx;   //頂点数
+		DWORD sizeFVF; //頂点フォーマットのサイズ
+		BYTE* pVtxBuff;//頂点バッファへのポインタ
 
-	if (pFile != NULL)
+		//頂点数取得
+		nNumVtx = g_player.aModel[Indx].pMesh->GetNumVertices();
+		//頂点フォーマットのサイズ取得
+		sizeFVF = D3DXGetFVFVertexSize(g_player.aModel[Indx].pMesh->GetFVF());
+		//頂点バッファのロック
+		g_player.aModel[Indx].pMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&pVtxBuff);
+
+	for (int nCnt = 0; nCnt < nNumVtx; nCnt++)
 	{
-		char aString[MAX_WORD];
+		//頂点座標の代入
+		D3DXVECTOR3 vtx = *(D3DXVECTOR3*)pVtxBuff;
 
-		fscanf(pFile, "%s", &aString[0]);
-		if (strcmp(aString, "SCRIPT") == 0)
+		//頂点座標を比較してプレイヤーの最小値、最大値を取得
+		//最小値
+		if (vtx.x < g_vtxMinPlayer.x)
 		{
-			while (1)
-			{
-				fscanf(pFile, "%s", &aString[0]);
-
-				//モデル数
-				if (strcmp(aString, "NUM_MODEL") == 0)
-				{
-					fscanf(pFile, "%d", &g_player.nNumModel);
-				}
-				//モデルファイル名
-				else if (strcmp(aString, "MODEL_FILENAME") == 0)
-				{
-					fscanf(pFile, "%s", &aString[0]);
-
-					const char* ModelName = {};
-					ModelName = aString;
-
-					D3DXLoadMeshFromX(ModelName,
-									  D3DXMESH_SYSTEMMEM,
-									  pDevice,
-									  NULL,
-									  &g_player.aModel[nCntModel].pBuffMat,
-									  NULL,
-									  &g_player.aModel[nCntModel].dwNumMat,
-									  &g_player.aModel[nCntModel].pMesh);
-					nCntModel++;
-				}
-				//キャラクター情報
-				else if (strcmp(aString, "CHARACTERSET") == 0)
-				{
-					while (1)
-					{
-						fscanf(pFile, "%s", &aString[0]);
-
-						//パーツ数
-						if (strcmp(aString, "NUM_PARTS") == 0)
-						{
-							fscanf(pFile, "%d", &nNum_Parts);
-						}
-						//パーツ設定
-						else if (strcmp(aString, "PARTSSET") == 0)
-						{
-							while (1)
-							{
-								fscanf(pFile, "%s", &aString[0]);
-
-								//インデックス
-								if (strcmp(aString, "INDEX") == 0)
-								{
-									fscanf(pFile, "%d", &Index);
-								}
-								//親モデルのインデックス
-								else if (strcmp(aString, "PARENT") == 0)
-								{
-									fscanf(pFile, "%d", &g_player.aModel[Index].nIdxModelParent);
-								}
-								//位置
-								else if (strcmp(aString, "POS") == 0)
-								{
-									fscanf(pFile, "%f", &g_player.aModel[Index].pos.x);
-									fscanf(pFile, "%f", &g_player.aModel[Index].pos.y);
-									fscanf(pFile, "%f", &g_player.aModel[Index].pos.z);
-								}
-								//向き
-								else if (strcmp(aString, "ROT") == 0)
-								{
-									fscanf(pFile, "%f", &g_player.aModel[Index].rot.x);
-									fscanf(pFile, "%f", &g_player.aModel[Index].rot.y);
-									fscanf(pFile, "%f", &g_player.aModel[Index].rot.z);
-								}
-								else if (strcmp(aString, "END_PARTSSET") == 0)
-								{
-									break;
-								}
-							}
-						}
-						else if (strcmp(aString, "END_CHARACTERSET") == 0)
-						{
-							break;
-						}
-					}
-				}
-				//モーション
-				else if (strcmp(aString, "MOTIONSET") == 0)
-				{
-					while (1)
-					{
-						fscanf(pFile, "%s", &aString[0]);
-						//ループ			
-						if (strcmp(aString, "LOOP") == 0)
-						{
-							fscanf(pFile, "%d", &nLoop);
-						}
-						//キー数
-						else if (strcmp(aString, "NUM_KEY") == 0)
-						{
-							fscanf(pFile, "%d", &g_player.aMotionInfo[nCntMotion].nNumKey);
-						}
-						//キー情報
-						else if (strcmp(aString, "KEYSET") == 0)
-						{
-							while (1)
-							{
-								fscanf(pFile, "%s", &aString[0]);
-								//フレーム数
-								if (strcmp(aString, "FRAME") == 0)
-								{
-									fscanf(pFile, "%d", &g_player.aMotionInfo[nCntMotion].aKeyInfo[nCntKey].nFrame);								
-								}
-								//キー
-								else if (strcmp(aString, "KEY") == 0)
-								{
-									while (1)
-									{
-										fscanf(pFile, "%s", &aString[0]);
-										//位置
-										if (strcmp(aString, "POS") == 0)
-										{
-											fscanf(pFile, "%f", &g_player.aMotionInfo[nCntMotion].aKeyInfo[nCntKey].aKey[nCntParts].fPosX);
-											fscanf(pFile, "%f", &g_player.aMotionInfo[nCntMotion].aKeyInfo[nCntKey].aKey[nCntParts].fPosY);
-											fscanf(pFile, "%f", &g_player.aMotionInfo[nCntMotion].aKeyInfo[nCntKey].aKey[nCntParts].fPosZ);
-										}
-										//向き
-										else if (strcmp(aString, "ROT") == 0)
-										{
-											fscanf(pFile, "%f", &g_player.aMotionInfo[nCntMotion].aKeyInfo[nCntKey].aKey[nCntParts].fRotX);
-											fscanf(pFile, "%f", &g_player.aMotionInfo[nCntMotion].aKeyInfo[nCntKey].aKey[nCntParts].fRotY);
-											fscanf(pFile, "%f", &g_player.aMotionInfo[nCntMotion].aKeyInfo[nCntKey].aKey[nCntParts].fRotZ);
-										}
-										else if (strcmp(aString, "END_KEY") == 0)
-										{
-											nCntParts++;
-											break;
-										}
-									}
-								}
-								else if (strcmp(aString, "END_KEYSET") == 0)
-								{
-									nCntKey++;
-									nCntParts = 0;
-									break;
-								}
-							}
-						}
-						else if (strcmp(aString, "END_MOTIONSET") == 0)
-						{
-							nCntMotion++;
-							nCntKey = 0;
-							break;
-						}
-					}
-				}
-				else if (strcmp(aString, "END_SCRIPT") == 0)
-				{
-					break;
-				}
-			}
-		}		
-		fclose(pFile);//ファイルを閉じる
+			g_vtxMinPlayer.x = vtx.x;
+		}
+		if (vtx.y < g_vtxMinPlayer.y)
+		{
+			g_vtxMinPlayer.y = vtx.y;
+		}
+		if (vtx.z < g_vtxMinPlayer.z)
+		{
+			g_vtxMinPlayer.z = vtx.z;
+		}
+		//最大値
+		if (vtx.x > g_vtxMaxPlayer.x)
+		{
+			g_vtxMaxPlayer.x = vtx.x;
+		}
+		if (vtx.y > g_vtxMaxPlayer.y)
+		{
+			g_vtxMaxPlayer.y = vtx.y;
+		}
+		if (vtx.z > g_vtxMaxPlayer.z)
+		{
+			g_vtxMaxPlayer.z = vtx.z;
+		}
+		//頂点フォーマットのサイズ分ポインタを進める
+		pVtxBuff += sizeFVF;
 	}
-	else
+
+	g_player.size = D3DXVECTOR3(g_vtxMaxPlayer.x - g_vtxMinPlayer.x, g_vtxMaxPlayer.y - g_vtxMinPlayer.y, g_vtxMaxPlayer.z - g_vtxMinPlayer.z);
+
+	//頂点バッファのアンロック
+	g_player.aModel[Indx].pMesh->UnlockVertexBuffer();
+
+	D3DXMATERIAL* pMat;//マテリアルへのポインタ
+	pMat = (D3DXMATERIAL*)g_player.aModel[Indx].pBuffMat->GetBufferPointer();
+
+	for (int nCntMat = 0; nCntMat < (int)g_player.aModel[Indx].dwNumMat; nCntMat++)
 	{
-		return;
+		if (pMat[nCntMat].pTextureFilename != NULL)
+		{
+			D3DXCreateTextureFromFile(pDevice, pMat[nCntMat].pTextureFilename, &g_player.aModel[Indx].pTexture[Indx]); //1
+		}
+	}
+	g_player.bUse = true;
+}
+void SetPartsInfo(MODELINFO ModelInfo,int Indx)
+{
+	g_player.aModel[Indx].nIndx = ModelInfo.nIndx;
+	g_player.aModel[Indx].Parent = ModelInfo.Parent;
+	g_player.aModel[Indx].pos = ModelInfo.pos;
+	g_player.aModel[Indx].rot = ModelInfo.rot;
+	g_player.aModel[Indx].size = ModelInfo.size;
+	int i = 0;
+}
+void PlayerMotion(MOTIONINFO *pMotionInfo)
+{
+	for (int MotionCount = 0; MotionCount < MOTIONTYPE_MAX; MotionCount++, pMotionInfo++)
+	{
+		g_player.aMotionInfo[MotionCount] = *pMotionInfo;
 	}
 }

@@ -16,7 +16,7 @@ void LoadMotionViewer(char *cMotionPath);	// スクリプト以前を読み込む処理
 void LoadMotionStart(FILE* pFile);			// スクリプト以降の読み込み処理
 
 char* LoadCharactorInfo(FILE* pFile,int *nCharactor, int* nParts, MODELINFO*Model);				// キャラクター情報を読み込む処理
-char* LoadPartsInfo(FILE* pFile,int *nParts, MODELINFO* Model);									// パーツ情報を読み込む処理
+char* LoadPartsInfo(FILE* pFile,int *nParts);									// パーツ情報を読み込む処理
 char* LoadMotionInfo(FILE* pFile,int *nMotion, int* nKey, int* nKeyParts,MOTIONINFO *Motion);	// モーション情報を読み込む処理
 char* LoadKeyInfo(FILE* pFile, int* nKey, int* nKeyParts, MOTIONINFO* Motion);					// キー情報を読み込む処理
 char* LoadKeyPartsInfo(FILE* pFile,int *nKey,int *nKeyParts, MOTIONINFO* Motion);				// パーツごとのキー情報を読み込む処理
