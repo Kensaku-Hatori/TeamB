@@ -16,6 +16,7 @@ typedef enum
 	GAMESTATE_NORMAL,	//通常状態（ゲームプレイ中）
 	GAMESTATE_CLEAR,	//クリア
 	GAMESTATE_GAMEOVER,	//ゲームオーバー
+	GAMESTATE_EFFECTEDITER,	//ゲームオーバー
 	GAMESTATE_MAX
 }GAMESTATE;
 
