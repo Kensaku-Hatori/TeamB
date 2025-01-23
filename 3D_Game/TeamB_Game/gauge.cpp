@@ -23,7 +23,6 @@ void InitGauge(void)
 	//デバイスの取得
 	pDevice = GetDevice();
 
-
 	for (int nCnt = 0; nCnt < GAUGETYPE_MAX; nCnt++)
 	{
 		g_gauge[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -35,9 +34,6 @@ void InitGauge(void)
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\hpgauge.png", &g_pTextureGaugeBack[GAUGETYPE_HP]);	//HP 枠
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\mpgauge.png", &g_pTextureGaugeBack[GAUGETYPE_MP]);	//MP 枠
-
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\gauge02.png", &g_pTextureGauge[GAUGETYPE_HP]);	//HP
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\gauge02.jpeg", &g_pTextureGauge[GAUGETYPE_MP]); //MP
 	
 	//ゲージ
 	//頂点バッファの生成
@@ -205,11 +201,10 @@ void UpdateGauge(void)
 					pVtx[2].col = D3DCOLOR_RGBA(255, 255, 1, 255);
 					pVtx[3].col = D3DCOLOR_RGBA(255, 255, 1, 255);
 				}
-
 			}
 			else if (g_gauge[nCnt].type == GAUGETYPE_MP)
 			{
-				g_gauge[nCnt].size.x = pPlayer->Status.nMP / 1.7f;
+				g_gauge[nCnt].size.x = pPlayer->Status.nMP / 1.65f;
 
 				//頂点座標の設定
 				pVtx[0].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x, g_gauge[nCnt].pos.y - g_gauge[nCnt].size.y, 0.0f);
