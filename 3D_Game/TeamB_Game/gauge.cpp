@@ -171,7 +171,7 @@ void UpdateGauge(void)
 		{
 			if (g_gauge[nCnt].type == GAUGETYPE_HP)
 			{
-				//g_gauge[nCnt].size = D3DXVECTOR2(g_gauge[nCnt].size.x + (pPlayer->Status.nHP / 10), g_gauge[nCnt].size.y);
+				g_gauge[nCnt].size.x = pPlayer->Status.nHP / 2.85f;
 
 				//頂点座標の設定
 				pVtx[0].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x, g_gauge[nCnt].pos.y - g_gauge[nCnt].size.y, 0.0f);
@@ -181,7 +181,7 @@ void UpdateGauge(void)
 			}
 			else if (g_gauge[nCnt].type == GAUGETYPE_MP)
 			{
-				//g_gauge[nCnt].size = D3DXVECTOR2(g_gauge[nCnt].size.x + (pPlayer->Status.nMP / 10), g_gauge[nCnt].size.y);
+				g_gauge[nCnt].size.x = pPlayer->Status.nMP / 1.7f;
 
 				//頂点座標の設定
 				pVtx[0].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x, g_gauge[nCnt].pos.y - g_gauge[nCnt].size.y, 0.0f);
@@ -232,7 +232,7 @@ void DrawGauge(void)
 	//枠
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, g_pVtxBuffGaugeBack, 0, sizeof(VERTEX_2D));
-
+	
 	for (int nCnt = 0; nCnt < GAUGETYPE_MAX; nCnt++)
 	{
 		if (g_gauge[nCnt].bUse == true)
@@ -251,7 +251,6 @@ void DrawGauge(void)
 			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
 		}
 	}
-
 }
 //==================
 // ゲージの設定
@@ -270,20 +269,40 @@ void SetGauge(GAUGETYPE type, D3DXVECTOR3 pos, D3DXVECTOR2 size)
 			g_gauge[nCnt].type = type;
 			g_gauge[nCnt].pos = pos;
 
-			g_gauge[nCnt].size = D3DXVECTOR2(size.x + (PLAYER_HP / 10), size.y);
+			if (g_gauge[nCnt].type == GAUGETYPE_HP)
+			{
+				g_gauge[nCnt].size = D3DXVECTOR2(size.x + PLAYER_HP / 10, size.y);
+			}
+			else if (g_gauge[nCnt].type == GAUGETYPE_MP)
+			{
+				g_gauge[nCnt].size = D3DXVECTOR2(size.x + PLAYER_MP / 10, size.y);
+			}
 
 			g_gauge[nCnt].bUse = true;
+
 
 			//頂点座標の設定
 			pVtx[0].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x, g_gauge[nCnt].pos.y - g_gauge[nCnt].size.y, 0.0f);
 			pVtx[1].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x + g_gauge[nCnt].size.x, g_gauge[nCnt].pos.y - g_gauge[nCnt].size.y, 0.0f);
 			pVtx[2].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x, g_gauge[nCnt].pos.y + g_gauge[nCnt].size.y, 0.0f);
 			pVtx[3].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x + g_gauge[nCnt].size.x, g_gauge[nCnt].pos.y + g_gauge[nCnt].size.y, 0.0f);
-			
+
+			//サイズ調整
+			g_gauge[nCnt].pos.x += 45.f;
+			g_gauge[nCnt].size.y -= 5.0f;
+
 			break;
 		}
 		pVtx += 4;
 	}
+
 	//頂点バッファをアンロック
 	g_pVtxBuffGaugeBack->Unlock();
+}
+//=============
+// 計算処理
+//=============
+void GaugeCalculation(int nValue, GAUGETYPE type)
+{
+
 }
