@@ -23,6 +23,7 @@ void InitMeshWall(void)
 {
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	wlmaxVtx = 0, wlpolyNum = 0, wlindexNum = 0;					//頂点数、ポリゴン数、インデックス数初期化
 
 	for (int nCnt = 0; nCnt < MAX_MESHWALL; nCnt++)
 	{

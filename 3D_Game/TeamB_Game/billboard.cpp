@@ -11,6 +11,7 @@
 //グローバル変数宣言
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBiillboard = NULL;
 LPDIRECT3DTEXTURE9 g_apTextureBiillboard[MAX_BILLBOARD] = {};
+
 Biillboard g_Biillboard[MAX_BILLBOARD];
 
 //=========================
@@ -18,9 +19,8 @@ Biillboard g_Biillboard[MAX_BILLBOARD];
 //=========================
 void InitBiillboard(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;
-	//デバイスの取得ああ
-	pDevice = GetDevice();
+	//デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	for (int nCnt = 0; nCnt < MAX_BILLBOARD; nCnt++)
 	{
@@ -39,6 +39,7 @@ void InitBiillboard(void)
 		                        &g_pVtxBuffBiillboard,
 		                        NULL);
 	VERTEX_3D* pVtx = NULL;
+
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffBiillboard->Lock(0, 0, (void**)&pVtx, 0);
 
@@ -89,6 +90,7 @@ void UninitBiillboard(void)
 			g_apTextureBiillboard[nCnt] = NULL;
 		}
 	}
+
 	//頂点バッファの破棄
 	if (g_pVtxBuffBiillboard != NULL)
 	{
@@ -109,10 +111,9 @@ void UpdateBiillboard(void)
 //=======================
 void DrawBiillboard(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;
 	//デバイスの取得
-	pDevice = GetDevice();
-
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	
 	//計算用マトリックス
 	D3DXMATRIX mtxRot, mtxTrans;
 
@@ -148,7 +149,6 @@ void DrawBiillboard(void)
 			D3DXMatrixTranslation(&mtxTrans, g_Biillboard[nCnt].pos.x, g_Biillboard[nCnt].pos.y, g_Biillboard[nCnt].pos.z);
 			D3DXMatrixMultiply(&g_Biillboard[nCnt].mtxWorld, &g_Biillboard[nCnt].mtxWorld, &mtxTrans);
 
-
 			//ワールドマトリックスの設定
 			pDevice->SetTransform(D3DTS_WORLD, &g_Biillboard[nCnt].mtxWorld);
 
@@ -165,6 +165,7 @@ void DrawBiillboard(void)
 			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
 		}
 	}
+
 	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
@@ -177,8 +178,7 @@ void DrawBiillboard(void)
 //===================
 void SetBiillboard(D3DXVECTOR3 pos)
 {
-	int nCnt;
-	for (nCnt = 0; nCnt < MAX_BILLBOARD; nCnt++)
+	for (int nCnt = 0; nCnt < MAX_BILLBOARD; nCnt++)
 	{
 		if (g_Biillboard[nCnt].bUse == false)
 		{

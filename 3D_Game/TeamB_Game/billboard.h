@@ -14,8 +14,8 @@
 //ビルボードの構造体
 typedef struct
 {
-	D3DXVECTOR3 pos;	//位置
-	D3DXMATRIX mtxWorld;//ワールドマトリックス
+	D3DXVECTOR3 pos;				//位置
+	D3DXMATRIX mtxWorld;			//ワールドマトリックス
 	bool bUse;
 }Biillboard;
 

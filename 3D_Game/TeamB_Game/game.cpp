@@ -17,7 +17,7 @@
 //#include "explosion.h"
 //#include "effect.h"
 //#include "block.h"
-//#include "meshwall.h"
+#include "meshwall.h"
 //#include "meshcylinder.h"
 #include "meshfield.h"
 #include "fade.h"

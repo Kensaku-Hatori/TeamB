@@ -248,7 +248,6 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 //===============================
 void SetfieldTexture(char texfileName[32])
 {
-
 	for (int nCnt = 0; nCnt < MAX_TEX_FIELD; nCnt++)
 	{
 		if (fieldtexName[nCnt][0] == NULL)
