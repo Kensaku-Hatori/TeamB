@@ -570,8 +570,6 @@ void CollisionEnemy(void)
 			{
 				if (g_Enemy[nCntEnemy].bDamage == false)
 				{
-					SetParticle(D3DXVECTOR3(g_Enemy[nCntEnemy].pos.x, g_Enemy[nCntEnemy].pos.y + 20.0f, g_Enemy[nCntEnemy].pos.z));
-
 					g_Enemy[nCntEnemy].move.y += 8.0f;
 
 					g_Enemy[nCntEnemy].nLife--;

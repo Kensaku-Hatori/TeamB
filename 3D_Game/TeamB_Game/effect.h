@@ -1,42 +1,56 @@
-//================================
-//
-// エフェクト処理[Effect.h]
-// Author:kaiti
-//
-//================================
-#ifndef _EFFECT_H_
-#define _EFFECT_H_
+//****************************
+// 
+// Author: HATORI
+// ポリゴン描画処理(未完成)[billboard.h]
+// 
+//****************************
+#ifndef EFFECT_H_
+#define EFFECT_H_
 
 #include "main.h"
+#include "Object.h"
+#include "shadow.h"
 
-#define MAX_EFFECT (1280)
-#define EFFECT_LIFE (25)
-#define EFFECT_SIZE (10)
+
+#define MAX_EFFECT (512)
+#define MAX_SMOKEANIM (8)
+#define SMOKEANIMSPEED (20)
+#define MAX_SMOKELENGTH (float)(2)
 
 typedef enum
 {
-	EFFECTDRAW_NUM = 0,
-	EFFECTDRAW_BILLBOARD,
-	EFFECTDRAW_MAX
-}EFFECTDRAW;
+	EFFECT_NONE = 0,
+	EFFECT_SMOKE,
+	EFFECT_MAX
+}EFFECTTYPE;
 
-//ビルボードの構造体
 typedef struct
 {
-	D3DXVECTOR3 pos;//位置
-	D3DXVECTOR3 move;//位置
-	D3DXCOLOR col;
-	D3DXMATRIX mtxWorld;//ワールドマトリックス
-	float fRadius;
-	int nLife;
+	OBJECT Object;
+	D3DXVECTOR3 Scale;
+	D3DXVECTOR3 move;
+	D3DXVECTOR3 dir;
+	EFFECTTYPE ntype;
 	bool bUse;
-}Effect;
-
-//プロトタイプ宣言
-void InitEffect(void);
-void UninitEffect(void);
-void UpdateEffect(void);
-void DrawEffect(void);
-void SetEffect(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXCOLOR color, int nLife, float fRadius);
-
-#endif
+	int IndxShadow;
+	int nLife;
+	D3DXCOLOR col;
+	int speed;
+	float alphadiff,LengthValue;
+	int AnimCount,Anim;
+	int AnimSpeed;
+}EFFECT;
+static const char* EFFECTTEX[EFFECT_MAX] =
+{
+	"data\\TEXTURE\\effect000.jpg",
+	"data\\TEXTURE\\smoke000.png",
+};
+//*****************
+// プロトタイプ宣言
+//*****************
+void InitEffect(void);		// 初期化処理
+void UninitEffect(void);	// 終了処置
+void UpdateEffect(void);	// 更新処理
+void DrawEffect(void);		// 描画処理
+void SetEffect(D3DXVECTOR3 pos, D3DXVECTOR3 dir,int nLife,int speed,D3DXVECTOR3 scale,D3DCOLOR col,EFFECTTYPE nType);
+#endif // !BILLBOARD_H_
