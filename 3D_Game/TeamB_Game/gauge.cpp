@@ -64,11 +64,22 @@ void InitGauge(void)
 		pVtx[1].rhw = 1.0f;
 		pVtx[2].rhw = 1.0f;
 		pVtx[3].rhw = 1.0f;
-		//頂点カラーの設定
-		pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		if (nCnt == GAUGETYPE_HP)
+		{
+			//頂点カラーの設定
+			pVtx[0].col = D3DCOLOR_RGBA(1, 255, 127, 255);
+			pVtx[1].col = D3DCOLOR_RGBA(1, 255, 127, 255);
+			pVtx[2].col = D3DCOLOR_RGBA(1, 255, 127, 255);
+			pVtx[3].col = D3DCOLOR_RGBA(1, 255, 127, 255);
+		}
+		if (nCnt == GAUGETYPE_MP)
+		{
+			//頂点カラーの設定
+			pVtx[0].col = D3DCOLOR_RGBA(1, 127, 255, 255);
+			pVtx[1].col = D3DCOLOR_RGBA(1, 127, 255, 255);
+			pVtx[2].col = D3DCOLOR_RGBA(1, 127, 255, 255);
+			pVtx[3].col = D3DCOLOR_RGBA(1, 127, 255, 255);
+		}
 		//テクスチャ座標の設定
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
 		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
@@ -95,7 +106,6 @@ void InitGauge(void)
 
 	for (int nCnt = 0; nCnt < GAUGETYPE_MAX; nCnt++)
 	{
-
 		//頂点座標の設定
 		pVtx[0].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		pVtx[1].pos = D3DXVECTOR3(100.0f, 0.0f, 0.0f);
@@ -178,6 +188,24 @@ void UpdateGauge(void)
 				pVtx[1].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x + g_gauge[nCnt].size.x, g_gauge[nCnt].pos.y - g_gauge[nCnt].size.y, 0.0f);
 				pVtx[2].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x, g_gauge[nCnt].pos.y + g_gauge[nCnt].size.y, 0.0f);
 				pVtx[3].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x + g_gauge[nCnt].size.x, g_gauge[nCnt].pos.y + g_gauge[nCnt].size.y, 0.0f);
+
+				if (pPlayer->Status.nHP <= PLAYER_HP / 5)
+				{//赤
+					//頂点カラーの設定
+					pVtx[0].col = D3DCOLOR_RGBA(255, 1, 1, 255);
+					pVtx[1].col = D3DCOLOR_RGBA(255, 1, 1, 255);
+					pVtx[2].col = D3DCOLOR_RGBA(255, 1, 1, 255);
+					pVtx[3].col = D3DCOLOR_RGBA(255, 1, 1, 255);
+				}
+				else if (pPlayer->Status.nHP <= PLAYER_HP / 1.5)
+				{//黄色
+					//頂点カラーの設定
+					pVtx[0].col = D3DCOLOR_RGBA(255, 255, 1, 255);
+					pVtx[1].col = D3DCOLOR_RGBA(255, 255, 1, 255);
+					pVtx[2].col = D3DCOLOR_RGBA(255, 255, 1, 255);
+					pVtx[3].col = D3DCOLOR_RGBA(255, 255, 1, 255);
+				}
+
 			}
 			else if (g_gauge[nCnt].type == GAUGETYPE_MP)
 			{

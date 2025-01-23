@@ -268,6 +268,10 @@ void UpdatePlayer(void)
 		if (KeyboardTrigger(DIK_9) == true)
 		{
 			g_player.Status.nHP -= 100;
+			if (g_player.Status.nHP <= 0)
+			{
+				g_player.Status.nHP = 0;
+			}
 		}
 #endif
 
