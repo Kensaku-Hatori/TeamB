@@ -363,7 +363,6 @@ char* LoadKeyInfo(FILE* pFile, int* nKey, int* nKeyParts, MOTIONINFO* Motion)
 	char cData1[128] = { NULL };
 	char cData2[64] = { NULL };
 	char *cData3[64] = { NULL };
-	float fData;
 
 	while (1)
 	{
@@ -417,7 +416,6 @@ char* LoadKeyPartsInfo(FILE* pFile,int *nKey,int* nKeyParts,MOTIONINFO *MotionIn
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
 	char cData2[64] = { NULL };
-	float fData;
 
 	while (1)
 	{

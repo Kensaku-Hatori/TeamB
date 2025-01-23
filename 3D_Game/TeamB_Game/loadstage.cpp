@@ -1,5 +1,6 @@
 #include "loadstage.h"
 #include "loadmotion.h"
+#include "meshfield.h"
 
 //*****************************
 // スクリプト以前を読み込む処理
@@ -88,6 +89,7 @@ void LoadStart(FILE* pFile)
 				SkipEqual(pFile);
 				FilePath[0] = LoadPath(pFile);
 				strcpy(&FilePathPoly[PolygonePathCount][0],FilePath[0]);
+				SetfieldTexture(&FilePathPoly[PolygonePathCount][0], PolygonePathCount);
 				if (PolygonePathCount < nType.nPolygoneType)
 				{
 					PolygonePathCount++;
