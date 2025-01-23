@@ -149,6 +149,7 @@
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="gauge.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="loadmotion.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="explosion.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="gauge.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="key.h" />
     <ClInclude Include="light.h" />

@@ -112,8 +112,6 @@ void UpdateSkill(void)
 	{
 		if (g_Skill[nCnt].bUse == true)
 		{
-			g_Skill[nCnt].posOld = g_Skill[nCnt].pos;
-
 			g_Skill[nCnt].pos += g_Skill[nCnt].move;
 
 			g_Skill[nCnt].move.x += sinf(g_Skill[nCnt].rot.y - D3DX_PI) * 0.5f;
@@ -127,7 +125,6 @@ void UpdateSkill(void)
 				g_Skill[nCnt].bUse = false;
 				pShadow[g_Skill[nCnt].nIdxShadow].bUse = false;
 			}
-			//SetPositionShadow(g_Skill[nCnt].nIdxShadow, g_Skill[nCnt].pos);
 		}
 	}
 }
@@ -212,53 +209,8 @@ void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot)
 			g_Skill[nCnt].move = move;
 			g_Skill[nCnt].rot = rot;
 			g_Skill[nCnt].nLife = SKILL_LIFE;
-			//g_Skill[nCnt].nIdxShadow = SetShadow(g_Skill[nCnt].pos, g_Skill[nCnt].rot);
 			g_Skill[nCnt].bUse = true;
 			break;
-		}
-	}
-}
-//=======================
-// 弾と壁の当たり判定
-//=======================
-void SkillCollisionWall(void)
-{
-	D3DXVECTOR3 aPos[2];
-
-	D3DXVECTOR3 vecLine, vecA, vecB, vecC;
-
-	Wall *pWall = GetWall();
-	Player* pPlayer = GetPlayer();
-
-	for (int nCntWall = 0; nCntWall < MAX_WALL; nCntWall++, pWall++)
-	{
-		for (int nCnt = 0; nCnt < MAX_SKILL; nCnt++)
-		{
-			if (g_Skill[nCnt].bUse == true)
-			{
-				aPos[0].x = g_Skill[nCnt].pos.x - cosf(g_Skill[nCnt].rot.y) * SKILL_SIZE;
-				aPos[0].z = g_Skill[nCnt].pos.z + sinf(g_Skill[nCnt].rot.y) * SKILL_SIZE;
-
-				aPos[1].x = g_Skill[nCnt].pos.x + cosf(g_Skill[nCnt].rot.y) * SKILL_SIZE;
-				aPos[1].z = g_Skill[nCnt].pos.z - sinf(g_Skill[nCnt].rot.y) * SKILL_SIZE;
-
-				//ベクトルライン
-				
-				//ベクトルA
-				vecA = aPos[1] - aPos[0];
-				//ベクトルB
-				vecB = pWall->pos - aPos[0];
-				//ベクトルC
-				vecC = vecB * ((vecA.x * vecB.x) + (vecA.z * vecB.z));
-
-				float fvec = (vecA.z * vecB.x) - (vecA.x * vecB.z);
-
-				if (fvec < 0)
-				{
-					g_Skill[nCnt].nLife = 0;
-					pPlayer->pos = g_Skill[nCnt].posOld;
-				}
-			}
 		}
 	}
 }
