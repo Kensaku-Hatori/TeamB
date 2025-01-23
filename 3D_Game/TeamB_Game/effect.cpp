@@ -172,10 +172,6 @@ void UpdateEffect(void)
 			{
 				g_effect[effectcount].bUse = false;
 			}
-			g_effect[effectcount].move.x = sinf(g_effect[effectcount].dir.x) * 1.0f;
-			g_effect[effectcount].move.y = sinf(g_effect[effectcount].dir.y) * 1.0f;
-			g_effect[effectcount].move.z = sinf(g_effect[effectcount].dir.z) * 1.0f;
-
 			g_effect[effectcount].Object.Pos += g_effect[effectcount].move;
 		}
 		pVtx += 4;
@@ -283,6 +279,9 @@ void SetEffect(D3DXVECTOR3 pos, D3DXVECTOR3 dir, int nLife, int speed,D3DXVECTOR
 			g_effect[effectcount].bUse = true;
 			g_effect[effectcount].Object.Pos = pos;
 			g_effect[effectcount].dir = dir;
+			g_effect[effectcount].move.x = sinf(g_effect[effectcount].dir.x) * 1.0f;
+			g_effect[effectcount].move.y = sinf(g_effect[effectcount].dir.y) * 1.0f;
+			g_effect[effectcount].move.z = sinf(g_effect[effectcount].dir.z) * 1.0f;
 			g_effect[effectcount].col = col;
 			g_effect[effectcount].Scale = scale;
 			g_effect[effectcount].ntype = nType;
