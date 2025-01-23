@@ -246,14 +246,8 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 //===============================
 // メッシュ床のテクスチャ設定処理
 //===============================
-void SetfieldTexture(char texfileName[32])
+void SetfieldTexture(char* pFileName, int TexIndx)
 {
-	for (int nCnt = 0; nCnt < MAX_TEX_FIELD; nCnt++)
-	{
-		if (fieldtexName[nCnt][0] == NULL)
-		{
-			strcpy(&fieldtexName[nCnt][0], &texfileName[0]);
-			break;
-		}
-	}
+	static char pFileName1;
+	strcpy(fieldtexName[TexIndx], pFileName);
 }

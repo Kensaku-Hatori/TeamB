@@ -114,6 +114,9 @@
     <ClCompile Include="loadmotion.cpp">
       <Filter>ソース ファイル\LoadText</Filter>
     </ClCompile>
+    <ClCompile Include="gauge.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -222,6 +225,9 @@
       <Filter>ソース ファイル\LoadText</Filter>
     </ClInclude>
     <ClInclude Include="key.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="gauge.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

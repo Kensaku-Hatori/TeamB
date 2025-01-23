@@ -17,7 +17,6 @@
 typedef struct
 {
 	D3DXVECTOR3 pos;//ˆÊ’u
-	D3DXVECTOR3 posOld;//ˆÊ’u
 	D3DXVECTOR3 move;//ˆÊ’u
 	D3DXVECTOR3 rot;//Œü‚«
 	D3DXVECTOR3 dir;//Œü‚«
@@ -32,7 +31,6 @@ void InitSkill(void);
 void UninitSkill(void);
 void UpdateSkill(void);
 void DrawSkill(void);
-void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move,D3DXVECTOR3 dir);
-void SkillCollisionWall(void);
+void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move,D3DXVECTOR3 rot);
 
 #endif
