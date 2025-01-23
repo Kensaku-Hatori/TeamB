@@ -322,10 +322,3 @@ void SetGauge(GAUGETYPE type, D3DXVECTOR3 pos, D3DXVECTOR2 size)
 	//頂点バッファをアンロック
 	g_pVtxBuffGaugeBack->Unlock();
 }
-//=============
-// 計算処理
-//=============
-void GaugeCalculation(int nValue, GAUGETYPE type)
-{
-
-}
