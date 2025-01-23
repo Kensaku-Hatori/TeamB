@@ -38,11 +38,6 @@ void InitMeshWall(void)
 		g_MeshWall[nCnt].nIndex = 0;
 		g_MeshWall[nCnt].bUse = false;
 
-		//テクスチャの設定
-		D3DXCreateTextureFromFile(pDevice,
-								&walltexName[g_MeshWall[nCnt].textype][0],
-								&g_pTextureMeshWall[g_MeshWall[nCnt].textype]);
-
 		wlmaxVtx += (g_MeshWall[nCnt].nDiviX + 1) * (g_MeshWall[nCnt].nDiviZ + 1);										//頂点数
 		wlpolyNum += (g_MeshWall[nCnt].nDiviZ * 2) * (g_MeshWall[nCnt].nDiviX + (g_MeshWall[nCnt].nDiviZ - 1) * 2);		//ポリゴン数
 		wlindexNum += (g_MeshWall[nCnt].nDiviZ * 2) * (g_MeshWall[nCnt].nDiviX + (g_MeshWall[nCnt].nDiviZ * 2) - 1);		//インデックス
@@ -231,15 +226,16 @@ void SetMeshWall(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX, int 
 //===================
 // メッシュ壁のテクスチャ設定
 //===================
-void SetwallTexture(char texfileName[32])
+void SetwallTexture(char* pFileName,int TexIndx)
 {
-	for (int nCnt = 0; nCnt < MAX_TEX_WALL; nCnt++)
-	{
-		if (walltexName[nCnt][0] == NULL)
-		{
-			strcpy(&walltexName[nCnt][0], &texfileName[0]);
-			break;
-		}
-	}
+	//デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
+	strcpy(walltexName[TexIndx], pFileName);
+
+	//テクスチャの読込
+	D3DXCreateTextureFromFile(pDevice,
+		&walltexName[TexIndx][0],
+		&g_pTextureMeshWall[TexIndx]);
 
 }

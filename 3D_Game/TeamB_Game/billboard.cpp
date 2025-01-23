@@ -10,7 +10,7 @@
 
 //グローバル変数宣言
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBiillboard = NULL;
-LPDIRECT3DTEXTURE9 g_apTextureBiillboard[MAX_BILLBOARD] = {};
+LPDIRECT3DTEXTURE9 g_apTextureBiillboard[MAX_BILLBOARD] = {NULL};
 
 Biillboard g_Biillboard[MAX_BILLBOARD];
 
@@ -131,6 +131,7 @@ void DrawBiillboard(void)
 			D3DXMatrixIdentity(&g_Biillboard[nCnt].mtxWorld);
 
 			D3DXMATRIX mtxView;
+
 			//ビューマトリックス取得
 			pDevice->GetTransform(D3DTS_VIEW, &mtxView);
 

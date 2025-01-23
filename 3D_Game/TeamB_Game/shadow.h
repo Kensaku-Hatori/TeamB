@@ -9,15 +9,17 @@
 
 #include "main.h"
 
-#define MAX_SHADOW (128)
+#define MAX_SHADOW (128)		//影の最大数
 
 //影の構造体
 typedef struct
 {
-	D3DXVECTOR3 pos;//位置
-	D3DXVECTOR3 rot;//向き
-	D3DXMATRIX mtxWorld;//ワールドマトリックス
-	bool bUse;
+	D3DXVECTOR3 pos;			//位置
+	D3DXVECTOR3 rot;			//向き
+	D3DXMATRIX mtxWorld;		//ワールドマトリックス
+	float fRadius;				//半径
+	float fTriangle;			//三角形
+	bool bUse;					//使用しているかどうか
 }Shadow;
 
 //プロトタイプ宣言
@@ -25,8 +27,9 @@ void InitShadow(void);
 void UninitShadow(void);
 void UpdateShadow(void);
 void DrawShadow(void);
-int SetShadow(D3DXVECTOR3 pos, D3DXVECTOR3 rot);
-void SetPositionShadow(int nIdxShadow, D3DXVECTOR3 pos,bool bUse);
+int SetShadow(D3DXVECTOR3 pos, D3DXVECTOR3 rot,float fRadius);					//影の初期位置、向き、半径の設定
+void SetPositionShadow(int nIdxShadow, D3DXVECTOR3 pos,bool bUse);				//影の位置更新
+void SetSizeShadow(D3DXVECTOR3 pos,int nIndx, bool bjump);						//影のサイズ更新
 Shadow* GetShadow(void);
 
 #endif

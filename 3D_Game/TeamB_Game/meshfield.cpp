@@ -15,8 +15,7 @@ LPDIRECT3DINDEXBUFFER9 g_pIdxBuffMeshField = NULL;						//インデックスバッファへ
 
 MeshField g_Meshfield[MESH_NUM_MAX];									//ポリゴン(横)の構造体
 static char fieldtexName[MAX_TEX_FIELD][32] = { NULL };					//テクスチャファイル名保存用
-int flmaxVtx = 0, flpolyNum = 0, flindexNum = 0;								//頂点数、ポリゴン数、インデックス数保存用
-
+int flmaxVtx = 0, flpolyNum = 0, flindexNum = 0;						//頂点数、ポリゴン数、インデックス数保存用
 
 //=================================
 // メッシュ床の初期化処理
@@ -25,9 +24,11 @@ void InitMeshfield(void)
 {
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-	flmaxVtx = 0.0f;
-	flpolyNum = 0.0f;
-	flindexNum = 0.0f;
+
+	//頂点数、ポリゴン数、インデックス数初期化
+	flmaxVtx = 0;
+	flpolyNum = 0;
+	flindexNum = 0;
 
 	for (int nCnt = 0; nCnt < MESH_NUM_MAX; nCnt++)
 	{
@@ -42,11 +43,6 @@ void InitMeshfield(void)
 		g_Meshfield[nCnt].nHeight = 150;								//高さ
 		g_Meshfield[nCnt].nIndex = 0;									//インデックス
 		g_Meshfield[nCnt].bUse = false;									//使用していない状態にする
-
-		//テクスチャの読込
-		D3DXCreateTextureFromFile(pDevice,
-			&fieldtexName[g_Meshfield[nCnt].textype][0],
-			&g_pTextureMeshfield[g_Meshfield[nCnt].textype]);
 
 		flmaxVtx += (g_Meshfield[nCnt].nDiviX + 1) * (g_Meshfield[nCnt].nDiviZ + 1);											//頂点数
 		flpolyNum += (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ - 1) * 2);		//ポリゴン数
@@ -248,6 +244,13 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 //===============================
 void SetfieldTexture(char* pFileName, int TexIndx)
 {
-	static char pFileName1;
+	//デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
 	strcpy(fieldtexName[TexIndx], pFileName);
+
+	//テクスチャの読込
+	D3DXCreateTextureFromFile(pDevice,
+		&fieldtexName[TexIndx][0],
+		&g_pTextureMeshfield[TexIndx]);
 }

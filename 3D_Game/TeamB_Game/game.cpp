@@ -38,12 +38,8 @@ bool g_bPause = false;  //É|Å[ÉYíÜÇ©Ç«Ç§Ç©
 //=============
 void InitGame(void)
 {
-	//char cData[32];
-	//strcpy(&cData[0], "data\\TEXTURE\\ranking.jpg");
-
 	InitPolygon();
 
-	//SetfiledTexture(cData);
 	//InitMeshfield();
 	//SetMeshfield(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 0, 0, 0, 150, 150);
 	//SetMeshfield(D3DXVECTOR3(500.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 0, 0, 0, 150, 150);
