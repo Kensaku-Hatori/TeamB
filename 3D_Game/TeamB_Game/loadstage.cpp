@@ -542,6 +542,7 @@ char* LoadFieldInfo(FILE* pFile)
 				Rot.x = LoadFloat(pFile);
 				Rot.y = LoadFloat(pFile);
 				Rot.z = LoadFloat(pFile);
+				PitoRadian(&Rot);
 			}
 			else if (strcmp(&cData1[0], "BLOCK") == 0)
 			{
@@ -612,6 +613,8 @@ char* LoadWallInfo(FILE* pFile)
 				Rot.x = LoadFloat(pFile);
 				Rot.y = LoadFloat(pFile);
 				Rot.z = LoadFloat(pFile);
+				PitoRadian(&Rot);
+				int i = 0;
 			}
 			else if (strcmp(&cData1[0], "BLOCK") == 0)
 			{
@@ -682,6 +685,7 @@ char* LoadModelInfo(FILE* pFile)
 				Rot.x = LoadFloat(pFile);
 				Rot.y = LoadFloat(pFile);
 				Rot.z = LoadFloat(pFile);
+				PitoRadian(&Rot);
 			}
 			else if (strcmp(&cData1[0], "TYPE") == 0)
 			{
@@ -806,6 +810,7 @@ char* LoadPlayerInfo(FILE* pFile)
 				Rot.x = LoadFloat(pFile);
 				Rot.y = LoadFloat(pFile);
 				Rot.z = LoadFloat(pFile);
+				PitoRadian(&Rot);
 			}
 			else if (strcmp(&cData1[0], "MOTION_FILENAME") == 0)
 			{
