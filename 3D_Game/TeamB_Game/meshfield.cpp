@@ -49,7 +49,6 @@ void InitMeshfield(void)
 		//g_Meshfield[nCnt].nIndex = flindexNum;																				//インデックス
 		//flindexNum += (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ * 2) - 1);		//インデックス
 	}
-	}
 }
 
 //===============================
@@ -203,7 +202,7 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 				for (int nCntX = 0; nCntX <= g_Meshfield[nCnt].nDiviX; nCntX++)
 				{
 					//頂点座標の設定
-					pVtx[0].pos = D3DXVECTOR3(-g_Meshfield[nCnt].nWidth + (g_Meshfield[nCnt].nWidth * nCntX), 0.0f, g_Meshfield[nCnt].nHeight - (g_Meshfield[nCnt].nHeight * nCntZ));
+					pVtx[0].pos = D3DXVECTOR3((float)(-g_Meshfield[nCnt].nWidth + (g_Meshfield[nCnt].nWidth * nCntX)), 0.0f, (float)(g_Meshfield[nCnt].nHeight - (g_Meshfield[nCnt].nHeight * nCntZ)));
 
 					//法線ベクトルの設定
 					pVtx[0].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
