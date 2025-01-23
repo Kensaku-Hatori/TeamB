@@ -408,9 +408,9 @@ char* LoadKeyInfo(FILE* pFile, int* nKey, int* nKeyParts, MOTIONINFO* Motion)
 	}
 	return &cData1[0];
 }
-//*************************************
+//***********************************
 // パーツごとのキー情報を読み込む処理
-//*************************************
+//***********************************
 char* LoadKeyPartsInfo(FILE* pFile,int *nKey,int* nKeyParts,MOTIONINFO *MotionInfo)
 {
 	char cData[2] = { NULL };

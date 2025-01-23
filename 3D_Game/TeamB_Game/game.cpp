@@ -24,9 +24,10 @@
 #include "pause.h"
 //#include "sound.h"
 //#include "enemy.h"
-//#include "particle.h"
+#include "particle.h"
 #include "skill.h"
 #include "ui.h"
+#include "particleEditer.h"
 
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -38,12 +39,8 @@ bool g_bPause = false;  //ポーズ中かどうか
 //=============
 void InitGame(void)
 {
-	//char cData[32];
-	//strcpy(&cData[0], "data\\TEXTURE\\ranking.jpg");
-
 	InitPolygon();
 
-	//SetfiledTexture(cData);
 	//InitMeshfield();
 	//SetMeshfield(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 0, 0, 0, 150, 150);
 	//SetMeshfield(D3DXVECTOR3(500.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 0, 0, 0, 150, 150);
@@ -59,9 +56,9 @@ void InitGame(void)
 
 	InitSkill();
 
-	//InitEffect();
+	InitEffect();
 
-	//InitParticle();
+	InitParticle();
 
 	//InitExplosion();
 
@@ -99,9 +96,7 @@ void UninitGame(void)
 
 	UninitSkill();
 
-	//UninitEffect();
-
-	//UninitParticle();
+	UninitEffect();
 
 	//UninitBlock();
 
@@ -132,83 +127,96 @@ void UpdateGame(void)
 		g_bPause = g_bPause ? false : true;
 	}
 
-	if (g_bPause == true)
-	{//ポーズ中
-		//ポーズの更新処理
-		UpdatePause();
-	}
-	else if (g_bPause == false)
+	if (g_gamestate != GAMESTATE_EFFECTEDITER)
 	{
-		UpdatePolygon();
-		//UpdateMeshfield();
-
-		UpdateShadow();
-
-		UpdatePlayer();
-
-		//UpdateEnemy();
-
-		UpdateSkill();
-
-		//UpdateEffect();
-
-		//UpdateParticle();
-
-		//UpdateBlock();
-
-		//UpdateExplosion();
-
-		//UpdateMeshCylinder();
-
-		//UpdateWall();
-
-		//UpdateMeshWall();
-
-		UpdateCamera();
-
-		UpdateLight();
-
-		UpdateUi();
-
-		switch (g_gamestate)
+		if (g_bPause == true)
+		{//ポーズ中
+			//ポーズの更新処理
+			UpdatePause();
+		}
+		else if (g_bPause == false)
 		{
-		case GAMESTATE_NORMAL:
-			break;
-		case GAMESTATE_CLEAR:
-			g_nCounterGameState++;
-			if (g_nCounterGameState >= 30)
+			UpdatePolygon();
+			//UpdateMeshfield();
+
+			UpdateShadow();
+
+			UpdatePlayer();
+
+			//UpdateEnemy();
+
+			UpdateSkill();
+
+			UpdateEffect();
+
+			UpdateParticle(true);
+
+			if (GetKeyboardPress(DIK_E) && GetKeyboardPress(DIK_F2))
 			{
-				g_gamestate = GAMESTATE_NONE;
-				//モードをリザルトにする
+				InitParticleEditer();
+				SetGameState(GAMESTATE_EFFECTEDITER);
+			}
+
+			//UpdateBlock();
+
+			//UpdateExplosion();
+
+			//UpdateMeshCylinder();
+
+			//UpdateWall();
+
+			//UpdateMeshWall();
+
+			UpdateCamera();
+
+			UpdateLight();
+
+			UpdateUi();
+
+			switch (g_gamestate)
+			{
+			case GAMESTATE_NORMAL:
+				break;
+			case GAMESTATE_CLEAR:
+				g_nCounterGameState++;
+				if (g_nCounterGameState >= 30)
+				{
+					g_gamestate = GAMESTATE_NONE;
+					//モードをリザルトにする
+					SetFade(MODE_RESULT);
+					SetResult(RESULT_CLEAR);
+				}
+				break;
+			case GAMESTATE_GAMEOVER:
+				g_nCounterGameState++;
+				if (g_nCounterGameState >= 30)
+				{
+					g_gamestate = GAMESTATE_NONE;
+					//モードをリザルトにする
+					SetFade(MODE_RESULT);
+					SetResult(RESULT_GAMEOVER);
+				}
+				break;
+			case GAMESTATE_EFFECTEDITER:
+				break;
+			}
+
+			//リザルトに飛ぶ
+			if (KeyboardTrigger(DIK_1) == true || GetJoypadTrigger(JOYKEY_START) == true)
+			{
 				SetFade(MODE_RESULT);
 				SetResult(RESULT_CLEAR);
 			}
-			break;
-		case GAMESTATE_GAMEOVER:
-			g_nCounterGameState++;
-			if (g_nCounterGameState >= 30)
+			if (KeyboardTrigger(DIK_2) == true || GetJoypadTrigger(JOYKEY_START) == true)
 			{
-				g_gamestate = GAMESTATE_NONE;
-				//モードをリザルトにする
 				SetFade(MODE_RESULT);
 				SetResult(RESULT_GAMEOVER);
 			}
-			break;
-
 		}
-
-		//リザルトに飛ぶ
-		if (KeyboardTrigger(DIK_1) == true || GetJoypadTrigger(JOYKEY_START) == true)
-		{
-			SetFade(MODE_RESULT);
-			SetResult(RESULT_CLEAR);
-		}
-		if (KeyboardTrigger(DIK_2) == true || GetJoypadTrigger(JOYKEY_START) == true)
-		{
-			SetFade(MODE_RESULT);
-			SetResult(RESULT_GAMEOVER);
-		}
-
+	}
+	else
+	{
+		UpdateParticleEditer();
 	}
 }
 //===========
@@ -225,7 +233,6 @@ void DrawGame(void)
 
 	//DrawBlock();
 
-	DrawPlayer();
 
 	//DrawEnemy();
 
@@ -233,9 +240,7 @@ void DrawGame(void)
 
 	DrawSkill();
 
-	//DrawEffect();
-
-	//DrawParticle();
+	DrawEffect();
 
 	//DrawMeshCylinder();
 
@@ -243,7 +248,11 @@ void DrawGame(void)
 
 	//DrawMeshWall();
 
-	DrawUi();
+	if (g_gamestate != GAMESTATE_EFFECTEDITER)
+	{
+		DrawPlayer();
+		DrawUi();
+	}
 
 	if (g_bPause == true)
 	{//ポーズ中

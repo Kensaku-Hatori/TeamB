@@ -39,7 +39,7 @@ void InitPlayer(void)
 	g_player.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.rotDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	g_player.nIdxShadow = SetShadow(g_player.pos, g_player.rot);//âe
+	g_player.nIdxShadow = SetShadow(g_player.pos, g_player.rot, 20.0f);//âeÇÃê›íË
 	g_player.nJump = PLAYER_JUMP;
 	//ÉÇÅ[ÉVÉáÉìä÷òA
 	g_player.motionType = MOTIONTYPE_NEUTRAL;

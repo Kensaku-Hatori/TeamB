@@ -12,11 +12,13 @@
 #include "game.h"
 #include "ranking.h"
 #include "sound.h"
+#include "particleEditer.h"
 
 //グローバル変数宣言
 LPDIRECT3D9 g_pD3D = NULL;
 LPDIRECT3DDEVICE9 g_pD3DDevice = NULL;
 MODE g_mode = MODE_TITLE;
+LPD3DXFONT g_pFont;
 
 //=============
 // メイン関数
@@ -261,6 +263,13 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	{
 		return E_FAIL;
 	}
+
+	// デバック表示用フォントの生成
+	D3DXCreateFont(g_pD3DDevice, 18, 0, 0, 0,
+		FALSE, SHIFTJIS_CHARSET,
+		OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH,
+		"Terminal", &g_pFont);
+
 	//サウンドの初期化処理
 	InitSound(hWnd);
 	//
@@ -373,6 +382,11 @@ void Draw(void)
 			DrawRanking();
 			break;
 		}
+
+#ifdef _DEBUG
+		DrawEffectEditer();
+#endif // DEBUG
+
 		DrawFade();
 
 		//描画終了
@@ -435,6 +449,28 @@ void SetMode(MODE mode)
 MODE GetMode(void)
 {
 	return g_mode;
+}
+void DrawEffectEditer()
+{
+	PARTICLEEDITER* pEditer = GetParticleInfo();
+	RECT rect = { 0,0,SCREEN_WIDTH,SCREEN_HEIGHT };
+	char aStr[256];
+
+	// 文字列に代入
+	sprintf(&aStr[0], "*****************PARTICLEEDITER*****************\n");
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+
+	rect = { 0,15,SCREEN_WIDTH,SCREEN_HEIGHT };
+
+	// 文字列に代入
+	sprintf(&aStr[0], "R,G,B:%3.2f,%3.2f,%3.2f", pEditer->ParticleInfo.col.r,
+		pEditer->ParticleInfo.col.g, 
+		pEditer->ParticleInfo.col.b);
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 }
 //=============
 // ワイヤー

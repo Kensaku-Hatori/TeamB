@@ -120,23 +120,23 @@ void UpdateCamera(void)
 		}
 
 		//’Ž‹“_‚Ìã‰º
-		if (GetKeyboardPress(DIK_R) == true)
-		{//ã
-			g_camera.rot.x += 0.05f;
-			//Šp“x‚Ì³‹K‰»
-			if (g_camera.rot.x > D3DX_PI)
-			{
-				g_camera.rot.x = -D3DX_PI;
-			}
-			if (g_camera.rot.x < -D3DX_PI)
-			{
-				g_camera.rot.x = D3DX_PI;
-			}
+		//if (GetKeyboardPress(DIK_R) == true)
+		//{//ã
+		//	g_camera.rot.x += 0.05f;
+		//	//Šp“x‚Ì³‹K‰»
+		//	if (g_camera.rot.x > D3DX_PI)
+		//	{
+		//		g_camera.rot.x = -D3DX_PI;
+		//	}
+		//	if (g_camera.rot.x < -D3DX_PI)
+		//	{
+		//		g_camera.rot.x = D3DX_PI;
+		//	}
 
-			g_camera.posV.y -= sinf(g_camera.rot.x - D3DX_PI) * 1;
+		//	g_camera.posV.y -= sinf(g_camera.rot.x - D3DX_PI) * 1;
 
-			g_camera.posR.y = g_camera.posV.y + sinf(g_camera.rot.x) * g_camera.fDistance;
-		}
+		//	g_camera.posR.y = g_camera.posV.y + sinf(g_camera.rot.x) * g_camera.fDistance;
+		//}
 	}
 }
 //================

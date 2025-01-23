@@ -539,7 +539,7 @@ void SetEnemy(D3DXVECTOR3 pos)
 		if (g_Enemy[nCntEnemy].bUse == false)
 		{
 			g_Enemy[nCntEnemy].pos = pos;
-			g_Enemy[nCntEnemy].nIdxShadow = SetShadow(g_Enemy[nCntEnemy].pos, g_Enemy[nCntEnemy].rot);//‰e
+			g_Enemy[nCntEnemy].nIdxShadow = SetShadow(g_Enemy[nCntEnemy].pos, g_Enemy[nCntEnemy].rot, 20.0f);//‰e
 			g_Enemy[nCntEnemy].nLife = ENEMY_LIFE;
 			g_Enemy[nCntEnemy].bDamage = false;
 			g_Enemy[nCntEnemy].nDamage = 0;
@@ -570,8 +570,6 @@ void CollisionEnemy(void)
 			{
 				if (g_Enemy[nCntEnemy].bDamage == false)
 				{
-					SetParticle(D3DXVECTOR3(g_Enemy[nCntEnemy].pos.x, g_Enemy[nCntEnemy].pos.y + 20.0f, g_Enemy[nCntEnemy].pos.z));
-
 					g_Enemy[nCntEnemy].move.y += 8.0f;
 
 					g_Enemy[nCntEnemy].nLife--;
