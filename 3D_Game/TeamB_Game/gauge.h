@@ -30,5 +30,6 @@ void UninitGauge(void);
 void UpdateGauge(void);
 void DrawGauge(void);
 void SetGauge(GAUGETYPE type, D3DXVECTOR3 pos, D3DXVECTOR2 size);
+void GaugeCalculation(int nValue, GAUGETYPE type);
 
 #endif

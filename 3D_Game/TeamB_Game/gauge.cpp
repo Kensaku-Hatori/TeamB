@@ -64,11 +64,22 @@ void InitGauge(void)
 		pVtx[1].rhw = 1.0f;
 		pVtx[2].rhw = 1.0f;
 		pVtx[3].rhw = 1.0f;
-		//頂点カラーの設定
-		pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		if (nCnt == GAUGETYPE_HP)
+		{
+			//頂点カラーの設定
+			pVtx[0].col = D3DCOLOR_RGBA(1, 255, 127, 255);
+			pVtx[1].col = D3DCOLOR_RGBA(1, 255, 127, 255);
+			pVtx[2].col = D3DCOLOR_RGBA(1, 255, 127, 255);
+			pVtx[3].col = D3DCOLOR_RGBA(1, 255, 127, 255);
+		}
+		if (nCnt == GAUGETYPE_MP)
+		{
+			//頂点カラーの設定
+			pVtx[0].col = D3DCOLOR_RGBA(1, 127, 255, 255);
+			pVtx[1].col = D3DCOLOR_RGBA(1, 127, 255, 255);
+			pVtx[2].col = D3DCOLOR_RGBA(1, 127, 255, 255);
+			pVtx[3].col = D3DCOLOR_RGBA(1, 127, 255, 255);
+		}
 		//テクスチャ座標の設定
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
 		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
@@ -95,7 +106,6 @@ void InitGauge(void)
 
 	for (int nCnt = 0; nCnt < GAUGETYPE_MAX; nCnt++)
 	{
-
 		//頂点座標の設定
 		pVtx[0].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		pVtx[1].pos = D3DXVECTOR3(100.0f, 0.0f, 0.0f);
@@ -171,17 +181,35 @@ void UpdateGauge(void)
 		{
 			if (g_gauge[nCnt].type == GAUGETYPE_HP)
 			{
-				//g_gauge[nCnt].size = D3DXVECTOR2(g_gauge[nCnt].size.x + (pPlayer->Status.nHP / 10), g_gauge[nCnt].size.y);
+				g_gauge[nCnt].size.x = pPlayer->Status.nHP / 2.85f;
 
 				//頂点座標の設定
 				pVtx[0].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x, g_gauge[nCnt].pos.y - g_gauge[nCnt].size.y, 0.0f);
 				pVtx[1].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x + g_gauge[nCnt].size.x, g_gauge[nCnt].pos.y - g_gauge[nCnt].size.y, 0.0f);
 				pVtx[2].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x, g_gauge[nCnt].pos.y + g_gauge[nCnt].size.y, 0.0f);
 				pVtx[3].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x + g_gauge[nCnt].size.x, g_gauge[nCnt].pos.y + g_gauge[nCnt].size.y, 0.0f);
+
+				if (pPlayer->Status.nHP <= PLAYER_HP / 5)
+				{//赤
+					//頂点カラーの設定
+					pVtx[0].col = D3DCOLOR_RGBA(255, 1, 1, 255);
+					pVtx[1].col = D3DCOLOR_RGBA(255, 1, 1, 255);
+					pVtx[2].col = D3DCOLOR_RGBA(255, 1, 1, 255);
+					pVtx[3].col = D3DCOLOR_RGBA(255, 1, 1, 255);
+				}
+				else if (pPlayer->Status.nHP <= PLAYER_HP / 1.5)
+				{//黄色
+					//頂点カラーの設定
+					pVtx[0].col = D3DCOLOR_RGBA(255, 255, 1, 255);
+					pVtx[1].col = D3DCOLOR_RGBA(255, 255, 1, 255);
+					pVtx[2].col = D3DCOLOR_RGBA(255, 255, 1, 255);
+					pVtx[3].col = D3DCOLOR_RGBA(255, 255, 1, 255);
+				}
+
 			}
 			else if (g_gauge[nCnt].type == GAUGETYPE_MP)
 			{
-				//g_gauge[nCnt].size = D3DXVECTOR2(g_gauge[nCnt].size.x + (pPlayer->Status.nMP / 10), g_gauge[nCnt].size.y);
+				g_gauge[nCnt].size.x = pPlayer->Status.nMP / 1.7f;
 
 				//頂点座標の設定
 				pVtx[0].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x, g_gauge[nCnt].pos.y - g_gauge[nCnt].size.y, 0.0f);
@@ -232,7 +260,7 @@ void DrawGauge(void)
 	//枠
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, g_pVtxBuffGaugeBack, 0, sizeof(VERTEX_2D));
-
+	
 	for (int nCnt = 0; nCnt < GAUGETYPE_MAX; nCnt++)
 	{
 		if (g_gauge[nCnt].bUse == true)
@@ -251,7 +279,6 @@ void DrawGauge(void)
 			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
 		}
 	}
-
 }
 //==================
 // ゲージの設定
@@ -270,20 +297,40 @@ void SetGauge(GAUGETYPE type, D3DXVECTOR3 pos, D3DXVECTOR2 size)
 			g_gauge[nCnt].type = type;
 			g_gauge[nCnt].pos = pos;
 
-			g_gauge[nCnt].size = D3DXVECTOR2(size.x + (PLAYER_HP / 10), size.y);
+			if (g_gauge[nCnt].type == GAUGETYPE_HP)
+			{
+				g_gauge[nCnt].size = D3DXVECTOR2(size.x + PLAYER_HP / 10, size.y);
+			}
+			else if (g_gauge[nCnt].type == GAUGETYPE_MP)
+			{
+				g_gauge[nCnt].size = D3DXVECTOR2(size.x + PLAYER_MP / 10, size.y);
+			}
 
 			g_gauge[nCnt].bUse = true;
+
 
 			//頂点座標の設定
 			pVtx[0].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x, g_gauge[nCnt].pos.y - g_gauge[nCnt].size.y, 0.0f);
 			pVtx[1].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x + g_gauge[nCnt].size.x, g_gauge[nCnt].pos.y - g_gauge[nCnt].size.y, 0.0f);
 			pVtx[2].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x, g_gauge[nCnt].pos.y + g_gauge[nCnt].size.y, 0.0f);
 			pVtx[3].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x + g_gauge[nCnt].size.x, g_gauge[nCnt].pos.y + g_gauge[nCnt].size.y, 0.0f);
-			
+
+			//サイズ調整
+			g_gauge[nCnt].pos.x += 45.f;
+			g_gauge[nCnt].size.y -= 5.0f;
+
 			break;
 		}
 		pVtx += 4;
 	}
+
 	//頂点バッファをアンロック
 	g_pVtxBuffGaugeBack->Unlock();
+}
+//=============
+// 計算処理
+//=============
+void GaugeCalculation(int nValue, GAUGETYPE type)
+{
+
 }

@@ -259,11 +259,19 @@ void UpdatePlayer(void)
 
 
 #ifdef _DEBUG
-
 		//ˆÊ’u‚ð‚O‚É
 		if (KeyboardTrigger(DIK_0) == true)
 		{
 			g_player.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		}
+		//HPŒ¸‚ç‚·
+		if (KeyboardTrigger(DIK_9) == true)
+		{
+			g_player.Status.nHP -= 100;
+			if (g_player.Status.nHP <= 0)
+			{
+				g_player.Status.nHP = 0;
+			}
 		}
 #endif
 
