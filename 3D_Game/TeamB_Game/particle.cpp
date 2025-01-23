@@ -33,15 +33,14 @@ void UpdateParticle(bool bLimit)
 		{
 			for (int nEffect = 0; nEffect < g_particle[particlecount].forlimit; nEffect++)
 			{
-				g_particle[particlecount].dir *= 100.0f;
 				D3DXVECTOR3 dir;
+				D3DXVECTOR3 dir1;
+				dir1 = g_particle[particlecount].dir * 100;
 				int speed;
 				int nLife;
-				dir.x = rand() %(int)g_particle[particlecount].dir.x + 1.0f;
-				dir.y = rand() %(int)g_particle[particlecount].dir.y + 1.0f;
-
-				dir.z = rand() %(int)g_particle[particlecount].dir.z + 1.0f;
-				dir *= 0.01f;
+				dir.x = (float)(rand() %(int)dir1.x - 314) / 100.0f;
+				dir.y = (float)(rand() %(int)dir1.y - 314) / 100.0f;
+				dir.z = (float)(rand() %(int)dir1.z - 314) / 100.0f;
 				nLife = rand() % g_particle[particlecount].nLife + 1;
 				speed = rand() % 10 + 1;
 				SetEffect(g_particle[particlecount].Object.Pos,dir,nLife,speed,D3DXVECTOR3(1.0f,1.0f,1.0f),g_particle[particlecount].col,EFFECT_NONE);
