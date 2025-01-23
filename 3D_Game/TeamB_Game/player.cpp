@@ -92,6 +92,7 @@ void UpdatePlayer(void)
 	if (g_player.bUse == true)
 	{
 		SetPositionShadow(g_player.nIdxShadow, g_player.pos, g_player.bUse);//‰e
+		SetSizeShadow(g_player.pos, g_player.nIdxShadow, g_player.bJump);
 
 		//ˆÚ“®
 		if (GetKeyboardPress(DIK_D) == true)
@@ -199,6 +200,10 @@ void UpdatePlayer(void)
 		if (KeyboardTrigger(DIK_9) == true)
 		{
 			g_player.Status.nHP -= 100;
+			if (g_player.Status.nHP <= 0)
+			{
+				g_player.Status.nHP = 0;
+			}
 		}
 #endif
 

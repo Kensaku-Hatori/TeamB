@@ -112,7 +112,7 @@ void UpdateShadow(void)
 void DrawShadow(void)
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();//p
 
 	//減算合成の設定
 	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_REVSUBTRACT);
@@ -173,14 +173,30 @@ void DrawShadow(void)
 int SetShadow(D3DXVECTOR3 pos, D3DXVECTOR3 rot,float fRadius)
 {
 	int nCntShadow;
+	VERTEX_3D* pVtx = NULL;
 
 	for (nCntShadow = 0; nCntShadow < MAX_SHADOW; nCntShadow++)
 	{
 		if (g_shadow[nCntShadow].bUse == false)
 		{
-			g_shadow[nCntShadow].pos = pos;					//位置
-			g_shadow[nCntShadow].rot = rot;					//向き
-			g_shadow[nCntShadow].fRadius = fRadius;			//半径
+			g_shadow[nCntShadow].pos = pos;											//位置
+			g_shadow[nCntShadow].rot = rot;											//向き
+			g_shadow[nCntShadow].fRadius = fRadius;									//半径
+			g_shadow[nCntShadow].fTriangle = g_shadow[nCntShadow].fRadius;			//三角形
+
+			//頂点バッファをロックし、頂点情報へのポインタを取得
+			g_pVtxBuffShadow->Lock(0, 0, (void**)&pVtx, 0);
+
+			pVtx += nCntShadow;
+
+			//頂点座標の設定
+			pVtx[0].pos = D3DXVECTOR3(g_shadow[nCntShadow].pos.x - g_shadow[nCntShadow].fRadius, g_shadow[nCntShadow].pos.y, g_shadow[nCntShadow].pos.z + g_shadow[nCntShadow].fRadius);
+			pVtx[1].pos = D3DXVECTOR3(g_shadow[nCntShadow].pos.x + g_shadow[nCntShadow].fRadius, g_shadow[nCntShadow].pos.y, g_shadow[nCntShadow].pos.z + g_shadow[nCntShadow].fRadius);
+			pVtx[2].pos = D3DXVECTOR3(g_shadow[nCntShadow].pos.x - g_shadow[nCntShadow].fRadius, g_shadow[nCntShadow].pos.y, g_shadow[nCntShadow].pos.z - g_shadow[nCntShadow].fRadius);
+			pVtx[3].pos = D3DXVECTOR3(g_shadow[nCntShadow].pos.x + g_shadow[nCntShadow].fRadius, g_shadow[nCntShadow].pos.y, g_shadow[nCntShadow].pos.z - g_shadow[nCntShadow].fRadius);
+
+			//頂点バッファをアンロック
+			g_pVtxBuffShadow->Unlock();
 
 			g_shadow[nCntShadow].bUse = true;				//使用している状態にする
 			break;
@@ -206,6 +222,7 @@ void SetPositionShadow(int nIdxShadow, D3DXVECTOR3 pos, bool bUse)
 void SetSizeShadow(D3DXVECTOR3 pos, int nIndx, bool bjump)
 {
 	float posY = pos.y;//ユーザーの高さを格納
+	VERTEX_3D* pVtx = NULL;
 
 	if (bjump == true)
 	{
@@ -214,7 +231,22 @@ void SetSizeShadow(D3DXVECTOR3 pos, int nIndx, bool bjump)
 			posY = 0.1f;
 		}
 
-		g_shadow[nIndx].fRadius = g_shadow[nIndx].fTriangle / posY * 10.0f;
+		g_shadow[nIndx].fRadius = g_shadow[nIndx].fTriangle / (posY * 10.0f);
+
+		//頂点バッファをロックし、頂点情報へのポインタを取得
+		g_pVtxBuffShadow->Lock(0, 0, (void**)&pVtx, 0);
+
+		pVtx += nIndx;
+
+		//頂点座標の設定
+		pVtx[0].pos = D3DXVECTOR3(g_shadow[nIndx].pos.x - g_shadow[nIndx].fRadius, g_shadow[nIndx].pos.y, g_shadow[nIndx].pos.z + g_shadow[nIndx].fRadius);
+		pVtx[1].pos = D3DXVECTOR3(g_shadow[nIndx].pos.x + g_shadow[nIndx].fRadius, g_shadow[nIndx].pos.y, g_shadow[nIndx].pos.z + g_shadow[nIndx].fRadius);
+		pVtx[2].pos = D3DXVECTOR3(g_shadow[nIndx].pos.x - g_shadow[nIndx].fRadius, g_shadow[nIndx].pos.y, g_shadow[nIndx].pos.z - g_shadow[nIndx].fRadius);
+		pVtx[3].pos = D3DXVECTOR3(g_shadow[nIndx].pos.x + g_shadow[nIndx].fRadius, g_shadow[nIndx].pos.y, g_shadow[nIndx].pos.z - g_shadow[nIndx].fRadius);
+
+		//頂点バッファをアンロック
+		g_pVtxBuffShadow->Unlock();
+
 	}
 }
 
