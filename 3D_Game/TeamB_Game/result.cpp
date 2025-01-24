@@ -8,8 +8,9 @@
 #include "resultinfo.h"
 #include "camera.h"
 #include "light.h"
-#include "polygon.h"
 #include "sound.h"
+#include "loadstage.h"
+#include "model.h"
 
 //ÉOÉçÅ[ÉoÉãïœêîêÈåæ
 
@@ -18,8 +19,9 @@
 //===========
 void InitResult(void)
 {
+	InitStageModel();
 
-	InitPolygon();
+	LoadModelViewer();
 
 	InitCamera();
 
@@ -33,7 +35,7 @@ void InitResult(void)
 //==========
 void UninitResult(void)
 {
-	UninitPolygon();
+	UninitStageModel();
 
 	UninitCamera();
 
@@ -46,7 +48,7 @@ void UninitResult(void)
 //==========
 void UpdateResult(void)
 {
-	UpdatePolygon();
+	UpdateStageModel();
 
 	UpdateCamera();
 
@@ -61,8 +63,7 @@ void DrawResult(void)
 {
 	SetCamera();
 
-	DrawPolygon();
-
+	DrawStageModel();
 
 	DrawResultInfo();
 }

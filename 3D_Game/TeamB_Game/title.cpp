@@ -11,8 +11,9 @@
 #include "sound.h"
 #include "camera.h"
 #include "light.h"
-#include "polygon.h"
 #include "loadstage.h"
+#include "model.h"
+
 //グローバル変数
 int g_nTimeTitle; //タイトルからランキングへの時間
 
@@ -23,7 +24,9 @@ void InitTitle(void)
 {
 	g_nTimeTitle = 0;
 
-	InitPolygon();
+	InitStageModel();
+
+	LoadModelViewer();
 
 	InitCamera();
 
@@ -36,7 +39,7 @@ void InitTitle(void)
 //==========
 void UninitTitle(void)
 {
-	UninitPolygon();
+	UninitStageModel();
 
 	UninitCamera();
 
@@ -49,7 +52,7 @@ void UninitTitle(void)
 //==========
 void UpdateTitle(void)
 {
-	UpdatePolygon();
+	UpdateStageModel();
 
 	UpdateCamera();
 
@@ -73,8 +76,7 @@ void DrawTitle(void)
 {
 	SetCamera();
 
-	DrawPolygon();
-
+	DrawStageModel();
 
 	DrawTitleInfo();
 }
