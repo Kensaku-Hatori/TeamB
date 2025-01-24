@@ -35,6 +35,7 @@ void LoadModelViewer()
 		}
 		LoadStart(pFile);
 	}
+	fclose(pFile);
 }
 //*****************************
 // ƒVƒƒ[ƒvˆÈ~‚ğ“Ç‚İ”ò‚Î‚·ˆ—
