@@ -172,16 +172,24 @@ void InitTimer(void)
 void UninitTimer(void)
 {
 	//テクスチャの破棄
-	if (g_pTextureTimer != NULL)
+	if (g_pTextureTimer != NULL && g_pTextureColon != NULL)
 	{
 		g_pTextureTimer->Release();
 		g_pTextureTimer = NULL;
+		g_pTextureColon->Release();
+		g_pTextureColon = NULL;
+
 	}
 	//頂点バッファの破棄
-	if (g_pVtxBuffTimer != NULL)
+	if (g_pVtxBuffTimer != NULL && g_pVtxBuffTimerMinutes != NULL && g_pVtxBuffColon != NULL)
 	{
 		g_pVtxBuffTimer->Release();
 		g_pVtxBuffTimer = NULL;
+		g_pVtxBuffTimerMinutes->Release();
+		g_pVtxBuffTimerMinutes = NULL;
+		g_pVtxBuffColon->Release();
+		g_pVtxBuffColon = NULL;
+
 	}
 }
 //==========
