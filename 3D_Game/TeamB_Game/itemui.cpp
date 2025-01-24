@@ -176,10 +176,13 @@ void InitItemUI(void)
 void UninitItemUI(void)
 {
 	//テクスチャの破棄
-	if (g_pTextureItemUIframe != NULL)
+	if (g_pTextureItemUIframe != NULL && g_pTextureItemUINo != NULL)
 	{
 		g_pTextureItemUIframe->Release();
 		g_pTextureItemUIframe = NULL;
+		g_pTextureItemUINo->Release();
+		g_pTextureItemUINo = NULL;
+
 	}
 	for (int nCnt = 0; nCnt < MAX_ITEM; nCnt++)
 	{
@@ -191,12 +194,15 @@ void UninitItemUI(void)
 	}
 
 	//頂点バッファの破棄
-	if (g_pVtxBuffItemUIframe != NULL && g_pVtxBuffItemUI != NULL)
+	if (g_pVtxBuffItemUIframe != NULL && g_pVtxBuffItemUI != NULL && g_pVtxBuffItemUINo != NULL)
 	{
 		g_pVtxBuffItemUIframe->Release();
 		g_pVtxBuffItemUIframe = NULL;
 		g_pVtxBuffItemUI->Release();
 		g_pVtxBuffItemUI = NULL;
+		g_pVtxBuffItemUINo->Release();
+		g_pVtxBuffItemUINo = NULL;
+
 	}
 }
 //==========
