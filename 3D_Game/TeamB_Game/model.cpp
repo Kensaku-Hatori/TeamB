@@ -36,6 +36,24 @@ void UninitStageModel()
 			}
 		}
 	}
+	for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++)
+	{
+		if (g_StageModel[ModelCount].ModelBuff.pBuffMat != NULL)
+		{
+			g_StageModel[ModelCount].ModelBuff.pBuffMat = NULL;
+		}
+		if (g_StageModel[ModelCount].ModelBuff.pMesh != NULL)
+		{
+			g_StageModel[ModelCount].ModelBuff.pMesh = NULL;
+		}
+		for (int texcount = 0; texcount < MAX_TEX; texcount++)
+		{
+			if (g_StageModel[ModelCount].ModelBuff.pTexture[texcount] != NULL)
+			{
+				g_StageModel[ModelCount].ModelBuff.pTexture[texcount] = NULL;
+			}
+		}
+	}
 }
 void UpdateStageModel()
 {
