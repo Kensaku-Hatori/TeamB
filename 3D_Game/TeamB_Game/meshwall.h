@@ -21,13 +21,13 @@ typedef struct
 	D3DXVECTOR3 rot;								//向き
 	D3DXMATRIX mtxWorld;							//ワールドマトリックス
 	LPDIRECT3DINDEXBUFFER9 IdxBuffMeshWall;			//インデックスバッファへのポインタ
+	LPDIRECT3DVERTEXBUFFER9 VtxBuffMeshWall;		//頂点情報へのポインタ
 	int textype;									//テクスチャのタイプ
 	int nDiviX;										//分割数x
 	int nDiviY;										//分割数y
 	int nDiviZ;										//分割数z
 	int nWidth;										//幅
 	int nHeight;									//高さ
-	int nIndex;										//インテックス
 	int nMaxVtx;									//頂点数
 	int nPolyNum;									//ポリゴン数
 	bool bUse;										//使用しているかどうか
