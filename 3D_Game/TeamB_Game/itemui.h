@@ -15,7 +15,7 @@
 #define ITEMUI_X (180)
 #define ITEMUI_Y (50)
 
-#define ITEMUINO_SIZE (30)
+#define ITEMUINO_SIZE (40)
 //プロトタイプ宣言
 void InitItemUI(void);
 void UninitItemUI(void);
