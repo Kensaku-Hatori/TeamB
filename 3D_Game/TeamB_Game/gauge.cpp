@@ -10,7 +10,7 @@
 LPDIRECT3DTEXTURE9 g_pTextureGaugeBack[GAUGETYPE_MAX] = {};
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffGaugeBack = NULL;
 
-LPDIRECT3DTEXTURE9 g_pTextureGauge[GAUGETYPE_MAX] = {};
+LPDIRECT3DTEXTURE9 g_pTextureGauge = {};
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffGauge = NULL;
 
 Gauge g_gauge[GAUGETYPE_MAX];
@@ -136,10 +136,10 @@ void UninitGauge(void)
 	for (int nCnt = 0; nCnt < GAUGETYPE_MAX; nCnt++)
 	{
 		//テクスチャの破棄
-		if (g_pTextureGauge[nCnt] != NULL)
+		if (g_pTextureGauge != NULL)
 		{
-			g_pTextureGauge[nCnt]->Release();
-			g_pTextureGauge[nCnt] = NULL;
+			g_pTextureGauge->Release();
+			g_pTextureGauge = NULL;
 		}
 		//テクスチャの破棄
 		if (g_pTextureGaugeBack[nCnt] != NULL)
@@ -238,15 +238,7 @@ void DrawGauge(void)
 	{
 		if (g_gauge[nCnt].bUse == true)
 		{
-			//テクスチャの設定
-			if (g_gauge[nCnt].type == GAUGETYPE_HP)
-			{
-				pDevice->SetTexture(0, g_pTextureGauge[GAUGETYPE_HP]);
-			}
-			else if (g_gauge[nCnt].type == GAUGETYPE_MP)
-			{
-				pDevice->SetTexture(0, g_pTextureGauge[GAUGETYPE_MP]);
-			}
+			pDevice->SetTexture(0, g_pTextureGauge);
 			//プレイヤーの描画
 			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
 		}

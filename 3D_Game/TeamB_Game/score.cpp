@@ -23,7 +23,7 @@ void InitScore(void)
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number001.png", &g_pTextureScore); //1
 
-	g_posScore = D3DXVECTOR3(950.0f,0.0f,0.0f);
+	g_posScore = D3DXVECTOR3(950.0f,250.0f,0.0f);
 	g_nScore = 0;
 
 	//頂点バッファの生成・頂点情報の設定
@@ -42,10 +42,10 @@ void InitScore(void)
 	for (nCnt = 0; nCnt < MAX_SCORE; nCnt++)
 	{
 		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(g_posScore.x + (50 * nData), 0.0f, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(g_posScore.x + (50 * (nData + 1)), 0.0f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(g_posScore.x + (50 * nData), 100.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(g_posScore.x + (50 * (nData + 1)), 100.0f, 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(g_posScore.x + (50 * nData), g_posScore.y + 0.0f, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(g_posScore.x + (50 * (nData + 1)), g_posScore.y + 0.0f, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(g_posScore.x + (50 * nData), g_posScore.y + 100.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(g_posScore.x + (50 * (nData + 1)), g_posScore.y + 100.0f, 0.0f);
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;
