@@ -9,6 +9,7 @@
 #include "score.h"
 #include "gauge.h"
 #include "itemui.h"
+#include "minimap.h"
 
 //グローバル変数
 
@@ -28,6 +29,9 @@ void InitUi(void)
 	SetGauge(GAUGETYPE_MP, D3DXVECTOR3(30.0f, 80.0f, 0.0f), D3DXVECTOR2(300.0f, 20.0f));
 
 	InitItemUI();
+
+	InitMiniMap();
+	SetMapPlayer(2);
 }
 //===========
 // 終了処理
@@ -41,6 +45,8 @@ void UninitUi(void)
 	UninitGauge();
 
 	UninitItemUI();
+
+	UninitMiniMap();
 }
 //===========
 // 更新処理
@@ -54,6 +60,8 @@ void UpdateUi(void)
 	UpdateGauge();
 
 	UpdateItemUI();
+
+	UpdateMiniMap();
 }
 //===========
 // 描画処理
@@ -67,4 +75,6 @@ void DrawUi(void)
 	DrawGauge();
 
 	DrawItemUI();
+
+	DrawMiniMap();
 }

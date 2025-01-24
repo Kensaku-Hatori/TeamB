@@ -35,7 +35,7 @@ void InitGauge(void)
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\hpgauge.png", &g_pTextureGaugeBack[GAUGETYPE_HP]);	//HP òg
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\mpgauge.png", &g_pTextureGaugeBack[GAUGETYPE_MP]);	//MP òg
 	
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\gauge00.jpeg", &g_pTextureGauge);	//MP òg
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\gauge00.jpeg", &g_pTextureGauge);	//
 
 	//ÉQÅ[ÉW
 	//í∏ì_ÉoÉbÉtÉ@ÇÃê∂ê¨

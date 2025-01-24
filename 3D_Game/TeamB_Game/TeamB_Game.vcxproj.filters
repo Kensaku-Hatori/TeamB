@@ -132,7 +132,11 @@
     <ClCompile Include="animation.cpp">
       <Filter>ソース ファイル\Motion</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="model.cpp">
+=======
+    <ClCompile Include="minimap.cpp">
+>>>>>>> 244b0581d01f467265696a559678cfadf0c629e9
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -259,6 +263,9 @@
     </ClInclude>
     <ClInclude Include="animation.h">
       <Filter>ソース ファイル\Motion</Filter>
+    </ClInclude>
+    <ClInclude Include="minimap.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
