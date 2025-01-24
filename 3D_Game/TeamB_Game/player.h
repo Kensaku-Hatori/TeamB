@@ -20,17 +20,6 @@
 #define PLAYER_HP (1000)	//HP
 #define PLAYER_SPEED (4)	//速度
 
-//モーションの種類
-typedef enum
-{
-	MOTIONTYPE_NEUTRAL = 0,
-	MOTIONTYPE_MOVE,
-	MOTIONTYPE_ACTION,
-	MOTIONTYPE_JUMP,
-	MOTIONTYPE_LANDING,
-	MOTIONTYPE_MAX
-}MOTIONTYPE;
-
 //プレイヤーの構造体
 typedef struct
 {
@@ -41,16 +30,13 @@ typedef struct
 	D3DXVECTOR3 rot;	//向き
 	D3DXVECTOR3 rotDest;//向き
 	D3DXMATRIX mtxWorld;//ワールドマトリックス
+	OBJECTINFO PlayerMotion;
 	int nIdxShadow;		//影
 	int nJump;			//ジャンプ量
 	bool bJump;			//ジャンプできるかどうか
 	bool bUse;
 	PlayerStatus Status;//ステータス
-	//モデル
-	MODELINFO aModel[MAX_PARTS];
 	int nNumModel;
-	//モーション
-	MOTIONINFO aMotionInfo[MOTIONTYPE_MAX];//モーション情報
 	int nNumMotion;							//モーションの総数
 	MOTIONTYPE motionType;					//モーションの種類
 	bool bLoopMotion;						//ループするかどうか

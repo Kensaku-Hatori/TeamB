@@ -19,6 +19,9 @@
     <Filter Include="ソース ファイル\Effect">
       <UniqueIdentifier>{d2681107-3585-4a7c-bb2b-637650b31fa3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Motion">
+      <UniqueIdentifier>{03452347-c753-4818-baab-cd9ac953267a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp">
@@ -125,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="itemui.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="animation.cpp">
+      <Filter>ソース ファイル\Motion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -247,6 +253,9 @@
     </ClInclude>
     <ClInclude Include="itemui.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="animation.h">
+      <Filter>ソース ファイル\Motion</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

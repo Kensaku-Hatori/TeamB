@@ -243,6 +243,9 @@ char* LoadPartsInfo(FILE* pFile,int *Parts)
 				ModelInfo[PartsCount].pos.x = LoadFloat(pFile);
 				ModelInfo[PartsCount].pos.y = LoadFloat(pFile);
 				ModelInfo[PartsCount].pos.z = LoadFloat(pFile);
+				ModelInfo[PartsCount].OffSet.x = ModelInfo[PartsCount].pos.x;
+				ModelInfo[PartsCount].OffSet.y = ModelInfo[PartsCount].pos.y;
+				ModelInfo[PartsCount].OffSet.z = ModelInfo[PartsCount].pos.z;
 			}
 			else if (strcmp(&cData1[0], "ROT") == 0)
 			{
