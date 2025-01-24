@@ -12,7 +12,7 @@
 #define ITEMUIFRAME_X (250)
 #define ITEMUIFRAME_Y (230)
 
-#define ITEMUI_X (150)
+#define ITEMUI_X (180)
 #define ITEMUI_Y (50)
 
 #define ITEMUINO_SIZE (30)

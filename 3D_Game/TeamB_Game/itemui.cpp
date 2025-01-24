@@ -41,7 +41,7 @@ void InitItemUI(void)
 
 	g_ItemUIframepos = D3DXVECTOR3(1025.0f, 470.0f, 0.0f);
 	g_ItemUIpos = D3DXVECTOR3(1040.0f, 490.0f, 0.0f);
-	g_ItemUINopos = D3DXVECTOR3(ITEMUI_X + 1060.0f, 500.0f, 0.0f);
+	g_ItemUINopos = D3DXVECTOR3(ITEMUI_X + 1040.0f, 500.0f, 0.0f);
 
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
