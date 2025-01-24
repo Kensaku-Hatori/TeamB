@@ -1,4 +1,5 @@
 #include "loadmotion.h"
+#include "player.h"
 
 //*****************************
 // スクリプト以前を読み込む処理
@@ -43,15 +44,16 @@ void LoadMotionStart(FILE* pFile)
 	char* cData2[32] = { NULL };
 	int nData;
 	char* ModelPath[32];
-	int CharactorCount, PartsCount;
+	int CharactorCount, PartsCount,PathCount;
 	CharactorCount = 0;
 	PartsCount = 0;
+	PathCount = 0;
 	int MotionCount, KeyCount, KeyPartsCount;
 	MotionCount = 0;
 	KeyCount = 0;
 	KeyPartsCount = 0;
 	MODELINFO ModelInfo[MAX_PARTS];
-	MOTIONINFO MotionInfo[MAX_MOTION];
+	MOTIONINFO MotionInfo[MOTIONTYPE_MAX];
 
 	while (1)
 	{
@@ -64,6 +66,8 @@ void LoadMotionStart(FILE* pFile)
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				nData = LoadInt(pFile);
+				Player* pPlayer = GetPlayer();
+				pPlayer->nNumModel = nData;
 				int i = 0;
 			}
 			else if (strcmp(&cData1[0], "MODEL_FILENAME") == 0)
@@ -71,6 +75,8 @@ void LoadMotionStart(FILE* pFile)
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				ModelPath[0] = LoadPath(pFile);
+				SetMesh(ModelPath[0], PathCount);
+				PathCount++;
 				int i = 0;
 			}
 			else if (strcmp(&cData1[0], "CHARACTERSET") == 0)
@@ -78,7 +84,7 @@ void LoadMotionStart(FILE* pFile)
 				cData1[0] = { NULL };
 				while (1)
 				{
-					cData2[0] = LoadCharactorInfo(pFile,&CharactorCount,&PartsCount,ModelInfo);
+					cData2[0] = LoadCharactorInfo(pFile,&CharactorCount,&PartsCount,&ModelInfo[0]);
 					if (strcmp(cData2[0], CHARACTOR) == 0)
 					{
 						break;
@@ -101,6 +107,7 @@ void LoadMotionStart(FILE* pFile)
 			}
 			else if (strcmp(&cData1[0], "END_SCRIPT") == 0)
 			{
+				PlayerMotion(&MotionInfo[0]);
 				MotionCount = 0;
 				break;
 			}
@@ -176,7 +183,7 @@ char* LoadCharactorInfo(FILE* pFile,int *nCharactor,int *nParts,MODELINFO *Model
 				cData1[0] = { NULL };
 				while (1)
 				{
-					cData3[0] = LoadPartsInfo(pFile,nParts,ModelInfo);
+					cData3[0] = LoadPartsInfo(pFile,nParts);
 					if (strcmp(cData3[0], PARTS) == 0)
 					{
 						break;
@@ -195,8 +202,10 @@ char* LoadCharactorInfo(FILE* pFile,int *nCharactor,int *nParts,MODELINFO *Model
 //*************************
 // パーツ情報を読み込む処理
 //*************************
-char* LoadPartsInfo(FILE* pFile,int *Parts,MODELINFO *ModelInfo)
+char* LoadPartsInfo(FILE* pFile,int *Parts)
 {
+	MODELINFO ModelInfo[MAX_PARTS];
+	static int PartsCount = 0;
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
 	char cData2[64] = { NULL };
@@ -219,33 +228,34 @@ char* LoadPartsInfo(FILE* pFile,int *Parts,MODELINFO *ModelInfo)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				ModelInfo->nIndx = LoadInt(pFile);
+				ModelInfo[PartsCount].nIndx = LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "PARENT") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				ModelInfo->Parent = LoadInt(pFile);
+				ModelInfo[PartsCount].Parent = LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "POS") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				ModelInfo->pos.x = LoadFloat(pFile);
-				ModelInfo->pos.y = LoadFloat(pFile);
-				ModelInfo->pos.z = LoadFloat(pFile);
+				ModelInfo[PartsCount].pos.x = LoadFloat(pFile);
+				ModelInfo[PartsCount].pos.y = LoadFloat(pFile);
+				ModelInfo[PartsCount].pos.z = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "ROT") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				ModelInfo->rot.x = LoadFloat(pFile);
-				ModelInfo->rot.y = LoadFloat(pFile);
-				ModelInfo->rot.z = LoadFloat(pFile);
+				ModelInfo[PartsCount].rot.x = LoadFloat(pFile);
+				ModelInfo[PartsCount].rot.y = LoadFloat(pFile);
+				ModelInfo[PartsCount].rot.z = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "END_PARTSSET") == 0)
 			{
-				*Parts+=1;
+				SetPartsInfo(ModelInfo[PartsCount],PartsCount);
+				PartsCount++;
 				break;
 			}
 		}
