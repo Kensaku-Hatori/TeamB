@@ -177,12 +177,11 @@ void UpdatePlayer(void)
 		CollisionEnemy();
 
 		//’n–Ê‚Æ‚Ì”»’è
-
 		if (g_player.pos.y <= 0)
 		{
 			if (g_player.bJump == true)
 			{
-				SetMotion(MOTIONTYPE_LANDING, &g_player.PlayerMotion);
+				//SetMotion(MOTIONTYPE_LANDING, &g_player.PlayerMotion);
 				g_player.bJump = false;
 			}
 			g_player.pos.y = 0.0;
