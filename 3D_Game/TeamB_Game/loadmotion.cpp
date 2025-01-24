@@ -67,7 +67,7 @@ void LoadMotionStart(FILE* pFile)
 				SkipEqual(pFile);
 				nData = LoadInt(pFile);
 				Player* pPlayer = GetPlayer();
-				pPlayer->nNumModel = nData;
+				pPlayer->PlayerMotion.nNumModel = nData;
 				int i = 0;
 			}
 			else if (strcmp(&cData1[0], "MODEL_FILENAME") == 0)

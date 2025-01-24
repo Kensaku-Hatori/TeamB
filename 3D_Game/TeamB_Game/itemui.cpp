@@ -39,13 +39,15 @@ void InitItemUI(void)
 
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number001.png", &g_pTextureItemUINo);		//No 
 
+	g_ItemUIframepos = D3DXVECTOR3(1025.0f, 470.0f, 0.0f);
+	g_ItemUIpos = D3DXVECTOR3(1040.0f, 490.0f, 0.0f);
+	g_ItemUINopos = D3DXVECTOR3(ITEMUI_X + 1060.0f, 500.0f, 0.0f);
+
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
 
 	//枠
-	{
-		g_ItemUIframepos = D3DXVECTOR3(25.0f, 150.0f, 0.0f);
-		
+	{		
 		//頂点バッファの生成
 		pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
 			D3DUSAGE_WRITEONLY,
@@ -83,8 +85,6 @@ void InitItemUI(void)
 
 	//アイテム
 	{
-		g_ItemUIpos = D3DXVECTOR3(40.0f, 170.0f, 0.0f);
-
 		//頂点バッファの生成
 		pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_ITEM,
 			D3DUSAGE_WRITEONLY,
@@ -128,7 +128,6 @@ void InitItemUI(void)
 
 	//数字
 	{
-		g_ItemUINopos = D3DXVECTOR3(ITEMUI_X + 50.0f, 170.0f, 0.0f);
 
 		//頂点バッファの生成
 		pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_ITEM,
