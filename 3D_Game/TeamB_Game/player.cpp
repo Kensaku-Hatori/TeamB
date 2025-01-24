@@ -42,7 +42,7 @@ void InitPlayer(void)
 	g_player.nIdxShadow = SetShadow(g_player.pos, g_player.rot, 20.0f);//影の設定
 	g_player.nJump = PLAYER_JUMP;
 	//モーション関連
-	g_player.motionType = MOTIONTYPE_NEUTRAL;
+	g_player.motionType = MOTIONTYPE_ACTION;
 	g_player.bLoopMotion = true;//ループ
 	g_player.nNumKey = 2;//キーの総数
 	g_player.nCntMotion = 0;//モーションカウンター
@@ -68,16 +68,16 @@ void UninitPlayer(void)
 	for (int nCnt = 0; nCnt < g_player.nNumModel; nCnt++)
 	{
 		//メッシュの破棄
-		if (g_player.aModel[nCnt].pMesh != NULL)
+		if (g_player.PlayerMotion.aModel[nCnt].pMesh != NULL)
 		{
-			g_player.aModel[nCnt].pMesh->Release();
-			g_player.aModel[nCnt].pMesh = NULL;
+			g_player.PlayerMotion.aModel[nCnt].pMesh->Release();
+			g_player.PlayerMotion.aModel[nCnt].pMesh = NULL;
 		}
 		//マテリアルの破棄
-		if (g_player.aModel[nCnt].pBuffMat != NULL)
+		if (g_player.PlayerMotion.aModel[nCnt].pBuffMat != NULL)
 		{
-			g_player.aModel[nCnt].pBuffMat->Release();
-			g_player.aModel[nCnt].pBuffMat = NULL;
+			g_player.PlayerMotion.aModel[nCnt].pBuffMat->Release();
+			g_player.PlayerMotion.aModel[nCnt].pBuffMat = NULL;
 		}
 	}
 }
@@ -207,24 +207,6 @@ void UpdatePlayer(void)
 		}
 #endif
 
-		//移動制限
-		if (g_player.pos.x <= -POLYGON_X)
-		{
-			g_player.pos.x = -POLYGON_X;
-		}
-		if (g_player.pos.x >= POLYGON_X)
-		{
-			g_player.pos.x = POLYGON_X;
-		}
-		if (g_player.pos.z <= -POLYGON_Y)
-		{
-			g_player.pos.z = -POLYGON_Y;
-		}
-		if (g_player.pos.z >= POLYGON_Y)
-		{
-			g_player.pos.z = POLYGON_Y;
-		}
-
 		//モーション
 		SetPlayerMotion();
 	}
@@ -271,20 +253,20 @@ void DrawPlayer(void)
 			D3DXMATRIX mtxParent;
 
 			//パーツのワールドマトリックスの初期化
-			D3DXMatrixIdentity(&g_player.aModel[nCntModel].mtxWorld);
+			D3DXMatrixIdentity(&g_player.PlayerMotion.aModel[nCntModel].mtxWorld);
 
 			//向きを反転
-			D3DXMatrixRotationYawPitchRoll(&mtxRotModel, g_player.aModel[nCntModel].rot.y, g_player.aModel[nCntModel].rot.x, g_player.aModel[nCntModel].rot.z);
-			D3DXMatrixMultiply(&g_player.aModel[nCntModel].mtxWorld, &g_player.aModel[nCntModel].mtxWorld, &mtxRotModel);
+			D3DXMatrixRotationYawPitchRoll(&mtxRotModel, g_player.PlayerMotion.aModel[nCntModel].rot.y, g_player.PlayerMotion.aModel[nCntModel].rot.x, g_player.PlayerMotion.aModel[nCntModel].rot.z);
+			D3DXMatrixMultiply(&g_player.PlayerMotion.aModel[nCntModel].mtxWorld, &g_player.PlayerMotion.aModel[nCntModel].mtxWorld, &mtxRotModel);
 
 			//位置を反映
-			D3DXMatrixTranslation(&mtxTransModel, g_player.aModel[nCntModel].pos.x, g_player.aModel[nCntModel].pos.y, g_player.aModel[nCntModel].pos.z);
-			D3DXMatrixMultiply(&g_player.aModel[nCntModel].mtxWorld, &g_player.aModel[nCntModel].mtxWorld, &mtxTransModel);
+			D3DXMatrixTranslation(&mtxTransModel, g_player.PlayerMotion.aModel[nCntModel].pos.x, g_player.PlayerMotion.aModel[nCntModel].pos.y, g_player.PlayerMotion.aModel[nCntModel].pos.z);
+			D3DXMatrixMultiply(&g_player.PlayerMotion.aModel[nCntModel].mtxWorld, &g_player.PlayerMotion.aModel[nCntModel].mtxWorld, &mtxTransModel);
 
 			//パーツの親のマトリックスの設定
-			if (g_player.aModel[nCntModel].Parent != -1)
+			if (g_player.PlayerMotion.aModel[nCntModel].Parent != -1)
 			{
-				mtxParent = g_player.aModel[g_player.aModel[nCntModel].Parent].mtxWorld;
+				mtxParent = g_player.PlayerMotion.aModel[g_player.PlayerMotion.aModel[nCntModel].Parent].mtxWorld;
 			}
 			else
 			{
@@ -292,26 +274,26 @@ void DrawPlayer(void)
 			}
 
 			//パーツのワールドマトリックスの設定
-			D3DXMatrixMultiply(&g_player.aModel[nCntModel].mtxWorld,
-				&g_player.aModel[nCntModel].mtxWorld,
+			D3DXMatrixMultiply(&g_player.PlayerMotion.aModel[nCntModel].mtxWorld,
+				&g_player.PlayerMotion.aModel[nCntModel].mtxWorld,
 				&mtxParent);
 			
 			//パーツのワールドマトリックスの設定
 			pDevice->SetTransform(D3DTS_WORLD,
-				&g_player.aModel[nCntModel].mtxWorld);
+				&g_player.PlayerMotion.aModel[nCntModel].mtxWorld);
 			
 			//パーツの描画
 			//マテリアルデータへのポインタを取得
-			pMat = (D3DXMATERIAL*)g_player.aModel[nCntModel].pBuffMat->GetBufferPointer();
+			pMat = (D3DXMATERIAL*)g_player.PlayerMotion.aModel[nCntModel].pBuffMat->GetBufferPointer();
 
-			for (int nCntMat = 0; nCntMat < (int)g_player.aModel[nCntModel].dwNumMat; nCntMat++)
+			for (int nCntMat = 0; nCntMat < (int)g_player.PlayerMotion.aModel[nCntModel].dwNumMat; nCntMat++)
 			{
 				//マテリアルの設定
 				pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
 				//テクスチャの設定
-				pDevice->SetTexture(0, g_player.aModel[nCntModel].pTexture[nCntModel]);
+				pDevice->SetTexture(0, g_player.PlayerMotion.aModel[nCntModel].pTexture[nCntModel]);
 				//プレイヤーの描画
-				g_player.aModel[nCntModel].pMesh->DrawSubset(nCntMat);
+				g_player.PlayerMotion.aModel[nCntModel].pMesh->DrawSubset(nCntMat);
 			}
 		}
 		//保存していたマテリアルを戻す
@@ -334,9 +316,9 @@ void SetPlayerMotion(void)
 	for (int nCnt = 0; nCnt < g_player.nNumModel; nCnt++)
 	{
 		//次のキー
-		int nNext = (g_player.nKey + 1) % g_player.aMotionInfo[g_player.motionType].nNumKey;
+		int nNext = (g_player.nKey + 1) % g_player.PlayerMotion.aMotionInfo[g_player.motionType].nNumKey;
 		//キー数を戻す
-		if (g_player.nKey >= g_player.aMotionInfo[g_player.motionType].nNumKey || nNext >= g_player.aMotionInfo[g_player.motionType].nNumKey)
+		if (g_player.nKey >= g_player.PlayerMotion.aMotionInfo[g_player.motionType].nNumKey || nNext >= g_player.PlayerMotion.aMotionInfo[g_player.motionType].nNumKey)
 		{
 			g_player.nKey = 0;
 		}
@@ -345,33 +327,33 @@ void SetPlayerMotion(void)
 
 		//差分計算
 		//pos
-		posSabun.x = g_player.aMotionInfo[g_player.motionType].aKeyInfo[nNext].aKey[nCnt].fPosX - g_player.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fPosX;
-		posSabun.y = g_player.aMotionInfo[g_player.motionType].aKeyInfo[nNext].aKey[nCnt].fPosY - g_player.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fPosY;
-		posSabun.z = g_player.aMotionInfo[g_player.motionType].aKeyInfo[nNext].aKey[nCnt].fPosZ - g_player.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fPosZ;
+		posSabun.x = g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[nNext].aKey[nCnt].fPosX - g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fPosX;
+		posSabun.y = g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[nNext].aKey[nCnt].fPosY - g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fPosY;
+		posSabun.z = g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[nNext].aKey[nCnt].fPosZ - g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fPosZ;
 		//rot
-		rotSabun.x = g_player.aMotionInfo[g_player.motionType].aKeyInfo[nNext].aKey[nCnt].fRotX - g_player.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fRotX;
-		rotSabun.y = g_player.aMotionInfo[g_player.motionType].aKeyInfo[nNext].aKey[nCnt].fRotY - g_player.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fRotY;
-		rotSabun.z = g_player.aMotionInfo[g_player.motionType].aKeyInfo[nNext].aKey[nCnt].fRotZ - g_player.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fRotZ;
+		rotSabun.x = g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[nNext].aKey[nCnt].fRotX - g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fRotX;
+		rotSabun.y = g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[nNext].aKey[nCnt].fRotY - g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fRotY;
+		rotSabun.z = g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[nNext].aKey[nCnt].fRotZ - g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fRotZ;
 
-		float fDis = (float)g_player.nCntMotion / g_player.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].nFrame;
+		float fDis = (float)g_player.nCntMotion / g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].nFrame;
 
 		//パーツの位置・向きを算出
-		posMotion.x = (g_player.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fPosX + posSabun.x * fDis);
-		posMotion.y = (g_player.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fPosY + posSabun.y * fDis);
-		posMotion.z = (g_player.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fPosZ + posSabun.z * fDis);
+		posMotion.x = (g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fPosX + posSabun.x * fDis);
+		posMotion.y = (g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fPosY + posSabun.y * fDis);
+		posMotion.z = (g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fPosZ + posSabun.z * fDis);
 
-		rotMotion.x = (g_player.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fRotX + rotSabun.x * fDis);
-		rotMotion.y = (g_player.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fRotY + rotSabun.y * fDis);
-		rotMotion.z = (g_player.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fRotZ + rotSabun.z * fDis);
+		rotMotion.x = (g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fRotX + rotSabun.x * fDis);
+		rotMotion.y = (g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fRotY + rotSabun.y * fDis);
+		rotMotion.z = (g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].aKey[nCnt].fRotZ + rotSabun.z * fDis);
 
 
 		//g_player.aModel[nCnt].pos += posMotion;
-		g_player.aModel[nCnt].rot = rotMotion;
+		g_player.PlayerMotion.aModel[nCnt].rot = rotMotion;
 	}
 
 	g_player.nCntMotion++;
 
-	if (g_player.nCntMotion >= g_player.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].nFrame)
+	if (g_player.nCntMotion >= g_player.PlayerMotion.aMotionInfo[g_player.motionType].aKeyInfo[g_player.nKey].nFrame)
 	{
 		g_player.nCntMotion = 0;
 
@@ -389,21 +371,21 @@ void SetMesh(char* pFilePath, int Indx)
 		D3DXMESH_SYSTEMMEM,
 		pDevice,
 		NULL,
-		&g_player.aModel[Indx].pBuffMat,
+		&g_player.PlayerMotion.aModel[Indx].pBuffMat,
 		NULL,
-		&g_player.aModel[Indx].dwNumMat,
-		&g_player.aModel[Indx].pMesh);
+		&g_player.PlayerMotion.aModel[Indx].dwNumMat,
+		&g_player.PlayerMotion.aModel[Indx].pMesh);
 
 		int nNumVtx;   //頂点数
 		DWORD sizeFVF; //頂点フォーマットのサイズ
 		BYTE* pVtxBuff;//頂点バッファへのポインタ
 
 		//頂点数取得
-		nNumVtx = g_player.aModel[Indx].pMesh->GetNumVertices();
+		nNumVtx = g_player.PlayerMotion.aModel[Indx].pMesh->GetNumVertices();
 		//頂点フォーマットのサイズ取得
-		sizeFVF = D3DXGetFVFVertexSize(g_player.aModel[Indx].pMesh->GetFVF());
+		sizeFVF = D3DXGetFVFVertexSize(g_player.PlayerMotion.aModel[Indx].pMesh->GetFVF());
 		//頂点バッファのロック
-		g_player.aModel[Indx].pMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&pVtxBuff);
+		g_player.PlayerMotion.aModel[Indx].pMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&pVtxBuff);
 
 	for (int nCnt = 0; nCnt < nNumVtx; nCnt++)
 	{
@@ -444,33 +426,33 @@ void SetMesh(char* pFilePath, int Indx)
 	g_player.size = D3DXVECTOR3(g_vtxMaxPlayer.x - g_vtxMinPlayer.x, g_vtxMaxPlayer.y - g_vtxMinPlayer.y, g_vtxMaxPlayer.z - g_vtxMinPlayer.z);
 
 	//頂点バッファのアンロック
-	g_player.aModel[Indx].pMesh->UnlockVertexBuffer();
+	g_player.PlayerMotion.aModel[Indx].pMesh->UnlockVertexBuffer();
 
 	D3DXMATERIAL* pMat;//マテリアルへのポインタ
-	pMat = (D3DXMATERIAL*)g_player.aModel[Indx].pBuffMat->GetBufferPointer();
+	pMat = (D3DXMATERIAL*)g_player.PlayerMotion.aModel[Indx].pBuffMat->GetBufferPointer();
 
-	for (int nCntMat = 0; nCntMat < (int)g_player.aModel[Indx].dwNumMat; nCntMat++)
+	for (int nCntMat = 0; nCntMat < (int)g_player.PlayerMotion.aModel[Indx].dwNumMat; nCntMat++)
 	{
 		if (pMat[nCntMat].pTextureFilename != NULL)
 		{
-			D3DXCreateTextureFromFile(pDevice, pMat[nCntMat].pTextureFilename, &g_player.aModel[Indx].pTexture[Indx]); //1
+			D3DXCreateTextureFromFile(pDevice, pMat[nCntMat].pTextureFilename, &g_player.PlayerMotion.aModel[Indx].pTexture[Indx]); //1
 		}
 	}
 	g_player.bUse = true;
 }
 void SetPartsInfo(MODELINFO ModelInfo,int Indx)
 {
-	g_player.aModel[Indx].nIndx = ModelInfo.nIndx;
-	g_player.aModel[Indx].Parent = ModelInfo.Parent;
-	g_player.aModel[Indx].pos = ModelInfo.pos;
-	g_player.aModel[Indx].rot = ModelInfo.rot;
-	g_player.aModel[Indx].size = ModelInfo.size;
+	g_player.PlayerMotion.aModel[Indx].nIndx = ModelInfo.nIndx;
+	g_player.PlayerMotion.aModel[Indx].Parent = ModelInfo.Parent;
+	g_player.PlayerMotion.aModel[Indx].pos = ModelInfo.pos;
+	g_player.PlayerMotion.aModel[Indx].rot = ModelInfo.rot;
+	g_player.PlayerMotion.aModel[Indx].size = ModelInfo.size;
 	int i = 0;
 }
 void PlayerMotion(MOTIONINFO *pMotionInfo)
 {
 	for (int MotionCount = 0; MotionCount < MOTIONTYPE_MAX; MotionCount++, pMotionInfo++)
 	{
-		g_player.aMotionInfo[MotionCount] = *pMotionInfo;
+		g_player.PlayerMotion.aMotionInfo[MotionCount] = *pMotionInfo;
 	}
 }

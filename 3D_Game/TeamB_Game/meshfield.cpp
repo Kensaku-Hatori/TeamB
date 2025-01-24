@@ -14,7 +14,7 @@ LPDIRECT3DTEXTURE9 g_pTextureMeshfield[MAX_TEX_FIELD] = {};				//ƒeƒNƒXƒ`ƒƒ‚Ö‚Ìƒ
 
 MeshField g_Meshfield[MESH_NUM_MAX];									//ƒ|ƒŠƒSƒ“(‰¡)‚Ì\‘¢‘Ì
 static char fieldtexName[MAX_TEX_FIELD][32] = { NULL };					//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼•Û‘¶—p
-int flmaxVtx = 0, flpolyNum = 0;						//’¸“_”Aƒ|ƒŠƒSƒ“”AƒCƒ“ƒfƒbƒNƒX”•Û‘¶—p
+int flmaxVtx = 0;						//’¸“_”Aƒ|ƒŠƒSƒ“”AƒCƒ“ƒfƒbƒNƒX”•Û‘¶—p
 
 //=================================
 // ƒƒbƒVƒ…°‚Ì‰Šú‰»ˆ—
@@ -24,9 +24,8 @@ void InitMeshfield(void)
 	//ƒfƒoƒCƒX‚Ìæ“¾
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	//’¸“_”Aƒ|ƒŠƒSƒ“”AƒCƒ“ƒfƒbƒNƒX”‰Šú‰»
+	//‘’¸“_”‚Ì‰Šú‰»
 	flmaxVtx = 0;
-	flpolyNum = 0;
 
 	for (int nCnt = 0; nCnt < MESH_NUM_MAX; nCnt++)
 	{
@@ -41,6 +40,8 @@ void InitMeshfield(void)
 		g_Meshfield[nCnt].nWidth = 0;									//•
 		g_Meshfield[nCnt].nHeight = 0;									//‚‚³
 		g_Meshfield[nCnt].nIndex = 0;									//ƒCƒ“ƒfƒbƒNƒX
+		g_Meshfield[nCnt].nMaxVtx = 0;									//’¸“_”
+		g_Meshfield[nCnt].nPolyNum = 0;									//ƒ|ƒŠƒSƒ“”
 		g_Meshfield[nCnt].bUse = false;									//g—p‚µ‚Ä‚¢‚È‚¢ó‘Ô‚É‚·‚é
 	}
 }
@@ -128,7 +129,7 @@ void DrawMeshfield(void)
 			pDevice->SetTexture(0, g_pTextureMeshfield[g_Meshfield[nCnt].textype]);
 
 			//ƒƒbƒVƒ…°‚ğ•`‰æ
-			pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, flmaxVtx, 0, flpolyNum);
+			pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, g_Meshfield[nCnt].nMaxVtx, 0, g_Meshfield[nCnt].nPolyNum);
 		}
 	}
 }
@@ -161,8 +162,9 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 			g_Meshfield[nCnt].nHeight = nHeight;				//‚‚³
 			g_Meshfield[nCnt].bUse = true;						//g—p‚µ‚Ä‚¢‚éó‘Ô‚É‚·‚é
 
-			flmaxVtx += (g_Meshfield[nCnt].nDiviX + 1) * (g_Meshfield[nCnt].nDiviZ + 1);											//’¸“_”
-			flpolyNum += (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ - 1) * 2);			//ƒ|ƒŠƒSƒ“”
+			g_Meshfield[nCnt].nMaxVtx = (g_Meshfield[nCnt].nDiviX + 1) * (g_Meshfield[nCnt].nDiviZ + 1);											//’¸“_”
+			flmaxVtx += g_Meshfield[nCnt].nMaxVtx;																									//‘’¸“_”
+			g_Meshfield[nCnt].nPolyNum = (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ - 1) * 2);			//ƒ|ƒŠƒSƒ“”
 			int flindexNum = (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ * 2) - 1);		//ƒCƒ“ƒfƒbƒNƒX
 
 				//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ì¶¬
