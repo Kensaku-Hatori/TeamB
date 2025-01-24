@@ -108,6 +108,7 @@ void LoadStart(FILE* pFile)
 				SkipEqual(pFile);
 				FilePath[0] = LoadPath(pFile);
 				strcpy(&FilePathModel[ModelPathCount][0], FilePath[0]);
+				SetStageModelInfo(&FilePathModel[ModelPathCount][0], ModelPathCount);
 				if (ModelPathCount < nType.nModelType)
 				{
 					ModelPathCount++;
@@ -585,7 +586,7 @@ char* LoadWallInfo(FILE* pFile)
 	char cData2[64] = { NULL };
 	D3DXVECTOR3 Pos, Rot;
 	D3DXVECTOR2 Block, Size;
-	int nType;
+	int nType = 0;
 
 	while (1)
 	{
@@ -706,6 +707,7 @@ char* LoadModelInfo(FILE* pFile)
 			}
 			else if (strcmp(&cData1[0], "END_MODELSET") == 0)
 			{
+				SetStageModel(Pos, Rot, (MODELTYPE)nType);
 				break;
 			}
 		}
@@ -723,6 +725,7 @@ char* LoadBillBoardInfo(FILE* pFile)
 	D3DXVECTOR3 Pos;
 	D3DXVECTOR2 Size, Origin;
 	int nType;
+	bool bShadow;
 
 	while (1)
 	{
@@ -765,6 +768,12 @@ char* LoadBillBoardInfo(FILE* pFile)
 				SkipEqual(pFile);
 				Origin.x = (float)LoadInt(pFile);
 				Origin.y = (float)LoadInt(pFile);
+			}
+			else if (strcmp(&cData1[0], "SHADOW") == 0)
+			{
+				cData1[0] = { NULL };
+				SkipEqual(pFile);
+				bShadow = (bool)LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "END_BILLBOARDSET") == 0)
 			{
@@ -823,10 +832,10 @@ char* LoadPlayerInfo(FILE* pFile)
 				SkipEqual(pFile);
 				cData3[0] = LoadPath(pFile);
 				strcpy(cFileName, cData3[0]);
-				LoadMotionViewer(cFileName);
 			}
 			else if (strcmp(&cData1[0], "END_PLAYERSET") == 0)
 			{
+				LoadMotionViewer(cFileName);
 				break;
 			}
 		}

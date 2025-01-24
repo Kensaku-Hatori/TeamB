@@ -30,6 +30,7 @@
 #include "ui.h"
 #include "particleEditer.h"
 #include "loadstage.h"
+#include "model.h"
 
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -73,6 +74,8 @@ void InitGame(void)
 
 	InitPause();
 
+	InitStageModel();
+
 	LoadModelViewer();
 
 	g_gamestate = GAMESTATE_NORMAL;
@@ -114,6 +117,8 @@ void UninitGame(void)
 	UninitLight();
 
 	UninitUi();
+
+	UninitStageModel();
 }
 //===========
 // 更新処理
@@ -169,6 +174,8 @@ void UpdateGame(void)
 			UpdateLight();
 
 			UpdateUi();
+
+			UpdateStageModel();
 
 			switch (g_gamestate)
 			{
@@ -243,6 +250,8 @@ void DrawGame(void)
 	//DrawWall();
 
 	DrawMeshWall();
+
+	DrawStageModel();
 
 	if (g_gamestate != GAMESTATE_EFFECTEDITER)
 	{

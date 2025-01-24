@@ -160,6 +160,7 @@
     <ClCompile Include="meshcylinder.cpp" />
     <ClCompile Include="meshfield.cpp" />
     <ClCompile Include="meshwall.cpp" />
+    <ClCompile Include="model.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="particleEditer.cpp" />
     <ClCompile Include="pause.cpp" />
