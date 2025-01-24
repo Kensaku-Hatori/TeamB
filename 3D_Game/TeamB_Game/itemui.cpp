@@ -78,7 +78,7 @@ void InitItemUI(void)
 
 	//アイテム
 	{
-		g_ItemUIpos = D3DXVECTOR3(50.0f, 170.0f, 0.0f);
+		g_ItemUIpos = D3DXVECTOR3(40.0f, 170.0f, 0.0f);
 
 		//頂点バッファの生成
 		pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_ITEM,
@@ -115,7 +115,7 @@ void InitItemUI(void)
 			pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
 			pVtx += 4;
-			g_ItemUIpos.y += ITEMUI_Y;
+			g_ItemUIpos.y += ITEMUI_Y + 20.0f;
 		}
 		//頂点バッファをアンロック
 		g_pVtxBuffItemUI->Unlock();

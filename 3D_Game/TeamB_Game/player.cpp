@@ -207,24 +207,6 @@ void UpdatePlayer(void)
 		}
 #endif
 
-		//ˆÚ“®§ŒÀ
-		if (g_player.pos.x <= -POLYGON_X)
-		{
-			g_player.pos.x = -POLYGON_X;
-		}
-		if (g_player.pos.x >= POLYGON_X)
-		{
-			g_player.pos.x = POLYGON_X;
-		}
-		if (g_player.pos.z <= -POLYGON_Y)
-		{
-			g_player.pos.z = -POLYGON_Y;
-		}
-		if (g_player.pos.z >= POLYGON_Y)
-		{
-			g_player.pos.z = POLYGON_Y;
-		}
-
 		//ƒ‚[ƒVƒ‡ƒ“
 		SetPlayerMotion();
 	}
