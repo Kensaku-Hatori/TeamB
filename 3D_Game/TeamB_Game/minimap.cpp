@@ -1,6 +1,6 @@
 //==============================
 //
-//  ミニマップ処理[MiniMap.cpp]
+//  ミニマップ処理[minimap.cpp]
 //  Author:kaiti
 //
 //==============================
@@ -175,9 +175,9 @@ void DrawMiniMap(void)
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 	}
 }
-//
-//
-//
+//==========================
+// プレイヤーアイコン設定
+//==========================
 void SetMapPlayer(int nStageNo)
 {
 	//ステージごとの場所変更（仮）
