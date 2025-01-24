@@ -95,7 +95,6 @@ void UpdatePlayer(void)
 		SetSizeShadow(g_player.pos, g_player.nIdxShadow, g_player.bJump);
 
 		//ˆÚ“®
-		//ˆÚ“®
 		//¶
 		if (GetKeyboardPress(DIK_A) == true || GetJoypadPress(JOYKEY_LEFT) == true)
 		{// A
@@ -137,7 +136,6 @@ void UpdatePlayer(void)
 		//‘O
 		else if (GetKeyboardPress(DIK_W) == true || GetJoypadPress(JOYKEY_DOWN) == true)
 		{// S
-
 			if (GetKeyboardPress(DIK_A) == true || GetJoypadPress(JOYKEY_LEFT) == true)
 			{//¶‘O
 				g_player.move.x -= sinf(D3DX_PI * 0.25f) * g_player.Status.fSpeed;
