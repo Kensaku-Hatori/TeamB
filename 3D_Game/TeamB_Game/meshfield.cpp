@@ -11,11 +11,10 @@
 //グローバル変数宣言
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffMeshfield = NULL;						//頂点情報へのポインタ
 LPDIRECT3DTEXTURE9 g_pTextureMeshfield[MAX_TEX_FIELD] = {};				//テクスチャへのポインタ
-LPDIRECT3DINDEXBUFFER9 g_pIdxBuffMeshField = NULL;						//インデックスバッファへのポインタ
 
 MeshField g_Meshfield[MESH_NUM_MAX];									//ポリゴン(横)の構造体
 static char fieldtexName[MAX_TEX_FIELD][32] = { NULL };					//テクスチャファイル名保存用
-int flmaxVtx = 0, flpolyNum = 0, flindexNum = 0;						//頂点数、ポリゴン数、インデックス数保存用
+int flmaxVtx = 0, flpolyNum = 0;						//頂点数、ポリゴン数、インデックス数保存用
 
 //=================================
 // メッシュ床の初期化処理
@@ -28,13 +27,13 @@ void InitMeshfield(void)
 	//頂点数、ポリゴン数、インデックス数初期化
 	flmaxVtx = 0;
 	flpolyNum = 0;
-	flindexNum = 0;
 
 	for (int nCnt = 0; nCnt < MESH_NUM_MAX; nCnt++)
 	{
 		//構造体の初期化
 		g_Meshfield[nCnt].pos = D3DXVECTOR3(-900.0f, 0.0f, 900.0f);		//位置
 		g_Meshfield[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			//向き
+		g_Meshfield[nCnt].IdxBuffMeshField = { NULL };					//インデックスバッファ
 		g_Meshfield[nCnt].textype = 0;									//テクスチャタイプ
 		g_Meshfield[nCnt].nDiviX = 0;									//分割数x(0にしたらnullptr)
 		g_Meshfield[nCnt].nDiviY = 0;									//分割数y
@@ -43,11 +42,6 @@ void InitMeshfield(void)
 		g_Meshfield[nCnt].nHeight = 0;									//高さ
 		g_Meshfield[nCnt].nIndex = 0;									//インデックス
 		g_Meshfield[nCnt].bUse = false;									//使用していない状態にする
-
-		//flmaxVtx += (g_Meshfield[nCnt].nDiviX + 1) * (g_Meshfield[nCnt].nDiviZ + 1);										//頂点数
-		//flpolyNum += (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ - 1) * 2);		//ポリゴン数
-		//g_Meshfield[nCnt].nIndex = flindexNum;																				//インデックス
-		//flindexNum += (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ * 2) - 1);		//インデックス
 	}
 }
 
@@ -73,11 +67,14 @@ void UninitMeshfield(void)
 		g_pVtxBuffMeshfield = NULL;
 	}
 
-	//インデックスバッファの破棄
-	if (g_pIdxBuffMeshField != NULL)
+	for (int nCnt = 0; nCnt < MESH_NUM_MAX; nCnt++)
 	{
-		g_pIdxBuffMeshField->Release();
-		g_pIdxBuffMeshField = NULL;
+		//インデックスバッファの破棄
+		if (g_Meshfield[nCnt].IdxBuffMeshField != NULL)
+		{
+			g_Meshfield[nCnt].IdxBuffMeshField->Release();
+			g_Meshfield[nCnt].IdxBuffMeshField = NULL;
+		}
 	}
 }
 
@@ -122,7 +119,7 @@ void DrawMeshfield(void)
 			pDevice->SetStreamSource(0, g_pVtxBuffMeshfield, 0, sizeof(VERTEX_3D));
 
 			//インデックスバッファをデータストリームに設定
-			pDevice->SetIndices(g_pIdxBuffMeshField);
+			pDevice->SetIndices(g_Meshfield[nCnt].IdxBuffMeshField);
 
 			//頂点フォーマットの設定
 			pDevice->SetFVF(FVF_VERTEX_3D);
@@ -164,10 +161,18 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 			g_Meshfield[nCnt].nHeight = nHeight;				//高さ
 			g_Meshfield[nCnt].bUse = true;						//使用している状態にする
 
-			g_Meshfield[nCnt].nIndex = flindexNum;
-			flmaxVtx += (g_Meshfield[nCnt].nDiviX + 1) * (g_Meshfield[nCnt].nDiviZ + 1);										//頂点数
-			flpolyNum += (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ - 1) * 2);		//ポリゴン数
-			flindexNum += (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ * 2) - 1);		//インデックス
+			flmaxVtx += (g_Meshfield[nCnt].nDiviX + 1) * (g_Meshfield[nCnt].nDiviZ + 1);											//頂点数
+			flpolyNum += (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ - 1) * 2);			//ポリゴン数
+			int flindexNum = (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ * 2) - 1);		//インデックス
+
+				//インデックスバッファの生成
+			pDevice->CreateIndexBuffer(sizeof(WORD) * flindexNum,
+				D3DUSAGE_WRITEONLY,
+				D3DFMT_INDEX16,
+				D3DPOOL_MANAGED,
+				&g_Meshfield[nCnt].IdxBuffMeshField,
+				NULL);
+
 
 			break;
 		}
@@ -179,14 +184,6 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 		FVF_VERTEX_3D,
 		D3DPOOL_MANAGED,
 		&g_pVtxBuffMeshfield,
-		NULL);
-
-	//インデックスバッファの生成
-	pDevice->CreateIndexBuffer(sizeof(WORD) * flindexNum,
-		D3DUSAGE_WRITEONLY,
-		D3DFMT_INDEX16,
-		D3DPOOL_MANAGED,
-		&g_pIdxBuffMeshField,
 		NULL);
 
 	for (int nCnt = 0; nCnt < MESH_NUM_MAX; nCnt++)
@@ -221,7 +218,7 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 			g_pVtxBuffMeshfield->Unlock();
 
 			//インデックスバッファをロック
-			g_pIdxBuffMeshField->Lock(0, 0, (void**)&pIdx, 0);
+			g_Meshfield[nCnt].IdxBuffMeshField->Lock(0, 0, (void**)&pIdx, 0);
 
 			int nCntX;
 			for (int nCntZ = 0; nCntZ < g_Meshfield[nCnt].nDiviZ; nCntZ++)
@@ -245,7 +242,7 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 			}
 
 			//インデックスバッファのアンロック
-			g_pIdxBuffMeshField->Unlock();
+			g_Meshfield[nCnt].IdxBuffMeshField->Unlock();
 		}
 	}
 }
