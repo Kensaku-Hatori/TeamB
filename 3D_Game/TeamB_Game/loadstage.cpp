@@ -1,6 +1,7 @@
 #include "loadstage.h"
 #include "loadmotion.h"
 #include "meshfield.h"
+#include "meshwall.h"
 
 //*****************************
 // スクリプト以前を読み込む処理
@@ -566,6 +567,7 @@ char* LoadFieldInfo(FILE* pFile)
 			}
 			else if (strcmp(&cData1[0], "END_FIELDSET") == 0)
 			{
+				SetMeshfield(Pos, Rot, nType, (int)Block.x, 0, (int)Block.y, (int)Size.x, (int)Size.y);
 				break;
 			}
 		}
@@ -638,6 +640,8 @@ char* LoadWallInfo(FILE* pFile)
 			}
 			else if (strcmp(&cData1[0], "END_WALLSET") == 0)
 			{
+				SetMeshfield(Pos, Rot, nType, (int)Block.x, 0, (int)Block.y, (int)Size.x, (int)Size.y);
+				int i = 0;
 				break;
 			}
 		}

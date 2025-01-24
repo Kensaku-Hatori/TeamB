@@ -16,17 +16,18 @@
 //ポリゴン(横)の構造体
 typedef struct
 {
-	D3DXVECTOR3 pos;						//位置
-	D3DXVECTOR3 rot;						//向き
-	D3DXMATRIX mtxWorld;					//ワールドマトリックス
-	int textype;							//テクスチャのタイプ
-	int nDiviX;								//分割数x
-	int nDiviY;								//分割数y
-	int nDiviZ;								//分割数z
-	int nWidth;								//幅
-	int nHeight;							//高さ
-	int nIndex;								//インテックス保存用
-	bool bUse;								//使用しているかどうか
+	D3DXVECTOR3 pos;									//位置
+	D3DXVECTOR3 rot;									//向き
+	D3DXMATRIX mtxWorld;								//ワールドマトリックス
+	LPDIRECT3DINDEXBUFFER9 IdxBuffMeshField;			//インデックスバッファへのポインタ
+	int textype;										//テクスチャのタイプ
+	int nDiviX;											//分割数x
+	int nDiviY;											//分割数y
+	int nDiviZ;											//分割数z
+	int nWidth;											//幅
+	int nHeight;										//高さ
+	int nIndex;											//インテックス保存用
+	bool bUse;											//使用しているかどうか
 }MeshField;
 
 //プロトタイプ宣言

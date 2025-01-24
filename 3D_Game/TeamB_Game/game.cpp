@@ -4,6 +4,7 @@
 //  Author:kaiti
 //
 //================================
+
 #include "game.h"
 #include "result.h"
 #include "resultinfo.h"
@@ -28,6 +29,7 @@
 #include "skill.h"
 #include "ui.h"
 #include "particleEditer.h"
+#include "loadstage.h"
 
 //ÉOÉçÅ[ÉoÉãïœêî
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -41,10 +43,9 @@ void InitGame(void)
 {
 	InitPolygon();
 
-	//InitMeshfield();
-	//SetMeshfield(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 0, 0, 0, 150, 150);
-	//SetMeshfield(D3DXVECTOR3(500.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 0, 0, 0, 150, 150);
-
+	InitMeshfield();
+	SetMeshfield(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 1, 0, 1, 100, 100);
+	SetMeshfield(D3DXVECTOR3(0.0f, 0.0f, 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 1, 0, 1, 100, 100);
 
 	InitShadow();
 
@@ -76,6 +77,8 @@ void InitGame(void)
 
 	InitPause();
 
+	LoadModelViewer();
+
 	g_gamestate = GAMESTATE_NORMAL;
 	g_nCounterGameState = 0;
 
@@ -101,7 +104,8 @@ void UninitGame(void)
 	//UninitBlock();
 
 	UninitPolygon();
-	//UninitMeshfield();
+
+	UninitMeshfield();
 
 	//UninitExplosion();
 
@@ -137,7 +141,8 @@ void UpdateGame(void)
 		else if (g_bPause == false)
 		{
 			UpdatePolygon();
-			//UpdateMeshfield();
+
+			UpdateMeshfield();
 
 			UpdateShadow();
 
@@ -227,7 +232,8 @@ void DrawGame(void)
 	SetCamera();
 
 	DrawPolygon();
-	//DrawMeshfield();
+
+	DrawMeshfield();
 
 	DrawShadow();
 
