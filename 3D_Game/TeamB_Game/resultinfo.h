@@ -10,6 +10,9 @@
 #include"main.h"
 #include "result.h"
 
+#define RESULT_X (400)
+#define RESULT_Y (200)
+
 //プロトタイプ宣言
 void InitResultInfo(void);
 void UninitResultInfo(void);
