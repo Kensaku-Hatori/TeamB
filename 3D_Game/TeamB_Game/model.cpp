@@ -19,41 +19,20 @@ void UninitStageModel()
 	{
 		if (g_ModelOrigin[ModelCount].pBuffMat != NULL)
 		{
-			g_ModelOrigin[ModelCount].pBuffMat = NULL;
 			g_ModelOrigin[ModelCount].pBuffMat->Release();
+			g_ModelOrigin[ModelCount].pBuffMat = NULL;
 		}
 		if (g_ModelOrigin[ModelCount].pMesh != NULL)
 		{
-			g_ModelOrigin[ModelCount].pMesh = NULL;
 			g_ModelOrigin[ModelCount].pMesh->Release();
+			g_ModelOrigin[ModelCount].pMesh = NULL;
 		}
 		for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
 		{
 			if (g_ModelOrigin[ModelCount].pTexture[TexCount] != NULL)
 			{
-				g_ModelOrigin[ModelCount].pTexture[TexCount] = NULL;
 				g_ModelOrigin[ModelCount].pTexture[TexCount]->Release();
-			}
-		}
-	}
-	for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++)
-	{
-		if (g_StageModel[ModelCount].ModelBuff.pBuffMat != NULL)
-		{
-			g_StageModel[ModelCount].ModelBuff.pBuffMat = NULL;
-			g_StageModel[ModelCount].ModelBuff.pBuffMat->Release();
-		}
-		if (g_StageModel[ModelCount].ModelBuff.pMesh != NULL)
-		{
-			g_StageModel[ModelCount].ModelBuff.pMesh = NULL;
-			g_StageModel[ModelCount].ModelBuff.pMesh->Release();
-		}
-		for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
-		{
-			if (g_StageModel[ModelCount].ModelBuff.pTexture[TexCount] != NULL)
-			{
-				g_StageModel[ModelCount].ModelBuff.pTexture[TexCount] = NULL;
-				g_StageModel[ModelCount].ModelBuff.pTexture[TexCount]->Release();
+				g_ModelOrigin[ModelCount].pTexture[TexCount] = NULL;
 			}
 		}
 	}
@@ -74,6 +53,7 @@ void DrawStageModel()
 	D3DMATERIAL9 matDef;
 	//マテリアルデータへのポインタ
 	D3DXMATERIAL* pMat;
+
 	for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++)
 	{
 		if (g_StageModel[ModelCount].bUse == true)
