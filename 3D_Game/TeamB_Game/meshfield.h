@@ -27,6 +27,8 @@ typedef struct
 	int nWidth;											//幅
 	int nHeight;										//高さ
 	int nIndex;											//インテックス保存用
+	int nMaxVtx;										//頂点数
+	int nPolyNum;										//ポリゴン数
 	bool bUse;											//使用しているかどうか
 }MeshField;
 
