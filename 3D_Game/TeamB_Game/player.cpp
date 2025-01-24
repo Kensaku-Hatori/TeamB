@@ -209,7 +209,6 @@ void UpdatePlayer(void)
 		}
 #endif
 
-		SetPlayerMotion();
 		UpdateMotion(&g_player.PlayerMotion);
 	}
 }
