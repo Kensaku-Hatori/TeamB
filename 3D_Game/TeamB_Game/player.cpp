@@ -43,7 +43,7 @@ void InitPlayer(void)
 	g_player.nIdxShadow = SetShadow(g_player.pos, g_player.rot, 20.0f);//影の設定
 	g_player.nJump = PLAYER_JUMP;
 	//モーション関連
-	g_player.motionType = MOTIONTYPE_NEUTRAL;
+
 	g_player.bLoopMotion = true;//ループ
 	g_player.nNumKey = 2;//キーの総数
 	g_player.nCntMotion = 0;//モーションカウンター
@@ -209,23 +209,7 @@ void UpdatePlayer(void)
 		}
 #endif
 
-		//移動制限
-		if (g_player.pos.x <= -POLYGON_X)
-		{
-			g_player.pos.x = -POLYGON_X;
-		}
-		if (g_player.pos.x >= POLYGON_X)
-		{
-			g_player.pos.x = POLYGON_X;
-		}
-		if (g_player.pos.z <= -POLYGON_Y)
-		{
-			g_player.pos.z = -POLYGON_Y;
-		}
-		if (g_player.pos.z >= POLYGON_Y)
-		{
-			g_player.pos.z = POLYGON_Y;
-		}
+		SetPlayerMotion();
 		UpdateMotion(&g_player.PlayerMotion);
 	}
 }

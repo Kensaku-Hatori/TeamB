@@ -9,13 +9,13 @@
 
 #include"main.h"
 
-#define ITEMUIFRAME_X (200)
+#define ITEMUIFRAME_X (250)
 #define ITEMUIFRAME_Y (300)
 
-#define ITEMUI_X (120)
+#define ITEMUI_X (150)
 #define ITEMUI_Y (50)
 
-
+#define ITEMUINO_SIZE (50)
 //プロトタイプ宣言
 void InitItemUI(void);
 void UninitItemUI(void);
