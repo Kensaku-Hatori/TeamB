@@ -13,7 +13,7 @@ void InitParticleEditer()
 {
 	g_ParticleEditer.ParticleInfo.Object.Pos = D3DXVECTOR3(0.0f, 100.0f, 0.0f);
 	g_ParticleEditer.ParticleInfo.dir = D3DXVECTOR3(3.14f,3.14f, 3.14f);
-	g_ParticleEditer.ParticleInfo.col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
+	g_ParticleEditer.ParticleInfo.col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	g_ParticleEditer.ParticleInfo.ntype = PARTICLE_NONE;
 	g_ParticleEditer.ParticleInfo.Scale = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
 	g_ParticleEditer.ParticleInfo.nLife = 100;
@@ -102,6 +102,14 @@ void UpdateParticleEditer()
 		else if (GetKeyboardPress(DIK_H) && g_ParticleEditer.ParticleInfo.nLife < 150)
 		{
 			g_ParticleEditer.ParticleInfo.nLife++;
+		}
+		else if (GetKeyboardPress(DIK_1))
+		{
+			g_ParticleEditer.ParticleInfo.EffectnType = EFFECT_NONE;
+		}
+		else if (GetKeyboardPress(DIK_2))
+		{
+			g_ParticleEditer.ParticleInfo.EffectnType = EFFECT_SMOKE;
 		}
 	}
 	SetParticleInfo(g_ParticleEditer.ParticleInfo);
