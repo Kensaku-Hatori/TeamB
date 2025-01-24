@@ -39,7 +39,6 @@ void InitMeshfield(void)
 		g_Meshfield[nCnt].nDiviZ = 0;									//分割数z(0にしたらnullptr)
 		g_Meshfield[nCnt].nWidth = 0;									//幅
 		g_Meshfield[nCnt].nHeight = 0;									//高さ
-		g_Meshfield[nCnt].nIndex = 0;									//インデックス
 		g_Meshfield[nCnt].nMaxVtx = 0;									//頂点数
 		g_Meshfield[nCnt].nPolyNum = 0;									//ポリゴン数
 		g_Meshfield[nCnt].bUse = false;									//使用していない状態にする
