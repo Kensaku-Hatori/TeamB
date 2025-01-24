@@ -35,6 +35,7 @@ void LoadModelViewer()
 		}
 		LoadStart(pFile);
 	}
+	fclose(pFile);
 }
 //*****************************
 // ÉVÉÉÅ[Évà»ç~Çì«Ç›îÚÇŒÇ∑èàóù
@@ -640,7 +641,7 @@ char* LoadWallInfo(FILE* pFile)
 			}
 			else if (strcmp(&cData1[0], "END_WALLSET") == 0)
 			{
-				SetMeshfield(Pos, Rot, nType, (int)Block.x, 0, (int)Block.y, (int)Size.x, (int)Size.y);
+				SetMeshWall(Pos, Rot, nType, (int)Block.x, 0, (int)Block.y, (int)Size.x, (int)Size.y);
 				int i = 0;
 				break;
 			}

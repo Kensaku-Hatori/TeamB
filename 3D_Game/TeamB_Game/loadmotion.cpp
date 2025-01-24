@@ -1,6 +1,8 @@
 #include "loadmotion.h"
 #include "player.h"
 
+int PartsCount = 0;
+
 //*****************************
 // スクリプト以前を読み込む処理
 //*****************************
@@ -33,6 +35,7 @@ void LoadMotionViewer(char* cMotionPath)
 		}
 		LoadMotionStart(pFile);
 	}
+	fclose(pFile);
 }
 //*****************************
 // スクリプト以降を読み込む処理
@@ -192,6 +195,7 @@ char* LoadCharactorInfo(FILE* pFile,int *nCharactor,int *nParts,MODELINFO *Model
 			}
 			else if (strcmp(&cData1[0], "END_CHARACTERSET") == 0)
 			{
+				PartsCount = 0;
 				*nCharactor+=1;
 				break;
 			}
@@ -205,7 +209,6 @@ char* LoadCharactorInfo(FILE* pFile,int *nCharactor,int *nParts,MODELINFO *Model
 char* LoadPartsInfo(FILE* pFile,int *Parts)
 {
 	MODELINFO ModelInfo[MAX_PARTS];
-	static int PartsCount = 0;
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
 	char cData2[64] = { NULL };

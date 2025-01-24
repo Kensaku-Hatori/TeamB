@@ -35,6 +35,8 @@ void InitGauge(void)
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\hpgauge.png", &g_pTextureGaugeBack[GAUGETYPE_HP]);	//HP ˜g
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\mpgauge.png", &g_pTextureGaugeBack[GAUGETYPE_MP]);	//MP ˜g
 	
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\gauge00.jpeg", &g_pTextureGauge);	//MP ˜g
+
 	//ƒQ[ƒW
 	//’¸“_ƒoƒbƒtƒ@‚Ì¶¬
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * GAUGETYPE_MAX,

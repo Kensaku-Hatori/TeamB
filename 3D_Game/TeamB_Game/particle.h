@@ -19,6 +19,7 @@ typedef struct
 	D3DXVECTOR3 move;
 	D3DXVECTOR3 dir;
 	PARTICLETYPE ntype;
+	EFFECTTYPE EffectnType;
 	bool bUse;
 	int nLife;
 	int forlimit;

@@ -17,6 +17,7 @@ LPDIRECT3DTEXTURE9 g_pTextureResultInfo[RESULT_MAX] = {};
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffResultInfo = NULL;
 RESULT g_Resultstate = RESULT_NONE;
 
+D3DXVECTOR3 g_posResult;
 //===========
 //初期化処理
 //===========
@@ -25,6 +26,8 @@ void InitResultInfo(void)
 	LPDIRECT3DDEVICE9 pDevice;
 	//デバイスの取得
 	pDevice = GetDevice();
+
+	g_posResult = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f);
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\GAMECLEAR.png", &g_pTextureResultInfo[0]); //クリア
@@ -43,10 +46,10 @@ void InitResultInfo(void)
 	g_pVtxBuffResultInfo->Lock(0, 0, (void**)&pVtx, 0);
 
 	//頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	pVtx[1].pos = D3DXVECTOR3(1280.0f, 0.0f, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(0.0f, 720.0f, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(1280.0f, 720.0f, 0.0f);
+	pVtx[0].pos = D3DXVECTOR3(g_posResult.x - RESULT_X, g_posResult.y - RESULT_Y, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(g_posResult.x + RESULT_X, g_posResult.y - RESULT_Y, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(g_posResult.x - RESULT_X, g_posResult.y + RESULT_Y, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(g_posResult.x + RESULT_X, g_posResult.y + RESULT_Y, 0.0f);
 	//rhwの設定
 	pVtx[0].rhw = 1.0f;
 	pVtx[1].rhw = 1.0f;
