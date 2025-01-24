@@ -198,9 +198,6 @@ void SetMapPlayer(int nStageNo)
 		g_MapPlayerpos = D3DXVECTOR3(1063.0f, 55.0f, 0.0f);
 	}
 
-
-
-
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
 	//頂点バッファをロックし、頂点情報へのポインタを取得

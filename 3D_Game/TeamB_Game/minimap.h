@@ -21,4 +21,5 @@ void UpdateMiniMap(void);
 void DrawMiniMap(void);
 void SetMapPlayer(int nStageNo);
 
+
 #endif
