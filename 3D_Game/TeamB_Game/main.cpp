@@ -457,12 +457,12 @@ void DrawEffectEditer()
 	char aStr[256];
 
 	// 文字列に代入
-	sprintf(&aStr[0], "*****************PARTICLEEDITER*****************\n");
+	sprintf(&aStr[0], "*****************PARTICLEEDITER*****************\nカラー変更:R,G,B\n放射角変更:X,Y,Z\n粒子の数変更:L\n寿命変更:H\nそれぞれSHIFT押しながらやると減少");
 
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 
-	rect = { 0,15,SCREEN_WIDTH,SCREEN_HEIGHT };
+	rect = { 0,120,SCREEN_WIDTH,SCREEN_HEIGHT };
 
 	// 文字列に代入
 	sprintf(&aStr[0], "R,G,B:%3.2f,%3.2f,%3.2f\nX,Y,Z:%3.2f,%3.2f,%3.2f\nエフェクトの最大数:%d\nエフェクトの寿命:%d", pEditer->ParticleInfo.col.r,
