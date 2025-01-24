@@ -43,6 +43,15 @@ typedef struct
 	int nNumKey;							//キーの総数
 	int nKey;								//現在のキーNo
 	int nCntMotion;							//モーションのカウンター
+
+	bool bFinishMotion;				//現在のモーションが終了しているかどうか
+	bool bBlendMotion;				//ブレンドモーションがあるかどうか
+	MOTIONTYPE motionTypeBlend;		//ブレンドモーションの種類
+	int nNumKeyBlend;				//ブレンドモーションのキーの総数
+	int nKeyBlend;					//ブレンドモーションののキーNo
+	int nCntMotionBlend;			//ブレンドモーションのカウンター
+	int nFrameBlend;
+	int nCntBlend;
 }Player;
 
 //プロトタイプ宣言

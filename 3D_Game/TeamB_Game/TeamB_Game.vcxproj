@@ -203,7 +203,6 @@
     <ClInclude Include="meshwall.h" />
     <ClInclude Include="minimap.h" />
     <ClInclude Include="model.h" />
-    <ClInclude Include="motion.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="particleEditer.h" />

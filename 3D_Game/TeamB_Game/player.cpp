@@ -13,7 +13,6 @@
 #include "block.h"
 #include "wall.h"
 #include "enemy.h"
-#include "motion.h"
 #include "timer.h"
 #include "polygon.h"
 #include "sound.h"
