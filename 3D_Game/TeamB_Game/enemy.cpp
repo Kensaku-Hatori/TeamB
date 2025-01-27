@@ -13,6 +13,7 @@
 //*******************
 ENEMY g_Enemy[MAX_ENEMY];
 EnemyOrigin g_EnemyOrigin[ENEMYTYPE_MAX];
+MOTIONINFO g_EnemyMotionOrigin[ENEMYTYPE_MAX][MOTIONTYPE_MAX];
 int g_nNumEnemy;
 int g_nTypeCount = 0;
 int g_PartsNum = 0;
@@ -344,5 +345,8 @@ void SetEnemyPartsInfo(MODELINFO ModelInfo, int Indx)
 }
 void EnemyMotion(MOTIONINFO* pMotionInfo)
 {
-
+	for (int MotionCount = 0; MotionCount < MOTIONTYPE_MAX; MotionCount++, pMotionInfo++)
+	{
+		g_EnemyMotionOrigin[g_nTypeCount][MotionCount] = *pMotionInfo;
+	}
 }
