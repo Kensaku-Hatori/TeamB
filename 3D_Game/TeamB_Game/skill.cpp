@@ -112,6 +112,14 @@ void UpdateSkill(void)
 	{
 		if (g_Skill[nCnt].bUse == true)
 		{
+			SetEffect(g_Skill[nCnt].pos,
+					  g_Skill[nCnt].rot, 
+					  30.0f, 
+					  10.0f, 
+					  D3DXVECTOR3(5.0f, 5.0f, 5.0f), 
+					  D3DXCOLOR(0.00f,0.68f, 1.00f,1.0f), 
+					  EFFECT_NONE);
+
 			g_Skill[nCnt].pos += g_Skill[nCnt].move;
 
 			g_Skill[nCnt].move.x += sinf(g_Skill[nCnt].rot.y - D3DX_PI) * 0.5f;

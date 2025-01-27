@@ -98,43 +98,17 @@ void UpdatePlayer(void)
 		//左
 		if (GetKeyboardPress(DIK_A) == true || GetJoypadPress(JOYKEY_LEFT) == true)
 		{// A
-			if (GetKeyboardPress(DIK_S) == true || GetJoypadPress(JOYKEY_UP) == true)
-			{//左後
-				g_player.move.x -= sinf(D3DX_PI * 0.75f) * g_player.Status.fSpeed;
-				g_player.move.z += cosf(D3DX_PI * 0.75f) * g_player.Status.fSpeed;
-			}
-			else if (GetKeyboardPress(DIK_W) == true || GetJoypadPress(JOYKEY_DOWN) == true)
-			{//左前
-				g_player.move.x -= sinf(D3DX_PI * 0.25f) * g_player.Status.fSpeed;
-				g_player.move.z += cosf(D3DX_PI * 0.25f) * g_player.Status.fSpeed;
-			}
-			else
-			{//左
-				g_player.move.x -= g_player.Status.fSpeed;
-			}
+			g_player.move.x -= g_player.Status.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y + D3DX_PI / 2;
 		}
 		//右
-		else if (GetKeyboardPress(DIK_D) == true || GetJoypadPress(JOYKEY_RIGET) == true)
+		if (GetKeyboardPress(DIK_D) == true || GetJoypadPress(JOYKEY_RIGET) == true)
 		{// D
-			if (GetKeyboardPress(DIK_S) == true || GetJoypadPress(JOYKEY_UP) == true)
-			{//右後
-				g_player.move.x += sinf(D3DX_PI * 0.75f) * g_player.Status.fSpeed;
-				g_player.move.z += cosf(D3DX_PI * 0.75f) * g_player.Status.fSpeed;
-			}
-			else if (GetKeyboardPress(DIK_W) == true || GetJoypadPress(JOYKEY_DOWN) == true)
-			{//右前
-				g_player.move.x += sinf(D3DX_PI * 0.75f) * g_player.Status.fSpeed;
-				g_player.move.z -= cosf(D3DX_PI * 0.75f) * g_player.Status.fSpeed;
-			}
-			else
-			{//右
 				g_player.move.x += g_player.Status.fSpeed;
-			}
 			g_player.rotDest.y = pCamera->rot.y - D3DX_PI / 2;
 		}
 		//前
-		else if (GetKeyboardPress(DIK_W) == true || GetJoypadPress(JOYKEY_DOWN) == true)
+		if (GetKeyboardPress(DIK_W) == true || GetJoypadPress(JOYKEY_DOWN) == true)
 		{// S
 			if (GetKeyboardPress(DIK_A) == true || GetJoypadPress(JOYKEY_LEFT) == true)
 			{//左前
@@ -153,7 +127,7 @@ void UpdatePlayer(void)
 			g_player.rotDest.y = pCamera->rot.y - D3DX_PI;
 		}
 		//後
-		else if (GetKeyboardPress(DIK_S) == true || GetJoypadPress(JOYKEY_UP) == true)
+		if (GetKeyboardPress(DIK_S) == true || GetJoypadPress(JOYKEY_UP) == true)
 		{// W
 			if (GetKeyboardPress(DIK_A) == true || GetJoypadPress(JOYKEY_LEFT) == true)
 			{//左後
@@ -260,6 +234,13 @@ void UpdatePlayer(void)
 				g_player.Status.nHP = 0;
 			}
 		}
+		if (KeyboardTrigger(DIK_8) == true)
+		{
+			g_player.Status.nMP = PLAYER_MP;
+			g_player.Status.nHP = PLAYER_HP;
+
+		}
+
 #endif
 
 		UpdateMotion(&g_player.PlayerMotion);
