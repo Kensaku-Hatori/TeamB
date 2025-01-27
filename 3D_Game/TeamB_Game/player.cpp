@@ -133,11 +133,14 @@ void UpdatePlayer(void)
 		g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
 
 		//–‚–@”­Ë
-		if (((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true)) && g_player.Status.nMP >= 50)
+		if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true))
 		{// MP‚ª‚T‚OˆÈã‚Ì
+			if (g_player.Status.nMP >= 50)
+			{
+				SetSkill(g_player.pos, g_player.move, g_player.rot);
+				g_player.Status.nMP -= 50; //MPÁ”ï
+			}
 			SetMotion(MOTIONTYPE_ACTION,&g_player.PlayerMotion);
-			SetSkill(g_player.pos, g_player.move, g_player.rot);
-			g_player.Status.nMP -= 50; //MPÁ”ï
 		}
 
 		//MP‰ñ•œ
