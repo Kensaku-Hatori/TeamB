@@ -99,7 +99,6 @@ void UpdatePlayer(void)
 		if (GetKeyboardPress(DIK_A) == true || GetJoypadPress(JOYKEY_LEFT) == true)
 		{// A
 			g_player.move.x += cosf(pCamera->rot.y - D3DX_PI * 0.75f) * g_player.Status.fSpeed;
-
 			g_player.rotDest.y = pCamera->rot.y + D3DX_PI / 2;
 		}
 		//‰E
