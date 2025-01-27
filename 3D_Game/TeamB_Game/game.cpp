@@ -4,7 +4,6 @@
 //  Author:kaiti
 //
 //================================
-
 #include "game.h"
 #include "result.h"
 #include "resultinfo.h"
@@ -235,7 +234,6 @@ void DrawGame(void)
 	DrawShadow();
 
 	//DrawBlock();
-
 
 	//DrawEnemy();
 

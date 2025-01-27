@@ -114,10 +114,10 @@ void UpdateSkill(void)
 		{
 			SetEffect(g_Skill[nCnt].pos,
 					  D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-					  30.0f,
+					  10.0f,
 					  0.0f, 
 					  D3DXVECTOR3(3.0f, 3.0f, 3.0f), 
-					  D3DXCOLOR(0.70f, 1.00f, 0.70f,1.0f), 
+					  D3DXCOLOR(0.66f, 0.66f, 1.00f,1.0f),
 					  EFFECT_NONE);
 
 			g_Skill[nCnt].pos += g_Skill[nCnt].move;

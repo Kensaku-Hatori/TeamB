@@ -119,6 +119,7 @@ void UpdatePlayer(void)
 			g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.75f) * g_player.Status.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y;
 		}
+
 		////Šp“x‚Ì³‹K‰»
 		//if (g_player.rotDest.y > D3DX_PI / 2)
 		//{
@@ -211,9 +212,7 @@ void UpdatePlayer(void)
 		{
 			g_player.Status.nMP = PLAYER_MP;
 			g_player.Status.nHP = PLAYER_HP;
-
 		}
-
 #endif
 
 		UpdateMotion(&g_player.PlayerMotion);
