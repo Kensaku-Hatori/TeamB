@@ -171,13 +171,17 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 
 			int nCntVtx = 0;
 
+			//中央
+			float centerX = g_Meshfield[nCnt].nWidth * (g_Meshfield[nCnt].nDiviX-2 ) * 0.5f;
+			float centerY = g_Meshfield[nCnt].nHeight * (g_Meshfield[nCnt].nDiviZ -2) * 0.5f;
+
 			//頂点情報の設定
 			for (int nCntZ = 0; nCntZ <= g_Meshfield[nCnt].nDiviZ; nCntZ++)
 			{
 				for (int nCntX = 0; nCntX <= g_Meshfield[nCnt].nDiviX; nCntX++)
 				{
 					//頂点座標の設定
-					pVtx[nCntVtx].pos = D3DXVECTOR3((float)(-g_Meshfield[nCnt].nWidth + (g_Meshfield[nCnt].nWidth * nCntX)), 0.0f, (float)(g_Meshfield[nCnt].nHeight - (g_Meshfield[nCnt].nHeight * nCntZ)));
+					pVtx[nCntVtx].pos = D3DXVECTOR3((float)(-g_Meshfield[nCnt].nWidth + (g_Meshfield[nCnt].nWidth * nCntX) - centerX), 0.0f, (float)(g_Meshfield[nCnt].nHeight - (g_Meshfield[nCnt].nHeight * nCntZ) + centerY));
 
 					//法線ベクトルの設定
 					pVtx[nCntVtx].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);

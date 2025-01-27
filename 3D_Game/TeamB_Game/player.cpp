@@ -145,7 +145,6 @@ void UpdatePlayer(void)
 			}
 			g_player.rotDest.y = pCamera->rot.y;
 		}
-
 		////Šp“x‚Ì³‹K‰»
 		//if (g_player.rotDest.y > D3DX_PI / 2)
 		//{

@@ -465,14 +465,17 @@ void DrawEffectEditer()
 	rect = { 0,120,SCREEN_WIDTH,SCREEN_HEIGHT };
 
 	// 文字列に代入
-	sprintf(&aStr[0], "R,G,B:%3.2f,%3.2f,%3.2f\nX,Y,Z:%3.2f,%3.2f,%3.2f\nエフェクトの最大数:%d\nエフェクトの寿命:%d", pEditer->ParticleInfo.col.r,
+	sprintf(&aStr[0], "R,G,B:%3.2f,%3.2f,%3.2f\nX,Y,Z:%3.2f,%3.2f,%3.2f\nエフェクトの最大数:%d\nエフェクトの寿命:%d\n粒子の大きさX,Y,Z:%3.2f,%3.2f,%3.2f", pEditer->ParticleInfo.col.r,
 		pEditer->ParticleInfo.col.g, 
 		pEditer->ParticleInfo.col.b,
 		pEditer->ParticleInfo.dir.x,
 		pEditer->ParticleInfo.dir.y, 
 		pEditer->ParticleInfo.dir.z,
 		pEditer->ParticleInfo.forlimit,
-		pEditer->ParticleInfo.nLife);
+		pEditer->ParticleInfo.nLife,
+		pEditer->ParticleInfo.Scale.x,
+		pEditer->ParticleInfo.Scale.y, 
+		pEditer->ParticleInfo.Scale.z);
 
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
