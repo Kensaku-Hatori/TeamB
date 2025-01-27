@@ -314,89 +314,99 @@ Player* GetPlayer(void)
 }
 void SetMesh(char* pFilePath, int Indx)
 {
-	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	D3DXLoadMeshFromX(pFilePath,
-		D3DXMESH_SYSTEMMEM,
-		pDevice,
-		NULL,
-		&g_player.PlayerMotion.aModel[Indx].pBuffMat,
-		NULL,
-		&g_player.PlayerMotion.aModel[Indx].dwNumMat,
-		&g_player.PlayerMotion.aModel[Indx].pMesh);
+}
+void SetPartsInfo(LoadInfo PartsInfo)
+{
+	g_player.PlayerMotion.nNumModel = PartsInfo.nNumParts;
+	for (int PartsCount = 0; PartsCount < g_player.PlayerMotion.nNumModel; PartsCount++)
+	{
+		g_player.PlayerMotion.aModel[PartsCount].nIndx = PartsInfo.PartsInfo[PartsCount].nIndx;
+		g_player.PlayerMotion.aModel[PartsCount].Parent = PartsInfo.PartsInfo[PartsCount].Parent;
+		g_player.PlayerMotion.aModel[PartsCount].pos = PartsInfo.PartsInfo[PartsCount].pos;
+		g_player.PlayerMotion.aModel[PartsCount].OffSet = PartsInfo.PartsInfo[PartsCount].OffSet;
+		g_player.PlayerMotion.aModel[PartsCount].rot = PartsInfo.PartsInfo[PartsCount].rot;
+
+		//デバイスの取得
+		LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
+		D3DXLoadMeshFromX(PartsInfo.cPartsPath[PartsCount],
+			D3DXMESH_SYSTEMMEM,
+			pDevice,
+			NULL,
+			&g_player.PlayerMotion.aModel[PartsCount].pBuffMat,
+			NULL,
+			&g_player.PlayerMotion.aModel[PartsCount].dwNumMat,
+			&g_player.PlayerMotion.aModel[PartsCount].pMesh);
 
 		int nNumVtx;   //頂点数
 		DWORD sizeFVF; //頂点フォーマットのサイズ
 		BYTE* pVtxBuff;//頂点バッファへのポインタ
 
 		//頂点数取得
-		nNumVtx = g_player.PlayerMotion.aModel[Indx].pMesh->GetNumVertices();
+		nNumVtx = g_player.PlayerMotion.aModel[PartsCount].pMesh->GetNumVertices();
 		//頂点フォーマットのサイズ取得
-		sizeFVF = D3DXGetFVFVertexSize(g_player.PlayerMotion.aModel[Indx].pMesh->GetFVF());
+		sizeFVF = D3DXGetFVFVertexSize(g_player.PlayerMotion.aModel[PartsCount].pMesh->GetFVF());
 		//頂点バッファのロック
-		g_player.PlayerMotion.aModel[Indx].pMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&pVtxBuff);
+		g_player.PlayerMotion.aModel[PartsCount].pMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&pVtxBuff);
 
-	for (int nCnt = 0; nCnt < nNumVtx; nCnt++)
-	{
-		//頂点座標の代入
-		D3DXVECTOR3 vtx = *(D3DXVECTOR3*)pVtxBuff;
+		for (int nCnt = 0; nCnt < nNumVtx; nCnt++)
+		{
+			//頂点座標の代入
+			D3DXVECTOR3 vtx = *(D3DXVECTOR3*)pVtxBuff;
 
-		//頂点座標を比較してプレイヤーの最小値、最大値を取得
-		//最小値
-		if (vtx.x < g_vtxMinPlayer.x)
-		{
-			g_vtxMinPlayer.x = vtx.x;
+			//頂点座標を比較してプレイヤーの最小値、最大値を取得
+			//最小値
+			if (vtx.x < g_vtxMinPlayer.x)
+			{
+				g_vtxMinPlayer.x = vtx.x;
+			}
+			if (vtx.y < g_vtxMinPlayer.y)
+			{
+				g_vtxMinPlayer.y = vtx.y;
+			}
+			if (vtx.z < g_vtxMinPlayer.z)
+			{
+				g_vtxMinPlayer.z = vtx.z;
+			}
+			//最大値
+			if (vtx.x > g_vtxMaxPlayer.x)
+			{
+				g_vtxMaxPlayer.x = vtx.x;
+			}
+			if (vtx.y > g_vtxMaxPlayer.y)
+			{
+				g_vtxMaxPlayer.y = vtx.y;
+			}
+			if (vtx.z > g_vtxMaxPlayer.z)
+			{
+				g_vtxMaxPlayer.z = vtx.z;
+			}
+			//頂点フォーマットのサイズ分ポインタを進める
+			pVtxBuff += sizeFVF;
 		}
-		if (vtx.y < g_vtxMinPlayer.y)
+
+		g_player.size = D3DXVECTOR3(g_vtxMaxPlayer.x - g_vtxMinPlayer.x, g_vtxMaxPlayer.y - g_vtxMinPlayer.y, g_vtxMaxPlayer.z - g_vtxMinPlayer.z);
+
+		//頂点バッファのアンロック
+		g_player.PlayerMotion.aModel[PartsCount].pMesh->UnlockVertexBuffer();
+
+		D3DXMATERIAL* pMat;//マテリアルへのポインタ
+		pMat = (D3DXMATERIAL*)g_player.PlayerMotion.aModel[PartsCount].pBuffMat->GetBufferPointer();
+
+		for (int nCntMat = 0; nCntMat < (int)g_player.PlayerMotion.aModel[PartsCount].dwNumMat; nCntMat++)
 		{
-			g_vtxMinPlayer.y = vtx.y;
+			if (pMat[nCntMat].pTextureFilename != NULL)
+			{
+				D3DXCreateTextureFromFile(pDevice, pMat[nCntMat].pTextureFilename, &g_player.PlayerMotion.aModel[PartsCount].pTexture[nCntMat]); //1
+			}
 		}
-		if (vtx.z < g_vtxMinPlayer.z)
-		{
-			g_vtxMinPlayer.z = vtx.z;
-		}
-		//最大値
-		if (vtx.x > g_vtxMaxPlayer.x)
-		{
-			g_vtxMaxPlayer.x = vtx.x;
-		}
-		if (vtx.y > g_vtxMaxPlayer.y)
-		{
-			g_vtxMaxPlayer.y = vtx.y;
-		}
-		if (vtx.z > g_vtxMaxPlayer.z)
-		{
-			g_vtxMaxPlayer.z = vtx.z;
-		}
-		//頂点フォーマットのサイズ分ポインタを進める
-		pVtxBuff += sizeFVF;
 	}
-
-	g_player.size = D3DXVECTOR3(g_vtxMaxPlayer.x - g_vtxMinPlayer.x, g_vtxMaxPlayer.y - g_vtxMinPlayer.y, g_vtxMaxPlayer.z - g_vtxMinPlayer.z);
-
-	//頂点バッファのアンロック
-	g_player.PlayerMotion.aModel[Indx].pMesh->UnlockVertexBuffer();
-
-	D3DXMATERIAL* pMat;//マテリアルへのポインタ
-	pMat = (D3DXMATERIAL*)g_player.PlayerMotion.aModel[Indx].pBuffMat->GetBufferPointer();
-
-	for (int nCntMat = 0; nCntMat < (int)g_player.PlayerMotion.aModel[Indx].dwNumMat; nCntMat++)
+	for (int MotionCount = 0; MotionCount < MOTIONTYPE_MAX; MotionCount++)
 	{
-		if (pMat[nCntMat].pTextureFilename != NULL)
-		{
-			D3DXCreateTextureFromFile(pDevice, pMat[nCntMat].pTextureFilename, &g_player.PlayerMotion.aModel[Indx].pTexture[Indx]); //1
-		}
+		g_player.PlayerMotion.aMotionInfo[MotionCount] = PartsInfo.MotionInfo[MotionCount];
 	}
-}
-void SetPartsInfo(MODELINFO ModelInfo,int Indx)
-{
-	g_player.PlayerMotion.aModel[Indx].nIndx = ModelInfo.nIndx;
-	g_player.PlayerMotion.aModel[Indx].Parent = ModelInfo.Parent;
-	g_player.PlayerMotion.aModel[Indx].pos = ModelInfo.pos;
-	g_player.PlayerMotion.aModel[Indx].rot = ModelInfo.rot;
-	g_player.PlayerMotion.aModel[Indx].size = ModelInfo.size;
-	g_player.PlayerMotion.aModel[Indx].OffSet = ModelInfo.pos;
+	g_player.bUse = true;
 }
 void PlayerMotion(MOTIONINFO *pMotionInfo)
 {

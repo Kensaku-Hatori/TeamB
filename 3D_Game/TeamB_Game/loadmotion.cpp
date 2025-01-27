@@ -2,13 +2,16 @@
 #include "enemy.h"
 #include "player.h"
 
-int PartsCount;
+LoadInfo g_LoadInfo[LOADTYPE_MAX];
 int nType;
 
 void InitMotion()
 {
-	PartsCount = 0;
 	nType = 0;
+	for (int LoadCount = 0; LoadCount < LOADTYPE_MAX; LoadCount++)
+	{
+		g_LoadInfo[LoadCount] = { NULL };
+	}
 }
 //*****************************
 // スクリプト以前を読み込む処理
@@ -77,35 +80,15 @@ void LoadMotionStart(FILE* pFile)
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				nData = LoadInt(pFile);
-				switch (nType)
-				{
-				case LOADTYPE_PLAYER:
-					pPlayer->PlayerMotion.nNumModel = nData;
-					break;
-				case LOADTYPE_ENEMYONE:
-					SetnNumParts(nType, nData);
-					break;
-				default:
-					break;
-				}
+				g_LoadInfo[nType].nNumParts = nData;
 			}
 			else if (strcmp(&cData1[0], "MODEL_FILENAME") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				ModelPath[0] = LoadPath(pFile);
-				switch (nType)
-				{
-				case LOADTYPE_PLAYER:
-					SetMesh(ModelPath[0], PathCount);
-					break;
-				case LOADTYPE_ENEMYONE:
-					SetEnemyMesh(ModelPath[0], PathCount);
-					break;
-				default:
-					break;
-				}
-				PathCount++;
+				strcpy(&g_LoadInfo[nType].cPartsPath[g_LoadInfo[nType].PathCount][0], ModelPath[0]);
+				g_LoadInfo[nType].PathCount++;
 			}
 			else if (strcmp(&cData1[0], "CHARACTERSET") == 0)
 			{
@@ -125,7 +108,6 @@ void LoadMotionStart(FILE* pFile)
 				while (1)
 				{
 					cData2[0] = LoadMotionInfo(pFile,&MotionCount,&KeyCount,&KeyPartsCount,&MotionInfo[MotionCount]);
-					int i = 0;
 					if (strcmp(cData2[0], MOTION) == 0)
 					{
 						MotionCount++;
@@ -138,14 +120,15 @@ void LoadMotionStart(FILE* pFile)
 				switch (nType)
 				{
 				case LOADTYPE_PLAYER:
-					PlayerMotion(&MotionInfo[0]);
+					SetPartsInfo(g_LoadInfo[nType]);
 					break;
 				case LOADTYPE_ENEMYONE:
-					EnemyMotion(&MotionInfo[0]);
+					SetEnemyPartsInfo(g_LoadInfo[nType], nType);
 					break;
 				default:
 					break;
 				}
+				g_LoadInfo[nType].MotionCount = 0;
 				nType++;
 				MotionCount = 0;
 				break;
@@ -192,6 +175,7 @@ char* LoadCharactorInfo(FILE* pFile,int *nCharactor,int *nParts,MODELINFO *Model
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				nData = LoadInt(pFile);
+				g_LoadInfo[nType].nNumParts = nData;
 			}
 			else if (strcmp(&cData1[0], "MOVE") == 0)
 			{
@@ -231,8 +215,7 @@ char* LoadCharactorInfo(FILE* pFile,int *nCharactor,int *nParts,MODELINFO *Model
 			}
 			else if (strcmp(&cData1[0], "END_CHARACTERSET") == 0)
 			{
-				PartsCount = 0;
-				*nCharactor+=1;
+				g_LoadInfo[nType].PartsCount = 0;
 				break;
 			}
 		}
@@ -267,46 +250,34 @@ char* LoadPartsInfo(FILE* pFile,int *Parts)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				ModelInfo[PartsCount].nIndx = LoadInt(pFile);
+				g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].nIndx = LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "PARENT") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				ModelInfo[PartsCount].Parent = LoadInt(pFile);
+				g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].Parent = LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "POS") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				ModelInfo[PartsCount].pos.x = LoadFloat(pFile);
-				ModelInfo[PartsCount].pos.y = LoadFloat(pFile);
-				ModelInfo[PartsCount].pos.z = LoadFloat(pFile);
-				ModelInfo[PartsCount].OffSet.x = ModelInfo[PartsCount].pos.x;
-				ModelInfo[PartsCount].OffSet.y = ModelInfo[PartsCount].pos.y;
-				ModelInfo[PartsCount].OffSet.z = ModelInfo[PartsCount].pos.z;
+				g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].pos.x = LoadFloat(pFile);
+				g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].pos.y = LoadFloat(pFile);
+				g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].pos.z = LoadFloat(pFile);
+				g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].OffSet = g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].pos;
 			}
 			else if (strcmp(&cData1[0], "ROT") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				ModelInfo[PartsCount].rot.x = LoadFloat(pFile);
-				ModelInfo[PartsCount].rot.y = LoadFloat(pFile);
-				ModelInfo[PartsCount].rot.z = LoadFloat(pFile);
+				g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].rot.x = LoadFloat(pFile);
+				g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].rot.y = LoadFloat(pFile);
+				g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].rot.z = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "END_PARTSSET") == 0)
 			{
-				switch (nType)
-				{
-				case LOADTYPE_PLAYER:
-					SetPartsInfo(ModelInfo[PartsCount], PartsCount);
-					break;
-				case LOADTYPE_ENEMYONE:
-					break;
-				default:
-					break;
-				}
-				PartsCount++;
+				g_LoadInfo[nType].PartsCount++;
 				break;
 			}
 		}
@@ -343,13 +314,13 @@ char* LoadMotionInfo(FILE* pFile,int *Motion,int *Key, int* nKeyParts,MOTIONINFO
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				MotionInfo->bLoop = (bool)LoadInt(pFile);
+				g_LoadInfo[nType].MotionInfo[g_LoadInfo[nType].MotionCount].bLoop = (bool)LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "NUM_KEY") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				MotionInfo->nNumKey = LoadInt(pFile);
+				g_LoadInfo[nType].MotionInfo[g_LoadInfo[nType].MotionCount].nNumKey = LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "FOOTSTEP") == 0)
 			{
@@ -408,7 +379,7 @@ char* LoadMotionInfo(FILE* pFile,int *Motion,int *Key, int* nKeyParts,MOTIONINFO
 			}
 			else if (strcmp(&cData1[0], "END_MOTIONSET") == 0)
 			{
-				*Key = 0;
+				g_LoadInfo[nType].MotionCount++;
 				break;
 			}
 		}
@@ -443,8 +414,7 @@ char* LoadKeyInfo(FILE* pFile, int* nKey, int* nKeyParts, MOTIONINFO* Motion)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				Motion->aKeyInfo[*nKey].nFrame = LoadInt(pFile);
-				int i = 0;
+				g_LoadInfo[nType].MotionInfo[g_LoadInfo[nType].MotionCount].aKeyInfo[g_LoadInfo[nType].KeyCount].nFrame = LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "KEY") == 0)
 			{
@@ -452,7 +422,6 @@ char* LoadKeyInfo(FILE* pFile, int* nKey, int* nKeyParts, MOTIONINFO* Motion)
 				while (1)
 				{
 					cData3[0] = LoadKeyPartsInfo(pFile,nKey, nKeyParts, Motion);
-					int i = 0;
 					if (strcmp(cData3[0], KEYPARTS) == 0)
 					{
 						break;
@@ -461,8 +430,7 @@ char* LoadKeyInfo(FILE* pFile, int* nKey, int* nKeyParts, MOTIONINFO* Motion)
 			}
 			else if (strcmp(&cData1[0], "END_KEYSET") == 0)
 			{
-				*nKeyParts = 0;
-				*nKey+=1;
+				g_LoadInfo[nType].KeyCount++;
 				break;
 			}
 		}
@@ -496,22 +464,21 @@ char* LoadKeyPartsInfo(FILE* pFile,int *nKey,int* nKeyParts,MOTIONINFO *MotionIn
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				MotionInfo->aKeyInfo[*nKey].aKey[*nKeyParts].fPosX = LoadFloat(pFile);
-				MotionInfo->aKeyInfo[*nKey].aKey[*nKeyParts].fPosY = LoadFloat(pFile);
-				MotionInfo->aKeyInfo[*nKey].aKey[*nKeyParts].fPosZ = LoadFloat(pFile);
-				int i = 0;
+				g_LoadInfo[nType].MotionInfo[g_LoadInfo[nType].MotionCount].aKeyInfo[g_LoadInfo[nType].KeyCount].aKey[g_LoadInfo[nType].KeyPartsCount].fPosX = LoadFloat(pFile);
+				g_LoadInfo[nType].MotionInfo[g_LoadInfo[nType].MotionCount].aKeyInfo[g_LoadInfo[nType].KeyCount].aKey[g_LoadInfo[nType].KeyPartsCount].fPosY = LoadFloat(pFile);
+				g_LoadInfo[nType].MotionInfo[g_LoadInfo[nType].MotionCount].aKeyInfo[g_LoadInfo[nType].KeyCount].aKey[g_LoadInfo[nType].KeyPartsCount].fPosZ = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "ROT") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				MotionInfo->aKeyInfo[*nKey].aKey[*nKeyParts].fRotX = LoadFloat(pFile);
-				MotionInfo->aKeyInfo[*nKey].aKey[*nKeyParts].fRotY = LoadFloat(pFile);
-				MotionInfo->aKeyInfo[*nKey].aKey[*nKeyParts].fRotZ = LoadFloat(pFile);
+				g_LoadInfo[nType].MotionInfo[g_LoadInfo[nType].MotionCount].aKeyInfo[g_LoadInfo[nType].KeyCount].aKey[g_LoadInfo[nType].KeyPartsCount].fRotX = LoadFloat(pFile);
+				g_LoadInfo[nType].MotionInfo[g_LoadInfo[nType].MotionCount].aKeyInfo[g_LoadInfo[nType].KeyCount].aKey[g_LoadInfo[nType].KeyPartsCount].fRotY = LoadFloat(pFile);
+				g_LoadInfo[nType].MotionInfo[g_LoadInfo[nType].MotionCount].aKeyInfo[g_LoadInfo[nType].KeyCount].aKey[g_LoadInfo[nType].KeyPartsCount].fRotZ = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "END_KEY") == 0)
 			{
-				*nKeyParts+=1;
+				g_LoadInfo[nType].KeyPartsCount++;
 				break;
 			}
 		}

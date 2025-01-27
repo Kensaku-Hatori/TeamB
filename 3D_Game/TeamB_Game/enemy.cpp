@@ -7,13 +7,13 @@
 #include "wall.h"
 #include "loadmotion.h"
 #include "shadow.h"
+#include "animation.h"
 
 //*******************
 // グローバル変数宣言
 //*******************
 ENEMY g_Enemy[MAX_ENEMY];
 EnemyOrigin g_EnemyOrigin[ENEMYTYPE_MAX];
-MOTIONINFO g_EnemyMotionOrigin[ENEMYTYPE_MAX][MOTIONTYPE_MAX];
 int g_nNumEnemy;
 int g_nTypeCount = 0;
 int g_nTypeCountMotion = 0;
@@ -41,6 +41,7 @@ void InitEnemy(void)
 		g_Enemy[i].Status.nHP = 150;
 		g_Enemy[i].state = ENEMYSTATE_NORMAL;
 		g_Enemy[i].Radius = 4.4f;
+		g_Enemy[i].pMotion = MOTIONTYPE_NEUTRAL;
 	}
 }
 //*************
@@ -52,22 +53,22 @@ void UninitEnemy(void)
 	{
 		for (int PartsCount = 0; PartsCount < MAX_PARTS; PartsCount++)
 		{
-			if (g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pMesh != NULL)
+			if (g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pMesh != NULL)
 			{
-				g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pMesh->Release();
-				g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pMesh = NULL;
+				g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pMesh->Release();
+				g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pMesh = NULL;
 			}
-			if (g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pBuffMat != NULL)
+			if (g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pBuffMat != NULL)
 			{
-				g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pBuffMat->Release();
-				g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pBuffMat = NULL;
+				g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pBuffMat->Release();
+				g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pBuffMat = NULL;
 			}
 			for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
 			{
-				if (g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pTexture[TexCount] != NULL)
+				if (g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pTexture[TexCount] != NULL)
 				{
-					g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pTexture[TexCount]->Release();
-					g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pTexture[TexCount] = NULL;
+					g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pTexture[TexCount]->Release();
+					g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pTexture[TexCount] = NULL;
 				}
 			}
 		}
@@ -77,20 +78,20 @@ void UninitEnemy(void)
 		for (int i1 = 0; i1 < MAX_ENEMYPARTS; i1++)
 		{
 			// メッシュの破棄
-			if (g_Enemy[i].aModel[i1].pMesh != NULL)
+			if (g_Enemy[i].EnemyMotion.aModel[i1].pMesh != NULL)
 			{
-				g_Enemy[i].aModel[i1].pMesh = NULL;
+				g_Enemy[i].EnemyMotion.aModel[i1].pMesh = NULL;
 			}
 			// マテリアルの破棄
-			if (g_Enemy[i].aModel[i1].pBuffMat != NULL)
+			if (g_Enemy[i].EnemyMotion.aModel[i1].pBuffMat != NULL)
 			{
-				g_Enemy[i].aModel[i1].pBuffMat = NULL;
+				g_Enemy[i].EnemyMotion.aModel[i1].pBuffMat = NULL;
 			}
 			for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
 			{
-				if (g_Enemy[i].aModel[i1].pTexture[TexCount] != NULL)
+				if (g_Enemy[i].EnemyMotion.aModel[i1].pTexture[TexCount] != NULL)
 				{
-					g_Enemy[i].aModel[i1].pTexture[TexCount] = NULL;
+					g_Enemy[i].EnemyMotion.aModel[i1].pTexture[TexCount] = NULL;
 				}
 			}
 		}
@@ -106,7 +107,12 @@ void UpdateEnemy(void)
 	{
 		if (g_Enemy[EnemyCount].bUse == true)
 		{
-
+			OBJECTINFO EnemyMotion;
+			for (int ANIMCOUNT = 0; ANIMCOUNT < MOTIONTYPE_MAX; ANIMCOUNT++)
+			{
+				EnemyMotion = g_Enemy[EnemyCount].EnemyMotion;
+			}
+			UpdateMotion(&EnemyMotion);
 		}
 	}
 }
@@ -147,36 +153,36 @@ void DrawEnemy(void)
 			{
 				D3DXMATRIX mtxRotModel, mtxTransModel;
 				D3DXMATRIX mtxParent;
-				D3DXMatrixIdentity(&g_Enemy[EnemyCount].aModel[EnemyPartsCount].mtxWorld);
+				D3DXMatrixIdentity(&g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld);
 
 				// 向きを反映
-				D3DXMatrixRotationYawPitchRoll(&mtxRotModel, g_Enemy[EnemyCount].aModel[EnemyPartsCount].rot.y, g_Enemy[EnemyCount].aModel[EnemyPartsCount].rot.x, g_Enemy[EnemyCount].aModel[EnemyPartsCount].rot.z);
-				D3DXMatrixMultiply(&g_Enemy[EnemyCount].aModel[EnemyPartsCount].mtxWorld, &g_Enemy[EnemyCount].aModel[EnemyPartsCount].mtxWorld, &mtxRotModel);
+				D3DXMatrixRotationYawPitchRoll(&mtxRotModel, g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].rot.y, g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].rot.x, g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].rot.z);
+				D3DXMatrixMultiply(&g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld, &g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld, &mtxRotModel);
 
 				// 位置を反映
-				D3DXMatrixTranslation(&mtxTransModel, g_Enemy[EnemyCount].aModel[EnemyPartsCount].pos.x, g_Enemy[EnemyCount].aModel[EnemyPartsCount].pos.y, g_Enemy[EnemyCount].aModel[EnemyPartsCount].pos.z);
-				D3DXMatrixMultiply(&g_Enemy[EnemyCount].aModel[EnemyPartsCount].mtxWorld, &g_Enemy[EnemyCount].aModel[EnemyPartsCount].mtxWorld, &mtxTransModel);
+				D3DXMatrixTranslation(&mtxTransModel, g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].pos.x, g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].pos.y, g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].pos.z);
+				D3DXMatrixMultiply(&g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld, &g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld, &mtxTransModel);
 
 
-				if (g_Enemy[EnemyCount].aModel[EnemyPartsCount].Parent != -1)
+				if (g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].Parent != -1)
 				{
-					mtxParent = g_Enemy[EnemyCount].aModel[g_Enemy[EnemyCount].aModel[EnemyPartsCount].Parent].mtxWorld;
+					mtxParent = g_Enemy[EnemyCount].EnemyMotion.aModel[g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].Parent].mtxWorld;
 				}
 				else
 				{
 					mtxParent = g_Enemy[EnemyCount].Object.mtxWorld;
 				}
-				D3DXMatrixMultiply(&g_Enemy[EnemyCount].aModel[EnemyPartsCount].mtxWorld,
-					&g_Enemy[EnemyCount].aModel[EnemyPartsCount].mtxWorld,
+				D3DXMatrixMultiply(&g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld,
+					&g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld,
 					&mtxParent);
 
 				pDevice->SetTransform(D3DTS_WORLD,
-					&g_Enemy[EnemyCount].aModel[EnemyPartsCount].mtxWorld);
+					&g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld);
 
 				// マテリアルデータへのポインタ
-				pMat = (D3DXMATERIAL*)g_Enemy[EnemyCount].aModel[EnemyPartsCount].pBuffMat->GetBufferPointer();
+				pMat = (D3DXMATERIAL*)g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].pBuffMat->GetBufferPointer();
 
-				for (int nCntMat = 0; nCntMat < (int)g_Enemy[EnemyCount].aModel[EnemyPartsCount].dwNumMat; nCntMat++)
+				for (int nCntMat = 0; nCntMat < (int)g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].dwNumMat; nCntMat++)
 				{
 					switch (g_Enemy[EnemyCount].state)
 					{
@@ -196,10 +202,10 @@ void DrawEnemy(void)
 						break;
 					}
 					// テクスチャの設定
-					pDevice->SetTexture(0, g_Enemy[EnemyCount].aModel[EnemyPartsCount].pTexture[nCntMat]);
+					pDevice->SetTexture(0, g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].pTexture[nCntMat]);
 
 					// モデル(パーツ)の描画
-					g_Enemy[EnemyCount].aModel[EnemyPartsCount].pMesh->DrawSubset(nCntMat);
+					g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].pMesh->DrawSubset(nCntMat);
 				}
 			}
 			pDevice->SetMaterial(&matDef);
@@ -257,11 +263,23 @@ void SetEnemy(D3DXVECTOR3 pos, int nType,D3DXVECTOR3 rot)
 			g_Enemy[EnemyCount].state = ENEMYSTATE_NORMAL;
 			g_Enemy[EnemyCount].nType = nType;
 			g_Enemy[EnemyCount].nNumModel = g_EnemyOrigin[nType].nNumParts;
+			g_Enemy[EnemyCount].EnemyMotion.nNumModel = g_EnemyOrigin[nType].nNumParts;
 			for (int PartsCount = 0; PartsCount < g_EnemyOrigin[nType].nNumParts; PartsCount++)
 			{
-				g_Enemy[EnemyCount].aModel[PartsCount].dwNumMat = g_EnemyOrigin[nType].EnemyOriginBuff[PartsCount].dwNumMat;
-				g_Enemy[EnemyCount].aModel[PartsCount].pBuffMat = g_EnemyOrigin[nType].EnemyOriginBuff[PartsCount].pBuffMat;
-				g_Enemy[EnemyCount].aModel[PartsCount].pMesh = g_EnemyOrigin[nType].EnemyOriginBuff[PartsCount].pMesh;
+				g_Enemy[EnemyCount].EnemyMotion.aModel[PartsCount].nIndx = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].nIndx;
+				g_Enemy[EnemyCount].EnemyMotion.aModel[PartsCount].Parent = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].Parent;
+				g_Enemy[EnemyCount].EnemyMotion.aModel[PartsCount].pos = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].pos;
+				g_Enemy[EnemyCount].EnemyMotion.aModel[PartsCount].OffSet = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].OffSet;
+				g_Enemy[EnemyCount].EnemyMotion.aModel[PartsCount].rot = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].rot;
+
+				g_Enemy[EnemyCount].EnemyMotion.aModel[PartsCount].dwNumMat = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].dwNumMat;
+				g_Enemy[EnemyCount].EnemyMotion.aModel[PartsCount].pBuffMat = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].pBuffMat;
+				g_Enemy[EnemyCount].EnemyMotion.aModel[PartsCount].pMesh = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].pMesh;
+
+				for (int MotionCount = 0; MotionCount < MOTIONTYPE_MAX; MotionCount++)
+				{
+					g_Enemy[EnemyCount].EnemyMotion.aMotionInfo[MotionCount] = g_EnemyOrigin[nType].EnemyMotion.aMotionInfo[MotionCount];
+				}
 			}
 			g_Enemy[EnemyCount].IndxShadow = SetShadow(g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].Object.Rot,g_Enemy[EnemyCount].Radius);
 			g_Enemy[EnemyCount].nActionCount = rand() % 180 + 120;
@@ -317,24 +335,24 @@ void SetEnemyMesh(char* pFilePath, int Indx)
 		D3DXMESH_SYSTEMMEM,
 		pDevice,
 		NULL,
-		&g_EnemyOrigin[g_nTypeCount].EnemyOriginBuff[Indx].pBuffMat,
+		&g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pBuffMat,
 		NULL,
-		&g_EnemyOrigin[g_nTypeCount].EnemyOriginBuff[Indx].dwNumMat,
-		&g_EnemyOrigin[g_nTypeCount].EnemyOriginBuff[Indx].pMesh);
+		&g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].dwNumMat,
+		&g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pMesh);
 
 	D3DXMATERIAL* pMat;//マテリアルへのポインタ
-	pMat = (D3DXMATERIAL*)g_EnemyOrigin[g_nTypeCount].EnemyOriginBuff[Indx].pBuffMat->GetBufferPointer();
-	for (int nCntBlockMat = 0; nCntBlockMat < (int)g_EnemyOrigin[g_nTypeCount].EnemyOriginBuff[Indx].dwNumMat; nCntBlockMat++)
+	pMat = (D3DXMATERIAL*)g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pBuffMat->GetBufferPointer();
+	for (int nCntBlockMat = 0; nCntBlockMat < (int)g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].dwNumMat; nCntBlockMat++)
 	{
 		if (pMat[nCntBlockMat].pTextureFilename != NULL)
 		{
 			D3DXCreateTextureFromFile(pDevice,
 				pMat[nCntBlockMat].pTextureFilename,
-				&g_EnemyOrigin[g_nTypeCount].EnemyOriginBuff[Indx].pTexture[nCntBlockMat]); //1
+				&g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pTexture[nCntBlockMat]); //1
 		}
 		else
 		{
-			g_EnemyOrigin[g_nTypeCount].EnemyOriginBuff[Indx].pTexture[nCntBlockMat] = NULL;
+			g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pTexture[nCntBlockMat] = NULL;
 		}
 	}
 
@@ -347,15 +365,56 @@ void SetEnemyMesh(char* pFilePath, int Indx)
 		g_nTypeCount++;
 	}
 }
-void SetEnemyPartsInfo(MODELINFO ModelInfo, int Indx)
+void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType)
 {
+	nType -= 1;
+	g_EnemyOrigin[nType].nNumParts = PartsInfo.nNumParts;
+	for (int PartsCount = 0; PartsCount < g_EnemyOrigin[nType].nNumParts; PartsCount++)
+	{
+		g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].nIndx = PartsInfo.PartsInfo[PartsCount].nIndx;
+		g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].Parent = PartsInfo.PartsInfo[PartsCount].Parent;
+		g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].pos = PartsInfo.PartsInfo[PartsCount].pos;
+		g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].OffSet = PartsInfo.PartsInfo[PartsCount].OffSet;
+		g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].rot = PartsInfo.PartsInfo[PartsCount].rot;
+		//デバイスの取得
+		LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
+		D3DXLoadMeshFromX(PartsInfo.cPartsPath[PartsCount],
+			D3DXMESH_SYSTEMMEM,
+			pDevice,
+			NULL,
+			&g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].pBuffMat,
+			NULL,
+			&g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].dwNumMat,
+			&g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].pMesh);
+
+		int nNumVtx;   //頂点数
+		DWORD sizeFVF; //頂点フォーマットのサイズ
+
+		//頂点数取得
+		nNumVtx = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].pMesh->GetNumVertices();
+		//頂点フォーマットのサイズ取得
+		sizeFVF = D3DXGetFVFVertexSize(g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].pMesh->GetFVF());
+
+		D3DXMATERIAL* pMat;//マテリアルへのポインタ
+		pMat = (D3DXMATERIAL*)g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].pBuffMat->GetBufferPointer();
+
+		for (int nCntMat = 0; nCntMat < (int)g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].dwNumMat; nCntMat++)
+		{
+			if (pMat[nCntMat].pTextureFilename != NULL)
+			{
+				D3DXCreateTextureFromFile(pDevice,
+					pMat[nCntMat].pTextureFilename, 
+					&g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].pTexture[nCntMat]); //1
+			}
+		}
+	}
+	for (int MotionCount = 0; MotionCount < MOTIONTYPE_MAX; MotionCount++)
+	{
+		g_EnemyOrigin[nType].EnemyMotion.aMotionInfo[MotionCount] = PartsInfo.MotionInfo[MotionCount];
+	}
 }
 void EnemyMotion(MOTIONINFO* pMotionInfo)
 {
-	for (int MotionCount = 0; MotionCount < MOTIONTYPE_MAX; MotionCount++, pMotionInfo++)
-	{
-		g_EnemyMotionOrigin[g_nTypeCountMotion][MotionCount] = *pMotionInfo;
-	}
-	g_nTypeCountMotion++;
+
 }

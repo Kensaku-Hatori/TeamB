@@ -5,6 +5,7 @@
 #include "key.h"
 #include "Object.h"
 #include "status.h"
+#include "loadmotion.h"
 
 #define MAX_ENEMY (126)
 #define MAX_ENEMYPARTS (10)
@@ -35,14 +36,14 @@ typedef enum
 
 typedef struct
 {
-	MODELORIGIN EnemyOriginBuff[MAX_PARTS];
+	OBJECTINFO EnemyMotion;
 	int nNumParts;
 }EnemyOrigin;
+
 typedef struct
 {
 	ENEMYSTATE state;
-	MOTIONINFO EnemyMotion[MOTIONTYPE_MAX];
-	MODELINFO aModel[MAX_ENEMYPARTS];
+	OBJECTINFO EnemyMotion;
 	OBJECT Object;
 	MOTIONTYPE pMotion;
 	int nType;
@@ -78,6 +79,6 @@ void UpdateAction(int nCount);
 void EnemyState(int Indx);
 void SetnNumParts(int nType,int nNumParts);
 void SetEnemyMesh(char* pFilePath, int Indx);
-void SetEnemyPartsInfo(MODELINFO ModelInfo, int Indx);
+void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType);
 void EnemyMotion(MOTIONINFO* pMotionInfo);
 #endif // !ENEMY_H_
