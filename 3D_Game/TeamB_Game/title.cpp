@@ -14,6 +14,7 @@
 #include "loadstage.h"
 #include "loadmotion.h"
 #include "model.h"
+#include "meshfield.h"
 
 //グローバル変数
 int g_nTimeTitle; //タイトルからランキングへの時間
@@ -24,6 +25,8 @@ int g_nTimeTitle; //タイトルからランキングへの時間
 void InitTitle(void)
 {
 	g_nTimeTitle = 0;
+
+	InitMeshfield();
 
 	InitMotion();
 	InitStageModel();
@@ -41,6 +44,8 @@ void InitTitle(void)
 //==========
 void UninitTitle(void)
 {
+	UninitMeshfield();
+
 	UninitStageModel();
 
 	UninitCamera();
@@ -54,6 +59,8 @@ void UninitTitle(void)
 //==========
 void UpdateTitle(void)
 {
+	UpdateMeshfield();
+
 	UpdateStageModel();
 
 	UpdateCamera();
@@ -77,6 +84,8 @@ void UpdateTitle(void)
 void DrawTitle(void)
 {
 	SetCamera();
+
+	DrawMeshfield();
 
 	DrawStageModel();
 

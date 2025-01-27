@@ -52,6 +52,7 @@ void InitPlayer(void)
 	//基礎ステータス
 	g_player.Status.nHP = PLAYER_HP;
 	g_player.Status.nMP = PLAYER_MP;
+	g_player.Status.fPower = PLAYER_MP;
 	g_player.Status.fSpeed = PLAYER_SPEED;
 
 

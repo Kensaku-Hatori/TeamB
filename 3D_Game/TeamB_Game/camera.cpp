@@ -63,31 +63,34 @@ void UpdateCamera(void)
 	if (pMode == MODE_TITLE || pMode == MODE_RESULT)
 	{//ƒJƒƒ‰‚ÌŽ©“®‰ñ“]
 		pPlayer->pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//ƒvƒŒƒCƒ„[‚ÌˆÊ’u‚ð‚O‚É
-
+		//‰ñ“]
 		g_camera.rot.y += 0.01f;
+
+		g_camera.posV.y = 200.0f;
+		g_camera.posR.y = 100.0f;
 	}
 	//‚»‚êˆÈŠO
 	else
 	{
 
-		////Ž‹“_‚Ìù‰ñ
-		//if (GetKeyboardPress(DIK_Z) == true)
-		//{
-		//	g_camera.rot.y += 0.05f;
-		//	//Šp“x‚Ì³‹K‰»
-		//	if (g_camera.rot.y > D3DX_PI)
-		//	{
-		//		g_camera.rot.y = -D3DX_PI;
-		//	}
-		//	if (g_camera.rot.y < -D3DX_PI)
-		//	{
-		//		g_camera.rot.y = D3DX_PI;
-		//	}
-
-		//	g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
-		//	g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
-		//}
+		//Ž‹“_‚Ìù‰ñ
 		if (GetKeyboardPress(DIK_C) == true)
+		{
+			g_camera.rot.y += 0.05f;
+			//Šp“x‚Ì³‹K‰»
+			if (g_camera.rot.y > D3DX_PI)
+			{
+				g_camera.rot.y = -D3DX_PI;
+			}
+			if (g_camera.rot.y < -D3DX_PI)
+			{
+				g_camera.rot.y = D3DX_PI;
+			}
+
+			g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
+			g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
+		}
+		if (GetKeyboardPress(DIK_V) == true)
 		{
 			g_camera.rot.y -= 0.05f;
 			//Šp“x‚Ì³‹K‰»
@@ -103,14 +106,14 @@ void UpdateCamera(void)
 			g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
 		}
 
-		////Ž‹“_‚Ìã‰º
-		//if (GetKeyboardPress(DIK_Y) == true)
-		//{//ã
-		//	if (g_camera.posV.y <= 500)
-		//	{
-		//		g_camera.posV.y += 5;
-		//	}
-		//}
+		//Ž‹“_‚Ìã‰º
+		if (GetKeyboardPress(DIK_U) == true)
+		{//ã
+			if (g_camera.posV.y <= 500)
+			{
+				g_camera.posV.y += 5;
+			}
+		}
 		if (GetKeyboardPress(DIK_N) == true)
 		{//‰º
 			if (g_camera.posV.y >= -500)
