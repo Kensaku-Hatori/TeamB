@@ -68,6 +68,12 @@ void UpdateParticleEditer()
 		{
 			g_ParticleEditer.ParticleInfo.nLife--;
 		}
+		else if (GetKeyboardPress(DIK_S) && g_ParticleEditer.ParticleInfo.Scale.x > 1)
+		{
+			g_ParticleEditer.ParticleInfo.Scale.x-=0.01f;
+			g_ParticleEditer.ParticleInfo.Scale.y-=0.01f;
+			g_ParticleEditer.ParticleInfo.Scale.z-=0.01f;
+		}
 	}
 	else
 	{
@@ -102,6 +108,12 @@ void UpdateParticleEditer()
 		else if (GetKeyboardPress(DIK_H) && g_ParticleEditer.ParticleInfo.nLife < 150)
 		{
 			g_ParticleEditer.ParticleInfo.nLife++;
+		}
+		else if (GetKeyboardPress(DIK_S) && g_ParticleEditer.ParticleInfo.Scale.x < 50)
+		{
+			g_ParticleEditer.ParticleInfo.Scale.x+=0.01f;
+			g_ParticleEditer.ParticleInfo.Scale.y+=0.01f;
+			g_ParticleEditer.ParticleInfo.Scale.z+=0.01f;
 		}
 		else if (GetKeyboardPress(DIK_1))
 		{

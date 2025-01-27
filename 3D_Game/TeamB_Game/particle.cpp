@@ -43,7 +43,13 @@ void UpdateParticle(bool bLimit)
 				dir.z = (float)(rand() %(int)dir1.z - 314) / 100.0f;
 				nLife = rand() % g_particle[particlecount].nLife + 1;
 				speed = rand() % 10 + 1;
-				SetEffect(g_particle[particlecount].Object.Pos,dir,nLife,speed,D3DXVECTOR3(1.0f,1.0f,1.0f),g_particle[particlecount].col,g_particle[particlecount].EffectnType);
+				SetEffect(g_particle[particlecount].Object.Pos,
+					dir,
+					nLife,
+					speed,
+					g_particle[particlecount].Scale,
+					g_particle[particlecount].col,
+					g_particle[particlecount].EffectnType);
 			}
 			if (bLimit == true)
 			{

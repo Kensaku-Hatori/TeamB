@@ -243,8 +243,6 @@ void DrawGame(void)
 
 	DrawSkill();
 
-	DrawEffect();
-
 	//DrawMeshCylinder();
 
 	//DrawWall();
@@ -252,6 +250,8 @@ void DrawGame(void)
 	DrawMeshWall();
 
 	DrawStageModel();
+
+	DrawEffect();
 
 	if (g_gamestate != GAMESTATE_EFFECTEDITER)
 	{
