@@ -225,9 +225,9 @@ void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot)
 		}
 	}
 }
-//
+//========================
 // “G‚Æ–‚–@‚Ì“–‚½‚è”»’è
-//
+//========================
 void SkillCollision(int nIdx)
 {
 	ENEMY* pEnemy = GetEnemy();
@@ -241,7 +241,7 @@ void SkillCollision(int nIdx)
 										  + ((g_Skill[nIdx].pos.y - pEnemy->Object.Pos.y) * (g_Skill[nIdx].pos.y - pEnemy->Object.Pos.y))
 										  + ((g_Skill[nIdx].pos.z - pEnemy->Object.Pos.z) * (g_Skill[nIdx].pos.z - pEnemy->Object.Pos.z)));
 
-			float RADIUS = (pEnemy->Radius + SKILL_SIZE) * (pEnemy->Radius + SKILL_SIZE);
+			float RADIUS = (pEnemy->Radius + (SKILL_SIZE / 2)) * (pEnemy->Radius + (SKILL_SIZE / 2));
 
 			if (g_Skill[nIdx].fDistance <= RADIUS)
 			{

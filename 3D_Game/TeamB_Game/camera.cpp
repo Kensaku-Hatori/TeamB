@@ -63,8 +63,11 @@ void UpdateCamera(void)
 	if (pMode == MODE_TITLE || pMode == MODE_RESULT)
 	{//カメラの自動回転
 		pPlayer->pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//プレイヤーの位置を０に
-
+		//回転
 		g_camera.rot.y += 0.01f;
+
+		g_camera.posV.y = 200.0f;
+		g_camera.posR.y = 100.0f;
 	}
 	//それ以外
 	else
