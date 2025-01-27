@@ -25,7 +25,6 @@ TEXTURE_FILENAME = data/TEXTURE/deadtree01.png		# [7]木テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/deadtree02.png		# [8]木テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/deadtree03.png		# [9]木テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/grass001.png		# [10]草テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/vendingmachine.png	# [11]自販機テクスチャ
 
 #------------------------------------------------------------------------------
 # モデル数
