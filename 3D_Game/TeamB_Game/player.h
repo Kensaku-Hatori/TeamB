@@ -19,6 +19,7 @@
 #define PLAYER_MP (500)		//MP
 #define PLAYER_HP (1000)	//HP
 #define PLAYER_SPEED (4)	//速度
+#define PLAYER_AP (10)	//速度
 
 //プレイヤーの構造体
 typedef struct

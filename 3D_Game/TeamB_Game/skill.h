@@ -23,6 +23,7 @@ typedef struct
 	D3DXMATRIX mtxWorld;//ワールドマトリックス
 	int nIdxShadow;
 	int nLife;
+	float fDistance;
 	bool bUse;
 }Skill;
 
@@ -32,5 +33,6 @@ void UninitSkill(void);
 void UpdateSkill(void);
 void DrawSkill(void);
 void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move,D3DXVECTOR3 rot);
+void SkillCollision(int nIdx);
 
 #endif

@@ -80,7 +80,7 @@ void InitGame(void)
 
 	LoadModelViewer();
 
-	SetEnemy(D3DXVECTOR3(0.0f, 20.0f, 0.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	SetEnemy(D3DXVECTOR3(0.0f, 10.0f, 0.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	g_gamestate = GAMESTATE_NORMAL;
 	g_nCounterGameState = 0;

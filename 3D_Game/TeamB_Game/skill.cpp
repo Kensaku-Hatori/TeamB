@@ -11,6 +11,7 @@
 #include "effect.h"
 #include "wall.h"
 #include "particle.h"
+#include "enemy.h"
 
 //グローバル変数宣言
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffSkill = NULL;
@@ -113,6 +114,8 @@ void UpdateSkill(void)
 	{
 		if (g_Skill[nCnt].bUse == true)
 		{
+			SkillCollision(nCnt);
+
 			SetEffect(g_Skill[nCnt].pos,
 					  D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 					  10.0f,
@@ -219,6 +222,31 @@ void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot)
 			g_Skill[nCnt].nLife = SKILL_LIFE;
 			g_Skill[nCnt].bUse = true;
 			break;
+		}
+	}
+}
+//
+// 敵と魔法の当たり判定
+//
+void SkillCollision(int nIdx)
+{
+	ENEMY* pEnemy = GetEnemy();
+	Player* pPlayer = GetPlayer();
+
+	for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
+	{
+		if (pEnemy[nCntEnemy].bUse == true)
+		{
+			g_Skill[nIdx].fDistance = sqrtf(((g_Skill[nIdx].pos.x - pEnemy->Object.Pos.x) * (g_Skill[nIdx].pos.x - pEnemy->Object.Pos.x))
+										  + ((g_Skill[nIdx].pos.y - pEnemy->Object.Pos.y) * (g_Skill[nIdx].pos.y - pEnemy->Object.Pos.y))
+										  + ((g_Skill[nIdx].pos.z - pEnemy->Object.Pos.z) * (g_Skill[nIdx].pos.z - pEnemy->Object.Pos.z)));
+
+			float RADIUS = (pEnemy->Radius + SKILL_SIZE) * (pEnemy->Radius + SKILL_SIZE);
+
+			if (g_Skill[nIdx].fDistance <= RADIUS)
+			{
+				HitEnemy(pPlayer->Status.fPower,nCntEnemy);
+			}
 		}
 	}
 }
