@@ -190,7 +190,7 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 					pVtx[nCntVtx].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 					//テクスチャ座標の設定
-					pVtx[nCntVtx].tex = D3DXVECTOR2((1.0f / g_Meshfield[nCnt].nDiviX) * nCntX, (1.0f / g_Meshfield[nCnt].nDiviZ) * nCntZ);
+					pVtx[nCntVtx].tex = D3DXVECTOR2(1.0f * nCntX, 1.0f * nCntZ);
 
 					nCntVtx++;
 				}
