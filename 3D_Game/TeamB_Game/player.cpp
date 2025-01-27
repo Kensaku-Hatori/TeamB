@@ -98,30 +98,26 @@ void UpdatePlayer(void)
 		//¶
 		if (GetKeyboardPress(DIK_A) == true || GetJoypadPress(JOYKEY_LEFT) == true)
 		{// A
-			g_player.move.z -= sinf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
-			g_player.move.x += cosf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
+			g_player.move.x += cosf(pCamera->rot.y - D3DX_PI * 0.75f) * g_player.Status.fSpeed;
 
 			g_player.rotDest.y = pCamera->rot.y + D3DX_PI / 2;
 		}
 		//‰E
 		if (GetKeyboardPress(DIK_D) == true || GetJoypadPress(JOYKEY_RIGET) == true)
 		{// D
-			g_player.move.z += sinf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
-			g_player.move.x -= cosf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
+			g_player.move.x -= cosf(pCamera->rot.y - D3DX_PI * 0.75f) * g_player.Status.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y - D3DX_PI / 2;
 		}
 		//‘O
 		if (GetKeyboardPress(DIK_W) == true || GetJoypadPress(JOYKEY_DOWN) == true)
 		{// W
-			g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
-			g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
+			g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.75f) * g_player.Status.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y - D3DX_PI;
 		}
 		//Œã
 		if (GetKeyboardPress(DIK_S) == true || GetJoypadPress(JOYKEY_UP) == true)
 		{// S
-			g_player.move.x += sinf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
-			g_player.move.z += cosf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
+			g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.75f) * g_player.Status.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y;
 		}
 		////Šp“x‚Ì³‹K‰»
