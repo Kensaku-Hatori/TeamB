@@ -107,12 +107,7 @@ void UpdateEnemy(void)
 	{
 		if (g_Enemy[EnemyCount].bUse == true)
 		{
-			OBJECTINFO EnemyMotion;
-			for (int ANIMCOUNT = 0; ANIMCOUNT < MOTIONTYPE_MAX; ANIMCOUNT++)
-			{
-				EnemyMotion = g_Enemy[EnemyCount].EnemyMotion;
-			}
-			UpdateMotion(&EnemyMotion);
+			UpdateMotion(&g_Enemy[EnemyCount].EnemyMotion);
 		}
 	}
 }
