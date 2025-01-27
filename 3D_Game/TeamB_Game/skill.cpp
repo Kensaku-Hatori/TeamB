@@ -117,7 +117,7 @@ void UpdateSkill(void)
 					  30.0f,
 					  0.0f, 
 					  D3DXVECTOR3(5.0f, 5.0f, 5.0f), 
-					  D3DXCOLOR(1.00f,0.54f, 1.00f,1.0f), 
+					  D3DXCOLOR(0.66f, 0.66f, 1.00f,1.0f), 
 					  EFFECT_NONE);
 
 			g_Skill[nCnt].pos += g_Skill[nCnt].move;
