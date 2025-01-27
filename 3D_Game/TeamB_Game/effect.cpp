@@ -167,6 +167,12 @@ void UpdateEffect(void)
 				g_effect[effectcount].Scale.y += g_effect[effectcount].LengthValue;
 				g_effect[effectcount].Scale.z += g_effect[effectcount].LengthValue;
 			}
+			else
+			{
+				g_effect[effectcount].Scale.x += g_effect[effectcount].LengthValue;
+				g_effect[effectcount].Scale.y += g_effect[effectcount].LengthValue;
+				g_effect[effectcount].Scale.z += g_effect[effectcount].LengthValue;
+			}
 			g_effect[effectcount].nLife--;
 			if (g_effect[effectcount].nLife <= 0)
 			{

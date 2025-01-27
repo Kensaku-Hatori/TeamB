@@ -98,51 +98,30 @@ void UpdatePlayer(void)
 		//左
 		if (GetKeyboardPress(DIK_A) == true || GetJoypadPress(JOYKEY_LEFT) == true)
 		{// A
-			g_player.move.x -= g_player.Status.fSpeed;
+			g_player.move.z -= sinf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
+			g_player.move.x += cosf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
+
 			g_player.rotDest.y = pCamera->rot.y + D3DX_PI / 2;
 		}
 		//右
 		if (GetKeyboardPress(DIK_D) == true || GetJoypadPress(JOYKEY_RIGET) == true)
 		{// D
-				g_player.move.x += g_player.Status.fSpeed;
+			g_player.move.z += sinf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
+			g_player.move.x -= cosf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y - D3DX_PI / 2;
 		}
 		//前
 		if (GetKeyboardPress(DIK_W) == true || GetJoypadPress(JOYKEY_DOWN) == true)
-		{// S
-			if (GetKeyboardPress(DIK_A) == true || GetJoypadPress(JOYKEY_LEFT) == true)
-			{//左前
-				g_player.move.x -= sinf(D3DX_PI * 0.25f) * g_player.Status.fSpeed;
-				g_player.move.z += cosf(D3DX_PI * 0.25f) * g_player.Status.fSpeed;
-			}
-			else if (GetKeyboardPress(DIK_D) == true || GetJoypadPress(JOYKEY_RIGET) == true)
-			{//右前
-				g_player.move.x += sinf(D3DX_PI * 0.25f) * g_player.Status.fSpeed;
-				g_player.move.z -= cosf(D3DX_PI * 0.25f) * g_player.Status.fSpeed;
-			}
-			else
-			{//前
-				g_player.move.z += g_player.Status.fSpeed;
-			}
+		{// W
+			g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
+			g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y - D3DX_PI;
 		}
 		//後
 		if (GetKeyboardPress(DIK_S) == true || GetJoypadPress(JOYKEY_UP) == true)
-		{// W
-			if (GetKeyboardPress(DIK_A) == true || GetJoypadPress(JOYKEY_LEFT) == true)
-			{//左後
-				g_player.move.x -= sinf(D3DX_PI * 0.75f) * g_player.Status.fSpeed;
-				g_player.move.z += cosf(D3DX_PI * 0.75f) * g_player.Status.fSpeed;
-			}
-			else if (GetKeyboardPress(DIK_D) == true || GetJoypadPress(JOYKEY_RIGET) == true)
-			{//右後
-				g_player.move.x += sinf(D3DX_PI * 0.75f) * g_player.Status.fSpeed;
-				g_player.move.z += cosf(D3DX_PI * 0.75f) * g_player.Status.fSpeed;
-			}
-			else
-			{//後
-				g_player.move.z -= g_player.Status.fSpeed;
-			}
+		{// S
+			g_player.move.x += sinf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
+			g_player.move.z += cosf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y;
 		}
 		////角度の正規化
