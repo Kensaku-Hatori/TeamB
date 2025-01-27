@@ -28,7 +28,6 @@ void InitResult(void)
 	InitLight();
 
 	InitResultInfo();
-
 }
 //==========
 //I—¹ˆ—
