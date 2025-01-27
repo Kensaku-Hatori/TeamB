@@ -118,8 +118,8 @@ void UpdateSkill(void)
 
 			SetEffect(g_Skill[nCnt].pos,
 					  D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-					  10.0f,
-					  0.0f, 
+					  10,
+					  0, 
 					  D3DXVECTOR3(3.0f, 3.0f, 3.0f), 
 					  D3DXCOLOR(0.80f, 1.00f, 0.00f,1.0f),
 					  EFFECT_NONE);
