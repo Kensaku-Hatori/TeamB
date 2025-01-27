@@ -150,6 +150,10 @@ void SetStageModelInfo(char* ModelPath, int nType)
 				pMat[nCntBlockMat].pTextureFilename, 
 				&g_ModelOrigin[nType].pTexture[nCntBlockMat]); //1
 		}
+		else
+		{
+			g_ModelOrigin[nType].pTexture[nCntBlockMat] = NULL;
+		}
 	}
 
 	if(FAILED(Hresult))

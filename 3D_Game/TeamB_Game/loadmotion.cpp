@@ -135,8 +135,18 @@ void LoadMotionStart(FILE* pFile)
 			}
 			else if (strcmp(&cData1[0], "END_SCRIPT") == 0)
 			{
+				switch (nType)
+				{
+				case LOADTYPE_PLAYER:
+					PlayerMotion(&MotionInfo[0]);
+					break;
+				case LOADTYPE_ENEMYONE:
+					EnemyMotion(&MotionInfo[0]);
+					break;
+				default:
+					break;
+				}
 				nType++;
-				PlayerMotion(&MotionInfo[0]);
 				MotionCount = 0;
 				break;
 			}

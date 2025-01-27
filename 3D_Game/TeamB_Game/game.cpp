@@ -31,6 +31,7 @@
 #include "loadstage.h"
 #include "model.h"
 #include "enemy.h"
+#include "loadmotion.h"
 
 //ÉOÉçÅ[ÉoÉãïœêî
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -78,6 +79,7 @@ void InitGame(void)
 
 	InitStageModel();
 
+	InitMotion();
 	LoadModelViewer();
 
 	SetEnemy(D3DXVECTOR3(0.0f, 20.0f, 0.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));

@@ -16,6 +16,7 @@ EnemyOrigin g_EnemyOrigin[ENEMYTYPE_MAX];
 MOTIONINFO g_EnemyMotionOrigin[ENEMYTYPE_MAX][MOTIONTYPE_MAX];
 int g_nNumEnemy;
 int g_nTypeCount = 0;
+int g_nTypeCountMotion = 0;
 int g_PartsNum = 0;
 
 //***************
@@ -26,6 +27,8 @@ void InitEnemy(void)
 	g_nNumEnemy = -1;
 	for (int i = 0; i < MAX_ENEMY; i++)
 	{
+		g_nTypeCount = 0;
+		g_nTypeCountMotion = 0;
 		g_Enemy[i].Object.Pos = D3DXVECTOR3(0.0f, 0.0f, -100.0f);
 		g_Enemy[i].Object.Rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		g_Enemy[i].bUse = false;
@@ -45,6 +48,30 @@ void InitEnemy(void)
 //*************
 void UninitEnemy(void)
 {
+	for (int OriginCount = 0; OriginCount < ENEMYTYPE_MAX; OriginCount++)
+	{
+		for (int PartsCount = 0; PartsCount < MAX_PARTS; PartsCount++)
+		{
+			if (g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pMesh != NULL)
+			{
+				g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pMesh->Release();
+				g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pMesh = NULL;
+			}
+			if (g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pBuffMat != NULL)
+			{
+				g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pBuffMat->Release();
+				g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pBuffMat = NULL;
+			}
+			for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
+			{
+				if (g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pTexture[TexCount] != NULL)
+				{
+					g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pTexture[TexCount]->Release();
+					g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pTexture[TexCount] = NULL;
+				}
+			}
+		}
+	}
 	for (int i = 0; i < MAX_ENEMY; i++)
 	{
 		for (int i1 = 0; i1 < MAX_ENEMYPARTS; i1++)
@@ -64,30 +91,6 @@ void UninitEnemy(void)
 				if (g_Enemy[i].aModel[i1].pTexture[TexCount] != NULL)
 				{
 					g_Enemy[i].aModel[i1].pTexture[TexCount] = NULL;
-				}
-			}
-		}
-	}
-	for (int OriginCount = 0; OriginCount < ENEMYTYPE_MAX; OriginCount++)
-	{
-		for (int PartsCount = 0; PartsCount < MAX_PARTS; PartsCount++)
-		{
-			if (g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pMesh != NULL)
-			{
-				g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pMesh->Release();
-				g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pMesh = NULL;
-			}
-			if (g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pBuffMat != NULL)
-			{
-				g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pBuffMat->Release();
-				g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pBuffMat = NULL;
-			}
-			for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
-			{
-				if (g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pTexture != NULL)
-				{
-					g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pTexture[TexCount]->Release();
-					g_EnemyOrigin[OriginCount].EnemyOriginBuff[PartsCount].pTexture[TexCount] = NULL;
 				}
 			}
 		}
@@ -253,6 +256,7 @@ void SetEnemy(D3DXVECTOR3 pos, int nType,D3DXVECTOR3 rot)
 			g_Enemy[EnemyCount].Object.Rot = rot;
 			g_Enemy[EnemyCount].state = ENEMYSTATE_NORMAL;
 			g_Enemy[EnemyCount].nType = nType;
+			g_Enemy[EnemyCount].nNumModel = g_EnemyOrigin[nType].nNumParts;
 			for (int PartsCount = 0; PartsCount < g_EnemyOrigin[nType].nNumParts; PartsCount++)
 			{
 				g_Enemy[EnemyCount].aModel[PartsCount].dwNumMat = g_EnemyOrigin[nType].EnemyOriginBuff[PartsCount].dwNumMat;
@@ -328,6 +332,10 @@ void SetEnemyMesh(char* pFilePath, int Indx)
 				pMat[nCntBlockMat].pTextureFilename,
 				&g_EnemyOrigin[g_nTypeCount].EnemyOriginBuff[Indx].pTexture[nCntBlockMat]); //1
 		}
+		else
+		{
+			g_EnemyOrigin[g_nTypeCount].EnemyOriginBuff[Indx].pTexture[nCntBlockMat] = NULL;
+		}
 	}
 
 	if (FAILED(Hresult))
@@ -347,6 +355,7 @@ void EnemyMotion(MOTIONINFO* pMotionInfo)
 {
 	for (int MotionCount = 0; MotionCount < MOTIONTYPE_MAX; MotionCount++, pMotionInfo++)
 	{
-		g_EnemyMotionOrigin[g_nTypeCount][MotionCount] = *pMotionInfo;
+		g_EnemyMotionOrigin[g_nTypeCountMotion][MotionCount] = *pMotionInfo;
 	}
+	g_nTypeCountMotion++;
 }
