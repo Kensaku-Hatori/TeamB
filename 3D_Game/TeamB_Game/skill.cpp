@@ -10,6 +10,7 @@
 #include "player.h"
 #include "effect.h"
 #include "wall.h"
+#include "particle.h"
 
 //グローバル変数宣言
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffSkill = NULL;
@@ -61,10 +62,10 @@ void InitSkill(void)
 		pVtx[3].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
 
 		//頂点カラーの設定
-		pVtx[0].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
-		pVtx[1].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
-		pVtx[2].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
-		pVtx[3].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
+		pVtx[0].col = D3DXCOLOR(1.0, 1.0, 1.0, 0.0);
+		pVtx[1].col = D3DXCOLOR(1.0, 1.0, 1.0, 0.0);
+		pVtx[2].col = D3DXCOLOR(1.0, 1.0, 1.0, 0.0);
+		pVtx[3].col = D3DXCOLOR(1.0, 1.0, 1.0, 0.0);
 
 		//テクスチャ座標の設定
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -113,11 +114,11 @@ void UpdateSkill(void)
 		if (g_Skill[nCnt].bUse == true)
 		{
 			SetEffect(g_Skill[nCnt].pos,
-					  g_Skill[nCnt].rot, 
-					  30.0f, 
-					  10.0f, 
-					  D3DXVECTOR3(5.0f, 5.0f, 5.0f), 
-					  D3DXCOLOR(0.00f,0.68f, 1.00f,1.0f), 
+					  D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+					  10.0f,
+					  0.0f, 
+					  D3DXVECTOR3(3.0f, 3.0f, 3.0f), 
+					  D3DXCOLOR(0.80f, 1.00f, 0.00f,1.0f),
 					  EFFECT_NONE);
 
 			g_Skill[nCnt].pos += g_Skill[nCnt].move;
@@ -129,7 +130,6 @@ void UpdateSkill(void)
 
 			if (g_Skill[nCnt].nLife <= 0)
 			{
-				SetExplosion(g_Skill[nCnt].pos, g_Skill[nCnt].rot);
 				g_Skill[nCnt].bUse = false;
 				pShadow[g_Skill[nCnt].nIdxShadow].bUse = false;
 			}

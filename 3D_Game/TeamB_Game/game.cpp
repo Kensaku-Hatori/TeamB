@@ -4,7 +4,6 @@
 //  Author:kaiti
 //
 //================================
-
 #include "game.h"
 #include "result.h"
 #include "resultinfo.h"
@@ -245,14 +244,11 @@ void DrawGame(void)
 
 	//DrawBlock();
 
-
 	//DrawEnemy();
 
 	//DrawExplosion();
 
 	DrawSkill();
-
-	DrawEffect();
 
 	//DrawMeshCylinder();
 
@@ -261,6 +257,8 @@ void DrawGame(void)
 	DrawMeshWall();
 
 	DrawStageModel();
+
+	DrawEffect();
 
 	if (g_gamestate != GAMESTATE_EFFECTEDITER)
 	{

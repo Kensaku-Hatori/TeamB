@@ -168,12 +168,15 @@ void SetMeshWall(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX, int 
 
 			int nCntVtx = 0;
 
+			//中央へずらす
+			float centerX = g_MeshWall[nCnt].nWidth * (g_MeshWall[nCnt].nDiviX - 2) * 0.5f;
+
 			for (int nCntY = 0; nCntY <= g_MeshWall[nCnt].nDiviY; nCntY++)
 			{
 				for (int nCntX = 0; nCntX <= g_MeshWall[nCnt].nDiviX; nCntX++)
 				{
 					//頂点座標の設定
-					pVtx[nCntVtx].pos = D3DXVECTOR3(-g_MeshWall[nCnt].nWidth + (g_MeshWall[nCnt].nWidth * nCntX), g_MeshWall[nCnt].nHeight - (g_MeshWall[nCnt].nHeight * nCntY), 0.0f);
+					pVtx[nCntVtx].pos = D3DXVECTOR3((float)(-g_MeshWall[nCnt].nWidth + (g_MeshWall[nCnt].nWidth * nCntX) - centerX), (float)(g_MeshWall[nCnt].nHeight - (g_MeshWall[nCnt].nHeight * nCntY)),g_MeshWall[nCnt].pos.z);
 
 					//法線ベクトルの設定
 					pVtx[nCntVtx].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);

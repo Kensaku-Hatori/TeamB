@@ -171,7 +171,7 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 
 			int nCntVtx = 0;
 
-			//中央
+			//中央へずらす
 			float centerX = g_Meshfield[nCnt].nWidth * (g_Meshfield[nCnt].nDiviX-2 ) * 0.5f;
 			float centerY = g_Meshfield[nCnt].nHeight * (g_Meshfield[nCnt].nDiviZ -2) * 0.5f;
 
@@ -225,7 +225,7 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 				if (nCntZ < g_Meshfield[nCnt].nDiviZ - 1)
 				{
 					pIdx[0] = (nCntX - 1) + (nCntZ * (g_Meshfield[nCnt].nDiviX + 1));
-					pIdx[1] = (nCntX - 1) + (nCntZ * (g_Meshfield[nCnt].nDiviX + 1)) + (g_Meshfield[nCnt].nDiviX + 2) * (nCntZ + 1);
+					pIdx[1] = nCntX + ((nCntZ + 1) * (g_Meshfield[nCnt].nDiviX + 1));
 
 					pIdx += 2;
 				}
@@ -238,6 +238,7 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 		}
 	}
 }
+
 //===============================
 // メッシュ床のテクスチャ設定処理
 //===============================
