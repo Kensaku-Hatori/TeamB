@@ -152,11 +152,11 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 			g_Meshfield[nCnt].nDiviZ = nDiviZ;					//分割数z
 			g_Meshfield[nCnt].nWidth = nWidth;					//幅
 			g_Meshfield[nCnt].nHeight = nHeight;				//高さ
-			g_Meshfield[nCnt].bUse = true;						//使用している状態にする
+			g_Meshfield[nCnt].bUse = true;						//使用している状態にする(2 * g_MeshWall[nCnt].nDiviX * g_MeshWall[nCnt].nDiviY + (g_MeshWall[nCnt].nDiviY - 1) * 4)
 
 			g_Meshfield[nCnt].nMaxVtx = (g_Meshfield[nCnt].nDiviX + 1) * (g_Meshfield[nCnt].nDiviZ + 1);											//頂点数
-			g_Meshfield[nCnt].nPolyNum = (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ - 1) * 2);			//ポリゴン数
-			int flindexNum = (g_Meshfield[nCnt].nDiviZ * 2) * (g_Meshfield[nCnt].nDiviX + (g_Meshfield[nCnt].nDiviZ * 2) - 1);						//インデックス
+			g_Meshfield[nCnt].nPolyNum = (2 * g_Meshfield[nCnt].nDiviX * g_Meshfield[nCnt].nDiviZ + (g_Meshfield[nCnt].nDiviZ - 1) * 4);			//ポリゴン数
+			int flindexNum = (2 * (g_Meshfield[nCnt].nDiviZ * (2 + g_Meshfield[nCnt].nDiviX) - 1));													//インデックス
 
 			//頂点バッファの生成
 			pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * g_Meshfield[nCnt].nMaxVtx,

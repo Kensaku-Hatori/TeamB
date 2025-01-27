@@ -150,8 +150,8 @@ void SetMeshWall(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX, int 
 			g_MeshWall[nCnt].bUse = true;					//使用している状態にする
 
 			g_MeshWall[nCnt].nMaxVtx = (g_MeshWall[nCnt].nDiviX + 1) * (g_MeshWall[nCnt].nDiviY + 1);										//頂点数
-			g_MeshWall[nCnt].nPolyNum = (g_MeshWall[nCnt].nDiviY * 2) * (g_MeshWall[nCnt].nDiviX + (g_MeshWall[nCnt].nDiviY - 1) * 2);		//ポリゴン数
-			int indexNum = (g_MeshWall[nCnt].nDiviY * 2) * (g_MeshWall[nCnt].nDiviX + (g_MeshWall[nCnt].nDiviY * 2) - 1);					//インデックス
+			g_MeshWall[nCnt].nPolyNum = (2 * g_MeshWall[nCnt].nDiviX * g_MeshWall[nCnt].nDiviY + (g_MeshWall[nCnt].nDiviY - 1) * 4);		//ポリゴン数
+			int indexNum = (2 * (g_MeshWall[nCnt].nDiviY * (2 + g_MeshWall[nCnt].nDiviX) - 1));												//インデックス
 
 			//頂点バッファの生成
 			pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * g_MeshWall[nCnt].nMaxVtx,
