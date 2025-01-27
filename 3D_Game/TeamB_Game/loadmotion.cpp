@@ -1,8 +1,15 @@
 #include "loadmotion.h"
+#include "enemy.h"
 #include "player.h"
 
-int PartsCount = 0;
+int PartsCount;
+int nType;
 
+void InitMotion()
+{
+	PartsCount = 0;
+	nType = 0;
+}
 //*****************************
 // スクリプト以前を読み込む処理
 //*****************************
@@ -66,21 +73,39 @@ void LoadMotionStart(FILE* pFile)
 			strcat(cData1, cData);
 			if (strcmp(&cData1[0], "NUM_MODEL") == 0)
 			{
+				Player* pPlayer = GetPlayer();
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				nData = LoadInt(pFile);
-				Player* pPlayer = GetPlayer();
-				pPlayer->PlayerMotion.nNumModel = nData;
-				int i = 0;
+				switch (nType)
+				{
+				case LOADTYPE_PLAYER:
+					pPlayer->PlayerMotion.nNumModel = nData;
+					break;
+				case LOADTYPE_ENEMYONE:
+					SetnNumParts(nType, nData);
+					break;
+				default:
+					break;
+				}
 			}
 			else if (strcmp(&cData1[0], "MODEL_FILENAME") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				ModelPath[0] = LoadPath(pFile);
-				SetMesh(ModelPath[0], PathCount);
+				switch (nType)
+				{
+				case LOADTYPE_PLAYER:
+					SetMesh(ModelPath[0], PathCount);
+					break;
+				case LOADTYPE_ENEMYONE:
+					SetEnemyMesh(ModelPath[0], PathCount);
+					break;
+				default:
+					break;
+				}
 				PathCount++;
-				int i = 0;
 			}
 			else if (strcmp(&cData1[0], "CHARACTERSET") == 0)
 			{
@@ -110,6 +135,7 @@ void LoadMotionStart(FILE* pFile)
 			}
 			else if (strcmp(&cData1[0], "END_SCRIPT") == 0)
 			{
+				nType++;
 				PlayerMotion(&MotionInfo[0]);
 				MotionCount = 0;
 				break;
@@ -260,7 +286,16 @@ char* LoadPartsInfo(FILE* pFile,int *Parts)
 			}
 			else if (strcmp(&cData1[0], "END_PARTSSET") == 0)
 			{
-				SetPartsInfo(ModelInfo[PartsCount],PartsCount);
+				switch (nType)
+				{
+				case LOADTYPE_PLAYER:
+					SetPartsInfo(ModelInfo[PartsCount], PartsCount);
+					break;
+				case LOADTYPE_ENEMYONE:
+					break;
+				default:
+					break;
+				}
 				PartsCount++;
 				break;
 			}

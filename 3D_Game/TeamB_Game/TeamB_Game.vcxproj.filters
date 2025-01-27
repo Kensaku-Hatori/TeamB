@@ -3,10 +3,8 @@
   <ItemGroup>
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="billboard.cpp" />
-    <ClCompile Include="block.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="effect.cpp" />
-    <ClCompile Include="enemy.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
@@ -39,14 +37,13 @@
     <ClCompile Include="titleinfo.cpp" />
     <ClCompile Include="ui.cpp" />
     <ClCompile Include="wall.cpp" />
+    <ClCompile Include="enemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h" />
     <ClInclude Include="billboard.h" />
-    <ClInclude Include="block.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="effect.h" />
-    <ClInclude Include="enemy.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
@@ -82,5 +79,6 @@
     <ClInclude Include="titleinfo.h" />
     <ClInclude Include="ui.h" />
     <ClInclude Include="wall.h" />
+    <ClInclude Include="enemy.h" />
   </ItemGroup>
 </Project>

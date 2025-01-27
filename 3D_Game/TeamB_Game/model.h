@@ -54,11 +54,11 @@ typedef struct
 	LPD3DXBUFFER pBuffMat;	//マテリアルへのポインタ
 	DWORD dwNumMat;			//マテリアルの数
 	LPDIRECT3DTEXTURE9 pTexture[MAX_TEX];
-}STAGEMODELORIGIN;
+}MODELORIGIN;
 
 typedef struct
 {
-	STAGEMODELORIGIN ModelBuff;
+	MODELORIGIN ModelBuff;
 	MODELTYPE nType;
 	D3DXVECTOR3 pos;		//位置(オフセット)
 	D3DXVECTOR3 rot;		//向き

@@ -12,6 +12,7 @@
 #include "camera.h"
 #include "light.h"
 #include "loadstage.h"
+#include "loadmotion.h"
 #include "model.h"
 
 //ƒOƒ[ƒoƒ‹•Ï”
@@ -24,6 +25,7 @@ void InitTitle(void)
 {
 	g_nTimeTitle = 0;
 
+	InitMotion();
 	InitStageModel();
 
 	LoadModelViewer();

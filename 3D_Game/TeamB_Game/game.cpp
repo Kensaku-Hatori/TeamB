@@ -31,6 +31,7 @@
 #include "particleEditer.h"
 #include "loadstage.h"
 #include "model.h"
+#include "enemy.h"
 
 //ÉOÉçÅ[ÉoÉãïœêî
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -49,6 +50,8 @@ void InitGame(void)
 	//InitBlock();
 
 	InitPlayer();
+
+	InitEnemy();
 
 	//InitEnemy();
 
@@ -78,6 +81,8 @@ void InitGame(void)
 
 	LoadModelViewer();
 
+	SetEnemy(D3DXVECTOR3(0.0f, 10.0f, 0.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
 	g_gamestate = GAMESTATE_NORMAL;
 	g_nCounterGameState = 0;
 
@@ -93,6 +98,8 @@ void UninitGame(void)
 	UninitShadow();
 
 	UninitPlayer();
+
+	UninitEnemy();
 
 	//UninitEnemy();
 
@@ -144,6 +151,8 @@ void UpdateGame(void)
 			UpdateShadow();
 
 			UpdatePlayer();
+
+			UpdateEnemy();
 
 			//UpdateEnemy();
 
@@ -256,6 +265,7 @@ void DrawGame(void)
 	if (g_gamestate != GAMESTATE_EFFECTEDITER)
 	{
 		DrawPlayer();
+		DrawEnemy();
 		DrawUi();
 	}
 

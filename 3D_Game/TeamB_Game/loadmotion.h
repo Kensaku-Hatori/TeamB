@@ -6,12 +6,26 @@
 #include "key.h"
 #include "model.h"
 
+#define MOTIONFILE_PLAYER  ("data\\MOTION\\motion00.txt")//プレイヤーのモーションファイル
+#define MOTIONFILE_ENEMYONE  ("data\\MOTION\\Enemymotion00.txt")//プレイヤーのモーションファイル
+
 #define CHARACTOR "END_CHARACTERSET"
 #define MOTION "END_MOTIONSET"
 #define PARTS "END_PARTSSET"
 #define KEYPARTS "END_KEY"
 #define KEY "END_KEYSET"
 
+typedef enum
+{
+	LOADTYPE_PLAYER = 0,
+	LOADTYPE_ENEMYONE,
+	LOADTYPE_ENEMYTWO,
+	LOADTYPE_ENEMYTHREE,
+	LOADTYPE_ENEMYFOUR,
+	LOADTYPE_MAX
+}LoadType;
+
+void InitMotion();
 void LoadMotionViewer(char *cMotionPath);	// スクリプト以前を読み込む処理
 void LoadMotionStart(FILE* pFile);			// スクリプト以降の読み込み処理
 

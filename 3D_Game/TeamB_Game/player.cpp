@@ -10,9 +10,7 @@
 #include "shadow.h"
 #include "explosion.h"
 #include "effect.h"
-#include "block.h"
 #include "wall.h"
-#include "enemy.h"
 #include "timer.h"
 #include "polygon.h"
 #include "sound.h"
@@ -196,10 +194,6 @@ void UpdatePlayer(void)
 		g_player.pos.x += g_player.move.x;
 		g_player.pos.y += g_player.move.y;
 		g_player.pos.z += g_player.move.z;
-
-		//“–‚½‚è”»’è
-		g_player.bJump = !CollisionBlock();
-		CollisionEnemy();
 
 		//’n–Ê‚Æ‚Ì”»’è
 		if (g_player.pos.y <= 0)
@@ -417,7 +411,6 @@ void SetMesh(char* pFilePath, int Indx)
 			D3DXCreateTextureFromFile(pDevice, pMat[nCntMat].pTextureFilename, &g_player.PlayerMotion.aModel[Indx].pTexture[Indx]); //1
 		}
 	}
-	g_player.bUse = true;
 }
 void SetPartsInfo(MODELINFO ModelInfo,int Indx)
 {
@@ -427,7 +420,6 @@ void SetPartsInfo(MODELINFO ModelInfo,int Indx)
 	g_player.PlayerMotion.aModel[Indx].rot = ModelInfo.rot;
 	g_player.PlayerMotion.aModel[Indx].size = ModelInfo.size;
 	g_player.PlayerMotion.aModel[Indx].OffSet = ModelInfo.pos;
-	int i = 0;
 }
 void PlayerMotion(MOTIONINFO *pMotionInfo)
 {
@@ -435,4 +427,5 @@ void PlayerMotion(MOTIONINFO *pMotionInfo)
 	{
 		g_player.PlayerMotion.aMotionInfo[MotionCount] = *pMotionInfo;
 	}
+	g_player.bUse = true;
 }

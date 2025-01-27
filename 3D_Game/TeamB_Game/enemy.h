@@ -1,102 +1,83 @@
-//================================
-//
-// プレイヤー表示処理[Enemy.h]
-// Author:kaiti
-//
-//================================
-#ifndef _ENEMY_H_
-#define _ENEMY_H_
+#ifndef ENEMY_H_
+#define ENEMY_H_
 
 #include "main.h"
-#include "model.h"
 #include "key.h"
+#include "Object.h"
+#include "status.h"
 
-#define ENEMY_SPEED (5)		//敵の速度
-#define MAX_ENEMY (30)		//敵の最大数
-#define ENEMY_RADIUS (3)	//敵の半径
-#define ENEMYAND_RADIUS (3)	//敵同士の半径
-#define MAX_ENEMYTIME (120)	//敵出現時間
-#define ENEMY_LIFE (2)		//敵のライフ
-#define MOTIONFILE_ENEMY  ("data\\MOTION\\motionPin.txt")//敵のモーションファイル
+#define MAX_ENEMY (126)
+#define MAX_ENEMYPARTS (10)
+#define ENEMY_RADIUS (float)(8.0f)
+#define ENEMY_RUNSPEED (float)(1.0f)
 
-//モーションの種類
 typedef enum
 {
-	ENEMYMOTIONTYPE_NEUTRAL = 0,
-	ENEMYMOTIONTYPE_MOVE,
-	ENEMYMOTIONTYPE_ACTION,
-	ENEMYMOTIONTYPE_JUMP,
-	ENEMYMOTIONTYPE_LANDING,
-	ENEMYMOTIONTYPE_MAX
-}ENEMYMOTIONTYPE;
+	ENEMYSTATE_NORMAL = 0,
+	ENEMYSTATE_KNOCKUP,
+	ENEMYSTATE_MAX
+}ENEMYSTATE;
 
-//キーの構造体
+typedef enum
+{
+	ENEMYACTION_WELL,
+	ENEMYACTION_RUN,
+	ENEMYACTION_ATACK,
+	ENEMYACTION_MAX
+}ENEMYACTION;
+
+typedef enum
+{
+	ENEMYTYPE_SKELETON = 0,
+	ENEMYTYPE_BOSS,
+	ENEMYTYPE_MAX
+}ENEMYTYPE;
+
 typedef struct
 {
-	float fPosX;
-	float fPosY;
-	float fPosZ;
-
-	float fRotX;
-	float fRotY;
-	float fRotZ;
-}ENEMYKEY;
-
-//キー情報の構造体
+	MODELORIGIN EnemyOriginBuff[MAX_PARTS];
+	int nNumParts;
+}EnemyOrigin;
 typedef struct
 {
-	int nFrame;
-	ENEMYKEY aKey[MAX_PARTS];
-}ENEMYKEY_INFO;
-
-//モーション情報の構造体
-typedef struct
-{
-	bool bLoop;
-	int nNumKey;
-	ENEMYKEY_INFO aKeyInfo[MAX_KEY];
-}ENEMYMOTION_INFO;
-
-//プレイヤーの構造体
-typedef struct
-{
-	D3DXVECTOR3 pos;	//位置
-	D3DXVECTOR3 posOld;	//位置
-	D3DXVECTOR3 size;	//サイズ
-	D3DXVECTOR3 move;	//位置
-	D3DXVECTOR3 rot;	//向き
-	D3DXVECTOR3 rotDest;//向き
-	D3DXMATRIX mtxWorld;//ワールドマトリックス
-	int nIdxShadow;
-	int nLife;
-	int nDamage;
-	float fDistance;
-	bool bDamage;
-	bool bJump;
-	bool bCollision;
-	bool bUse;
-	//モデル
-	MODELINFO aModel[MAX_PARTS];
+	ENEMYSTATE state;
+	MOTIONINFO EnemyMotion[MOTIONTYPE_MAX];
+	MODELINFO aModel[MAX_ENEMYPARTS];
+	OBJECT Object;
+	MOTIONTYPE pMotion;
+	int nType;
+	EnemyStatus Status;
+	D3DXVECTOR3 move;
+	int Action;
+	int nNumKey, nKey, nCounterMotion, nNextKey;
 	int nNumModel;
-	//モーション
-	ENEMYMOTION_INFO aMotionInfo[ENEMYMOTIONTYPE_MAX];  //モーション情報
-	int nNumMotion;										//モーションの総数
-	ENEMYMOTIONTYPE motionType;							//モーションの種類
-	bool bLoopMotion;									//ループするかどうか
-	int nNumKey;										//キーの総数
-	int nKey;											//現在のキーNo
-	int nCntMotion;										//モーションのカウンター
-}Enemy;
+	int IndxShadow;
+	int nActionCount,nActionCounter;
+	int statecount;
+	float ModelMinX, ModelMaxX;
+	float Radius;
+	bool bUse;
+	bool bMotion;
+	bool bHit;
+	int IndxGuage[3];
+}ENEMY;
 
-//プロトタイプ宣言
+//*****************
+// プロトタイプ宣言
+//*****************
 void InitEnemy(void);
 void UninitEnemy(void);
 void UpdateEnemy(void);
 void DrawEnemy(void);
-Enemy* GetEnemy(void);
-void SetEnemyMotion(int nCntEnemy);
-void SetEnemy(D3DXVECTOR3 pos);
-void CollisionEnemy(void);
-void CollisionEnemyAndEnemy(int nCntEnemy);
-
-#endif
+ENEMY* GetEnemy();
+int* GetNumEnemy(void);
+void HitEnemy(float Atack,int Indx);
+void DeadEnemy(int Indx);
+void SetEnemy(D3DXVECTOR3 pos, int nType,D3DXVECTOR3 rot);
+void UpdateAction(int nCount);
+void EnemyState(int Indx);
+void SetnNumParts(int nType,int nNumParts);
+void SetEnemyMesh(char* pFilePath, int Indx);
+void SetEnemyPartsInfo(MODELINFO ModelInfo, int Indx);
+void EnemyMotion(MOTIONINFO* pMotionInfo);
+#endif // !ENEMY_H_

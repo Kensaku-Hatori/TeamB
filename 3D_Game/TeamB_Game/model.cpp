@@ -1,6 +1,6 @@
 #include "model.h"
 
-STAGEMODELORIGIN g_ModelOrigin[MODELTYPE_MAX];
+MODELORIGIN g_ModelOrigin[MODELTYPE_MAX];
 STAGEMODEL g_StageModel[MAX_STAGEMODEL];
 
 void InitStageModel()

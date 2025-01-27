@@ -60,7 +60,6 @@ void UninitPlayer(void);
 void UpdatePlayer(void);
 void DrawPlayer(void);
 Player* GetPlayer(void);
-void SetPlayerMotion(void);
 void SetMesh(char* pFilePath, int Indx);
 void SetPartsInfo(MODELINFO ModelInfo,int Indx);
 void PlayerMotion(MOTIONINFO *pMotionInfo);
