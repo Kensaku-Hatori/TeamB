@@ -119,7 +119,6 @@ void UpdatePlayer(void)
 			g_player.move.z += cosf(pCamera->rot.y - D3DX_PI) * g_player.Status.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y;
 		}
-
 		////Šp“x‚Ì³‹K‰»
 		//if (g_player.rotDest.y > D3DX_PI / 2)
 		//{
