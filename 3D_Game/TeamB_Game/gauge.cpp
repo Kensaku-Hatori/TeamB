@@ -203,6 +203,14 @@ void UpdateGauge(void)
 					pVtx[2].col = D3DCOLOR_RGBA(255, 255, 1, 255);
 					pVtx[3].col = D3DCOLOR_RGBA(255, 255, 1, 255);
 				}
+				else
+				{
+					//í∏ì_ÉJÉâÅ[ÇÃê›íË
+					pVtx[0].col = D3DCOLOR_RGBA(1, 255, 127, 255);
+					pVtx[1].col = D3DCOLOR_RGBA(1, 255, 127, 255);
+					pVtx[2].col = D3DCOLOR_RGBA(1, 255, 127, 255);
+					pVtx[3].col = D3DCOLOR_RGBA(1, 255, 127, 255);
+				}
 			}
 			else if (g_gauge[nCnt].type == GAUGETYPE_MP)
 			{
