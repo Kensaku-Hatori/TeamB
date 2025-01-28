@@ -332,10 +332,13 @@ char *LoadPath(FILE* pFile)
 //*************************************
 char* LoadCameraInfo(FILE* pFile)
 {
+	Camera* pCamera = GetCamera();
+
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
 	char cData2[64] = { NULL };
-	float fData;
+	D3DXVECTOR3 PosV, PosR;
+
 
 	while (1)
 	{
@@ -355,20 +358,22 @@ char* LoadCameraInfo(FILE* pFile)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
+				PosV.x = LoadFloat(pFile);
+				PosV.y = LoadFloat(pFile);
+				PosV.z = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "REF") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
+				PosR.x = LoadFloat(pFile);
+				PosR.y = LoadFloat(pFile);
+				PosR.z = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "END_CAMERASET") == 0)
 			{
+				pCamera->posR = PosR;
+				pCamera->posV = PosV;
 				break;
 			}
 		}
