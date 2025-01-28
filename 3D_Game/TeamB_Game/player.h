@@ -15,7 +15,6 @@
 
 #define PLAYER_JUMP (5)			//ジャンプ量
 #define PLAYER_RADIUS (3)		//プレイヤーの半径
-#define MOTIONFILE_PLAYER  ("data\\MOTION\\motion00.txt")//プレイヤーのモーションファイル
 
 #define PLAYER_MP (500)		//MP
 #define PLAYER_HP (1000)	//HP
