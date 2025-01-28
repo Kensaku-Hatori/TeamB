@@ -38,6 +38,7 @@
     <ClCompile Include="ui.cpp" />
     <ClCompile Include="wall.cpp" />
     <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="Item.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h" />
@@ -80,5 +81,6 @@
     <ClInclude Include="ui.h" />
     <ClInclude Include="wall.h" />
     <ClInclude Include="enemy.h" />
+    <ClInclude Include="Item.h" />
   </ItemGroup>
 </Project>
