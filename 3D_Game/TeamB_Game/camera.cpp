@@ -74,7 +74,7 @@ void UpdateCamera(void)
 	{
 
 		//‹“_‚Ìù‰ñ
-		if (GetKeyboardPress(DIK_C) == true)
+		if (GetKeyboardPress(DIK_Q) == true)
 		{
 			g_camera.rot.y += 0.05f;
 			//Šp“x‚Ì³‹K‰»
@@ -90,7 +90,7 @@ void UpdateCamera(void)
 			g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
 			g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
 		}
-		if (GetKeyboardPress(DIK_V) == true)
+		if (GetKeyboardPress(DIK_E) == true)
 		{
 			g_camera.rot.y -= 0.05f;
 			//Šp“x‚Ì³‹K‰»
@@ -107,14 +107,14 @@ void UpdateCamera(void)
 		}
 
 		//‹“_‚Ìã‰º
-		if (GetKeyboardPress(DIK_U) == true)
+		if (GetKeyboardPress(DIK_UP) == true)
 		{//ã
 			if (g_camera.posV.y <= 500)
 			{
 				g_camera.posV.y += 5;
 			}
 		}
-		if (GetKeyboardPress(DIK_N) == true)
+		if (GetKeyboardPress(DIK_DOWN) == true)
 		{//‰º
 			if (g_camera.posV.y >= -500)
 			{
