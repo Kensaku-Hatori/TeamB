@@ -31,8 +31,9 @@
 #include "loadstage.h"
 #include "model.h"
 #include "enemy.h"
-#include"Item.h"
+#include "Item.h"
 #include "loadmotion.h"
+#include "wave.h"
 
 //ƒOƒ[ƒoƒ‹•Ï”
 GAMESTATE g_gamestate = GAMESTATE_NONE;

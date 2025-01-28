@@ -19,7 +19,9 @@
 //テクスチャ
 static const char* ITEM_TEXTURE[NUM_ITEMTYPE] =
 {
-
+	"data\\TEXTURE\\item1.png",//ヒールポーション
+	"data\\TEXTURE\\item2.png",//マナポーション
+	"data\\TEXTURE\\item3.png"//スピードアップポーション
 };
 
 //モデル構造体
