@@ -6,14 +6,18 @@
 //==============================
 #include "itemui.h"
 #include "player.h"
+
 #define MAX_ITEM (3)
+
 //グローバル変数
 //枠
 LPDIRECT3DTEXTURE9 g_pTextureItemUIframe = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffItemUIframe = NULL;
+
 //アイテム ×
 LPDIRECT3DTEXTURE9 g_pTextureItemUI[MAX_ITEM] = {};
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffItemUI = NULL;
+
 //数字
 LPDIRECT3DTEXTURE9 g_pTextureItemUINo = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffItemUINo = NULL;
