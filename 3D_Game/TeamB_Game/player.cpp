@@ -127,15 +127,15 @@ void UpdatePlayer(void)
 			g_player.rotDest.y = pCamera->rot.y;
 		}
 
-		////Šp“x‚Ì³‹K‰»
-		//if (g_player.rotDest.y > D3DX_PI / 2)
-		//{
-		//	g_player.rot.y -= D3DX_PI;
-		//}
-		//if (g_player.rotDest.y < -g_player.rot.y)
-		//{
-		//	g_player.rot.y += D3DX_PI;
-		//}
+		// Šp“x‚Ì‹ß“¹
+		if (g_player.rotDest.y - g_player.rot.y >= D3DX_PI)
+		{
+			g_player.rot.y += D3DX_PI * 2.0f;
+		}
+		else if (g_player.rotDest.y - g_player.rot.y <= -D3DX_PI)
+		{
+			g_player.rot.y -= D3DX_PI * 2.0f;
+		}
 
 		g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
 
