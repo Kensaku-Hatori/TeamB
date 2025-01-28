@@ -24,10 +24,13 @@ void InitItem()
 
 	g_nCntItem = 0;														//画面上のアイテム数の初期化
 
-	////テクスチャの読込
-	//D3DXCreateTextureFromFile(pDevice,
-	//	NULL,
-	//	&g_pTextureItemBill);
+	for (int nCnt = 0; nCnt < NUM_ITEMTYPE; nCnt++)
+	{
+		//テクスチャの読込
+		D3DXCreateTextureFromFile(pDevice,
+			ITEM_TEXTURE[nCnt],
+			&g_pTextureItemBill[nCnt]);
+	}
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 4 * MAX_ITEM,
@@ -101,9 +104,21 @@ void InitItem()
 //============================================================
 void UninitItem()
 {
-	for (int nCntItem = 0; nCntItem < MAX_ITEM; nCntItem++)
+	//バッファの破棄
+	if (g_pVtxBuffItemBill != NULL)
 	{
+		g_pVtxBuffItemBill->Release();
+		g_pVtxBuffItemBill = NULL;
+	}
 
+	//テクスチャの破棄
+	for (int nCnt = 0; nCnt < NUM_ITEMTYPE; nCnt++)
+	{
+		if (g_pTextureItemBill[nCnt] != NULL)
+		{
+			g_pTextureItemBill[nCnt]->Release();
+			g_pTextureItemBill[nCnt] = NULL;
+		}
 	}
 }
 
@@ -206,7 +221,7 @@ void DrawItemBillboard()
 				pDevice->SetFVF(FVF_VERTEX_3D);
 
 				//テクスチャ座標の設定
-				pDevice->SetTexture(0, g_pTextureItemBill);
+				pDevice->SetTexture(0, g_pTextureItemBill[g_Item[nCntItem].type]);
 
 				//ポリゴンの描画
 				pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCntItem * 4, 2);
@@ -237,7 +252,7 @@ void SetItem(D3DXVECTOR3 pos, int type)
 
 	for (int nCntItem = 0; nCntItem < MAX_ITEM; nCntItem++)
 	{
-		if (g_nCntItem < MAX_ITEM)//最大ドロップ数を超えてないなら
+		if (type<NUM_ITEMTYPE&&g_nCntItem < MAX_ITEM)//最大ドロップ数を超えてないなら
 		{
 			if (g_Item[nCntItem].bUse == false)
 			{
@@ -329,7 +344,7 @@ void SetItem(D3DXVECTOR3 pos, int type)
 
 			//		break;
 			//	}
-			//}
+			}
 		}
 		else if (g_nCntItem >= MAX_ITEM)//最大ドロップ数を超えてるなら
 		{

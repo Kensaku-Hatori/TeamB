@@ -16,6 +16,12 @@
 #define ITEM_RADIUS (10.0f)								//アイテム(ビルボード)の半径
 #define ITEM_TIME_DEL (240)								//アイテムが消えるまでのフレーム
 
+//テクスチャ
+static const char* ITEM_TEXTURE[NUM_ITEMTYPE] =
+{
+
+};
+
 //モデル構造体
 typedef struct
 {
