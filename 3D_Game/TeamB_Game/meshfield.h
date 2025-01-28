@@ -39,4 +39,5 @@ void UpdateMeshfield(void);
 void DrawMeshfield(void);
 void SetMeshfield(D3DXVECTOR3 pos,D3DXVECTOR3 rot,int textype,int nDiviX,int nDiviY,int nDiviZ,int nWidth,int nHeight);//位置、向き、テクスチャ、分割数x、分割数y、分割数z、幅、高さ
 void SetfieldTexture(char *pFileName,int TexIndx);		//テクスチャ設定
+LPDIRECT3DTEXTURE9* GetfieldTexture();								//テクスチャの取得処理
 #endif
