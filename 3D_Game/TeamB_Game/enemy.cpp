@@ -364,6 +364,7 @@ void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType)
 {
 	nType -= 1;
 	g_EnemyOrigin[nType].nNumParts = PartsInfo.nNumParts;
+	g_EnemyOrigin[nType].EnemyMotion.nNumModel = PartsInfo.nNumParts;
 	for (int PartsCount = 0; PartsCount < g_EnemyOrigin[nType].nNumParts; PartsCount++)
 	{
 		g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].nIndx = PartsInfo.PartsInfo[PartsCount].nIndx;
@@ -371,10 +372,11 @@ void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType)
 		g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].pos = PartsInfo.PartsInfo[PartsCount].pos;
 		g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].OffSet = PartsInfo.PartsInfo[PartsCount].OffSet;
 		g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].rot = PartsInfo.PartsInfo[PartsCount].rot;
+
 		//デバイスの取得
 		LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-		D3DXLoadMeshFromX(PartsInfo.cPartsPath[PartsCount],
+		HRESULT hresult = D3DXLoadMeshFromX(PartsInfo.cPartsPath[PartsCount],
 			D3DXMESH_SYSTEMMEM,
 			pDevice,
 			NULL,
@@ -382,6 +384,11 @@ void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType)
 			NULL,
 			&g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].dwNumMat,
 			&g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].pMesh);
+
+		if (FAILED(hresult))
+		{
+			return;
+		}
 
 		int nNumVtx;   //頂点数
 		DWORD sizeFVF; //頂点フォーマットのサイズ
