@@ -39,8 +39,8 @@ void InitPlayer(void)
 	g_player.rotDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.nIdxShadow = SetShadow(g_player.pos, g_player.rot, 20.0f);//影の設定
 	g_player.nJump = PLAYER_JUMP;
-	//モーション関連
 
+	//モーション関連
 	g_player.bLoopMotion = true;//ループ
 	g_player.nNumKey = 2;//キーの総数
 	g_player.nCntMotion = 0;//モーションカウンター
@@ -212,7 +212,6 @@ void UpdatePlayer(void)
 			g_player.Status.nHP = PLAYER_HP;
 		}
 #endif
-
 		UpdateMotion(&g_player.PlayerMotion);
 	}
 }

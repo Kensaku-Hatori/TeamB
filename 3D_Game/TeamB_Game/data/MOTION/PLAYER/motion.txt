@@ -14,19 +14,19 @@ NUM_MODEL = 13
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/AKRmodel/00_body.x		# [0]体
-MODEL_FILENAME = data/MODEL/AKRmodel/01_head.x		# [1]頭
-MODEL_FILENAME = data/MODEL/AKRmodel/02_armR.x		# [2]右腕
-MODEL_FILENAME = data/MODEL/AKRmodel/03_handR.x		# [3]右手
-MODEL_FILENAME = data/MODEL/AKRmodel/04_armL.x		# [4]左腕
-MODEL_FILENAME = data/MODEL/AKRmodel/05_handL.x		# [5]左手
-MODEL_FILENAME = data/MODEL/AKRmodel/06_legR.x		# [6]右腿
-MODEL_FILENAME = data/MODEL/AKRmodel/07_footR.x		# [7]右足
-MODEL_FILENAME = data/MODEL/AKRmodel/08_legL.x		# [8]左腿
-MODEL_FILENAME = data/MODEL/AKRmodel/09_footL.x		# [9]左足
-MODEL_FILENAME = data/MODEL/AKRmodel/10_hukuR.x		# [10]
-MODEL_FILENAME = data/MODEL/AKRmodel/11_hukuL.x		# [11]
-MODEL_FILENAME = data/MODEL/AKRmodel/12_tue.x		# [12]
+MODEL_FILENAME = data/MODEL/Player/00_body.x		# [0]体
+MODEL_FILENAME = data/MODEL/Player/01_head.x		# [1]頭
+MODEL_FILENAME = data/MODEL/Player/02_armR.x		# [2]右腕
+MODEL_FILENAME = data/MODEL/Player/03_handR.x		# [3]右手
+MODEL_FILENAME = data/MODEL/Player/04_armL.x		# [4]左腕
+MODEL_FILENAME = data/MODEL/Player/05_handL.x		# [5]左手
+MODEL_FILENAME = data/MODEL/Player/06_legR.x		# [6]右腿
+MODEL_FILENAME = data/MODEL/Player/07_footR.x		# [7]右足
+MODEL_FILENAME = data/MODEL/Player/08_legL.x		# [8]左腿
+MODEL_FILENAME = data/MODEL/Player/09_footL.x		# [9]左足
+MODEL_FILENAME = data/MODEL/Player/10_hukuR.x		# [10]
+MODEL_FILENAME = data/MODEL/Player/11_hukuL.x		# [11]
+MODEL_FILENAME = data/MODEL/Player/12_tue.x			# [12]
 
 #------------------------------------------------------------------------------
 # キャラクター情報
