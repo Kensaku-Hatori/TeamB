@@ -1,0 +1,60 @@
+﻿  animation.cpp
+  billboard.cpp
+  camera.cpp
+  effect.cpp
+  enemy.cpp
+  explosion.cpp
+  fade.cpp
+  game.cpp
+  gauge.cpp
+  input.cpp
+  Item.cpp
+  itemui.cpp
+  light.cpp
+  loadmotion.cpp
+  loadstage.cpp
+  main.cpp
+  meshcylinder.cpp
+  meshfield.cpp
+  meshwall.cpp
+  minimap.cpp
+  コンパイル中...
+  model.cpp
+  particle.cpp
+  particleEditer.cpp
+  pause.cpp
+  player.cpp
+  polygon.cpp
+  ranking.cpp
+  result.cpp
+  resultinfo.cpp
+  score.cpp
+  shadow.cpp
+  skill.cpp
+  sound.cpp
+  timer.cpp
+  title.cpp
+  titleinfo.cpp
+  ui.cpp
+  wall.cpp
+  wave.cpp
+  コード生成しています。
+  Previous IPDB not found, fall back to full compilation.
+C:\Users\student\Desktop\TeamB\3D_Game\TeamB_Game\loadstage.cpp(328): warning C4172: ローカル変数またはテンポラリのアドレスを返します: filepath
+C:\Users\student\Desktop\TeamB\3D_Game\TeamB_Game\loadstage.cpp(381): warning C4172: ローカル変数またはテンポラリのアドレスを返します: cData1
+C:\Users\student\Desktop\TeamB\3D_Game\TeamB_Game\loadmotion.cpp(492): warning C4172: ローカル変数またはテンポラリのアドレスを返します: cData1
+C:\Users\student\Desktop\TeamB\3D_Game\TeamB_Game\loadstage.cpp(432): warning C4172: ローカル変数またはテンポラリのアドレスを返します: cData1
+C:\Users\student\Desktop\TeamB\3D_Game\TeamB_Game\loadstage.cpp(794): warning C4172: ローカル変数またはテンポラリのアドレスを返します: cData1
+C:\Users\student\Desktop\TeamB\3D_Game\TeamB_Game\loadstage.cpp(515): warning C4172: ローカル変数またはテンポラリのアドレスを返します: cData1
+C:\Users\student\Desktop\TeamB\3D_Game\TeamB_Game\loadstage.cpp(725): warning C4172: ローカル変数またはテンポラリのアドレスを返します: cData1
+C:\Users\student\Desktop\TeamB\3D_Game\TeamB_Game\loadstage.cpp(477): warning C4172: ローカル変数またはテンポラリのアドレスを返します: cData1
+C:\Users\student\Desktop\TeamB\3D_Game\TeamB_Game\loadmotion.cpp(290): warning C4172: ローカル変数またはテンポラリのアドレスを返します: cData1
+C:\Users\student\Desktop\TeamB\3D_Game\TeamB_Game\loadmotion.cpp(445): warning C4172: ローカル変数またはテンポラリのアドレスを返します: cData1
+C:\Users\student\Desktop\TeamB\3D_Game\TeamB_Game\loadmotion.cpp(229): warning C4172: ローカル変数またはテンポラリのアドレスを返します: cData1
+C:\Users\student\Desktop\TeamB\3D_Game\TeamB_Game\loadstage.cpp(587): warning C4172: ローカル変数またはテンポラリのアドレスを返します: cData1
+C:\Users\student\Desktop\TeamB\3D_Game\TeamB_Game\loadmotion.cpp(393): warning C4172: ローカル変数またはテンポラリのアドレスを返します: cData1
+C:\Users\student\Desktop\TeamB\3D_Game\TeamB_Game\loadstage.cpp(661): warning C4172: ローカル変数またはテンポラリのアドレスを返します: cData1
+C:\Users\student\Desktop\TeamB\3D_Game\TeamB_Game\loadstage.cpp(853): warning C4172: ローカル変数またはテンポラリのアドレスを返します: cData1
+  All 285 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  コード生成が終了しました。
+  TeamB_Game.vcxproj -> C:\Users\student\Desktop\TeamB\3D_Game\TeamB_Game\Release\TeamB_Game.exe
