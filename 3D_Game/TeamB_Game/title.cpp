@@ -28,14 +28,14 @@ void InitTitle(void)
 
 	InitMeshfield();
 
+	InitCamera();
+
+	InitLight();
+
 	InitMotion();
 	InitStageModel();
 
 	LoadModelViewer();
-
-	InitCamera();
-
-	InitLight();
 
 	InitTitleInfo();
 }

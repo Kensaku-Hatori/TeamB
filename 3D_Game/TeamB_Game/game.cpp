@@ -31,8 +31,9 @@
 #include "loadstage.h"
 #include "model.h"
 #include "enemy.h"
-#include"Item.h"
+#include "Item.h"
 #include "loadmotion.h"
+#include "wave.h"
 
 //ÉOÉçÅ[ÉoÉãïœêî
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -83,8 +84,8 @@ void InitGame(void)
 	InitMotion();
 	LoadModelViewer();
 
-	SetEnemy(D3DXVECTOR3(0.0f, 10.0f, -100.0f), 1, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	SetEnemy(D3DXVECTOR3(0.0f, 10.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	SetEnemy(D3DXVECTOR3(0.0f, 0.0f, -100.0f), 1, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	SetEnemy(D3DXVECTOR3(0.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	g_gamestate = GAMESTATE_NORMAL;
 	g_nCounterGameState = 0;

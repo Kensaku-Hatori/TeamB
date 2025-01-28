@@ -11,6 +11,7 @@
 #include "sound.h"
 #include "loadstage.h"
 #include "model.h"
+#include "meshfield.h"
 
 //ÉOÉçÅ[ÉoÉãïœêîêÈåæ
 
@@ -19,13 +20,15 @@
 //===========
 void InitResult(void)
 {
-	InitStageModel();
-
-	LoadModelViewer();
+	InitMeshfield();
 
 	InitCamera();
 
 	InitLight();
+
+	InitStageModel();
+
+	LoadModelViewer();
 
 	InitResultInfo();
 }
@@ -34,6 +37,8 @@ void InitResult(void)
 //==========
 void UninitResult(void)
 {
+	UninitMeshfield();
+
 	UninitStageModel();
 
 	UninitCamera();
@@ -47,6 +52,8 @@ void UninitResult(void)
 //==========
 void UpdateResult(void)
 {
+	UpdateMeshfield();
+
 	UpdateStageModel();
 
 	UpdateCamera();
@@ -61,6 +68,8 @@ void UpdateResult(void)
 void DrawResult(void)
 {
 	SetCamera();
+
+	DrawMeshfield();
 
 	DrawStageModel();
 

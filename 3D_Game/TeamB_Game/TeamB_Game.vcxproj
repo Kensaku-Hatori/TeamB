@@ -179,6 +179,7 @@
     <ClCompile Include="titleinfo.cpp" />
     <ClCompile Include="ui.cpp" />
     <ClCompile Include="wall.cpp" />
+    <ClCompile Include="wave.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h" />
@@ -222,6 +223,7 @@
     <ClInclude Include="titleinfo.h" />
     <ClInclude Include="ui.h" />
     <ClInclude Include="wall.h" />
+    <ClInclude Include="wave.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

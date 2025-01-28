@@ -1,0 +1,51 @@
+構造体
+	float sightRange;
+	float sightAngle;
+追加
+
+関数用意
+bool IsEnemyInsight(void);
+
+中身
+	ENEMY* pEnemy = GetEnemy();
+
+	D3DXVECTOR3 playerFront;
+
+	playerFront.x = -sinf(g_Player.rot.y);
+	playerFront.y = 0.0f;
+	playerFront.z = -cosf(g_Player.rot.y);
+
+	D3DXVECTOR3 toEnemy;
+
+	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++,pEnemy++)
+	{
+		if (pEnemy->bUse == true)
+		{
+			toEnemy.x = pEnemy->Object.Pos.x - g_Player.pos.x;
+			toEnemy.y = 0.0f;
+			toEnemy.z = pEnemy->Object.Pos.z - g_Player.pos.z;
+
+			D3DXVec3Normalize(&playerFront, &playerFront);
+
+			D3DXVec3Normalize(&toEnemy, &toEnemy);
+
+			float dotProduct = D3DXVec3Dot(&playerFront, &toEnemy);
+
+			if (dotProduct > cosf(g_Player.sightAngle * 0.5f))
+			{
+				float distanceSquared =
+					(g_Player.pos.x - pEnemy->Object.Pos.x) * (g_Player.pos.x - pEnemy->Object.Pos.x) +
+					(g_Player.pos.y - pEnemy->Object.Pos.y) * (g_Player.pos.y - pEnemy->Object.Pos.y) +
+					(g_Player.pos.z - pEnemy->Object.Pos.z) * (g_Player.pos.z - pEnemy->Object.Pos.z);
+
+				if (distanceSquared <= g_Player.sightRange * g_Player.sightRange)
+				{
+					EnemyDistanceSort(EnemyCount);
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}

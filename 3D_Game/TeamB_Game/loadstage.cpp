@@ -2,6 +2,8 @@
 #include "loadmotion.h"
 #include "meshfield.h"
 #include "meshwall.h"
+#include "camera.h"
+#include "light.h"
 
 //*****************************
 // スクリプト以前を読み込む処理
@@ -330,10 +332,13 @@ char *LoadPath(FILE* pFile)
 //*************************************
 char* LoadCameraInfo(FILE* pFile)
 {
+	Camera* pCamera = GetCamera();
+
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
 	char cData2[64] = { NULL };
-	float fData;
+	D3DXVECTOR3 PosV, PosR;
+
 
 	while (1)
 	{
@@ -353,20 +358,22 @@ char* LoadCameraInfo(FILE* pFile)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
+				PosV.x = LoadFloat(pFile);
+				PosV.y = LoadFloat(pFile);
+				PosV.z = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "REF") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
+				PosR.x = LoadFloat(pFile);
+				PosR.y = LoadFloat(pFile);
+				PosR.z = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "END_CAMERASET") == 0)
 			{
+				pCamera->posR = PosR;
+				pCamera->posV = PosV;
 				break;
 			}
 		}
@@ -381,7 +388,8 @@ char* LoadLightInfo(FILE* pFile)
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
 	char cData2[64] = { NULL };
-	float fData;
+	float fData[3] = { NULL };
+	float fData1[3] = { NULL };
 
 	while (1)
 	{
@@ -401,20 +409,22 @@ char* LoadLightInfo(FILE* pFile)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
+				fData[0] = LoadFloat(pFile);
+				fData[1] = LoadFloat(pFile);
+				fData[2] = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "DIFFUSE") == 0)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
-				fData = LoadFloat(pFile);
+				fData1[0] = LoadFloat(pFile);
+				fData1[1] = LoadFloat(pFile);
+				fData1[2] = LoadFloat(pFile);
 			}
 			else if (strcmp(&cData1[0], "END_LIGHTSET") == 0)
 			{
+				SetLight(D3DXVECTOR3(fData[0], fData[1], fData[2]), D3DXCOLOR(fData1[0], fData1[1], fData1[2], 1.0f));
+
 				break;
 			}
 		}

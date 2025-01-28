@@ -65,16 +65,13 @@ void UpdateCamera(void)
 		pPlayer->pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//プレイヤーの位置を０に
 		//回転
 		g_camera.rot.y += 0.01f;
-
-		g_camera.posV.y = 200.0f;
-		g_camera.posR.y = 100.0f;
 	}
 	//それ以外
 	else
 	{
 
 		//視点の旋回
-		if (GetKeyboardPress(DIK_C) == true)
+		if (GetKeyboardPress(DIK_Q) == true)
 		{
 			g_camera.rot.y += 0.05f;
 			//角度の正規化
@@ -90,7 +87,7 @@ void UpdateCamera(void)
 			g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
 			g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
 		}
-		if (GetKeyboardPress(DIK_V) == true)
+		if (GetKeyboardPress(DIK_E) == true)
 		{
 			g_camera.rot.y -= 0.05f;
 			//角度の正規化
@@ -107,14 +104,14 @@ void UpdateCamera(void)
 		}
 
 		//視点の上下
-		if (GetKeyboardPress(DIK_U) == true)
+		if (GetKeyboardPress(DIK_UP) == true)
 		{//上
 			if (g_camera.posV.y <= 500)
 			{
 				g_camera.posV.y += 5;
 			}
 		}
-		if (GetKeyboardPress(DIK_N) == true)
+		if (GetKeyboardPress(DIK_DOWN) == true)
 		{//下
 			if (g_camera.posV.y >= -500)
 			{
