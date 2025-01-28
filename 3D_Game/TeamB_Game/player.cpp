@@ -16,6 +16,8 @@
 #include "sound.h"
 #include "skill.h"
 #include "animation.h"
+#include "enemy.h"
+#include "game.h"
 
 //グローバル変数
 Player g_player;
@@ -273,6 +275,14 @@ void UpdatePlayer(void)
 		g_player.pos.x += g_player.move.x;
 		g_player.pos.y += g_player.move.y;
 		g_player.pos.z += g_player.move.z;
+
+		CollisionEnemy();
+
+		// HP0
+		if (g_player.Status.fHP <= 0.0f)
+		{
+			SetGameState(GAMESTATE_GAMEOVER);
+		}
 
 		//地面との判定
 		if (g_player.pos.y <= 0)

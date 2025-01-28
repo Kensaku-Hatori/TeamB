@@ -15,6 +15,7 @@
 #include "loadmotion.h"
 #include "shadow.h"
 #include "animation.h"
+#include "player.h"
 
 //*******************
 // グローバル変数宣言
@@ -41,9 +42,9 @@ void InitEnemy(void)
 		g_Enemy[i].nActionCount = 0;
 		g_Enemy[i].nActionCounter = 0;
 		g_Enemy[i].Action = ENEMYACTION_WELL;
-		g_Enemy[i].Status.fPower = 0.0f;
-		g_Enemy[i].Status.fSpeed = 1.0f;
-		g_Enemy[i].Status.nHP = 150;
+		g_Enemy[i].Status.fPower = ENEMY_AP;
+		g_Enemy[i].Status.fSpeed = ENEMY_SPEED;
+		g_Enemy[i].Status.fHP = ENEMY_HP;
 		g_Enemy[i].state = ENEMYSTATE_NORMAL;
 		g_Enemy[i].Radius = 4.4f;
 		g_Enemy[i].pMotion = MOTIONTYPE_NEUTRAL;
@@ -230,7 +231,7 @@ void HitEnemy(float Atack,int Indx)
 {
 	Camera* pCamera = GetCamera();
 
-	g_Enemy[Indx].Status.nHP -= (int)Atack;
+	g_Enemy[Indx].Status.fHP -= (int)Atack;
 
 	g_Enemy[Indx].Action = ENEMYACTION_WELL;
 	g_Enemy[Indx].state = ENEMYSTATE_KNOCKUP;
@@ -244,7 +245,7 @@ void HitEnemy(float Atack,int Indx)
 		g_Enemy[Indx].statecount = 10;
 	}
 
-	if (g_Enemy[Indx].Status.nHP <= 0.0f && g_Enemy[Indx].bUse == true)
+	if (g_Enemy[Indx].Status.fHP <= 0.0f && g_Enemy[Indx].bUse == true)
 	{// 使われていて体力が０以下なら
 		DeadEnemy(Indx);
 	}
@@ -431,5 +432,30 @@ void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType)
 	for (int MotionCount = 0; MotionCount < MOTIONTYPE_MAX; MotionCount++)
 	{
 		g_EnemyOrigin[nType].EnemyMotion.aMotionInfo[MotionCount] = PartsInfo.MotionInfo[MotionCount];
+	}
+}
+//==============================
+// 敵とプレイヤーの当たり判定
+//==============================
+void CollisionEnemy(void)
+{
+	Player* pPlayer = GetPlayer();
+
+	for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
+	{
+		if (g_Enemy[nCntEnemy].bUse == true)
+		{
+			//敵との距離
+			g_Enemy[nCntEnemy].fDistance = sqrtf(((g_Enemy[nCntEnemy].Object.Pos.x - pPlayer->pos.x) * (g_Enemy[nCntEnemy].Object.Pos.x - pPlayer->pos.x))
+											   + ((g_Enemy[nCntEnemy].Object.Pos.y - pPlayer->pos.y) * (g_Enemy[nCntEnemy].Object.Pos.y - pPlayer->pos.y))
+											   + ((g_Enemy[nCntEnemy].Object.Pos.z - pPlayer->pos.z) * (g_Enemy[nCntEnemy].Object.Pos.z - pPlayer->pos.z)));
+												 
+			float RADIUS = ((PLAYER_RADIUS / 2) + g_Enemy[nCntEnemy].Radius) * ((PLAYER_RADIUS / 2) + g_Enemy[nCntEnemy].Radius);
+
+			if (g_Enemy[nCntEnemy].fDistance <= RADIUS)
+			{
+				pPlayer->Status.fHP -= g_Enemy[nCntEnemy].Status.fPower;
+			}
+		}
 	}
 }

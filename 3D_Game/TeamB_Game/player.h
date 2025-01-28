@@ -16,8 +16,8 @@
 #define PLAYER_JUMP (5)				// ジャンプ量
 #define PLAYER_RADIUS (3)			// プレイヤーの半径
 
-#define PLAYER_MP (float) (500)		// MP
-#define PLAYER_HP (1000)			// HP
+#define PLAYER_MP (500)				// MP
+#define PLAYER_HP (float)(1000)		// HP
 #define PLAYER_SPEED (float) (2.0f)	// 速度
 #define PLAYER_AP (10)				// 攻撃力
 
