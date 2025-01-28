@@ -237,11 +237,11 @@ void SkillCollision(int nIdx)
 	{
 		if (pEnemy[nCntEnemy].bUse == true)
 		{
-			g_Skill[nIdx].fDistance = sqrtf(((g_Skill[nIdx].pos.x - pEnemy->Object.Pos.x) * (g_Skill[nIdx].pos.x - pEnemy->Object.Pos.x))
-										  + ((g_Skill[nIdx].pos.y - pEnemy->Object.Pos.y) * (g_Skill[nIdx].pos.y - pEnemy->Object.Pos.y))
-										  + ((g_Skill[nIdx].pos.z - pEnemy->Object.Pos.z) * (g_Skill[nIdx].pos.z - pEnemy->Object.Pos.z)));
+			g_Skill[nIdx].fDistance = sqrtf(((g_Skill[nIdx].pos.x - pEnemy[nCntEnemy].Object.Pos.x) * (g_Skill[nIdx].pos.x - pEnemy[nCntEnemy].Object.Pos.x))
+										  + ((g_Skill[nIdx].pos.y - pEnemy[nCntEnemy].Object.Pos.y) * (g_Skill[nIdx].pos.y - pEnemy[nCntEnemy].Object.Pos.y))
+										  + ((g_Skill[nIdx].pos.z - pEnemy[nCntEnemy].Object.Pos.z) * (g_Skill[nIdx].pos.z - pEnemy[nCntEnemy].Object.Pos.z)));
 
-			float RADIUS = (pEnemy->Radius + (SKILL_SIZE / 2)) * (pEnemy->Radius + (SKILL_SIZE / 2));
+			float RADIUS = (pEnemy[nCntEnemy].Radius + (SKILL_SIZE / 5)) * (pEnemy[nCntEnemy].Radius + (SKILL_SIZE / 5));
 
 			if (g_Skill[nIdx].fDistance <= RADIUS)
 			{

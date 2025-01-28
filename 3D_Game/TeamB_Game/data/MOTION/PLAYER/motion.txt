@@ -26,7 +26,7 @@ MODEL_FILENAME = data/MODEL/Player/08_legL.x		# [8]左腿
 MODEL_FILENAME = data/MODEL/Player/09_footL.x		# [9]左足
 MODEL_FILENAME = data/MODEL/Player/10_hukuR.x		# [10]
 MODEL_FILENAME = data/MODEL/Player/11_hukuL.x		# [11]
-MODEL_FILENAME = data/MODEL/Player/12_tue.x		# [12]
+MODEL_FILENAME = data/MODEL/Player/12_tue.x			# [12]
 
 #------------------------------------------------------------------------------
 # キャラクター情報
