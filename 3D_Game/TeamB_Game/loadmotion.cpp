@@ -92,6 +92,7 @@ void LoadMotionStart(FILE* pFile)
 			}
 			else if (strcmp(&cData1[0], "CHARACTERSET") == 0)
 			{
+				g_LoadInfo[nType].PathCount = 0;
 				cData1[0] = { NULL };
 				while (1)
 				{
@@ -110,6 +111,7 @@ void LoadMotionStart(FILE* pFile)
 					cData2[0] = LoadMotionInfo(pFile,&MotionCount,&KeyCount,&KeyPartsCount,&MotionInfo[MotionCount]);
 					if (strcmp(cData2[0], MOTION) == 0)
 					{
+						g_LoadInfo[nType].MotionCount++;
 						MotionCount++;
 						break;
 					}
@@ -151,7 +153,7 @@ char* LoadCharactorInfo(FILE* pFile,int *nCharactor,int *nParts,MODELINFO *Model
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
-	char cData2[64] = { NULL };
+	char cData2[128] = { NULL };
 	char *cData3[64] = { NULL };
 	float fData;
 	int nData;
@@ -209,6 +211,7 @@ char* LoadCharactorInfo(FILE* pFile,int *nCharactor,int *nParts,MODELINFO *Model
 					cData3[0] = LoadPartsInfo(pFile,nParts);
 					if (strcmp(cData3[0], PARTS) == 0)
 					{
+						g_LoadInfo[nType].PartsCount++;
 						break;
 					}
 				}
@@ -277,7 +280,6 @@ char* LoadPartsInfo(FILE* pFile,int *Parts)
 			}
 			else if (strcmp(&cData1[0], "END_PARTSSET") == 0)
 			{
-				g_LoadInfo[nType].PartsCount++;
 				break;
 			}
 		}
@@ -373,13 +375,14 @@ char* LoadMotionInfo(FILE* pFile,int *Motion,int *Key, int* nKeyParts,MOTIONINFO
 					int i = 0;
 					if (strcmp(cData3[0], KEY) == 0)
 					{
+						g_LoadInfo[nType].KeyCount++;
 						break;
 					}
 				}
 			}
 			else if (strcmp(&cData1[0], "END_MOTIONSET") == 0)
 			{
-				g_LoadInfo[nType].MotionCount++;
+				g_LoadInfo[nType].KeyCount = 0;
 				break;
 			}
 		}
@@ -424,13 +427,14 @@ char* LoadKeyInfo(FILE* pFile, int* nKey, int* nKeyParts, MOTIONINFO* Motion)
 					cData3[0] = LoadKeyPartsInfo(pFile,nKey, nKeyParts, Motion);
 					if (strcmp(cData3[0], KEYPARTS) == 0)
 					{
+						g_LoadInfo[nType].KeyPartsCount++;
 						break;
 					}
 				}
 			}
 			else if (strcmp(&cData1[0], "END_KEYSET") == 0)
 			{
-				g_LoadInfo[nType].KeyCount++;
+				g_LoadInfo[nType].KeyPartsCount = 0;
 				break;
 			}
 		}
@@ -478,7 +482,6 @@ char* LoadKeyPartsInfo(FILE* pFile,int *nKey,int* nKeyParts,MOTIONINFO *MotionIn
 			}
 			else if (strcmp(&cData1[0], "END_KEY") == 0)
 			{
-				g_LoadInfo[nType].KeyPartsCount++;
 				break;
 			}
 		}

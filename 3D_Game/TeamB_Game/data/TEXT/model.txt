@@ -804,13 +804,13 @@ END_BILLBOARDSET
 # ÉvÉåÉCÉÑÅ[èÓïÒ
 #------------------------------------------------------------------------------
 PLAYERSET
-	MOTION_FILENAME = data/TEXT/motion.txt
+	MOTION_FILENAME = data/MOTION/PLAYER/motion.txt
 	POS = 0 100 0
 	ROT = 0 0 0
 END_PLAYERSET
 
 PLAYERSET
-	MOTION_FILENAME = data/TEXT/Enemymotion.txt
+	MOTION_FILENAME = data/MOTION/SKELETON/motion.txt
 	POS = 0 100 0
 	ROT = 0 0 0
 END_PLAYERSET

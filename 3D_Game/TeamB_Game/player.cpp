@@ -319,6 +319,7 @@ void SetMesh(char* pFilePath, int Indx)
 void SetPartsInfo(LoadInfo PartsInfo)
 {
 	g_player.PlayerMotion.nNumModel = PartsInfo.nNumParts;
+	g_player.nNumModel = PartsInfo.nNumParts;
 	for (int PartsCount = 0; PartsCount < g_player.PlayerMotion.nNumModel; PartsCount++)
 	{
 		g_player.PlayerMotion.aModel[PartsCount].nIndx = PartsInfo.PartsInfo[PartsCount].nIndx;
@@ -330,7 +331,7 @@ void SetPartsInfo(LoadInfo PartsInfo)
 		//デバイスの取得
 		LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-		D3DXLoadMeshFromX(PartsInfo.cPartsPath[PartsCount],
+		HRESULT hresult = D3DXLoadMeshFromX(PartsInfo.cPartsPath[PartsCount],
 			D3DXMESH_SYSTEMMEM,
 			pDevice,
 			NULL,
@@ -339,6 +340,10 @@ void SetPartsInfo(LoadInfo PartsInfo)
 			&g_player.PlayerMotion.aModel[PartsCount].dwNumMat,
 			&g_player.PlayerMotion.aModel[PartsCount].pMesh);
 
+		if (FAILED(hresult))
+		{
+			return;
+		}
 		int nNumVtx;   //頂点数
 		DWORD sizeFVF; //頂点フォーマットのサイズ
 		BYTE* pVtxBuff;//頂点バッファへのポインタ
@@ -398,7 +403,9 @@ void SetPartsInfo(LoadInfo PartsInfo)
 		{
 			if (pMat[nCntMat].pTextureFilename != NULL)
 			{
-				D3DXCreateTextureFromFile(pDevice, pMat[nCntMat].pTextureFilename, &g_player.PlayerMotion.aModel[PartsCount].pTexture[nCntMat]); //1
+				D3DXCreateTextureFromFile(pDevice,
+					pMat[nCntMat].pTextureFilename,
+					&g_player.PlayerMotion.aModel[PartsCount].pTexture[nCntMat]); //1
 			}
 		}
 	}
