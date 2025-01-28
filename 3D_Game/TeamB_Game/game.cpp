@@ -31,6 +31,7 @@
 #include "loadstage.h"
 #include "model.h"
 #include "enemy.h"
+#include"Item.h"
 #include "loadmotion.h"
 
 //グローバル変数
@@ -86,6 +87,7 @@ void InitGame(void)
 
 	g_gamestate = GAMESTATE_NORMAL;
 	g_nCounterGameState = 0;
+	srand((int)time(0));//シード値(アイテムrand)
 
 	g_bPause = false;  //ポーズ解除
 }
