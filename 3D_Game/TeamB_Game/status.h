@@ -10,7 +10,7 @@
 
 typedef struct
 {
-	int nHP;
+	float fHP;
 	float fPower;
 	int nMP;
 	float fSpeed;

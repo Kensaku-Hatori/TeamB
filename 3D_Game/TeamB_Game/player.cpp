@@ -50,7 +50,7 @@ void InitPlayer(void)
 	g_player.bJump = false;//ジャンプ
 
 	//基礎ステータス
-	g_player.Status.nHP = PLAYER_HP;
+	g_player.Status.fHP = PLAYER_HP;
 	g_player.Status.nMP = PLAYER_MP;
 	g_player.Status.fPower = PLAYER_MP;
 	g_player.Status.fSpeed = PLAYER_SPEED;
@@ -303,16 +303,16 @@ void UpdatePlayer(void)
 		//HP減らす
 		if (KeyboardTrigger(DIK_9) == true)
 		{
-			g_player.Status.nHP -= 100;
-			if (g_player.Status.nHP <= 0)
+			g_player.Status.fHP -= 100;
+			if (g_player.Status.fHP <= 0)
 			{
-				g_player.Status.nHP = 0;
+				g_player.Status.fHP = 0;
 			}
 		}
 		if (KeyboardTrigger(DIK_8) == true)
 		{
 			g_player.Status.nMP = PLAYER_MP;
-			g_player.Status.nHP = PLAYER_HP;
+			g_player.Status.fHP = PLAYER_HP;
 		}
 #endif
 		UpdateMotion(&g_player.PlayerMotion);
