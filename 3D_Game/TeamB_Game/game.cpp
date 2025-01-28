@@ -197,7 +197,7 @@ void UpdateGame(void)
 
 			//“G‚Ì”‚ğæ“¾‚·‚é
 			int* NumEnemy = GetNumEnemy();
-			int i = 0;
+
 			//“G‚ğ‘S‚Ä“|‚µ‚Ä‚¢‚é‚È‚ç
 			if (*(NumEnemy) <= 0)
 			{
