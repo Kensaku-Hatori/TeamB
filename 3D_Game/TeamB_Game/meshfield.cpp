@@ -254,3 +254,11 @@ void SetfieldTexture(char* pFileName, int TexIndx)
 		&fieldtexName[TexIndx][0],
 		&g_pTextureMeshfield[TexIndx]);
 }
+
+//===============================
+// メッシュ床のテクスチャ取得処理
+//===============================
+LPDIRECT3DTEXTURE9* GetfieldTexture()
+{
+	return &g_pTextureMeshfield[0];
+}

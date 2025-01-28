@@ -11,10 +11,10 @@
 #include "model.h"
 #include "status.h"
 #include "key.h"
+#include "loadmotion.h"
 
 #define PLAYER_JUMP (5)			//ジャンプ量
 #define PLAYER_RADIUS (3)		//プレイヤーの半径
-#define MOTIONFILE_PLAYER  ("data\\MOTION\\motion00.txt")//プレイヤーのモーションファイル
 
 #define PLAYER_MP (500)		//MP
 #define PLAYER_HP (1000)	//HP
@@ -62,6 +62,6 @@ void UpdatePlayer(void);
 void DrawPlayer(void);
 Player* GetPlayer(void);
 void SetMesh(char* pFilePath, int Indx);
-void SetPartsInfo(MODELINFO ModelInfo,int Indx);
+void SetPartsInfo(LoadInfo PartsInfo);
 void PlayerMotion(MOTIONINFO *pMotionInfo);
 #endif

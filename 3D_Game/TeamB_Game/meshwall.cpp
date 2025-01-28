@@ -6,6 +6,7 @@
 //==============================================
 
 #include "meshwall.h"
+#include "meshfield.h"
 
 //グローバル変数宣言
 LPDIRECT3DTEXTURE9 g_pTextureMeshWall[MAX_TEX_WALL] = { NULL };		//テクスチャへのポインタ
@@ -130,10 +131,12 @@ void DrawMeshWall(void)
 //===================
 void SetMeshWall(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX, int nDiviZ, int nDiviY, int nWidth, int nHeight)
 {
-
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	WORD* pIdx = NULL;
+
+	//テクスチャの設定
+	SetwallTexture();
 
 	for (int nCnt = 0; nCnt < MAX_MESHWALL; nCnt++)
 	{
@@ -237,16 +240,18 @@ void SetMeshWall(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX, int 
 //===================
 // メッシュ壁のテクスチャ設定
 //===================
-void SetwallTexture(char* pFileName,int TexIndx)
+void SetwallTexture(/*int indx*/)
 {
-	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	//テクスチャのポインタを取得
+	LPDIRECT3DTEXTURE9* pTexture = GetfieldTexture();
 
-	strcpy(walltexName[TexIndx], pFileName);
+	//for (int nCntpoint = 0; nCntpoint < MAX_TEX_WALL; nCntpoint++)
+	//{
+	//	if (pTexture != NULL)
+	//	{
+	//		g_pTextureMeshWall[nCntpoint] = (LPDIRECT3DTEXTURE9)pTexture;
+	//	}
 
-	//テクスチャの読込
-	D3DXCreateTextureFromFile(pDevice,
-		&walltexName[TexIndx][0],
-		&g_pTextureMeshWall[TexIndx]);
-
+	//	pTexture++;
+	//}
 }

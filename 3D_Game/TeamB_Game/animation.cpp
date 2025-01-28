@@ -25,44 +25,6 @@ void UpdateMotion(OBJECTINFO* Motion)
 {
 	Motion->nCntMotion++;
 
-	//if (pMotion[pPlayer->pMotion].StartKey == pPlayer->nKey)
-	//{// 今のキーが開始するキーだったら
-	//	if (pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].StartFlame <= pPlayer->nCounterMotion
-	//		&& pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].EndFlame >= pPlayer->nCounterMotion)
-	//	{// 開始フレーム以上で終了フレーム以内なら
-	//		collisionEnemy(pPlayer->WeponRadius[pPlayer->Pfolm]);
-	//	}
-	//}
-	//if (pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aStartKey == pPlayer->nKey)
-	//{// 今のキーが二種類目の開始するキーだったら
-	//	if (pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aStartFlame <= pPlayer->nCounterMotion
-	//		&& pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aEndFlame >= pPlayer->nCounterMotion)
-	//	{// 二種類目の開始フレーム以上で二種類目の終了フレーム以内なら
-	//		if (pPlayer->pMotion == MOTIONTYPE_ACTION)
-	//		{
-	//			switch (pPlayer->Pfolm)
-	//			{
-	//			case PLAYERFOLM_ATACK:
-	//				SetImpact(IMPACTTYPE_NORMAL, D3DXVECTOR3(pPlayer->mtxWepon[pPlayer->Pfolm]._41,
-	//					0.0f,
-	//					pPlayer->mtxWepon[pPlayer->Pfolm]._43),
-	//					D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f),
-	//					100,
-	//					10.0f,
-	//					30.0f,
-	//					2,
-	//					50,
-	//					2.0f);
-	//				break;
-	//			case PLAYERFOLM_SPEED:
-	//				break;
-	//			default:
-	//				break;
-	//			}
-	//		}
-	//	}
-	//}
-
 	if (Motion->nCntMotion >= Motion->aMotionInfo[Motion->motionType].aKeyInfo[Motion->nKey].nFrame)
 	{// モーションカウンターが目標のフレーム以上だったら
 		Motion->nCntMotion = 0;

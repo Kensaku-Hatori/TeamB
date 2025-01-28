@@ -12,7 +12,7 @@
 
 //マクロ定義
 #define MAX_MESHWALL (4)
-#define MAX_TEX_WALL (16)
+#define MAX_TEX_WALL (64)
 
 //影の構造体
 typedef struct
@@ -39,6 +39,6 @@ void UninitMeshWall(void);
 void UpdateMeshWall(void);
 void DrawMeshWall(void);
 void SetMeshWall(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX, int nDiviZ, int nDiviY, int nWidth, int nHeight);
-void SetwallTexture(char texfileName[32]);			//テクスチャ設定
+void SetwallTexture();								//テクスチャ設定
 
 #endif

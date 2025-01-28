@@ -129,29 +129,29 @@ void UpdatePause(void)
 		
 	//ÉÅÉjÉÖÅ[ÇÃëIë(è„â∫)
 	//ContnueÇ…Ç¢ÇÈèÍçá
-	if ((KeyboardTrigger(DIK_W) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_pauseMenu == PAUSE_MENU_CONTNUE)
+	if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_pauseMenu == PAUSE_MENU_CONTNUE)
 		{
 			g_pauseMenu = PAUSE_MENU_QUIT;
 		}
-	else if ((KeyboardTrigger(DIK_S) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_pauseMenu == PAUSE_MENU_CONTNUE)
+	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_pauseMenu == PAUSE_MENU_CONTNUE)
 		{
 			g_pauseMenu = PAUSE_MENU_RETRY;
 		}
 	//RETRYÇ…Ç¢ÇÈèÍçá
-	else if ((KeyboardTrigger(DIK_W) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_pauseMenu == PAUSE_MENU_RETRY)
+	else if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_pauseMenu == PAUSE_MENU_RETRY)
 		{
 			g_pauseMenu = PAUSE_MENU_CONTNUE;
 		}
-	else if ((KeyboardTrigger(DIK_S) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_pauseMenu == PAUSE_MENU_RETRY)
+	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_pauseMenu == PAUSE_MENU_RETRY)
 		{
 			g_pauseMenu = PAUSE_MENU_QUIT;
 		}
 	//QUITÇ…Ç¢ÇÈèÍçá
-	else if ((KeyboardTrigger(DIK_W) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_pauseMenu == PAUSE_MENU_QUIT)
+	else if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_pauseMenu == PAUSE_MENU_QUIT)
 		{
 			g_pauseMenu = PAUSE_MENU_RETRY;
 		}
-	else if ((KeyboardTrigger(DIK_S) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_pauseMenu == PAUSE_MENU_QUIT)
+	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_pauseMenu == PAUSE_MENU_QUIT)
 		{
 			g_pauseMenu = PAUSE_MENU_CONTNUE;
 		}

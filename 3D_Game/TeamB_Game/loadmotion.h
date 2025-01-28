@@ -25,6 +25,15 @@ typedef enum
 	LOADTYPE_MAX
 }LoadType;
 
+typedef struct
+{
+	MODELINFO PartsInfo[MAX_PARTS];
+	MOTIONINFO MotionInfo[MOTIONTYPE_MAX];
+	char cPartsPath[MAX_PARTS][62];
+	int nNumParts;
+	int PathCount,PartsCount,MotionCount,KeyCount,KeyPartsCount;
+}LoadInfo;
+
 void InitMotion();
 void LoadMotionViewer(char *cMotionPath);	// スクリプト以前を読み込む処理
 void LoadMotionStart(FILE* pFile);			// スクリプト以降の読み込み処理
