@@ -93,7 +93,7 @@ void UpdatePlayer(void)
 	if (g_player.bUse == true)
 	{
 		SetPositionShadow(g_player.nIdxShadow, g_player.pos, g_player.bUse);//âe
-		SetSizeShadow(g_player.pos, g_player.nIdxShadow, g_player.bJump);
+		//SetSizeShadow(g_player.pos, g_player.nIdxShadow, g_player.bJump);
 
 		//à⁄ìÆ
 		//ç∂

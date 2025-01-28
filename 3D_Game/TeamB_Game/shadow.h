@@ -10,6 +10,7 @@
 #include "main.h"
 
 #define MAX_SHADOW (128)		//影の最大数
+#define LIMI_SIZE (0.25f)		//サイズの下限(何倍か)
 
 //影の構造体
 typedef struct
