@@ -30,7 +30,7 @@ int g_PartsNum = 0;
 //***************
 void InitEnemy(void)
 {
-	g_nNumEnemy = -1;
+	g_nNumEnemy = 0;
 	for (int i = 0; i < MAX_ENEMY; i++)
 	{
 		g_nTypeCountMotion = 0;

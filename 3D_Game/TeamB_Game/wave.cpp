@@ -10,24 +10,18 @@
 #include<stdio.h>
 
 //マクロ定義
-#define MAX_WORD (256)										//最大文字数
-#define WAVE_0 "data\\wave\\wave0.txt"						//ウェーブ0
-#define WAVE_1 "data\\wave\\wave1.txt"					//ウェーブ1
-//#define WAVE_2 "data\\wave2.txt"							//ウェーブ2
-//#define WAVE_3 "data\\wave3.txt"							//ウェーブ3
+#define MAXX_CHAR (256)										//最大文字数
 
-////ウェーブ構造体
-//typedef struct
-//{
-//	D3DXVECTOR3 pos;										//位置
-//	D3DXVECTOR3 move;										//移動量
-//	int nType;												//種類
-//	bool bUse;												//使用しているかどうか
-//}LoadInfo;
+//.txt
+static const char* WAVE_TXT[MAX_WAVE] =
+{
+	"data\\TEXT\\wave\\wave00.txt",
+	"data\\TEXT\\wave\\wave01.txt",
+	"data\\TEXT\\wave\\wave02.txt",
+	"data\\TEXT\\wave\\wave03.txt",
+};
 
 //グローバル変数宣言
-//LoadInfo g_Info[MAX_ENEMY];
-int g_nCntEnemy;
 int g_nWave;												//ウェーブのカウント
 bool g_bFinish;												//ウェーブの終了判定
 
@@ -36,15 +30,6 @@ bool g_bFinish;												//ウェーブの終了判定
 //============================================================
 void InitWave()
 {
-	//for (int nCnt = 0; nCnt < MAX_ENEMY; nCnt++)
-	//{
-	//	g_Info[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	//	g_Info[nCnt].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	//	g_Info[nCnt].nType = 0;
-	//	g_Info[nCnt].bUse = false;
-	//}
-
-	g_nCntEnemy = 0;
 	g_nWave = 0;
 	g_bFinish = false;
 }
@@ -54,44 +39,31 @@ void InitWave()
 //============================================================
 void LoadWave()
 {
-	FILE* pFile;											//外部ファイルへのポインタ
-
 	int type = 0/*, nLife = 0*/;
 	D3DXVECTOR3 pos = {}, rot = {};
 
-	//敵の数を取得
-	int *pNumEnemy = GetNumEnemy();
-	g_nCntEnemy = (int)pNumEnemy;
+	//外部ファイルへのポインタ
+	FILE* pFile;
 
-	//各ウェーブのファイルを開く
-	switch (g_nWave)
+	//waveが全て終了しているなら
+	if (g_nWave >= MAX_WAVE)
 	{
-	case 0://Wave1
-
-		pFile = fopen(WAVE_0, "r");
-
-		break;
-
-	case 1://Wave2
-
-		pFile = fopen(WAVE_1, "r");
-
-		break;
-
-	default://例外
-
 		pFile = NULL;
 
 		g_bFinish = true;									//ウェーブ終了
 
-		break;
+	}
+	else
+	{	//各ウェーブのファイルを開く
+
+		pFile = fopen(WAVE_TXT[g_nWave], "r");
 	}
 
 	if (pFile != NULL)
 	{
 		while (1)
 		{
-			char aString[MAX_WORD];
+			char aString[MAXX_CHAR];
 
 			//ファイルを読みこむ
 			fscanf(pFile, "%s", &aString[0]);
@@ -123,7 +95,7 @@ void LoadWave()
 					else if (strcmp(aString, "END_ENEMYSET") == 0)//END_ENEMYSETを読込んだなら
 					{
 						//敵の設定
-						SetEnemy(pos,0, rot);
+						SetEnemy(pos,type, rot);
 
 						break;
 					}

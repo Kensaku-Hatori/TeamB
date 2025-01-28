@@ -11,7 +11,7 @@
 #include"main.h"
 
 //マクロ定義
-#define WAVE00 "data\\TEXT\\wave\\wave00.txt"
+#define MAX_WAVE (4)
 
 //プロトタイプ宣言
 void InitWave();

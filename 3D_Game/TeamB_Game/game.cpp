@@ -84,8 +84,11 @@ void InitGame(void)
 	InitMotion();
 	LoadModelViewer();
 
-	SetEnemy(D3DXVECTOR3(0.0f, 0.0f, -100.0f), 1, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	SetEnemy(D3DXVECTOR3(0.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	//SetEnemy(D3DXVECTOR3(0.0f, 0.0f, -100.0f), 1, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	//SetEnemy(D3DXVECTOR3(0.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
+	InitWave();
+	LoadWave();
 
 	g_gamestate = GAMESTATE_NORMAL;
 	g_nCounterGameState = 0;
@@ -132,6 +135,7 @@ void UninitGame(void)
 
 	UninitStageModel();
 }
+
 //===========
 // 更新処理
 //===========
@@ -190,6 +194,21 @@ void UpdateGame(void)
 			UpdateUi();
 
 			UpdateStageModel();
+
+			//敵の数を取得する
+			int* NumEnemy = GetNumEnemy();
+			int i = 0;
+			//敵を全て倒しているなら
+			if (*(NumEnemy) <= 0)
+			{
+				LoadWave();
+			}
+
+			//全てのwaveが終わったなら
+			if (GetFinish() == true)
+			{
+				g_gamestate = GAMESTATE_CLEAR;
+			}
 
 			switch (g_gamestate)
 			{
