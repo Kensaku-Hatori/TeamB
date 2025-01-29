@@ -40,6 +40,6 @@ void UninitImpact(void);
 void UpdateImpact(void);
 void DrawImpact(void);
 void SetImpact(IMPACTTYPE nType,D3DXVECTOR3 pos, D3DXCOLOR col, int nLife, float inringsize,float outringsize,int Horizon,int Vertical,float Speed);
-void collisionImpact(int Indx);
-void collisionImpactPlayer(int Indx);
+//void collisionImpact(int Indx);
+//void collisionImpactPlayer(int Indx);
 #endif // !IMPACT_H_

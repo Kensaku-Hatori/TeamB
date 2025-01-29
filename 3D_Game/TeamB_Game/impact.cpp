@@ -117,10 +117,10 @@ void UpdateImpact(void)
 			switch (g_Impact[ImpactCount].nType)
 			{
 			case IMPACTTYPE_NORMAL:
-				collisionImpact(ImpactCount);
+				//collisionImpact(ImpactCount);
 				break;
 			case IMPACTTYPE_ENEMY:
-				collisionImpactPlayer(ImpactCount);
+				//collisionImpactPlayer(ImpactCount);
 				break;
 			}
 		}
@@ -284,57 +284,57 @@ void SetImpact(IMPACTTYPE nType, D3DXVECTOR3 pos, D3DXCOLOR col, int nLife, floa
 		}
 	}
 }
-void collisionImpact(int Indx)
-{
-	ENEMY* pEnemy = GetEnemy();
-	Player* pPlayer = GetPlayer();
-	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++,pEnemy++)
-	{
-		if (pEnemy->bHit == false && pEnemy->bUse == true && pEnemy->Object.Pos.y - 1.0f <= g_Impact[Indx].Object.Pos.y)
-		{
-			float DistanceX = g_Impact[Indx].Object.mtxWorld._41 - pEnemy->Object.mtxWorld._41;
-			float DistanceZ = g_Impact[Indx].Object.mtxWorld._43 - pEnemy->Object.mtxWorld._43;
-			float Distance = (DistanceX * DistanceX) + (DistanceZ * DistanceZ);
-			float fInLength = g_Impact[Indx].inringsize + pEnemy->Radius;
-			fInLength = fInLength * fInLength;
-			float fOutLength = g_Impact[Indx].outringsize + pEnemy->Radius;
-			fOutLength = fOutLength * fOutLength;
-			float Atack = pPlayer->Status.Atack * 0.1f;
-			if (Distance > fInLength && Distance < fOutLength && pEnemy->state != ENEMYSTATE_KNOCKUP)
-			{
-				D3DXVECTOR3 VecKnock;
-				VecKnock = pEnemy->Object.Pos - g_Impact[Indx].Object.Pos;
-				D3DXVec3Normalize(&VecKnock, &VecKnock);
-				VecKnock.y = 0.0f;
-				pEnemy->move = VecKnock;
-				HitEnemy(Atack, EnemyCount);
-			}
-		}
-	}
-}
-void collisionImpactPlayer(int Indx)
-{
-	ENEMY* pEnemy = GetEnemy();
-	Player* pPlayer = GetPlayer();
-	if (pPlayer->state != PLAYERSTATE_KNOCKUP && pPlayer->pos.y - 0.5f <= g_Impact[Indx].Object.Pos.y)
-	{
-		float DistanceX = g_Impact[Indx].Object.mtxWorld._41 - pEnemy->Object.mtxWorld._41;
-		float DistanceZ = g_Impact[Indx].Object.mtxWorld._43 - pEnemy->Object.mtxWorld._43;
-		float Distance = (DistanceX * DistanceX) + (DistanceZ * DistanceZ);
-		float fInLength = g_Impact[Indx].inringsize + pPlayer->PlayerXRadius;
-		fInLength = fInLength * fInLength;
-		float fOutLength = g_Impact[Indx].outringsize + pPlayer->PlayerXRadius;
-		fOutLength = fOutLength * fOutLength;
-		if (Distance > fInLength && Distance < fOutLength)
-		{
-			D3DXVECTOR3 VecKnock;
-			VecKnock = pPlayer->pos - g_Impact[Indx].Object.Pos;
-			D3DXVec3Normalize(&VecKnock, &VecKnock);
-			VecKnock.y = 10.0f;
-			pPlayer->move = VecKnock;
-			pPlayer->state = PLAYERSTATE_KNOCKUP;
-			pPlayer->StateCount = 50;
-			pPlayer->Status.Hp -= 5.0f;
-		}
-	}
-}
+//void collisionImpact(int Indx)
+//{
+//	ENEMY* pEnemy = GetEnemy();
+//	Player* pPlayer = GetPlayer();
+//	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++,pEnemy++)
+//	{
+//		if (pEnemy->bHit == false && pEnemy->bUse == true && pEnemy->Object.Pos.y - 1.0f <= g_Impact[Indx].Object.Pos.y)
+//		{
+//			float DistanceX = g_Impact[Indx].Object.mtxWorld._41 - pEnemy->Object.mtxWorld._41;
+//			float DistanceZ = g_Impact[Indx].Object.mtxWorld._43 - pEnemy->Object.mtxWorld._43;
+//			float Distance = (DistanceX * DistanceX) + (DistanceZ * DistanceZ);
+//			float fInLength = g_Impact[Indx].inringsize + pEnemy->Radius;
+//			fInLength = fInLength * fInLength;
+//			float fOutLength = g_Impact[Indx].outringsize + pEnemy->Radius;
+//			fOutLength = fOutLength * fOutLength;
+//			float Atack = pPlayer->Status.Atack * 0.1f;
+//			if (Distance > fInLength && Distance < fOutLength && pEnemy->state != ENEMYSTATE_KNOCKUP)
+//			{
+//				D3DXVECTOR3 VecKnock;
+//				VecKnock = pEnemy->Object.Pos - g_Impact[Indx].Object.Pos;
+//				D3DXVec3Normalize(&VecKnock, &VecKnock);
+//				VecKnock.y = 0.0f;
+//				pEnemy->move = VecKnock;
+//				HitEnemy(Atack, EnemyCount);
+//			}
+//		}
+//	}
+//}
+//void collisionImpactPlayer(int Indx)
+//{
+//	ENEMY* pEnemy = GetEnemy();
+//	Player* pPlayer = GetPlayer();
+//	if (pPlayer->state != PLAYERSTATE_KNOCKUP && pPlayer->pos.y - 0.5f <= g_Impact[Indx].Object.Pos.y)
+//	{
+//		float DistanceX = g_Impact[Indx].Object.mtxWorld._41 - pEnemy->Object.mtxWorld._41;
+//		float DistanceZ = g_Impact[Indx].Object.mtxWorld._43 - pEnemy->Object.mtxWorld._43;
+//		float Distance = (DistanceX * DistanceX) + (DistanceZ * DistanceZ);
+//		float fInLength = g_Impact[Indx].inringsize + pPlayer->PlayerXRadius;
+//		fInLength = fInLength * fInLength;
+//		float fOutLength = g_Impact[Indx].outringsize + pPlayer->PlayerXRadius;
+//		fOutLength = fOutLength * fOutLength;
+//		if (Distance > fInLength && Distance < fOutLength)
+//		{
+//			D3DXVECTOR3 VecKnock;
+//			VecKnock = pPlayer->pos - g_Impact[Indx].Object.Pos;
+//			D3DXVec3Normalize(&VecKnock, &VecKnock);
+//			VecKnock.y = 10.0f;
+//			pPlayer->move = VecKnock;
+//			pPlayer->state = PLAYERSTATE_KNOCKUP;
+//			pPlayer->StateCount = 50;
+//			pPlayer->Status.Hp -= 5.0f;
+//		}
+//	}
+//}

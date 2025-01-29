@@ -18,6 +18,7 @@
 #include "animation.h"
 #include "enemy.h"
 #include "game.h"
+#include"impact.h"
 
 //ÉOÉçÅ[ÉoÉãïœêî
 Player g_player;
@@ -240,6 +241,7 @@ void UpdatePlayer(void)
 			{
 				SetSkill(g_player.pos, g_player.move, g_player.rot);
 				g_player.Status.nMP -= 50; //MPè¡îÔ
+				SetImpact(IMPACTTYPE_NORMAL, g_player.pos, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 3, 20.0f, 2.0f, 8, 1, 0.1f);
 			}
 			SetMotion(MOTIONTYPE_ACTION,&g_player.PlayerMotion);
 		}
