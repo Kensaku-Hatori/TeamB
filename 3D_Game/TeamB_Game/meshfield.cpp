@@ -262,10 +262,18 @@ void SetfieldTexture(char* pFileName, int TexIndx)
 	}
 }
 
-//===============================
-// メッシュ床のテクスチャ取得処理
-//===============================
-LPDIRECT3DTEXTURE9* GetfieldTexture()
+////===============================
+//// メッシュ床のテクスチャ取得処理
+////===============================
+//LPDIRECT3DTEXTURE9* GetfieldTexture()
+//{
+//	return &g_pTextureMeshfield[0];
+//}
+
+//================================
+//テクスチャの取得処理
+//================================
+LPDIRECT3DTEXTURE9 GetTexture2(TEX_TYPE TexType)
 {
-	return &g_pTextureMeshfield[0];
+	return g_pTextureMeshfield[(int)TexType];
 }

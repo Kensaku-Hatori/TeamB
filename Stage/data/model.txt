@@ -416,6 +416,13 @@ MODELSET
 	SHADOW = 0
 END_MODELSET
 
+MODELSET
+	TYPE = 3
+	POS = -130 -30 -400
+	ROT = 0 15 15
+	SHADOW = 0
+END_MODELSET
+
 #-----------------------------------
 # ƒrƒ‹03(‘S•ûˆÊ‚®‚é‚ñ)
 #-----------------------------------
@@ -472,6 +479,13 @@ MODELSET
 	TYPE = 4
 	POS = -618 70 -142
 	ROT = 0 35 55
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 4
+	POS = 120 50 -350
+	ROT = 0 45 90
 	SHADOW = 0
 END_MODELSET
 
@@ -838,7 +852,7 @@ END_BILLBOARDSET
 
 BILLBOARDSET
 	TEXTYPE = 9
-	POS = -175 0 -455
+	POS = 175 0 -455
 	SIZE = 100 100
 	ORIGIN = 50 0
 	SHADOW = 0
