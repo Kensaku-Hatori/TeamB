@@ -14,17 +14,17 @@ NUM_MODEL = 11
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/Knight/00_body.x		# [0]体
-MODEL_FILENAME = data/MODEL/Knight/01_head.x		# [1]頭
-MODEL_FILENAME = data/MODEL/Knight/02_armR.x		# [2]右腕
-MODEL_FILENAME = data/MODEL/Knight/03_handR.x		# [3]右手
-MODEL_FILENAME = data/MODEL/Knight/04_armL.x		# [4]左腕
-MODEL_FILENAME = data/MODEL/Knight/05_handL.x		# [5]左手
-MODEL_FILENAME = data/MODEL/Knight/06_legR.x		# [6]右腿
-MODEL_FILENAME = data/MODEL/Knight/07_foorR.x		# [7]右足
-MODEL_FILENAME = data/MODEL/Knight/08_legL.x		# [8]左腿
-MODEL_FILENAME = data/MODEL/Knight/09_foorL.x		# [9]左足
-MODEL_FILENAME = data/MODEL/Knight/10_sword.x		# [10]剣
+MODEL_FILENAME = data/MODEL/Kinight/00_body.x		# [0]体
+MODEL_FILENAME = data/MODEL/Kinight/01_head.x		# [1]頭
+MODEL_FILENAME = data/MODEL/Kinight/02_armR.x		# [2]右腕
+MODEL_FILENAME = data/MODEL/Kinight/03_handR.x		# [3]右手
+MODEL_FILENAME = data/MODEL/Kinight/04_armL.x		# [4]左腕
+MODEL_FILENAME = data/MODEL/Kinight/05_handL.x		# [5]左手
+MODEL_FILENAME = data/MODEL/Kinight/06_legR.x		# [6]右腿
+MODEL_FILENAME = data/MODEL/Kinight/07_foorR.x		# [7]右足
+MODEL_FILENAME = data/MODEL/Kinight/08_legL.x		# [8]左腿
+MODEL_FILENAME = data/MODEL/Kinight/09_foorL.x		# [9]左足
+MODEL_FILENAME = data/MODEL/Kinight/10_sword.x		# [10]剣
                             
 #------------------------------------------------------------------------------
 # キャラクター情報
@@ -1554,10 +1554,10 @@ MOTIONSET
 	NUM_KEY = 8		# キー数
 
 	KEYSET			# --- << KEY : 0 / 8 >> ---
-		FRAME = 5
+		FRAME = 50
 		KEY	# ----- [ 0 ] -----
 			POS = 0.00 -1.10 0.00
-			ROT = 0.16 0.41 0.00
+			ROT = 0.44 0.79 0.00
 		END_KEY
 
 		KEY	# ----- [ 1 ] -----
@@ -1587,7 +1587,7 @@ MOTIONSET
 
 		KEY	# ----- [ 6 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = -0.12 0.00 -0.16
+			ROT = -0.40 0.03 -0.16
 		END_KEY
 
 		KEY	# ----- [ 7 ] -----
@@ -1597,12 +1597,12 @@ MOTIONSET
 
 		KEY	# ----- [ 8 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.06 0.13 0.47
+			ROT = 1.29 0.10 0.82
 		END_KEY
 
 		KEY	# ----- [ 9 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = -0.22 -0.28 0.00
+			ROT = -0.57 -0.28 0.00
 		END_KEY
 
 		KEY	# ----- [ 10 ] -----
@@ -1612,7 +1612,7 @@ MOTIONSET
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 1 / 8 >> ---
-		FRAME = 7
+		FRAME = 4
 		KEY	# ----- [ 0 ] -----
 			POS = 0.00 -1.10 0.00
 			ROT = -0.03 0.03 0.00

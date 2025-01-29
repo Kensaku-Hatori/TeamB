@@ -19,7 +19,7 @@
 #define BILLBOARD "END_BILLBOARDSET"
 #define PLAYER "END_PLAYERSET"
 #define MAX_PATHNUM 15
-#define MAX_FILEPATH 32
+#define MAX_FILEPATH 15
 #define MAX_PATHTYPE 2
 
 typedef struct
@@ -34,7 +34,7 @@ void LoadStart(FILE* pFile);			// スクリプト以降の読み込み処理
 void SkipEqual(FILE* pFile);			//  = を読み飛ばす処理
 int LoadInt(FILE* pFile);				// 整数を読み込む処理
 float LoadFloat(FILE* pFile);			// 小数点を読み込む処理
-char *LoadPath(FILE* pFile);			// 文字列を読み込む処理
+char *LoadPath(FILE* pFile,char *cData2);			// 文字列を読み込む処理
 
 char* LoadCameraInfo(FILE* pFile);		// カメラ情報を読み込む処理
 char* LoadLightInfo(FILE* pFile);		// ライト情報を読み込む処理

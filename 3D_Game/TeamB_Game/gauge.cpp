@@ -179,7 +179,7 @@ void UpdateGauge(void)
 		{
 			if (g_gauge[nCnt].type == GAUGETYPE_HP)
 			{
-				g_gauge[nCnt].size.x = pPlayer->Status.nHP / 2.85f;
+				g_gauge[nCnt].size.x = pPlayer->Status.fHP / 2.85f;
 
 				//頂点座標の設定
 				pVtx[0].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x, g_gauge[nCnt].pos.y - g_gauge[nCnt].size.y, 0.0f);
@@ -187,7 +187,7 @@ void UpdateGauge(void)
 				pVtx[2].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x, g_gauge[nCnt].pos.y + g_gauge[nCnt].size.y, 0.0f);
 				pVtx[3].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x + g_gauge[nCnt].size.x, g_gauge[nCnt].pos.y + g_gauge[nCnt].size.y, 0.0f);
 
-				if (pPlayer->Status.nHP <= PLAYER_HP / 5)
+				if (pPlayer->Status.fHP <= PLAYER_HP / 5)
 				{//赤
 					//頂点カラーの設定
 					pVtx[0].col = D3DCOLOR_RGBA(255, 1, 1, 255);
@@ -195,7 +195,7 @@ void UpdateGauge(void)
 					pVtx[2].col = D3DCOLOR_RGBA(255, 1, 1, 255);
 					pVtx[3].col = D3DCOLOR_RGBA(255, 1, 1, 255);
 				}
-				else if (pPlayer->Status.nHP <= PLAYER_HP / 1.5)
+				else if (pPlayer->Status.fHP <= PLAYER_HP / 1.5)
 				{//黄色
 					//頂点カラーの設定
 					pVtx[0].col = D3DCOLOR_RGBA(255, 255, 1, 255);

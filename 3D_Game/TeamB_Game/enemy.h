@@ -12,6 +12,10 @@
 #define ENEMY_RADIUS (float)(8.0f)
 #define ENEMY_RUNSPEED (float)(1.0f)
 
+#define ENEMY_HP (float)(150)		// HP
+#define ENEMY_SPEED (float) (2.0f)	// ë¨ìx
+#define ENEMY_AP (float)(10)		// çUåÇóÕ
+
 typedef enum
 {
 	ENEMYSTATE_NORMAL = 0,
@@ -61,6 +65,8 @@ typedef struct
 	bool bMotion;
 	bool bHit;
 	int IndxGuage[3];
+	float fDistance;
+
 }ENEMY;
 
 //*****************
@@ -81,4 +87,5 @@ void SetnNumParts(int nType,int nNumParts);
 void SetEnemyMesh(char* pFilePath, int Indx);
 void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType);
 void EnemyMotion(MOTIONINFO* pMotionInfo);
+void CollisionEnemy(void);
 #endif // !ENEMY_H_

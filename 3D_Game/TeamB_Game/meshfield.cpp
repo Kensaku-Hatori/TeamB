@@ -12,7 +12,7 @@
 LPDIRECT3DTEXTURE9 g_pTextureMeshfield[MAX_TEX_FIELD] = { NULL };		//テクスチャへのポインタ
 
 MeshField g_Meshfield[MESH_NUM_MAX];									//ポリゴン(横)の構造体
-static char fieldtexName[MAX_TEX_FIELD][32] = { NULL };					//テクスチャファイル名保存用
+static char fieldtexName[MAX_TEX_FIELD][64] = { NULL };					//テクスチャファイル名保存用
 
 //=================================
 // メッシュ床の初期化処理
@@ -172,8 +172,8 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 			int nCntVtx = 0;
 
 			//中央へずらす
-			float centerX = g_Meshfield[nCnt].nWidth * (g_Meshfield[nCnt].nDiviX-2 ) * 0.5f;
-			float centerY = g_Meshfield[nCnt].nHeight * (g_Meshfield[nCnt].nDiviZ -2) * 0.5f;
+			float centerX = g_Meshfield[nCnt].nWidth * (g_Meshfield[nCnt].nDiviX - 2) * 0.5f;
+			float centerY = g_Meshfield[nCnt].nHeight * (g_Meshfield[nCnt].nDiviZ - 2) * 0.5f;
 
 			//頂点情報の設定
 			for (int nCntZ = 0; nCntZ <= g_Meshfield[nCnt].nDiviZ; nCntZ++)
@@ -247,18 +247,33 @@ void SetfieldTexture(char* pFileName, int TexIndx)
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
+	HRESULT hresult;
+
 	strcpy(fieldtexName[TexIndx], pFileName);
 
 	//テクスチャの読込
-	D3DXCreateTextureFromFile(pDevice,
+	hresult = D3DXCreateTextureFromFile(pDevice,
 		&fieldtexName[TexIndx][0],
 		&g_pTextureMeshfield[TexIndx]);
+
+	if (FAILED(hresult))
+	{
+		return;
+	}
 }
 
-//===============================
-// メッシュ床のテクスチャ取得処理
-//===============================
-LPDIRECT3DTEXTURE9* GetfieldTexture()
+////===============================
+//// メッシュ床のテクスチャ取得処理
+////===============================
+//LPDIRECT3DTEXTURE9* GetfieldTexture()
+//{
+//	return &g_pTextureMeshfield[0];
+//}
+
+//================================
+//テクスチャの取得処理
+//================================
+LPDIRECT3DTEXTURE9 GetTexture2(TEX_TYPE TexType)
 {
-	return &g_pTextureMeshfield[0];
+	return g_pTextureMeshfield[(int)TexType];
 }

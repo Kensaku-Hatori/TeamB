@@ -30,4 +30,5 @@ void UninitCamera(void);
 void UpdateCamera(void);
 void SetCamera(void);
 Camera * GetCamera(void);
+
 #endif

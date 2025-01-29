@@ -1,3 +1,10 @@
+//*********************************************************
+// 
+// enemy[enemy.cpp]
+// Author:Hatori
+// 
+//*********************************************************
+
 //*************
 // インクルード
 ///************
@@ -8,6 +15,7 @@
 #include "loadmotion.h"
 #include "shadow.h"
 #include "animation.h"
+#include "player.h"
 
 //*******************
 // グローバル変数宣言
@@ -15,7 +23,6 @@
 ENEMY g_Enemy[MAX_ENEMY];
 EnemyOrigin g_EnemyOrigin[ENEMYTYPE_MAX];
 int g_nNumEnemy;
-int g_nTypeCount = 0;
 int g_nTypeCountMotion = 0;
 int g_PartsNum = 0;
 
@@ -24,10 +31,9 @@ int g_PartsNum = 0;
 //***************
 void InitEnemy(void)
 {
-	g_nNumEnemy = -1;
+	g_nNumEnemy = 0;
 	for (int i = 0; i < MAX_ENEMY; i++)
 	{
-		g_nTypeCount = 0;
 		g_nTypeCountMotion = 0;
 		g_Enemy[i].Object.Pos = D3DXVECTOR3(0.0f, 0.0f, -100.0f);
 		g_Enemy[i].Object.Rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -36,9 +42,9 @@ void InitEnemy(void)
 		g_Enemy[i].nActionCount = 0;
 		g_Enemy[i].nActionCounter = 0;
 		g_Enemy[i].Action = ENEMYACTION_WELL;
-		g_Enemy[i].Status.fPower = 0.0f;
-		g_Enemy[i].Status.fSpeed = 1.0f;
-		g_Enemy[i].Status.nHP = 150;
+		g_Enemy[i].Status.fPower = ENEMY_AP;
+		g_Enemy[i].Status.fSpeed = ENEMY_SPEED;
+		g_Enemy[i].Status.fHP = ENEMY_HP;
 		g_Enemy[i].state = ENEMYSTATE_NORMAL;
 		g_Enemy[i].Radius = 4.4f;
 		g_Enemy[i].pMotion = MOTIONTYPE_NEUTRAL;
@@ -97,6 +103,7 @@ void UninitEnemy(void)
 		}
 	}
 }
+
 //*************
 // 敵の更新処理
 //*************
@@ -111,6 +118,7 @@ void UpdateEnemy(void)
 		}
 	}
 }
+
 //*************
 // 敵の描画処理
 //*************
@@ -207,6 +215,7 @@ void DrawEnemy(void)
 		}
 	}
 }
+
 //*************
 // 敵の取得処理
 //*************
@@ -214,6 +223,7 @@ ENEMY* GetEnemy()
 {
 	return &g_Enemy[0];
 }
+
 //***************
 // 敵のヒット処理
 //***************
@@ -221,7 +231,7 @@ void HitEnemy(float Atack,int Indx)
 {
 	Camera* pCamera = GetCamera();
 
-	g_Enemy[Indx].Status.nHP -= (int)Atack;
+	g_Enemy[Indx].Status.fHP -= (int)Atack;
 
 	g_Enemy[Indx].Action = ENEMYACTION_WELL;
 	g_Enemy[Indx].state = ENEMYSTATE_KNOCKUP;
@@ -235,11 +245,12 @@ void HitEnemy(float Atack,int Indx)
 		g_Enemy[Indx].statecount = 10;
 	}
 
-	if (g_Enemy[Indx].Status.nHP <= 0.0f && g_Enemy[Indx].bUse == true)
+	if (g_Enemy[Indx].Status.fHP <= 0.0f && g_Enemy[Indx].bUse == true)
 	{// 使われていて体力が０以下なら
 		DeadEnemy(Indx);
 	}
 }
+
 //*************
 // 敵の設定処理
 //*************
@@ -283,6 +294,7 @@ void SetEnemy(D3DXVECTOR3 pos, int nType,D3DXVECTOR3 rot)
 		}
 	}
 }
+
 //*************
 // 敵の取得処理
 //*************
@@ -290,6 +302,7 @@ int* GetNumEnemy(void)
 {
 	return &g_nNumEnemy;
 }
+
 //*************
 // 敵の脂肪処理
 //*************
@@ -302,6 +315,7 @@ void DeadEnemy(int Indx)
 	SetPositionShadow(g_Enemy[Indx].IndxShadow,g_Enemy[Indx].Object.Pos,g_Enemy[Indx].bUse);
 	SetParticle(g_Enemy[Indx].Object.Pos, D3DXVECTOR3(100.0f, 100.0f, 100.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), PARTICLE_NONE, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 100, 50);
 }
+
 //***************
 // 敵の行動を更新
 //***************
@@ -309,57 +323,61 @@ void UpdateAction(int nCount)
 {
 
 }
+
 //*****************
 // 敵の状態遷移処理
-
+//*****************
 void EnemyState(int Indx)
 {
 
 }
-void SetnNumParts(int nType,int nNumParts)
-{
-	g_EnemyOrigin[nType - 1].nNumParts = nNumParts;
-}
-void SetEnemyMesh(char* pFilePath, int Indx)
-{
-	HRESULT Hresult;
-	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	//Xファイルの読み込み
-	Hresult = D3DXLoadMeshFromX(pFilePath,
-		D3DXMESH_SYSTEMMEM,
-		pDevice,
-		NULL,
-		&g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pBuffMat,
-		NULL,
-		&g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].dwNumMat,
-		&g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pMesh);
+//void SetnNumParts(int nType,int nNumParts)
+//{
+//	g_EnemyOrigin[nType - 1].nNumParts = nNumParts;
+//}
 
-	D3DXMATERIAL* pMat;//マテリアルへのポインタ
-	pMat = (D3DXMATERIAL*)g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pBuffMat->GetBufferPointer();
-	for (int nCntBlockMat = 0; nCntBlockMat < (int)g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].dwNumMat; nCntBlockMat++)
-	{
-		if (pMat[nCntBlockMat].pTextureFilename != NULL)
-		{
-			D3DXCreateTextureFromFile(pDevice,
-				pMat[nCntBlockMat].pTextureFilename,
-				&g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pTexture[nCntBlockMat]); //1
-		}
-		else
-		{
-			g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pTexture[nCntBlockMat] = NULL;
-		}
-	}
+//void SetEnemyMesh(char* pFilePath, int Indx)
+//{
+//	HRESULT Hresult;
+//	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+//
+//	//Xファイルの読み込み
+//	Hresult = D3DXLoadMeshFromX(pFilePath,
+//		D3DXMESH_SYSTEMMEM,
+//		pDevice,
+//		NULL,
+//		&g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pBuffMat,
+//		NULL,
+//		&g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].dwNumMat,
+//		&g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pMesh);
+//
+//	D3DXMATERIAL* pMat;//マテリアルへのポインタ
+//	pMat = (D3DXMATERIAL*)g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pBuffMat->GetBufferPointer();
+//	for (int nCntBlockMat = 0; nCntBlockMat < (int)g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].dwNumMat; nCntBlockMat++)
+//	{
+//		if (pMat[nCntBlockMat].pTextureFilename != NULL)
+//		{
+//			D3DXCreateTextureFromFile(pDevice,
+//				pMat[nCntBlockMat].pTextureFilename,
+//				&g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pTexture[nCntBlockMat]); //1
+//		}
+//		else
+//		{
+//			g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pTexture[nCntBlockMat] = NULL;
+//		}
+//	}
+//
+//	if (FAILED(Hresult))
+//	{
+//		return;
+//	}
+//	if (Indx == g_EnemyOrigin[g_nTypeCount].nNumParts - 1)
+//	{
+//		g_nTypeCount++;
+//	}
+//}
 
-	if (FAILED(Hresult))
-	{
-		return;
-	}
-	if (Indx == g_EnemyOrigin[g_nTypeCount].nNumParts - 1)
-	{
-		g_nTypeCount++;
-	}
-}
 void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType)
 {
 	nType -= 1;
@@ -416,7 +434,28 @@ void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType)
 		g_EnemyOrigin[nType].EnemyMotion.aMotionInfo[MotionCount] = PartsInfo.MotionInfo[MotionCount];
 	}
 }
-void EnemyMotion(MOTIONINFO* pMotionInfo)
+//==============================
+// 敵とプレイヤーの当たり判定
+//==============================
+void CollisionEnemy(void)
 {
+	Player* pPlayer = GetPlayer();
 
+	for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
+	{
+		if (g_Enemy[nCntEnemy].bUse == true)
+		{
+			//敵との距離
+			g_Enemy[nCntEnemy].fDistance = sqrtf(((g_Enemy[nCntEnemy].Object.Pos.x - pPlayer->pos.x) * (g_Enemy[nCntEnemy].Object.Pos.x - pPlayer->pos.x))
+											   + ((g_Enemy[nCntEnemy].Object.Pos.y - pPlayer->pos.y) * (g_Enemy[nCntEnemy].Object.Pos.y - pPlayer->pos.y))
+											   + ((g_Enemy[nCntEnemy].Object.Pos.z - pPlayer->pos.z) * (g_Enemy[nCntEnemy].Object.Pos.z - pPlayer->pos.z)));
+												 
+			float RADIUS = ((PLAYER_RADIUS / 2) + g_Enemy[nCntEnemy].Radius) * ((PLAYER_RADIUS / 2) + g_Enemy[nCntEnemy].Radius);
+
+			if (g_Enemy[nCntEnemy].fDistance <= RADIUS)
+			{
+				pPlayer->Status.fHP -= g_Enemy[nCntEnemy].Status.fPower;
+			}
+		}
+	}
 }

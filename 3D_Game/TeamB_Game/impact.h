@@ -1,3 +1,10 @@
+//********************************************************
+// 
+// 衝撃波[impact.h]
+// Author:Hatori
+// 
+//********************************************************
+
 #ifndef IMPACT_H_
 #define IMPACT_H_
 
@@ -6,6 +13,7 @@
 
 #define MAX_IMPACT (32)
 
+//衝撃波の種類
 typedef enum
 {
 	IMPACTTYPE_NORMAL = 0,
@@ -13,6 +21,7 @@ typedef enum
 	IMPACTTYPE_MAX
 }IMPACTTYPE;
 
+//衝撃波構造体
 typedef struct
 {
 	OBJECT Object;
@@ -29,17 +38,19 @@ typedef struct
 	bool bUse;
 }RINGIMPACT;
 
+//テクスチャ
 static const char* IMPACTTEX[IMPACTTYPE_MAX] =
 {
 	"data\\TEXTURE\\effect000.jpg",
 	"data\\TEXTURE\\effect000.jpg",
 };
 
+//プロトタイプ宣言
 void InitImpact(void);
 void UninitImpact(void);
 void UpdateImpact(void);
 void DrawImpact(void);
 void SetImpact(IMPACTTYPE nType,D3DXVECTOR3 pos, D3DXCOLOR col, int nLife, float inringsize,float outringsize,int Horizon,int Vertical,float Speed);
-void collisionImpact(int Indx);
-void collisionImpactPlayer(int Indx);
+//void collisionImpact(int Indx);
+//void collisionImpactPlayer(int Indx);
 #endif // !IMPACT_H_

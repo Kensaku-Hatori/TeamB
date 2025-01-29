@@ -9,7 +9,7 @@
 #include "meshfield.h"
 
 //グローバル変数宣言
-LPDIRECT3DTEXTURE9 g_pTextureMeshWall[MAX_TEX_WALL] = { NULL };		//テクスチャへのポインタ
+LPDIRECT3DTEXTURE9 g_pTextureMeshWall = NULL;		//テクスチャへのポインタ
 
 MeshWall g_MeshWall[MAX_MESHWALL];									//ポリゴン(縦)の構造体
 static char walltexName[MAX_TEX_WALL][32];							//テクスチャファイル名保存用
@@ -43,15 +43,13 @@ void InitMeshWall(void)
 //===============================
 void UninitMeshWall(void)
 {
-	for (int nCnt = 0; nCnt < MAX_TEX_WALL; nCnt++)
-	{
+	
 		//テクスチャの破棄
-		if (g_pTextureMeshWall[nCnt] != NULL)
+		if (g_pTextureMeshWall != NULL)
 		{
-			g_pTextureMeshWall[nCnt]->Release();
-			g_pTextureMeshWall[nCnt] = NULL;
+			g_pTextureMeshWall->Release();
+			g_pTextureMeshWall = NULL;
 		}
-	}
 
 	for (int nCnt = 0; nCnt < MAX_MESHWALL; nCnt++)
 	{
@@ -118,7 +116,7 @@ void DrawMeshWall(void)
 			pDevice->SetFVF(FVF_VERTEX_3D);
 
 			//テクスチャの設定
-			pDevice->SetTexture(0, g_pTextureMeshWall[g_MeshWall[nCnt].textype]);
+			pDevice->SetTexture(0, g_pTextureMeshWall);
 
 			//メッシュ壁を描画
 			pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, g_MeshWall[nCnt].nMaxVtx, 0, g_MeshWall[nCnt].nPolyNum);
@@ -188,7 +186,7 @@ void SetMeshWall(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX, int 
 					pVtx[nCntVtx].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 					//テクスチャ座標の設定
-					pVtx[nCntVtx].tex = D3DXVECTOR2((2.0f / g_MeshWall[nCnt].nDiviX) * nCntX, (2.0f / g_MeshWall[nCnt].nDiviY) * nCntY);
+					pVtx[nCntVtx].tex = D3DXVECTOR2(1.0f * nCntX, (1.0f / g_MeshWall[nCnt].nDiviY) * nCntY);
 
 					nCntVtx++;
 				}
@@ -240,18 +238,14 @@ void SetMeshWall(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX, int 
 //===================
 // メッシュ壁のテクスチャ設定
 //===================
-void SetwallTexture(/*int indx*/)
+void SetwallTexture()
 {
 	//テクスチャのポインタを取得
-	LPDIRECT3DTEXTURE9* pTexture = GetfieldTexture();
+	LPDIRECT3DTEXTURE9 pTexture = GetTexture2(TEX_WALL);
 
-	//for (int nCntpoint = 0; nCntpoint < MAX_TEX_WALL; nCntpoint++)
-	//{
-	//	if (pTexture != NULL)
-	//	{
-	//		g_pTextureMeshWall[nCntpoint] = (LPDIRECT3DTEXTURE9)pTexture;
-	//	}
+	if (pTexture != NULL)
+	{
+		g_pTextureMeshWall = pTexture;
+	}
 
-	//	pTexture++;
-	//}
 }

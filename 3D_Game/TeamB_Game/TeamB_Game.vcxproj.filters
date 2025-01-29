@@ -39,6 +39,8 @@
     <ClCompile Include="wall.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="wave.cpp" />
+    <ClCompile Include="impact.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h" />
@@ -82,5 +84,7 @@
     <ClInclude Include="wall.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="wave.h" />
+    <ClInclude Include="impact.h" />
   </ItemGroup>
 </Project>

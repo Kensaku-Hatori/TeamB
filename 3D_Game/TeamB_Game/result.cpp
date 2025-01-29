@@ -10,7 +10,9 @@
 #include "light.h"
 #include "sound.h"
 #include "loadstage.h"
+#include "loadmotion.h"
 #include "model.h"
+#include "meshfield.h"
 
 //グローバル変数宣言
 
@@ -19,21 +21,26 @@
 //===========
 void InitResult(void)
 {
-	InitStageModel();
-
-	LoadModelViewer();
+	InitMeshfield();
 
 	InitCamera();
 
 	InitLight();
 
 	InitResultInfo();
+
+	InitMotion();
+	InitStageModel();
+
+	LoadModelViewer();
 }
 //==========
 //終了処理
 //==========
 void UninitResult(void)
 {
+	UninitMeshfield();
+
 	UninitStageModel();
 
 	UninitCamera();
@@ -47,6 +54,8 @@ void UninitResult(void)
 //==========
 void UpdateResult(void)
 {
+	UpdateMeshfield();
+
 	UpdateStageModel();
 
 	UpdateCamera();
@@ -61,6 +70,8 @@ void UpdateResult(void)
 void DrawResult(void)
 {
 	SetCamera();
+
+	DrawMeshfield();
 
 	DrawStageModel();
 
