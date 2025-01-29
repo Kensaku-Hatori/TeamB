@@ -482,6 +482,13 @@ MODELSET
 	SHADOW = 0
 END_MODELSET
 
+MODELSET
+	TYPE = 4
+	POS = 120 50 -350
+	ROT = 0 45 90
+	SHADOW = 0
+END_MODELSET
+
 #-----------------------------------
 # “d’Œ
 #-----------------------------------
