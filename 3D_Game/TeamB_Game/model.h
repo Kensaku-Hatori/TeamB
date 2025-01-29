@@ -71,5 +71,5 @@ void UninitStageModel();
 void UpdateStageModel();
 void DrawStageModel();
 void SetStageModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot, MODELTYPE nType);
-void SetStageModelInfo(char *ModelPath,int nType);
+void SetStageModelInfo(char *ModelPath[],int nType);
 #endif

@@ -125,34 +125,35 @@ void SetStageModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot, MODELTYPE nType)
 		}
 	}
 }
-void SetStageModelInfo(char* ModelPath, int nType)
+void SetStageModelInfo(char *ModelPath[], int PathType)
 {
 	HRESULT Hresult;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	const char* pFile = ModelPath[0];
 
 	//Xファイルの読み込み
-	Hresult = D3DXLoadMeshFromX(ModelPath,
+	Hresult = D3DXLoadMeshFromX(pFile,
 		D3DXMESH_SYSTEMMEM,
 		pDevice,
 		NULL,
-		&g_ModelOrigin[nType].pBuffMat,
+		&g_ModelOrigin[PathType].pBuffMat,
 		NULL,
-		&g_ModelOrigin[nType].dwNumMat,
-		&g_ModelOrigin[nType].pMesh);
+		&g_ModelOrigin[PathType].dwNumMat,
+		&g_ModelOrigin[PathType].pMesh);
 
 	D3DXMATERIAL* pMat;//マテリアルへのポインタ
-	pMat = (D3DXMATERIAL*)g_ModelOrigin[nType].pBuffMat->GetBufferPointer();
-	for (int nCntBlockMat = 0; nCntBlockMat < (int)g_ModelOrigin[nType].dwNumMat; nCntBlockMat++)
+	pMat = (D3DXMATERIAL*)g_ModelOrigin[PathType].pBuffMat->GetBufferPointer();
+	for (int nCntBlockMat = 0; nCntBlockMat < (int)g_ModelOrigin[PathType].dwNumMat; nCntBlockMat++)
 	{
 		if (pMat[nCntBlockMat].pTextureFilename != NULL)
 		{
 			D3DXCreateTextureFromFile(pDevice, 
 				pMat[nCntBlockMat].pTextureFilename, 
-				&g_ModelOrigin[nType].pTexture[nCntBlockMat]); //1
+				&g_ModelOrigin[PathType].pTexture[nCntBlockMat]); //1
 		}
 		else
 		{
-			g_ModelOrigin[nType].pTexture[nCntBlockMat] = NULL;
+			g_ModelOrigin[PathType].pTexture[nCntBlockMat] = NULL;
 		}
 	}
 

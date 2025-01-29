@@ -10,6 +10,7 @@
 #include "light.h"
 #include "sound.h"
 #include "loadstage.h"
+#include "loadmotion.h"
 #include "model.h"
 #include "meshfield.h"
 
@@ -26,11 +27,12 @@ void InitResult(void)
 
 	InitLight();
 
+	InitResultInfo();
+
+	InitMotion();
 	InitStageModel();
 
 	LoadModelViewer();
-
-	InitResultInfo();
 }
 //==========
 //èIóπèàóù

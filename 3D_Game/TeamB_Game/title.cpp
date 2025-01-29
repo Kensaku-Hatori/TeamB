@@ -32,6 +32,7 @@ void InitTitle(void)
 
 	InitLight();
 
+
 	InitMotion();
 	InitStageModel();
 

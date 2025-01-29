@@ -40,11 +40,13 @@ typedef struct
 	int AnimCount,Anim;
 	int AnimSpeed;
 }EFFECT;
+
 static const char* EFFECTTEX[EFFECT_MAX] =
 {
 	"data\\TEXTURE\\effect000.jpg",
 	"data\\TEXTURE\\smoke000.png",
 };
+
 //*****************
 // プロトタイプ宣言
 //*****************
