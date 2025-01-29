@@ -5,6 +5,9 @@
 #include "camera.h"
 #include "light.h"
 
+char FilePathPoly[MAX_FILEPATH][64] = { {} };
+char FilePathModel[MAX_FILEPATH][64] = { {} };
+
 //*****************************
 // スクリプト以前を読み込む処理
 //*****************************
@@ -36,16 +39,16 @@ void LoadModelViewer()
 			}
 		}
 		LoadStart(pFile);
+		fclose(pFile);
 	}
-	fclose(pFile);
 }
 //*****************************
 // シャープ以降を読み飛ばす処理
 //*****************************
 void SkipComment(FILE* pFile)
 {
-	char cData[2] = { NULL };
-	char cData1[128] = { NULL };
+	char cData[2] = {};
+	char cData1[128] = {};
 
 	while (1)
 	{
@@ -65,14 +68,12 @@ void SkipComment(FILE* pFile)
 //*****************************
 void LoadStart(FILE* pFile)
 {
-	char cData[2] = { NULL };
-	char cData1[128] = { NULL };
-	char *cData2[32] = { NULL };
-	int nData;
-	char *FilePath[32];
-	char FilePathPoly[MAX_FILEPATH][64];
-	char FilePathModel[MAX_FILEPATH][64];
-	NTYPE nType = { NULL };
+	char cData[2] = {};
+	char cData1[128] = {};
+	char *cData2[32] = {};
+	int nData = 0;
+	char* FilePath[32] = {};
+	NTYPE nType = {};
 	int ModelPathCount = 0;
 	int PolygonePathCount = 0;
 
@@ -91,7 +92,7 @@ void LoadStart(FILE* pFile)
 			else if (strcmp(&cData1[0], "TEXTURE_FILENAME") == 0)
 			{
 				SkipEqual(pFile);
-				FilePath[0] = LoadPath(pFile);
+				FilePath[0] = LoadPath(pFile,FilePath[0]);
 				strcpy(&FilePathPoly[PolygonePathCount][0],FilePath[0]);
 				SetfieldTexture(&FilePathPoly[PolygonePathCount][0], PolygonePathCount);
 				if (PolygonePathCount < nType.nPolygoneType)
@@ -108,9 +109,9 @@ void LoadStart(FILE* pFile)
 			else if (strcmp(&cData1[0], "MODEL_FILENAME") == 0)
 			{
 				SkipEqual(pFile);
-				FilePath[0] = LoadPath(pFile);
+				FilePath[0] = LoadPath(pFile,FilePath[0]);
 				strcpy(&FilePathModel[ModelPathCount][0], FilePath[0]);
-				SetStageModelInfo(&FilePathModel[ModelPathCount][0], ModelPathCount);
+				SetStageModelInfo(&FilePath[0], ModelPathCount);
 				if (ModelPathCount < nType.nModelType)
 				{
 					ModelPathCount++;
@@ -223,7 +224,7 @@ void LoadStart(FILE* pFile)
 		else
 		{
 			cData1[0] = { NULL };
-			if (cData[0] != 0x0a && cData[0] != '#')
+			if (cData[0] == '#')
 			{
 				SkipComment(pFile);
 			}
@@ -301,7 +302,7 @@ float LoadFloat(FILE* pFile)
 //******************************
 // // 文字列を読み込む処理
 //******************************
-char *LoadPath(FILE* pFile)
+char *LoadPath(FILE* pFile,char *cData2)
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
@@ -317,7 +318,7 @@ char *LoadPath(FILE* pFile)
 		else
 		{
 			strcpy(filepath, cData1);
-			cData1[0] = { NULL };
+			cData2 = cData1;
 			if (*cData == '#')
 			{
 				SkipComment(pFile);
@@ -325,7 +326,7 @@ char *LoadPath(FILE* pFile)
 			break;
 		}
 	}
-	return &filepath[0];
+	return cData2;
 }
 //*************************************
 // カメラ情報を読み込む処理
@@ -524,7 +525,7 @@ char* LoadFieldInfo(FILE* pFile)
 	char cData2[64] = { NULL };
 	D3DXVECTOR3 Pos,Rot;
 	D3DXVECTOR2 Block, Size;
-	int nType;
+	int nType = 0;
 
 	while (1)
 	{
@@ -665,12 +666,12 @@ char* LoadWallInfo(FILE* pFile)
 //*************************************
 char* LoadModelInfo(FILE* pFile)
 {
-	char cData[2] = { NULL };
-	char cData1[128] = { NULL };
+	char cData[2] = {};
+	char cData1[128] = {};
 	char cData2[64] = { NULL };
 	D3DXVECTOR3 Pos, Rot;
-	bool bShadow;
-	int nType;
+	bool bShadow = false;
+	int nType = 0;
 
 	while (1)
 	{
@@ -840,7 +841,7 @@ char* LoadPlayerInfo(FILE* pFile)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				cData3[0] = LoadPath(pFile);
+				cData3[0] = LoadPath(pFile,cData3[0]);
 				strcpy(cFileName, cData3[0]);
 			}
 			else if (strcmp(&cData1[0], "END_PLAYERSET") == 0)

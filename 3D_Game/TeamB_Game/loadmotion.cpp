@@ -10,7 +10,7 @@ void InitMotion()
 	nType = 0;
 	for (int LoadCount = 0; LoadCount < LOADTYPE_MAX; LoadCount++)
 	{
-		g_LoadInfo[LoadCount] = { NULL };
+		g_LoadInfo[LoadCount] = {NULL};
 	}
 }
 //*****************************
@@ -44,8 +44,8 @@ void LoadMotionViewer(char* cMotionPath)
 			}
 		}
 		LoadMotionStart(pFile);
+		fclose(pFile);
 	}
-	fclose(pFile);
 }
 //*****************************
 // スクリプト以降を読み込む処理
@@ -86,7 +86,7 @@ void LoadMotionStart(FILE* pFile)
 			{
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
-				ModelPath[0] = LoadPath(pFile);
+				ModelPath[0] = LoadPath(pFile,ModelPath[0]);
 				strcpy(&g_LoadInfo[nType].cPartsPath[g_LoadInfo[nType].PathCount][0], ModelPath[0]);
 				g_LoadInfo[nType].PathCount++;
 			}

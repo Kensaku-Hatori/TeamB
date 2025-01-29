@@ -247,12 +247,19 @@ void SetfieldTexture(char* pFileName, int TexIndx)
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
+	HRESULT hresult;
+
 	strcpy(fieldtexName[TexIndx], pFileName);
 
 	//テクスチャの読込
-	D3DXCreateTextureFromFile(pDevice,
+	hresult = D3DXCreateTextureFromFile(pDevice,
 		&fieldtexName[TexIndx][0],
 		&g_pTextureMeshfield[TexIndx]);
+
+	if (FAILED(hresult))
+	{
+		return;
+	}
 }
 
 //===============================
