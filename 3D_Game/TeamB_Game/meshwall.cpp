@@ -186,7 +186,7 @@ void SetMeshWall(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX, int 
 					pVtx[nCntVtx].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 					//テクスチャ座標の設定
-					pVtx[nCntVtx].tex = D3DXVECTOR2((2.0f / g_MeshWall[nCnt].nDiviX) * nCntX, (2.0f / g_MeshWall[nCnt].nDiviY) * nCntY);
+					pVtx[nCntVtx].tex = D3DXVECTOR2(1.0f * nCntX, (1.0f / g_MeshWall[nCnt].nDiviY) * nCntY);
 
 					nCntVtx++;
 				}
