@@ -37,6 +37,7 @@ void InitImpact(void)
 		g_Impact[ImpactCount].bUse = false;
 	}
 }
+
 //*****************
 // è’åÇîgÇÃèIóπèàóù
 //*****************
@@ -129,9 +130,11 @@ void UpdateImpact(void)
 			case IMPACTTYPE_NORMAL:
 				//collisionImpact(ImpactCount);
 				break;
+
 			case IMPACTTYPE_ENEMY:
 				//collisionImpactPlayer(ImpactCount);
 				break;
+
 			}
 		}
 	}

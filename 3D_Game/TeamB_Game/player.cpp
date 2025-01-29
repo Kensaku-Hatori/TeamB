@@ -4,6 +4,7 @@
 // Author:kaiti
 //
 //=================================
+
 #include "player.h"
 #include "input.h"
 #include "camera.h"
@@ -261,7 +262,7 @@ void UpdatePlayer(void)
 		{// SPACE
 			if (g_player.bJump == false)
 			{
-				SetImpact(IMPACTTYPE_NORMAL, D3DXVECTOR3(g_player.pos.x,0.1f,g_player.pos.z), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 180, 20.0f, 25.0f, 8, 1, 0.1f);
+				SetImpact(IMPACTTYPE_NORMAL, D3DXVECTOR3(g_player.pos.x,0.1f,g_player.pos.z), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 180, 20.0f, 50.0f, 8, 1, 0.1f);
 				SetMotion(MOTIONTYPE_JUMP, &g_player.PlayerMotion);
 				g_player.bJump = true;
 				g_player.move.y += g_player.nJump;
