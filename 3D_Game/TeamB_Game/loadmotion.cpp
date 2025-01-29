@@ -56,7 +56,7 @@ void LoadMotionStart(FILE* pFile)
 	char cData1[128] = { NULL };
 	char* cData2[32] = { NULL };
 	int nData;
-	char* ModelPath[32];
+	char* ModelPath[32] = { NULL };
 	int CharactorCount, PartsCount,PathCount;
 	CharactorCount = 0;
 	PartsCount = 0;

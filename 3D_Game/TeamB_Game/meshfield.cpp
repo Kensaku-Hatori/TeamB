@@ -12,7 +12,7 @@
 LPDIRECT3DTEXTURE9 g_pTextureMeshfield[MAX_TEX_FIELD] = { NULL };		//テクスチャへのポインタ
 
 MeshField g_Meshfield[MESH_NUM_MAX];									//ポリゴン(横)の構造体
-static char fieldtexName[MAX_TEX_FIELD][32] = { NULL };					//テクスチャファイル名保存用
+static char fieldtexName[MAX_TEX_FIELD][64] = { NULL };					//テクスチャファイル名保存用
 
 //=================================
 // メッシュ床の初期化処理

@@ -804,7 +804,7 @@ char* LoadPlayerInfo(FILE* pFile)
 	char cData2[64] = { NULL };
 	char *cData3[64] = { NULL };
 	D3DXVECTOR3 Pos,Rot;
-	char cFileName[32];
+	char cFileName[64] = {};
 
 	while (1)
 	{
