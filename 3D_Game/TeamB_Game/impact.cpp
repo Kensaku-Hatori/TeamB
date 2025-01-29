@@ -1,3 +1,10 @@
+//********************************************************
+// 
+// 衝撃波[impact.cpp]
+// Author:Hatori
+// 
+//********************************************************
+
 //*************
 // インクルード
 //*************
@@ -12,6 +19,7 @@ RINGIMPACT g_Impact[MAX_IMPACT];
 
 // ８とかのやつVERTICAL
 // ２とかのやつHORIZON
+
 //*******************
 // 衝撃波の初期化処理
 //*******************
@@ -114,6 +122,8 @@ void UpdateImpact(void)
 			{
 				g_Impact[ImpactCount].bUse = false;
 			}
+
+			//当たり判定
 			switch (g_Impact[ImpactCount].nType)
 			{
 			case IMPACTTYPE_NORMAL:
@@ -170,6 +180,7 @@ void DrawImpact(void)
 	}
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 }
+
 //*****************
 // 衝撃波の設定処理
 //*****************

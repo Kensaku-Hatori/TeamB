@@ -241,7 +241,6 @@ void UpdatePlayer(void)
 			{
 				SetSkill(g_player.pos, g_player.move, g_player.rot);
 				g_player.Status.nMP -= 50; //MPè¡îÔ
-				SetImpact(IMPACTTYPE_NORMAL, g_player.pos, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 3, 20.0f, 2.0f, 8, 1, 0.1f);
 			}
 			SetMotion(MOTIONTYPE_ACTION,&g_player.PlayerMotion);
 		}
@@ -262,6 +261,7 @@ void UpdatePlayer(void)
 		{// SPACE
 			if (g_player.bJump == false)
 			{
+				SetImpact(IMPACTTYPE_NORMAL, D3DXVECTOR3(g_player.pos.x,0.1f,g_player.pos.z), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 180, 20.0f, 25.0f, 8, 1, 0.1f);
 				SetMotion(MOTIONTYPE_JUMP, &g_player.PlayerMotion);
 				g_player.bJump = true;
 				g_player.move.y += g_player.nJump;
