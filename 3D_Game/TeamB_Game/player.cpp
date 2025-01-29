@@ -408,7 +408,7 @@ void DrawPlayer(void)
 				//マテリアルの設定
 				pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
 				//テクスチャの設定
-				pDevice->SetTexture(0, g_player.PlayerMotion.aModel[nCntModel].pTexture[nCntModel]);
+				pDevice->SetTexture(0, g_player.PlayerMotion.aModel[nCntModel].pTexture[nCntMat]);
 				//プレイヤーの描画
 				g_player.PlayerMotion.aModel[nCntModel].pMesh->DrawSubset(nCntMat);
 			}
