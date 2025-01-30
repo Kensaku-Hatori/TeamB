@@ -12,7 +12,7 @@
 #include "shadow.h"
 
 
-#define MAX_EFFECT (512)
+#define MAX_EFFECT (4096)
 #define MAX_SMOKEANIM (8)
 #define SMOKEANIMSPEED (20)
 #define MAX_SMOKELENGTH (float)(2)

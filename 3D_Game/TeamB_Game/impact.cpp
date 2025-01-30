@@ -37,6 +37,7 @@ void InitImpact(void)
 		g_Impact[ImpactCount].bUse = false;
 	}
 }
+
 //*****************
 // 衝撃波の終了処理
 //*****************
@@ -72,6 +73,7 @@ void UpdateImpact(void)
 		{
 			int nCnt = 0;
 
+			//広げる処理
 			g_Impact[ImpactCount].nLife--;
 			g_Impact[ImpactCount].inringsize = g_Impact[ImpactCount].inringsize + g_Impact[ImpactCount].Speed;
 			g_Impact[ImpactCount].outringsize = g_Impact[ImpactCount].outringsize + g_Impact[ImpactCount].Speed;
@@ -82,6 +84,7 @@ void UpdateImpact(void)
 
 			g_Impact[ImpactCount].col.a -= g_Impact[ImpactCount].AlphaDef;
 
+			//内側
 			for (int vertexcount = 0; vertexcount <= g_Impact[ImpactCount].Vertical; vertexcount++)
 			{
 				D3DXVECTOR3 MathNor;
@@ -100,6 +103,7 @@ void UpdateImpact(void)
 				nCnt++;
 			}
 
+			//外側
 			for (int vertexcount = 0; vertexcount <= g_Impact[ImpactCount].Vertical; vertexcount++)
 			{
 				D3DXVECTOR3 MathNor;
@@ -110,6 +114,13 @@ void UpdateImpact(void)
 				pVtx[nCnt].pos.x = 0.0f + sinf(ratioH) * g_Impact[ImpactCount].outringsize;
 				pVtx[nCnt].pos.y = 0.0f;
 				pVtx[nCnt].pos.z = 0.0f + cosf(ratioH) * g_Impact[ImpactCount].outringsize;
+
+				//魔法なら
+				if (g_Impact[ImpactCount].nType == IMPACTTYPE_SKILL)
+				{
+					pVtx[nCnt].pos.y = -PROFOUND;
+				}
+
 				MathNor = D3DXVECTOR3(pVtx[nCnt].pos.x - 0.0f, pVtx[nCnt].pos.y - 0.0f, pVtx[nCnt].pos.z - 0.0f);
 				D3DXVec3Normalize(&pVtx[nCnt].nor, &MathNor);
 				nCnt++;
@@ -118,6 +129,7 @@ void UpdateImpact(void)
 			// 頂点バッファをアンロック
 			g_Impact[ImpactCount].pVtxBuffImpact->Unlock();
 
+			//α値が0になったら使っていない状態にする
 			if (g_Impact[ImpactCount].col.a < 0.0f)
 			{
 				g_Impact[ImpactCount].bUse = false;
@@ -129,9 +141,11 @@ void UpdateImpact(void)
 			case IMPACTTYPE_NORMAL:
 				//collisionImpact(ImpactCount);
 				break;
+
 			case IMPACTTYPE_ENEMY:
 				//collisionImpactPlayer(ImpactCount);
 				break;
+
 			}
 		}
 	}
@@ -149,8 +163,15 @@ void DrawImpact(void)
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
+
 	for (int ImpactCount = 0; ImpactCount < MAX_IMPACT; ImpactCount++)
 	{
+		//魔法なら
+		if (g_Impact[ImpactCount].nType == IMPACTTYPE_SKILL)
+		{
+			pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+		}
+
 		if (g_Impact[ImpactCount].bUse == true)
 		{
 			// ワールドマトリックスの初期化
@@ -177,6 +198,11 @@ void DrawImpact(void)
 			// ポリゴンの描画
 			pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, g_Impact[ImpactCount].Vertex, 0, g_Impact[ImpactCount].Polygone);
 		}
+
+		if (g_Impact[ImpactCount].nType == IMPACTTYPE_SKILL)
+		{
+			pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+		}
 	}
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 }
@@ -184,7 +210,7 @@ void DrawImpact(void)
 //*****************
 // 衝撃波の設定処理
 //*****************
-void SetImpact(IMPACTTYPE nType, D3DXVECTOR3 pos, D3DXCOLOR col, int nLife, float inringsize,float outringsize, int Horizon, int Vertical,float Speed)
+void SetImpact(IMPACTTYPE nType, D3DXVECTOR3 pos, D3DXCOLOR col, int nLife, float inringsize,float outringsize, int Horizon, int Vertical,float Speed, float RotY)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();	// デバイスの取得処理
 
@@ -207,6 +233,13 @@ void SetImpact(IMPACTTYPE nType, D3DXVECTOR3 pos, D3DXCOLOR col, int nLife, floa
 			g_Impact[ImpactCount].inringsize = inringsize;
 			g_Impact[ImpactCount].outringsize = outringsize;
 			g_Impact[ImpactCount].col = col;
+			g_Impact[ImpactCount].Object.Rot.y = RotY;
+
+			//魔法のとき角度を変える
+			if (g_Impact[ImpactCount].nType == IMPACTTYPE_SKILL)
+			{
+				g_Impact[ImpactCount].Object.Rot.x = - D3DX_PI * 0.5f;
+			}
 
 			////テクスチャの読み込み
 			//D3DXCreateTextureFromFile(pDevice,
@@ -251,6 +284,7 @@ void SetImpact(IMPACTTYPE nType, D3DXVECTOR3 pos, D3DXCOLOR col, int nLife, floa
 				pVtx[nCnt].pos.x = g_Impact[ImpactCount].Object.Pos.x + sinf(ratioH) * outringsize;
 				pVtx[nCnt].pos.y = 0.0f;
 				pVtx[nCnt].pos.z = g_Impact[ImpactCount].Object.Pos.z + cosf(ratioH) * outringsize;
+
 				//MathNor = D3DXVECTOR3(pVtx[nCnt].pos.x - 0.0f, pVtx[nCnt].pos.y - 0.0f, pVtx[nCnt].pos.z - 0.0f);
 				//D3DXVec3Normalize(&pVtx[nCnt].nor, &MathNor);
 				pVtx[nCnt].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);

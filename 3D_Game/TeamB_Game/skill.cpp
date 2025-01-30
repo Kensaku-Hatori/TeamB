@@ -12,11 +12,13 @@
 #include "wall.h"
 #include "particle.h"
 #include "enemy.h"
+#include "impact.h"
 
 //グローバル変数宣言
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffSkill = NULL;
-LPDIRECT3DTEXTURE9 g_apTextureSkill[1] = {};
+LPDIRECT3DTEXTURE9 g_apTextureSkill = {};
 Skill g_Skill[MAX_SKILL];
+
 //=========================
 // 弾の初期化処理
 //=========================
@@ -35,7 +37,7 @@ void InitSkill(void)
 		g_Skill[nCnt].bUse = false;
 	}
 
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\bullet000.png", &g_apTextureSkill[0]); //1
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\bullet000.png", &g_apTextureSkill); //1
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 4 * MAX_SKILL,
@@ -86,10 +88,10 @@ void InitSkill(void)
 void UninitSkill(void)
 {
 	//テクスチャの破棄
-	if (g_apTextureSkill[0] != NULL)
+	if (g_apTextureSkill != NULL)
 	{
-		g_apTextureSkill[0]->Release();
-		g_apTextureSkill[0] = NULL;
+		g_apTextureSkill->Release();
+		g_apTextureSkill = NULL;
 	}
 
 	//頂点バッファの破棄
@@ -104,18 +106,20 @@ void UninitSkill(void)
 //=======================
 void UpdateSkill(void)
 {
-	Player* pPlayer;
-	pPlayer = GetPlayer();
-
-	Shadow* pShadow;
-	pShadow = GetShadow();
+	//プレイヤーの情報取得
+	Player* pPlayer = GetPlayer();
+	
+	//影の情報取得
+	Shadow* pShadow = GetShadow();
 	
 	for (int nCnt = 0; nCnt < MAX_SKILL; nCnt++)
 	{
 		if (g_Skill[nCnt].bUse == true)
 		{
+			//魔法の当たり判定
 			SkillCollision(nCnt);
 
+			//エフェクトの設定
 			SetEffect(g_Skill[nCnt].pos,
 					  D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 					  10,
@@ -123,6 +127,21 @@ void UpdateSkill(void)
 					  D3DXVECTOR3(3.0f, 3.0f, 3.0f), 
 					  D3DXCOLOR(0.80f, 1.00f, 0.00f,1.0f),
 					  EFFECT_NONE);
+
+			if ((g_Skill[nCnt].nLife % INTERVAL_IMPACT) == 0)
+			{
+				//衝撃波の設定
+				SetImpact(IMPACTTYPE_SKILL,
+					g_Skill[nCnt].pos,
+					D3DXCOLOR(0.9f, 1.0f, 1.0f, 1.0f),
+					30,
+					5.0f,
+					10.0f,
+					2,
+					50,
+					0.5f,
+					g_Skill[nCnt].rot.y);
+			}
 
 			g_Skill[nCnt].pos += g_Skill[nCnt].move;
 
@@ -139,6 +158,7 @@ void UpdateSkill(void)
 		}
 	}
 }
+
 //=======================
 // 弾の描画処理
 //=======================
@@ -194,7 +214,7 @@ void DrawSkill(void)
 			pDevice->SetFVF(FVF_VERTEX_3D);
 
 			//テクスチャの設定
-			pDevice->SetTexture(0, g_apTextureSkill[0]);
+			pDevice->SetTexture(0, g_apTextureSkill);
 
 			//ポリゴンを描画
 			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
@@ -206,6 +226,7 @@ void DrawSkill(void)
 	//ライトを有効に戻す
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 }
+
 //===================
 // 弾の設定
 //===================
@@ -225,12 +246,16 @@ void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot)
 		}
 	}
 }
+
 //========================
 // 敵と魔法の当たり判定
 //========================
 void SkillCollision(int nIdx)
 {
+	//敵の情報取得
 	ENEMY* pEnemy = GetEnemy();
+
+	//プレイヤーの情報取得
 	Player* pPlayer = GetPlayer();
 
 	for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)

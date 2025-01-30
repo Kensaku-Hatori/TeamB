@@ -71,6 +71,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow);
 void Uninit(void);
 void Update(void);
 void Draw(void);
+void DrawPlayerCollision();
 void DrawEffectEditer();
 void onWireFrame();
 void offWireFrame();
@@ -78,4 +79,7 @@ void SetMode(MODE mode);
 MODE GetMode(void);
 LPDIRECT3DDEVICE9 GetDevice(void);
 D3DXVECTOR3 *PitoRadian(D3DXVECTOR3 *rot);		// ÉâÉWÉAÉìílÇ©ÇÁPIÇ…ïœä∑Ç∑ÇÈèàóù
+void DrawCameraInfo();
+void DrawPlayerInfo();
+
 #endif

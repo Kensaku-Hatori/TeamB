@@ -13,7 +13,7 @@
 #include "key.h"
 #include "loadmotion.h"
 
-#define PLAYER_JUMP (5)				// ジャンプ量
+#define PLAYER_JUMP (7)				// ジャンプ量
 #define PLAYER_RADIUS (3)			// プレイヤーの半径
 
 #define PLAYER_MP (500)				// MP
@@ -53,6 +53,7 @@ typedef struct
 	int nCntMotionBlend;			// ブレンドモーションのカウンター
 	int nFrameBlend;				// ブレンドフレーム
 	int nCntBlend;					// ブレンドフレームカウント
+	bool btest;
 }Player;
 
 //プロトタイプ宣言
@@ -60,6 +61,7 @@ void InitPlayer(void);
 void UninitPlayer(void);
 void UpdatePlayer(void);
 void DrawPlayer(void);
+void PlayerMove(void);
 Player* GetPlayer(void);
 void SetMesh(char* pFilePath, int Indx);
 void SetPartsInfo(LoadInfo PartsInfo);

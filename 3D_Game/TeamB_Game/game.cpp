@@ -329,9 +329,6 @@ void DrawGame(void)
 	//影の描画処理
 	DrawShadow();
 
-	//衝撃波の描画処理
-	DrawImpact();
-
 	////ブロックの描画処理
 	//DrawBlock();
 
@@ -370,6 +367,9 @@ void DrawGame(void)
 
 		//UIの描画処理
 		DrawUi();
+
+		//衝撃波の描画処理
+		DrawImpact();
 	}
 
 	//ポーズしているなら

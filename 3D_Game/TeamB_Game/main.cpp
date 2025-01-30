@@ -13,7 +13,8 @@
 #include "ranking.h"
 #include "sound.h"
 #include "particleEditer.h"
-
+#include "camera.h"
+#include "player.h"
 //グローバル変数宣言
 LPDIRECT3D9 g_pD3D = NULL;
 LPDIRECT3DDEVICE9 g_pD3DDevice = NULL;
@@ -384,7 +385,11 @@ void Draw(void)
 		}
 
 #ifdef _DEBUG
+		DrawPlayerCollision();
 		DrawEffectEditer();
+		DrawCameraInfo();
+		DrawPlayerInfo();
+
 #endif // DEBUG
 
 		DrawFade();
@@ -450,10 +455,23 @@ MODE GetMode(void)
 {
 	return g_mode;
 }
-void DrawEffectEditer()
+void DrawPlayerCollision()
 {
 	PARTICLEEDITER* pEditer = GetParticleInfo();
 	RECT rect = { 0,0,SCREEN_WIDTH,SCREEN_HEIGHT };
+	char aStr[256];
+	Player* pPlayer = GetPlayer();
+
+	// 文字列に代入
+	sprintf(&aStr[0], "当たっているか:%d\nプレイヤーのポス:%3.2f,%3.2f,%3.2f",pPlayer->btest,pPlayer->pos.x, pPlayer->pos.y, pPlayer->pos.z);
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+}
+void DrawEffectEditer()
+{
+	PARTICLEEDITER* pEditer = GetParticleInfo();
+	RECT rect = { 0,30,SCREEN_WIDTH,SCREEN_HEIGHT };
 	char aStr[256];
 
 	// 文字列に代入
@@ -462,7 +480,7 @@ void DrawEffectEditer()
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 
-	rect = { 0,120,SCREEN_WIDTH,SCREEN_HEIGHT };
+	rect = { 0,150,SCREEN_WIDTH,SCREEN_HEIGHT };
 
 	// 文字列に代入
 	sprintf(&aStr[0], "R,G,B:%3.2f,%3.2f,%3.2f\nX,Y,Z:%3.2f,%3.2f,%3.2f\nエフェクトの最大数:%d\nエフェクトの寿命:%d\n粒子の大きさX,Y,Z:%3.2f,%3.2f,%3.2f", pEditer->ParticleInfo.col.r,
@@ -479,6 +497,72 @@ void DrawEffectEditer()
 
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+}
+//
+// 
+// 
+void DrawCameraInfo()
+{
+	Camera* pCamera = GetCamera();
+
+	RECT rect = { 0,210,SCREEN_WIDTH,SCREEN_HEIGHT };
+	char aStr[256];
+
+	// 文字列に代入
+	sprintf(&aStr[0], "*****************カメラ情報*****************");
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+
+	rect = { 0,225,SCREEN_WIDTH,SCREEN_HEIGHT };
+
+	// 文字列に代入
+	sprintf(&aStr[0], "カメラの視点の向き:%3.2f,%3.2f,%3.2f", pCamera->rot.x,
+		pCamera->rot.y,
+		pCamera->rot.z);
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+
+
+
+}
+//
+//
+//
+void DrawPlayerInfo()
+{
+	Player* pPlayer = GetPlayer();
+
+	RECT rect = { 0,240,SCREEN_WIDTH,SCREEN_HEIGHT };
+	char aStr[256];
+
+	// 文字列に代入
+	sprintf(&aStr[0], "*****************プレイヤー情報*****************");
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+
+	rect = { 0,255,SCREEN_WIDTH,SCREEN_HEIGHT };
+
+	// 文字列に代入
+	sprintf(&aStr[0], "プレイヤーの向き:%3.2f,%3.2f,%3.2f", pPlayer->rot.x,
+		pPlayer->rot.y,
+		pPlayer->rot.z);
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+
+	rect = { 0,270,SCREEN_WIDTH,SCREEN_HEIGHT };
+
+	// 文字列に代入
+	sprintf(&aStr[0], "プレイヤーの目標の向き:%3.2f,%3.2f,%3.2f", pPlayer->rotDest.x,
+		pPlayer->rotDest.y,
+		pPlayer->rotDest.z);
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+
 }
 //=============
 // ワイヤー

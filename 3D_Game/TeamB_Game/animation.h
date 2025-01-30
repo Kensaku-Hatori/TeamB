@@ -6,4 +6,6 @@
 
 void UpdateMotion(OBJECTINFO *Motion);
 void SetMotion(MOTIONTYPE MotionType, OBJECTINFO*Motion);
+void MotionBlend(void);
+
 #endif // !ANIMATION_H_
