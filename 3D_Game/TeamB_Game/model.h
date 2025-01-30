@@ -36,7 +36,8 @@ typedef struct
 {
 	D3DXVECTOR3 CenterPos;
 	D3DXVECTOR3 RotVec[3];
-	D3DXVECTOR3 FaceLength;
+	FLOAT fLength[3];
+	D3DXMATRIX CenterMtx;
 }OBB;
 
 //ÉÇÉfÉãÇÃç\ë¢ëÃ
@@ -83,6 +84,7 @@ void DrawStageModel();
 void SetStageModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot, MODELTYPE nType);
 void SetStageModelInfo(char *ModelPath[],int nType);
 void LenOBBToPoint(OBB& obb, D3DXVECTOR3& p);
+void CollOBBs(OBB& obb, D3DXVECTOR3& p);
 FLOAT LenSegOnSeparateAxis(D3DXVECTOR3* Sep, D3DXVECTOR3* e1, D3DXVECTOR3* e2, D3DXVECTOR3* e3 = 0);
 void DotOBBToPoint(OBB& obb, D3DXVECTOR3& p);
 #endif

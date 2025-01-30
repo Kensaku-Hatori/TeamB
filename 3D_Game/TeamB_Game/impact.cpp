@@ -235,7 +235,7 @@ void SetImpact(IMPACTTYPE nType, D3DXVECTOR3 pos, D3DXCOLOR col, int nLife, floa
 			g_Impact[ImpactCount].col = col;
 			g_Impact[ImpactCount].Object.Rot.y = RotY;
 
-			//–‚–@‚Ì‚Æ‚«Šp“x‚ð•Ï‚¦‚é
+			// –‚–@‚Ì‚Æ‚«Šp“x‚ð•Ï‚¦‚é
 			if (g_Impact[ImpactCount].nType == IMPACTTYPE_SKILL)
 			{
 				g_Impact[ImpactCount].Object.Rot.x = - D3DX_PI * 0.5f;

@@ -210,12 +210,16 @@ void UpdateGame(void)
 			//パーティクルの更新処理
 			UpdateParticle(true);
 
+#ifdef _DEBUG
+
 			//エディターの切り替え
 			if (GetKeyboardPress(DIK_E) && GetKeyboardPress(DIK_F2))
 			{
 				InitParticleEditer();
 				SetGameState(GAMESTATE_EFFECTEDITER);
 			}
+
+#endif // DEBUG
 
 			////ブロックの更新処理
 			//UpdateBlock();
