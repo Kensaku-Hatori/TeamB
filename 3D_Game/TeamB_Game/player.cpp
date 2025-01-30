@@ -36,7 +36,7 @@ void InitPlayer(void)
 	//デバイスの取得
 	pDevice = GetDevice();
 
-	g_player.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	g_player.pos = D3DXVECTOR3(0.0f, 0.0f, 400.0f);
 	g_player.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
