@@ -11,7 +11,7 @@
 
 #define MAX_TEX (32)
 #define MAX_PARTS (15)//ƒp[ƒc‚ÌÅ‘å”
-#define MAX_STAGEMODEL (25)
+#define MAX_STAGEMODEL (128)
 
 typedef enum
 {
