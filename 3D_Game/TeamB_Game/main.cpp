@@ -13,8 +13,8 @@
 #include "ranking.h"
 #include "sound.h"
 #include "particleEditer.h"
+#include "camera.h"
 #include "player.h"
-
 //グローバル変数宣言
 LPDIRECT3D9 g_pD3D = NULL;
 LPDIRECT3DDEVICE9 g_pD3DDevice = NULL;
@@ -387,6 +387,9 @@ void Draw(void)
 #ifdef _DEBUG
 		DrawPlayerCollision();
 		DrawEffectEditer();
+		DrawCameraInfo();
+		DrawPlayerInfo();
+
 #endif // DEBUG
 
 		DrawFade();
@@ -494,6 +497,72 @@ void DrawEffectEditer()
 
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+}
+//
+// 
+// 
+void DrawCameraInfo()
+{
+	Camera* pCamera = GetCamera();
+
+	RECT rect = { 0,210,SCREEN_WIDTH,SCREEN_HEIGHT };
+	char aStr[256];
+
+	// 文字列に代入
+	sprintf(&aStr[0], "*****************カメラ情報*****************");
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+
+	rect = { 0,225,SCREEN_WIDTH,SCREEN_HEIGHT };
+
+	// 文字列に代入
+	sprintf(&aStr[0], "カメラの視点の向き:%3.2f,%3.2f,%3.2f", pCamera->rot.x,
+		pCamera->rot.y,
+		pCamera->rot.z);
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+
+
+
+}
+//
+//
+//
+void DrawPlayerInfo()
+{
+	Player* pPlayer = GetPlayer();
+
+	RECT rect = { 0,240,SCREEN_WIDTH,SCREEN_HEIGHT };
+	char aStr[256];
+
+	// 文字列に代入
+	sprintf(&aStr[0], "*****************プレイヤー情報*****************");
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+
+	rect = { 0,255,SCREEN_WIDTH,SCREEN_HEIGHT };
+
+	// 文字列に代入
+	sprintf(&aStr[0], "プレイヤーの向き:%3.2f,%3.2f,%3.2f", pPlayer->rot.x,
+		pPlayer->rot.y,
+		pPlayer->rot.z);
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+
+	rect = { 0,270,SCREEN_WIDTH,SCREEN_HEIGHT };
+
+	// 文字列に代入
+	sprintf(&aStr[0], "プレイヤーの目標の向き:%3.2f,%3.2f,%3.2f", pPlayer->rotDest.x,
+		pPlayer->rotDest.y,
+		pPlayer->rotDest.z);
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+
 }
 //=============
 // ワイヤー

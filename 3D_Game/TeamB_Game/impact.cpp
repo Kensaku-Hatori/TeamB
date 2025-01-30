@@ -1,3 +1,10 @@
+//********************************************************
+// 
+// 衝撃波[impact.cpp]
+// Author:Hatori
+// 
+//********************************************************
+
 //*************
 // インクルード
 //*************
@@ -12,6 +19,7 @@ RINGIMPACT g_Impact[MAX_IMPACT];
 
 // ８とかのやつVERTICAL
 // ２とかのやつHORIZON
+
 //*******************
 // 衝撃波の初期化処理
 //*******************
@@ -29,6 +37,7 @@ void InitImpact(void)
 		g_Impact[ImpactCount].bUse = false;
 	}
 }
+
 //*****************
 // 衝撃波の終了処理
 //*****************
@@ -64,6 +73,7 @@ void UpdateImpact(void)
 		{
 			int nCnt = 0;
 
+			//広げる処理
 			g_Impact[ImpactCount].nLife--;
 			g_Impact[ImpactCount].inringsize = g_Impact[ImpactCount].inringsize + g_Impact[ImpactCount].Speed;
 			g_Impact[ImpactCount].outringsize = g_Impact[ImpactCount].outringsize + g_Impact[ImpactCount].Speed;
@@ -74,6 +84,7 @@ void UpdateImpact(void)
 
 			g_Impact[ImpactCount].col.a -= g_Impact[ImpactCount].AlphaDef;
 
+			//内側
 			for (int vertexcount = 0; vertexcount <= g_Impact[ImpactCount].Vertical; vertexcount++)
 			{
 				D3DXVECTOR3 MathNor;
@@ -92,6 +103,7 @@ void UpdateImpact(void)
 				nCnt++;
 			}
 
+			//外側
 			for (int vertexcount = 0; vertexcount <= g_Impact[ImpactCount].Vertical; vertexcount++)
 			{
 				D3DXVECTOR3 MathNor;
@@ -102,6 +114,13 @@ void UpdateImpact(void)
 				pVtx[nCnt].pos.x = 0.0f + sinf(ratioH) * g_Impact[ImpactCount].outringsize;
 				pVtx[nCnt].pos.y = 0.0f;
 				pVtx[nCnt].pos.z = 0.0f + cosf(ratioH) * g_Impact[ImpactCount].outringsize;
+
+				//魔法なら
+				if (g_Impact[ImpactCount].nType == IMPACTTYPE_SKILL)
+				{
+					pVtx[nCnt].pos.y = -PROFOUND;
+				}
+
 				MathNor = D3DXVECTOR3(pVtx[nCnt].pos.x - 0.0f, pVtx[nCnt].pos.y - 0.0f, pVtx[nCnt].pos.z - 0.0f);
 				D3DXVec3Normalize(&pVtx[nCnt].nor, &MathNor);
 				nCnt++;
@@ -110,18 +129,23 @@ void UpdateImpact(void)
 			// 頂点バッファをアンロック
 			g_Impact[ImpactCount].pVtxBuffImpact->Unlock();
 
+			//α値が0になったら使っていない状態にする
 			if (g_Impact[ImpactCount].col.a < 0.0f)
 			{
 				g_Impact[ImpactCount].bUse = false;
 			}
+
+			//当たり判定
 			switch (g_Impact[ImpactCount].nType)
 			{
 			case IMPACTTYPE_NORMAL:
-				collisionImpact(ImpactCount);
+				//collisionImpact(ImpactCount);
 				break;
+
 			case IMPACTTYPE_ENEMY:
-				collisionImpactPlayer(ImpactCount);
+				//collisionImpactPlayer(ImpactCount);
 				break;
+
 			}
 		}
 	}
@@ -139,8 +163,15 @@ void DrawImpact(void)
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
+
 	for (int ImpactCount = 0; ImpactCount < MAX_IMPACT; ImpactCount++)
 	{
+		//魔法なら
+		if (g_Impact[ImpactCount].nType == IMPACTTYPE_SKILL)
+		{
+			pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+		}
+
 		if (g_Impact[ImpactCount].bUse == true)
 		{
 			// ワールドマトリックスの初期化
@@ -167,13 +198,19 @@ void DrawImpact(void)
 			// ポリゴンの描画
 			pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, g_Impact[ImpactCount].Vertex, 0, g_Impact[ImpactCount].Polygone);
 		}
+
+		if (g_Impact[ImpactCount].nType == IMPACTTYPE_SKILL)
+		{
+			pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+		}
 	}
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 }
+
 //*****************
 // 衝撃波の設定処理
 //*****************
-void SetImpact(IMPACTTYPE nType, D3DXVECTOR3 pos, D3DXCOLOR col, int nLife, float inringsize,float outringsize, int Horizon, int Vertical,float Speed)
+void SetImpact(IMPACTTYPE nType, D3DXVECTOR3 pos, D3DXCOLOR col, int nLife, float inringsize,float outringsize, int Horizon, int Vertical,float Speed, float RotY)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();	// デバイスの取得処理
 
@@ -196,6 +233,13 @@ void SetImpact(IMPACTTYPE nType, D3DXVECTOR3 pos, D3DXCOLOR col, int nLife, floa
 			g_Impact[ImpactCount].inringsize = inringsize;
 			g_Impact[ImpactCount].outringsize = outringsize;
 			g_Impact[ImpactCount].col = col;
+			g_Impact[ImpactCount].Object.Rot.y = RotY;
+
+			//魔法のとき角度を変える
+			if (g_Impact[ImpactCount].nType == IMPACTTYPE_SKILL)
+			{
+				g_Impact[ImpactCount].Object.Rot.x = - D3DX_PI * 0.5f;
+			}
 
 			////テクスチャの読み込み
 			//D3DXCreateTextureFromFile(pDevice,
@@ -240,6 +284,7 @@ void SetImpact(IMPACTTYPE nType, D3DXVECTOR3 pos, D3DXCOLOR col, int nLife, floa
 				pVtx[nCnt].pos.x = g_Impact[ImpactCount].Object.Pos.x + sinf(ratioH) * outringsize;
 				pVtx[nCnt].pos.y = 0.0f;
 				pVtx[nCnt].pos.z = g_Impact[ImpactCount].Object.Pos.z + cosf(ratioH) * outringsize;
+
 				//MathNor = D3DXVECTOR3(pVtx[nCnt].pos.x - 0.0f, pVtx[nCnt].pos.y - 0.0f, pVtx[nCnt].pos.z - 0.0f);
 				//D3DXVec3Normalize(&pVtx[nCnt].nor, &MathNor);
 				pVtx[nCnt].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
@@ -284,57 +329,57 @@ void SetImpact(IMPACTTYPE nType, D3DXVECTOR3 pos, D3DXCOLOR col, int nLife, floa
 		}
 	}
 }
-void collisionImpact(int Indx)
-{
-	ENEMY* pEnemy = GetEnemy();
-	Player* pPlayer = GetPlayer();
-	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++,pEnemy++)
-	{
-		if (pEnemy->bHit == false && pEnemy->bUse == true && pEnemy->Object.Pos.y - 1.0f <= g_Impact[Indx].Object.Pos.y)
-		{
-			float DistanceX = g_Impact[Indx].Object.mtxWorld._41 - pEnemy->Object.mtxWorld._41;
-			float DistanceZ = g_Impact[Indx].Object.mtxWorld._43 - pEnemy->Object.mtxWorld._43;
-			float Distance = (DistanceX * DistanceX) + (DistanceZ * DistanceZ);
-			float fInLength = g_Impact[Indx].inringsize + pEnemy->Radius;
-			fInLength = fInLength * fInLength;
-			float fOutLength = g_Impact[Indx].outringsize + pEnemy->Radius;
-			fOutLength = fOutLength * fOutLength;
-			float Atack = pPlayer->Status.Atack * 0.1f;
-			if (Distance > fInLength && Distance < fOutLength && pEnemy->state != ENEMYSTATE_KNOCKUP)
-			{
-				D3DXVECTOR3 VecKnock;
-				VecKnock = pEnemy->Object.Pos - g_Impact[Indx].Object.Pos;
-				D3DXVec3Normalize(&VecKnock, &VecKnock);
-				VecKnock.y = 0.0f;
-				pEnemy->move = VecKnock;
-				HitEnemy(Atack, EnemyCount);
-			}
-		}
-	}
-}
-void collisionImpactPlayer(int Indx)
-{
-	ENEMY* pEnemy = GetEnemy();
-	Player* pPlayer = GetPlayer();
-	if (pPlayer->state != PLAYERSTATE_KNOCKUP && pPlayer->pos.y - 0.5f <= g_Impact[Indx].Object.Pos.y)
-	{
-		float DistanceX = g_Impact[Indx].Object.mtxWorld._41 - pEnemy->Object.mtxWorld._41;
-		float DistanceZ = g_Impact[Indx].Object.mtxWorld._43 - pEnemy->Object.mtxWorld._43;
-		float Distance = (DistanceX * DistanceX) + (DistanceZ * DistanceZ);
-		float fInLength = g_Impact[Indx].inringsize + pPlayer->PlayerXRadius;
-		fInLength = fInLength * fInLength;
-		float fOutLength = g_Impact[Indx].outringsize + pPlayer->PlayerXRadius;
-		fOutLength = fOutLength * fOutLength;
-		if (Distance > fInLength && Distance < fOutLength)
-		{
-			D3DXVECTOR3 VecKnock;
-			VecKnock = pPlayer->pos - g_Impact[Indx].Object.Pos;
-			D3DXVec3Normalize(&VecKnock, &VecKnock);
-			VecKnock.y = 10.0f;
-			pPlayer->move = VecKnock;
-			pPlayer->state = PLAYERSTATE_KNOCKUP;
-			pPlayer->StateCount = 50;
-			pPlayer->Status.Hp -= 5.0f;
-		}
-	}
-}
+//void collisionImpact(int Indx)
+//{
+//	ENEMY* pEnemy = GetEnemy();
+//	Player* pPlayer = GetPlayer();
+//	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++,pEnemy++)
+//	{
+//		if (pEnemy->bHit == false && pEnemy->bUse == true && pEnemy->Object.Pos.y - 1.0f <= g_Impact[Indx].Object.Pos.y)
+//		{
+//			float DistanceX = g_Impact[Indx].Object.mtxWorld._41 - pEnemy->Object.mtxWorld._41;
+//			float DistanceZ = g_Impact[Indx].Object.mtxWorld._43 - pEnemy->Object.mtxWorld._43;
+//			float Distance = (DistanceX * DistanceX) + (DistanceZ * DistanceZ);
+//			float fInLength = g_Impact[Indx].inringsize + pEnemy->Radius;
+//			fInLength = fInLength * fInLength;
+//			float fOutLength = g_Impact[Indx].outringsize + pEnemy->Radius;
+//			fOutLength = fOutLength * fOutLength;
+//			float Atack = pPlayer->Status.Atack * 0.1f;
+//			if (Distance > fInLength && Distance < fOutLength && pEnemy->state != ENEMYSTATE_KNOCKUP)
+//			{
+//				D3DXVECTOR3 VecKnock;
+//				VecKnock = pEnemy->Object.Pos - g_Impact[Indx].Object.Pos;
+//				D3DXVec3Normalize(&VecKnock, &VecKnock);
+//				VecKnock.y = 0.0f;
+//				pEnemy->move = VecKnock;
+//				HitEnemy(Atack, EnemyCount);
+//			}
+//		}
+//	}
+//}
+//void collisionImpactPlayer(int Indx)
+//{
+//	ENEMY* pEnemy = GetEnemy();
+//	Player* pPlayer = GetPlayer();
+//	if (pPlayer->state != PLAYERSTATE_KNOCKUP && pPlayer->pos.y - 0.5f <= g_Impact[Indx].Object.Pos.y)
+//	{
+//		float DistanceX = g_Impact[Indx].Object.mtxWorld._41 - pEnemy->Object.mtxWorld._41;
+//		float DistanceZ = g_Impact[Indx].Object.mtxWorld._43 - pEnemy->Object.mtxWorld._43;
+//		float Distance = (DistanceX * DistanceX) + (DistanceZ * DistanceZ);
+//		float fInLength = g_Impact[Indx].inringsize + pPlayer->PlayerXRadius;
+//		fInLength = fInLength * fInLength;
+//		float fOutLength = g_Impact[Indx].outringsize + pPlayer->PlayerXRadius;
+//		fOutLength = fOutLength * fOutLength;
+//		if (Distance > fInLength && Distance < fOutLength)
+//		{
+//			D3DXVECTOR3 VecKnock;
+//			VecKnock = pPlayer->pos - g_Impact[Indx].Object.Pos;
+//			D3DXVec3Normalize(&VecKnock, &VecKnock);
+//			VecKnock.y = 10.0f;
+//			pPlayer->move = VecKnock;
+//			pPlayer->state = PLAYERSTATE_KNOCKUP;
+//			pPlayer->StateCount = 50;
+//			pPlayer->Status.Hp -= 5.0f;
+//		}
+//	}
+//}

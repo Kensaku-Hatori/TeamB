@@ -154,6 +154,7 @@
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gauge.cpp" />
+    <ClCompile Include="impact.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="itemui.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gauge.h" />
+    <ClInclude Include="impact.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="itemui.h" />

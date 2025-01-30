@@ -61,6 +61,7 @@ void InitPlayer(void);
 void UninitPlayer(void);
 void UpdatePlayer(void);
 void DrawPlayer(void);
+void PlayerMove(void);
 Player* GetPlayer(void);
 void SetMesh(char* pFilePath, int Indx);
 void SetPartsInfo(LoadInfo PartsInfo);

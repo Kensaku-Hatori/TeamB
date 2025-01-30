@@ -172,8 +172,8 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 			int nCntVtx = 0;
 
 			//íÜâõÇ÷Ç∏ÇÁÇ∑
-			float centerX = g_Meshfield[nCnt].nWidth * (g_Meshfield[nCnt].nDiviX-2 ) * 0.5f;
-			float centerY = g_Meshfield[nCnt].nHeight * (g_Meshfield[nCnt].nDiviZ -2) * 0.5f;
+			float centerX = g_Meshfield[nCnt].nWidth * (g_Meshfield[nCnt].nDiviX - 2) * 0.5f;
+			float centerY = g_Meshfield[nCnt].nHeight * (g_Meshfield[nCnt].nDiviZ - 2) * 0.5f;
 
 			//í∏ì_èÓïÒÇÃê›íË
 			for (int nCntZ = 0; nCntZ <= g_Meshfield[nCnt].nDiviZ; nCntZ++)
