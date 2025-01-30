@@ -15,6 +15,8 @@
 #include "particleEditer.h"
 #include "camera.h"
 #include "player.h"
+#include "impact.h"
+
 //グローバル変数宣言
 LPDIRECT3D9 g_pD3D = NULL;
 LPDIRECT3DDEVICE9 g_pD3DDevice = NULL;
@@ -564,6 +566,7 @@ void DrawPlayerInfo()
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 
 }
+
 //=============
 // ワイヤー
 //=============
@@ -575,6 +578,7 @@ void offWireFrame()
 {
 	g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
+
 //*******************************
 // ラジアン値からPIに変換する処理
 //*******************************
