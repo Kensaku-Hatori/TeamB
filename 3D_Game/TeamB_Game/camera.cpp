@@ -16,7 +16,7 @@ Camera g_camera;
 void InitCamera(void)
 {
 	//視点・注視点・上方向を設定する
-	g_camera.posV = D3DXVECTOR3(0.0f, 200.0f, -250.0f);
+	g_camera.posV = D3DXVECTOR3(0.0f, 200.0f, -300.0f);
 	g_camera.posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_camera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
