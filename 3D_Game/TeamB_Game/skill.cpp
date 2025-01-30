@@ -16,7 +16,7 @@
 
 //グローバル変数宣言
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffSkill = NULL;
-LPDIRECT3DTEXTURE9 g_apTextureSkill[1] = {};
+LPDIRECT3DTEXTURE9 g_apTextureSkill = {};
 Skill g_Skill[MAX_SKILL];
 
 //=========================
@@ -37,7 +37,7 @@ void InitSkill(void)
 		g_Skill[nCnt].bUse = false;
 	}
 
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\bullet000.png", &g_apTextureSkill[0]); //1
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\bullet000.png", &g_apTextureSkill); //1
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 4 * MAX_SKILL,
@@ -88,10 +88,10 @@ void InitSkill(void)
 void UninitSkill(void)
 {
 	//テクスチャの破棄
-	if (g_apTextureSkill[0] != NULL)
+	if (g_apTextureSkill != NULL)
 	{
-		g_apTextureSkill[0]->Release();
-		g_apTextureSkill[0] = NULL;
+		g_apTextureSkill->Release();
+		g_apTextureSkill = NULL;
 	}
 
 	//頂点バッファの破棄
@@ -128,7 +128,7 @@ void UpdateSkill(void)
 					  D3DXCOLOR(0.80f, 1.00f, 0.00f,1.0f),
 					  EFFECT_NONE);
 
-			if ((g_Skill[nCnt].nLife % 2) == 0)
+			if ((g_Skill[nCnt].nLife % INTERVAL_IMPACT) == 0)
 			{
 				//衝撃波の設定
 				SetImpact(IMPACTTYPE_SKILL,
@@ -214,7 +214,7 @@ void DrawSkill(void)
 			pDevice->SetFVF(FVF_VERTEX_3D);
 
 			//テクスチャの設定
-			pDevice->SetTexture(0, g_apTextureSkill[0]);
+			pDevice->SetTexture(0, g_apTextureSkill);
 
 			//ポリゴンを描画
 			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
@@ -252,7 +252,10 @@ void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot)
 //========================
 void SkillCollision(int nIdx)
 {
+	//敵の情報取得
 	ENEMY* pEnemy = GetEnemy();
+
+	//プレイヤーの情報取得
 	Player* pPlayer = GetPlayer();
 
 	for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)

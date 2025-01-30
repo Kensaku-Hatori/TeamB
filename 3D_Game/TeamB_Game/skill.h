@@ -12,6 +12,7 @@
 #define MAX_SKILL (256)
 #define SKILL_LIFE (100)
 #define SKILL_SIZE (10)
+#define INTERVAL_IMPACT (2)
 
 //ビルボードの構造体
 typedef struct
