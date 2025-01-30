@@ -548,3 +548,50 @@ void PlayerMotion(MOTIONINFO *pMotionInfo)
 	}
 	g_player.bUse = true;
 }
+//
+//
+//
+bool IsEnemyInsight(void)
+{
+	ENEMY* pEnemy = GetEnemy();
+
+	D3DXVECTOR3 playerFront;
+
+	playerFront.x = -sinf(g_player.rot.y);
+	playerFront.y = 0.0f;
+	playerFront.z = -cosf(g_player.rot.y);
+
+	D3DXVECTOR3 toEnemy;
+
+	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++, pEnemy++)
+	{
+		if (pEnemy->bUse == true)
+		{
+			toEnemy.x = pEnemy->Object.Pos.x - g_player.pos.x;
+			toEnemy.y = 0.0f;
+			toEnemy.z = pEnemy->Object.Pos.z - g_player.pos.z;
+
+			D3DXVec3Normalize(&playerFront, &playerFront);
+
+			D3DXVec3Normalize(&toEnemy, &toEnemy);
+
+			float dotProduct = D3DXVec3Dot(&playerFront, &toEnemy);
+
+			if (dotProduct > cosf(g_player.sightAngle * 0.5f))
+			{
+				float distanceSquared =
+					(g_player.pos.x - pEnemy->Object.Pos.x) * (g_player.pos.x - pEnemy->Object.Pos.x) +
+					(g_player.pos.y - pEnemy->Object.Pos.y) * (g_player.pos.y - pEnemy->Object.Pos.y) +
+					(g_player.pos.z - pEnemy->Object.Pos.z) * (g_player.pos.z - pEnemy->Object.Pos.z);
+
+				if (distanceSquared <= g_player.sightRange * g_player.sightRange)
+				{
+					//EnemyDistanceSort(EnemyCount);
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}

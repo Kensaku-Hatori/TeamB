@@ -54,6 +54,10 @@ typedef struct
 	int nFrameBlend;				// ブレンドフレーム
 	int nCntBlend;					// ブレンドフレームカウント
 	bool btest;
+
+	float sightRange;
+	float sightAngle;
+
 }Player;
 
 //プロトタイプ宣言
@@ -66,4 +70,6 @@ Player* GetPlayer(void);
 void SetMesh(char* pFilePath, int Indx);
 void SetPartsInfo(LoadInfo PartsInfo);
 void PlayerMotion(MOTIONINFO *pMotionInfo);
+bool IsEnemyInsight(void);
+
 #endif

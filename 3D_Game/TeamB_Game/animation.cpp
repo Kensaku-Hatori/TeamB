@@ -12,6 +12,7 @@
 #include "animation.h"
 #include "effect.h"
 #include "impact.h"
+#include "player.h"
 
 //***************
 // グローバル変数
@@ -102,28 +103,28 @@ void SetMotion(MOTIONTYPE MotionType, OBJECTINFO* Motion)
 	g_bMotion = true;
 	Motion->motionType = MotionType;
 }
-//
-//
-//
+//=====================
+// モーションブレンド
+//=====================
 //void MotionBlend(void)
 //{
 //	Player* pPlayer = GetPlayer();
 //
-//	pPlayer->nCounterMotion++;
-//	pPlayer->nCounterBlendMotion++;
+//	pPlayer->nCntMotion++;
+//	pPlayer->nCntMotionBlend++;
 //
 //	if (pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].StartKey == pPlayer->nKey)
 //	{// 今のキーが開始するキーだったら
-//		if (pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].StartFlame <= pPlayer->nCounterMotion
-//			&& pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].EndFlame >= pPlayer->nCounterMotion)
+//		if (pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].StartFlame <= pPlayer->nCntMotion
+//			&& pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].EndFlame >= pPlayer->nCntMotion)
 //		{// 開始フレーム以上で終了フレーム以内なら
 //			collisionEnemy(pPlayer->WeponRadius[pPlayer->Pfolm]);
 //		}
 //	}
 //	if (pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aStartKey == pPlayer->nKey)
 //	{// 今のキーが二種類目の開始するキーだったら
-//		if (pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aStartFlame <= pPlayer->nCounterMotion
-//			&& pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aEndFlame >= pPlayer->nCounterMotion)
+//		if (pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aStartFlame <= pPlayer->nCntMotion
+//			&& pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aEndFlame >= pPlayer->nCntMotion)
 //		{// 二種類目の開始フレーム以上で二種類目の終了フレーム以内なら
 //			if (pPlayer->pMotion == MOTIONTYPE_ACTION)
 //			{
@@ -150,9 +151,9 @@ void SetMotion(MOTIONTYPE MotionType, OBJECTINFO* Motion)
 //		}
 //	}
 //
-//	if (pPlayer->nCounterMotion >= pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].nFrame)
+//	if (pPlayer->nCntMotion >= pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].nFrame)
 //	{// モーションカウンターが目標のフレーム以上だったら
-//		pPlayer->nCounterMotion = 0;
+//		pPlayer->nCntMotion = 0;
 //		if (pPlayer->bFinish == false)
 //		{
 //			pPlayer->nKey++;
@@ -199,9 +200,9 @@ void SetMotion(MOTIONTYPE MotionType, OBJECTINFO* Motion)
 //			}
 //		}
 //	}
-//	if (pPlayer->nCounterBlendMotion >= pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotionBlend].aKeyInfo[pPlayer->nKeyBlend].nFrame)
+//	if (pPlayer->nCntMotionBlend >= pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotionBlend].aKeyInfo[pPlayer->nKeyBlend].nFrame)
 //	{// モーションカウンターが目標のフレーム以上だったら
-//		pPlayer->nCounterBlendMotion = 0;
+//		pPlayer->nCntMotionBlend = 0;
 //		pPlayer->nKeyBlend++;
 //		pPlayer->nNexKeyBlend++;
 //		if (pPlayer->nKeyBlend == pPlayer->nNumKeyBlend - 1)
@@ -229,7 +230,7 @@ void SetMotion(MOTIONTYPE MotionType, OBJECTINFO* Motion)
 //	KEYINFO nKey = pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey];
 //	KEYINFO nNexKey = pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nNextKey];
 //
-//	float fRateMotion = (float)pPlayer->nCounterMotion / (float)nKey.nFrame;
+//	float fRateMotion = (float)pPlayer->nCntMotion / (float)nKey.nFrame;
 //
 //	if (pPlayer->bBlendMotion == false)
 //	{
@@ -248,13 +249,13 @@ void SetMotion(MOTIONTYPE MotionType, OBJECTINFO* Motion)
 //			KeyDef.fRotZ = pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nNextKey].aKey[PartsCount].fRotZ - pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].aKey[PartsCount].fRotZ;
 //
 //			// 希望の値
-//			KeyDest.fPosX = pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].aKey[PartsCount].fPosX + KeyDef.fPosX * ((float)pPlayer->nCounterMotion / (float)pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].nFrame);
-//			KeyDest.fPosY = pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].aKey[PartsCount].fPosY + KeyDef.fPosY * ((float)pPlayer->nCounterMotion / (float)pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].nFrame);
-//			KeyDest.fPosZ = pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].aKey[PartsCount].fPosZ + KeyDef.fPosZ * ((float)pPlayer->nCounterMotion / (float)pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].nFrame);
+//			KeyDest.fPosX = pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].aKey[PartsCount].fPosX + KeyDef.fPosX * ((float)pPlayer->nCntMotion / (float)pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].nFrame);
+//			KeyDest.fPosY = pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].aKey[PartsCount].fPosY + KeyDef.fPosY * ((float)pPlayer->nCntMotion / (float)pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].nFrame);
+//			KeyDest.fPosZ = pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].aKey[PartsCount].fPosZ + KeyDef.fPosZ * ((float)pPlayer->nCntMotion / (float)pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].nFrame);
 //
-//			KeyDest.fRotX = pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].aKey[PartsCount].fRotX + KeyDef.fRotX * ((float)pPlayer->nCounterMotion / (float)pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].nFrame);
-//			KeyDest.fRotY = pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].aKey[PartsCount].fRotY + KeyDef.fRotY * ((float)pPlayer->nCounterMotion / (float)pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].nFrame);
-//			KeyDest.fRotZ = pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].aKey[PartsCount].fRotZ + KeyDef.fRotZ * ((float)pPlayer->nCounterMotion / (float)pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].nFrame);
+//			KeyDest.fRotX = pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].aKey[PartsCount].fRotX + KeyDef.fRotX * ((float)pPlayer->nCntMotion / (float)pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].nFrame);
+//			KeyDest.fRotY = pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].aKey[PartsCount].fRotY + KeyDef.fRotY * ((float)pPlayer->nCntMotion / (float)pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].nFrame);
+//			KeyDest.fRotZ = pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].aKey[PartsCount].fRotZ + KeyDef.fRotZ * ((float)pPlayer->nCntMotion / (float)pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotion].aKeyInfo[pPlayer->nKey].nFrame);
 //
 //			// 足す
 //			pPlayer->aModel[pPlayer->Pfolm][PartsCount].Partspos.x = pPlayer->aModel[pPlayer->Pfolm][PartsCount].OffSet.x + KeyDest.fPosX;
@@ -271,7 +272,7 @@ void SetMotion(MOTIONTYPE MotionType, OBJECTINFO* Motion)
 //		KEYINFO nKeyBlend = pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotionBlend].aKeyInfo[pPlayer->nKeyBlend];
 //		KEYINFO nNexKeyBlend = pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotionBlend].aKeyInfo[pPlayer->nNexKeyBlend];
 //
-//		float fRateMotionBlend = (float)pPlayer->nCounterBlendMotion / (float)pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotionBlend].aKeyInfo[pPlayer->nKeyBlend].nFrame;
+//		float fRateMotionBlend = (float)pPlayer->nCntMotionBlend / (float)pPlayer->aMotionInfo[pPlayer->Pfolm][pPlayer->pMotionBlend].aKeyInfo[pPlayer->nKeyBlend].nFrame;
 //		float fRateBlend = (float)pPlayer->nCountBlend / (float)pPlayer->nFlameBlend;
 //
 //		for (int PartsCount = 0; PartsCount < pPlayer->nNumModel[pPlayer->Pfolm]; PartsCount++)
