@@ -306,21 +306,21 @@ void PlayerMove(void)
 
 	//移動
 	//左
-	if (GetKeyboardPress(DIK_A) == true || GetJoypadPress(JOYKEY_LEFT) == true)
+	if (GetKeyboardPress(DIK_A) || GetJoypadPress(JOYKEY_LEFT))
 	{
 		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE)
 		{
 			SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
 		}
 		//前
-		if (GetKeyboardPress(DIK_W) == true || GetJoypadPress(JOYKEY_DOWN) == true)
+		if (GetKeyboardPress(DIK_W)|| GetJoypadPress(JOYKEY_DOWN))
 		{
 			g_player.move.x += sinf(pCamera->rot.y - D3DX_PI * 0.25f) * g_player.Status.fSpeed;
 			g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.25f) * g_player.Status.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y + D3DX_PI * 0.75f;
 		}
 		//後
-		else if (GetKeyboardPress(DIK_S) == true || GetJoypadPress(JOYKEY_UP) == true)
+		else if (GetKeyboardPress(DIK_S)|| GetJoypadPress(JOYKEY_UP))
 		{
 			g_player.move.x += sinf(pCamera->rot.y - D3DX_PI * 0.75f) * g_player.Status.fSpeed;
 			g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.75f) * g_player.Status.fSpeed;
@@ -334,7 +334,7 @@ void PlayerMove(void)
 		}
 	}
 	//右
-	else if (GetKeyboardPress(DIK_D) == true || GetJoypadPress(JOYKEY_RIGET) == true)
+	else if (GetKeyboardPress(DIK_D)|| GetJoypadPress(JOYKEY_RIGET))
 	{
 		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE)
 		{
@@ -342,14 +342,14 @@ void PlayerMove(void)
 		}
 
 		//前
-		if (GetKeyboardPress(DIK_W) == true || GetJoypadPress(JOYKEY_DOWN) == true)
+		if (GetKeyboardPress(DIK_W)|| GetJoypadPress(JOYKEY_DOWN))
 		{
 			g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI * 0.75f) * g_player.Status.fSpeed;
 			g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.75f) * g_player.Status.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y - D3DX_PI * 0.75f;
 		}
 		//後
-		else if (GetKeyboardPress(DIK_S) == true || GetJoypadPress(JOYKEY_UP) == true)
+		else if (GetKeyboardPress(DIK_S) || GetJoypadPress(JOYKEY_UP))
 		{
 			g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI * 0.25f) * g_player.Status.fSpeed;
 			g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.25f) * g_player.Status.fSpeed;
@@ -371,14 +371,14 @@ void PlayerMove(void)
 		}
 
 		//左
-		if (GetKeyboardPress(DIK_A) == true || GetJoypadPress(JOYKEY_DOWN) == true)
+		if (GetKeyboardPress(DIK_A) || GetJoypadPress(JOYKEY_DOWN))
 		{
 			g_player.move.x += sinf(pCamera->rot.y - D3DX_PI * 0.25f) * g_player.Status.fSpeed;
 			g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.25f) * g_player.Status.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y + D3DX_PI * 0.75f;
 		}
 		//右
-		else if (GetKeyboardPress(DIK_D) == true || GetJoypadPress(JOYKEY_UP) == true)
+		else if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_UP))
 		{
 			g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI * 0.75f) * g_player.Status.fSpeed;
 			g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.75f) * g_player.Status.fSpeed;
@@ -392,7 +392,7 @@ void PlayerMove(void)
 		}
 	}
 	//後
-	else if (GetKeyboardPress(DIK_S) == true || GetJoypadPress(JOYKEY_UP) == true)
+	else if (GetKeyboardPress(DIK_S) || GetJoypadPress(JOYKEY_UP))
 	{
 		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE)
 		{
@@ -400,14 +400,14 @@ void PlayerMove(void)
 		}
 
 		//左
-		if (GetKeyboardPress(DIK_A) == true || GetJoypadPress(JOYKEY_DOWN) == true)
+		if (GetKeyboardPress(DIK_A) || GetJoypadPress(JOYKEY_DOWN))
 		{
 			g_player.move.x += sinf(pCamera->rot.y - D3DX_PI * 0.75f) * g_player.Status.fSpeed;
 			g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.75f) * g_player.Status.fSpeed;
 			g_player.rotDest.y = pCamera->rot.y + D3DX_PI * 0.25f;
 		}
 		//右
-		else if (GetKeyboardPress(DIK_D) == true || GetJoypadPress(JOYKEY_UP) == true)
+		else if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_UP))
 		{
 			g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI * 0.25f) * g_player.Status.fSpeed;
 			g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.25f) * g_player.Status.fSpeed;
