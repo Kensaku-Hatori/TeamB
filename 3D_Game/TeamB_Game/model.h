@@ -11,7 +11,7 @@
 
 #define MAX_TEX (32)
 #define MAX_PARTS (15)//パーツの最大数
-#define MAX_STAGEMODEL (128)
+#define MAX_STAGEMODEL (25)
 
 typedef enum
 {
@@ -31,6 +31,13 @@ typedef enum
 	MODELTYPE_THIRTEEN,
 	MODELTYPE_MAX
 }MODELTYPE;
+
+typedef struct
+{
+	D3DXVECTOR3 CenterPos;
+	D3DXVECTOR3 RotVec[3];
+	D3DXVECTOR3 FaceLength;
+}OBB;
 
 //モデルの構造体
 typedef struct
@@ -62,7 +69,10 @@ typedef struct
 	MODELTYPE nType;
 	D3DXVECTOR3 pos;		//位置(オフセット)
 	D3DXVECTOR3 rot;		//向き
+	D3DXVECTOR3 Max;
+	D3DXVECTOR3 Min;
 	D3DXMATRIX mtxWorld;	//ワールドマトリックス
+	OBB ObbModel;
 	bool bUse;
 }STAGEMODEL;
 
@@ -72,4 +82,6 @@ void UpdateStageModel();
 void DrawStageModel();
 void SetStageModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot, MODELTYPE nType);
 void SetStageModelInfo(char *ModelPath[],int nType);
+void LenOBBToPoint(OBB& obb, D3DXVECTOR3& p);
+void DotOBBToPoint(OBB& obb, D3DXVECTOR3& p);
 #endif

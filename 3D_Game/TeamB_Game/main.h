@@ -71,6 +71,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow);
 void Uninit(void);
 void Update(void);
 void Draw(void);
+void DrawPlayerCollision();
 void DrawEffectEditer();
 void onWireFrame();
 void offWireFrame();
