@@ -103,9 +103,9 @@ void SetMotion(MOTIONTYPE MotionType, OBJECTINFO* Motion)
 	g_bMotion = true;
 	Motion->motionType = MotionType;
 }
-//=====================
-// モーションブレンド
-//=====================
+////=====================
+//// モーションブレンド
+////=====================
 //void MotionBlend(void)
 //{
 //	Player* pPlayer = GetPlayer();
