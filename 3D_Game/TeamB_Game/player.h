@@ -53,6 +53,9 @@ typedef struct
 	int nCntMotionBlend;			// ブレンドモーションのカウンター
 	int nFrameBlend;				// ブレンドフレーム
 	int nCntBlend;					// ブレンドフレームカウント
+	int nNextKeyBlend;
+	bool bLoopBlend;			//ループするかどうか
+
 	bool btest;
 
 	float sightRange;

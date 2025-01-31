@@ -620,7 +620,6 @@ bool IsEnemyInsight(void)
 			}
 		}
 	}
-
 	return false;
 }
 //
