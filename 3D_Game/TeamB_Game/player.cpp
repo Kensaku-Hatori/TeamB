@@ -317,7 +317,7 @@ void PlayerMove(void)
 	//ç∂
 	if (GetKeyboardPress(DIK_A) || GetJoypadPress(JOYKEY_LEFT))
 	{
-		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE)
+		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_JUMP)
 		{
 			SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
 		}
@@ -345,7 +345,7 @@ void PlayerMove(void)
 	//âE
 	else if (GetKeyboardPress(DIK_D)|| GetJoypadPress(JOYKEY_RIGET))
 	{
-		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE)
+		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_JUMP)
 		{
 			SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
 		}
@@ -374,7 +374,7 @@ void PlayerMove(void)
 	//ëO
 	else if (GetKeyboardPress(DIK_W) == true || GetJoypadPress(JOYKEY_DOWN) == true)
 	{
-		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE)
+		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_JUMP)
 		{
 			SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
 		}
@@ -403,7 +403,7 @@ void PlayerMove(void)
 	//å„
 	else if (GetKeyboardPress(DIK_S) || GetJoypadPress(JOYKEY_UP))
 	{
-		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE)
+		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_JUMP)
 		{
 			SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
 		}
