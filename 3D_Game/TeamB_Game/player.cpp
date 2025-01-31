@@ -59,6 +59,8 @@ void InitPlayer(void)
 	g_player.Status.fPower = PLAYER_MP;
 	g_player.Status.fSpeed = PLAYER_SPEED;
 
+	g_player.fDistance = PLAYER_RADIUS / 2;
+	g_player.bLockOn = false;
 
 	g_nCntHealMP = 0;
 }
@@ -157,6 +159,12 @@ void UpdatePlayer(void)
 
 		CollisionEnemy();
 
+		//ロックオン
+		if ((KeyboardTrigger(DIK_R) == true || GetJoypadTrigger(JOYKEY_R1) == true))
+		{
+			g_player.bLockOn = IsEnemyInsight();
+		}
+
 		// HP0
 		if (g_player.Status.fHP <= 0.0f)
 		{
@@ -187,7 +195,8 @@ void UpdatePlayer(void)
 		//位置を０に
 		if (KeyboardTrigger(DIK_0) == true)
 		{
-			g_player.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			g_player.pos = D3DXVECTOR3(0.0f, 0.0f, 400.0f);
+			g_player.posOld = D3DXVECTOR3(0.0f, 0.0f, 400.0f);
 		}
 		//HP減らす
 		if (KeyboardTrigger(DIK_9) == true)
@@ -429,6 +438,23 @@ void PlayerMove(void)
 		}
 	}
 
+	//移動制限
+	if (g_player.pos.x <= -945.0f)
+	{
+		g_player.pos.x = -945.0f;
+	}
+	if (g_player.pos.x >= 945.0f)
+	{
+		g_player.pos.x = 945.0f;
+	}
+	if (g_player.pos.z <= -945.0f)
+	{
+		g_player.pos.z = -945.0f;
+	}
+	if (g_player.pos.z >= 945.0f)
+	{
+		g_player.pos.z = 945.0f;
+	}
 }
 //===================
 // プレイヤーの取得
@@ -594,7 +620,6 @@ bool IsEnemyInsight(void)
 			}
 		}
 	}
-
 	return false;
 }
 //
@@ -602,7 +627,17 @@ bool IsEnemyInsight(void)
 //
 void EnemyDistanceSort(int EnemyCount)
 {
-	ENEMY* pEnemy;
+	ENEMY* pEnemy = GetEnemy();
 
+	//敵との距離
+	pEnemy[EnemyCount].fDistance = sqrtf(((pEnemy[EnemyCount].Object.Pos.x - g_player.pos.x) * (pEnemy[EnemyCount].Object.Pos.x - g_player.pos.x))
+									   + ((pEnemy[EnemyCount].Object.Pos.y - g_player.pos.y) * (pEnemy[EnemyCount].Object.Pos.y - g_player.pos.y))
+									   + ((pEnemy[EnemyCount].Object.Pos.z - g_player.pos.z) * (pEnemy[EnemyCount].Object.Pos.z - g_player.pos.z)));
 
+	float RADIUS = (g_player.fDistance + pEnemy[EnemyCount].Radius) * (g_player.fDistance + pEnemy[EnemyCount].Radius);
+
+	if (pEnemy[EnemyCount].fDistance <= RADIUS)
+	{
+
+	}
 }
