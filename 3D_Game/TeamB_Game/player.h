@@ -57,6 +57,7 @@ typedef struct
 
 	float sightRange;
 	float sightAngle;
+	float fDistance;
 
 }Player;
 
@@ -71,5 +72,6 @@ void SetMesh(char* pFilePath, int Indx);
 void SetPartsInfo(LoadInfo PartsInfo);
 void PlayerMotion(MOTIONINFO *pMotionInfo);
 bool IsEnemyInsight(void);
+void EnemyDistanceSort(int EnemyCount);
 
 #endif

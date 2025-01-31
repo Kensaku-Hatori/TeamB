@@ -441,6 +441,7 @@ void SetMesh(char* pFilePath, int Indx)
 {
 
 }
+
 void SetPartsInfo(LoadInfo PartsInfo)
 {
 	g_player.PlayerMotion.nNumModel = PartsInfo.nNumParts;
@@ -540,6 +541,7 @@ void SetPartsInfo(LoadInfo PartsInfo)
 	}
 	g_player.bUse = true;
 }
+
 void PlayerMotion(MOTIONINFO *pMotionInfo)
 {
 	for (int MotionCount = 0; MotionCount < MOTIONTYPE_MAX; MotionCount++, pMotionInfo++)
@@ -586,7 +588,7 @@ bool IsEnemyInsight(void)
 
 				if (distanceSquared <= g_player.sightRange * g_player.sightRange)
 				{
-					//EnemyDistanceSort(EnemyCount);
+					EnemyDistanceSort(EnemyCount);
 					return true;
 				}
 			}
@@ -594,4 +596,13 @@ bool IsEnemyInsight(void)
 	}
 
 	return false;
+}
+//
+//
+//
+void EnemyDistanceSort(int EnemyCount)
+{
+	ENEMY* pEnemy;
+
+
 }
