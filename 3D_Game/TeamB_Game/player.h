@@ -58,6 +58,7 @@ typedef struct
 	float sightRange;
 	float sightAngle;
 	float fDistance;
+	bool bLockOn;
 
 }Player;
 
