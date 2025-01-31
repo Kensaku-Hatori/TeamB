@@ -32,43 +32,6 @@ void InitShadow(void)
 
 	//テクスチャの読込
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\shadow000.jpg", &g_apTextureShadow); //1
-
-
-	//VERTEX_3D* pVtx = NULL;
-
-	////頂点バッファをロックし、頂点情報へのポインタを取得
-	//g_pVtxBuffShadow->Lock(0, 0, (void**)&pVtx, 0);
-
-	//for (int nCnt = 0; nCnt < MAX_SHADOW; nCnt++)
-	//{
-	//	//頂点座標の設定
-	//	pVtx[0].pos = D3DXVECTOR3(/*g_shadow[nCnt].pos.x*/ - g_shadow[nCnt].fRadius, g_shadow[nCnt].pos.y, /*g_shadow[nCnt].pos.z*/ + g_shadow[nCnt].fRadius);
-	//	pVtx[1].pos = D3DXVECTOR3(/*g_shadow[nCnt].pos.x*/ + g_shadow[nCnt].fRadius, g_shadow[nCnt].pos.y, /*g_shadow[nCnt].pos.z*/ + g_shadow[nCnt].fRadius);
-	//	pVtx[2].pos = D3DXVECTOR3(/*g_shadow[nCnt].pos.x*/ - g_shadow[nCnt].fRadius, g_shadow[nCnt].pos.y, /*g_shadow[nCnt].pos.z*/ - g_shadow[nCnt].fRadius);
-	//	pVtx[3].pos = D3DXVECTOR3(/*g_shadow[nCnt].pos.x*/ + g_shadow[nCnt].fRadius, g_shadow[nCnt].pos.y, /*g_shadow[nCnt].pos.z*/ - g_shadow[nCnt].fRadius);
-
-	//	//法線ベクトルの設定
-	//	pVtx[0].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-	//	pVtx[1].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-	//	pVtx[2].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-	//	pVtx[3].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-
-	//	//頂点カラーの設定
-	//	pVtx[0].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
-	//	pVtx[1].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
-	//	pVtx[2].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
-	//	pVtx[3].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
-
-	//	//テクスチャ座標の設定
-	//	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	//	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	//	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	//	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-
-	//	pVtx += 4;
-	//}
-	////頂点バッファをアンロック
-	//g_pVtxBuffShadow->Unlock();
 }
 
 //====================
@@ -189,7 +152,6 @@ int SetShadow(D3DXVECTOR3 pos, D3DXVECTOR3 rot,float fRadius)
 			g_shadow[nCntShadow].pos = pos;											//位置
 			g_shadow[nCntShadow].rot = rot;											//向き
 			g_shadow[nCntShadow].fRadius = fRadius;									//半径
-			//g_shadow[nCntShadow].fTriangle = g_shadow[nCntShadow].fRadius;		//三角形
 
 			//頂点座標の設定
 			pVtx[0].pos = D3DXVECTOR3(-g_shadow[nCntShadow].fRadius, g_shadow[nCntShadow].pos.y, +g_shadow[nCntShadow].fRadius);
@@ -246,32 +208,52 @@ void SetPositionShadow(int nIdxShadow, D3DXVECTOR3 pos, bool bUse)
 void SetSizeShadow(D3DXVECTOR3 pos, int nIndx, bool bjump)
 {
 	float posY = pos.y;//ユーザーの高さを格納
+	float fRadeius = 0;//半径
+	D3DXCOLOR fAlpha = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
 	VERTEX_3D* pVtx = NULL;
 
-	if (bjump == true)
-	{
+		//posYの制限
 		if (posY <= 0)
 		{
-			posY = 0.1f;
+			posY = 1.0f;
+		}
+		else if (posY >= g_shadow[nIndx].fRadius * 0.5f)
+		{
+			posY = -g_shadow[nIndx].fRadius * 0.1f;
 		}
 
-		g_shadow[nIndx].fRadius = g_shadow[nIndx].fTriangle / (posY * 0.25f);
+		//半径の設定
+		fRadeius = (g_shadow[nIndx].fRadius + g_shadow[nIndx].fRadius * 0.5f) / posY - g_shadow[nIndx].fRadius * 0.5f;
+
+
+		if (posY <= 0)
+		{
+			posY *= -1;
+		}
+
+		//α値の設定
+		fAlpha.a = (1.0f / posY);
 
 		//頂点バッファをロックし、頂点情報へのポインタを取得
 		g_pVtxBuffShadow->Lock(0, 0, (void**)&pVtx, 0);
 
-		pVtx += nIndx;
+ 		pVtx += nIndx;
 
 		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(g_shadow[nIndx].pos.x - g_shadow[nIndx].fRadius, g_shadow[nIndx].pos.y, g_shadow[nIndx].pos.z + g_shadow[nIndx].fRadius);
-		pVtx[1].pos = D3DXVECTOR3(g_shadow[nIndx].pos.x + g_shadow[nIndx].fRadius, g_shadow[nIndx].pos.y, g_shadow[nIndx].pos.z + g_shadow[nIndx].fRadius);
-		pVtx[2].pos = D3DXVECTOR3(g_shadow[nIndx].pos.x - g_shadow[nIndx].fRadius, g_shadow[nIndx].pos.y, g_shadow[nIndx].pos.z - g_shadow[nIndx].fRadius);
-		pVtx[3].pos = D3DXVECTOR3(g_shadow[nIndx].pos.x + g_shadow[nIndx].fRadius, g_shadow[nIndx].pos.y, g_shadow[nIndx].pos.z - g_shadow[nIndx].fRadius);
+		pVtx[0].pos = D3DXVECTOR3(- fRadeius, 0.0f, + fRadeius);
+		pVtx[1].pos = D3DXVECTOR3(+ fRadeius, 0.0f, + fRadeius);
+		pVtx[2].pos = D3DXVECTOR3(- fRadeius, 0.0f, - fRadeius);
+		pVtx[3].pos = D3DXVECTOR3(+ fRadeius, 0.0f, - fRadeius);
 
+		////頂点カラーの設定
+		//pVtx[0].col = fAlpha;
+		//pVtx[1].col = fAlpha;
+		//pVtx[2].col = fAlpha;
+		//pVtx[3].col = fAlpha;
+		
 		//頂点バッファをアンロック
 		g_pVtxBuffShadow->Unlock();
 
-	}
 }
 
 //=====================
