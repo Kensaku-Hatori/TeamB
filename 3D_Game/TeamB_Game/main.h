@@ -58,7 +58,10 @@ typedef struct
 typedef enum
 {
 	MODE_TITLE = 0,
-	MODE_GAME,
+	MODE_STAGEONE,
+	MODE_STAGETWO,
+	MODE_STAGETHREE,
+	MODE_STAGEFOUR,
 	MODE_RESULT,
 	MODE_RANK,
 	MODE_END,
@@ -81,5 +84,4 @@ LPDIRECT3DDEVICE9 GetDevice(void);
 D3DXVECTOR3 *PitoRadian(D3DXVECTOR3 *rot);		// ÉâÉWÉAÉìílÇ©ÇÁPIÇ…ïœä∑Ç∑ÇÈèàóù
 void DrawCameraInfo();
 void DrawPlayerInfo();
-
 #endif

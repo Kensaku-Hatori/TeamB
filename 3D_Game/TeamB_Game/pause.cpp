@@ -223,7 +223,7 @@ void UpdatePause(void)
 			}
 			else if (g_pauseMenu == PAUSE_MENU_RETRY)
 			{	//RETRYÇ…Ç¢ÇÈèÍçá
-				SetFade(MODE_GAME);
+				SetFade(MODE_STAGEONE);
 			}
 			else if (g_pauseMenu == PAUSE_MENU_QUIT)
 			{	//QUITÇ…Ç¢ÇÈèÍçá

@@ -12,6 +12,16 @@ void InitStageModel()
 		g_StageModel[ModelCount].nType = MODELTYPE_ZERO;
 		g_StageModel[ModelCount].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		g_StageModel[ModelCount].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+		g_StageModel[ModelCount].ObbModel.CenterPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+		g_StageModel[ModelCount].ObbModel.fLength[0] = 0.0f;
+		g_StageModel[ModelCount].ObbModel.fLength[1] = 0.0f;
+		g_StageModel[ModelCount].ObbModel.fLength[2] = 0.0f;
+
+		g_StageModel[ModelCount].ObbModel.RotVec[0] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		g_StageModel[ModelCount].ObbModel.RotVec[1] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		g_StageModel[ModelCount].ObbModel.RotVec[2] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	}
 }
 void UninitStageModel()
@@ -67,7 +77,6 @@ void UpdateStageModel()
 			obb1Center.x = pPlayer->pos.x;
 			obb1Center.y = pPlayer->pos.y + (pPlayer->size.y * 0.5f);
 			obb1Center.z = pPlayer->pos.z;
-			float fDistance = 0.0f;
 			CollOBBs(g_StageModel[ModelCount].ObbModel, obb1Center, ModelCount);
 		}
 	}
@@ -137,9 +146,9 @@ void SetStageModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot, MODELTYPE nType)
 	{
 		if (g_StageModel[ModelCount].bUse == false)
 		{
+			g_StageModel[ModelCount].ModelBuff = g_ModelOrigin[nType];
 			g_StageModel[ModelCount].bUse = true;
 			g_StageModel[ModelCount].nType = nType;
-			g_StageModel[ModelCount].ModelBuff = g_ModelOrigin[nType];
 			g_StageModel[ModelCount].pos = pos;
 			g_StageModel[ModelCount].rot = rot;
 
@@ -247,7 +256,7 @@ void SetStageModelInfo(char *ModelPath[], int PathType)
 		NULL,
 		&g_ModelOrigin[PathType].dwNumMat,
 		&g_ModelOrigin[PathType].pMesh);
-
+	
 	D3DXMATERIAL* pMat;//マテリアルへのポインタ
 	pMat = (D3DXMATERIAL*)g_ModelOrigin[PathType].pBuffMat->GetBufferPointer();
 	for (int nCntBlockMat = 0; nCntBlockMat < (int)g_ModelOrigin[PathType].dwNumMat; nCntBlockMat++)

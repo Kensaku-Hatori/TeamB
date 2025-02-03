@@ -27,7 +27,6 @@ typedef enum
 	STAGE_NO_2,
 	STAGE_NO_3,
 	STAGE_NO_MAX,
-
 }STAGE_NO;
 
 //プロトタイプ宣言

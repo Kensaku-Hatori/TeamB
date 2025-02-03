@@ -32,11 +32,10 @@ void InitTitle(void)
 
 	InitLight();
 
-
 	InitMotion();
 	InitStageModel();
 
-	LoadModelViewer();
+	LoadModelViewer(MODE_STAGEONE);
 
 	InitTitleInfo();
 }
