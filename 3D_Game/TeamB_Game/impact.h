@@ -11,7 +11,7 @@
 #include "main.h"
 #include "Object.h"
 
-#define MAX_IMPACT (1)
+#define MAX_IMPACT (64)
 #define PROFOUND (5.0f)			//Œú‚İ
 
 //ÕŒ‚”g‚Ìí—Ş

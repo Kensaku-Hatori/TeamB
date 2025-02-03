@@ -108,8 +108,8 @@ void InitGame(void)
 	LoadModelViewer();
 
 	////敵の設定処理
-	//SetEnemy(D3DXVECTOR3(0.0f, 0.0f, -100.0f), 1, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	//SetEnemy(D3DXVECTOR3(0.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	SetEnemy(D3DXVECTOR3(0.0f, 0.0f, -100.0f), 1, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	SetEnemy(D3DXVECTOR3(0.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	//ウェーブの初期化処理
 	InitWave();
@@ -301,12 +301,12 @@ void UpdateGame(void)
 
 			//リザルトに飛ぶ
 			if (KeyboardTrigger(DIK_1) == true || GetJoypadTrigger(JOYKEY_START) == true)
-			{
+			{//Clear
 				SetFade(MODE_RESULT);
 				SetResult(RESULT_CLEAR);
 			}
 			if (KeyboardTrigger(DIK_2) == true || GetJoypadTrigger(JOYKEY_START) == true)
-			{
+			{//over
 				SetFade(MODE_RESULT);
 				SetResult(RESULT_GAMEOVER);
 			}

@@ -88,4 +88,5 @@ void SetEnemyMesh(char* pFilePath, int Indx);
 void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType);
 void EnemyMotion(MOTIONINFO* pMotionInfo);
 void CollisionEnemy(void);
+
 #endif // !ENEMY_H_

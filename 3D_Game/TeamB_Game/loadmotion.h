@@ -13,7 +13,7 @@
 #define MOTION "END_MOTIONSET"
 #define PARTS "END_PARTSSET"
 #define KEYPARTS "END_KEY"
-#define KEY "END_KEYSET"
+#define KEYENDSTRING "END_KEYSET"
 
 typedef enum
 {
