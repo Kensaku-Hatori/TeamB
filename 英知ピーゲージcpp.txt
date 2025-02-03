@@ -1,0 +1,306 @@
+//********************************
+// 
+// Author: HATORI
+// HPゲージを管理する[hpguage.cpp]
+// 
+//********************************
+
+
+//*************
+// インクルード
+//*************
+#include "hpguage.h"
+#include "Player.h"
+
+//*******************
+// グローバル変数宣言
+//*******************
+GUAGE g_Guage[MAX_GUAGE];
+LPDIRECT3DTEXTURE9 pTextureGuage[GUAGETYPE_MAX] = {};
+LPDIRECT3DVERTEXBUFFER9 pVtxBuffGuage = {};
+
+//***************
+// UIの初期化処理
+//***************
+void InitGuage(void)
+{
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();	// デバイスの取得処理
+
+	//テクスチャの読み込み
+	D3DXCreateTextureFromFile(pDevice,
+		GUAGETEX[0],
+		&pTextureGuage[0]);
+
+	//テクスチャの読み込み
+	D3DXCreateTextureFromFile(pDevice,
+		GUAGETEX[1],
+		&pTextureGuage[1]);
+
+	//テクスチャの読み込み
+	D3DXCreateTextureFromFile(pDevice,
+		GUAGETEX[2],
+		&pTextureGuage[2]);
+
+	// 頂点バッファの生成
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 4 * MAX_GUAGE,
+		D3DUSAGE_WRITEONLY,
+		FVF_VERTEX_3D,		// 頂点フォーマット
+		D3DPOOL_MANAGED,
+		&pVtxBuffGuage, NULL);
+
+	VERTEX_3D* pVtx = NULL;
+	// 頂点バッファをロック
+	pVtxBuffGuage->Lock(0, 0, (void**)&pVtx, 0);
+
+	for (int UiCount = 0; UiCount < MAX_GUAGE; UiCount++)
+	{// 最大数分回す
+		g_Guage[UiCount].bUse = false;
+		g_Guage[UiCount].nType = GUAGETYPE_NONE;
+		g_Guage[UiCount].Object.Pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		g_Guage[UiCount].Object.Rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		g_Guage[UiCount].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+
+		// 頂点座標の更新
+		pVtx[0].pos.x = 0.0f;
+		pVtx[0].pos.y = 0.0f;
+		pVtx[0].pos.z = 0.0f;
+
+		pVtx[1].pos.x = 100.0f;
+		pVtx[1].pos.y = 0.0f;
+		pVtx[1].pos.z = 0.0f;
+
+		pVtx[2].pos.x = 0.0f;
+		pVtx[2].pos.y = 100.0f;
+		pVtx[2].pos.z = 0.0f;
+
+		pVtx[3].pos.x = 100.0f;
+		pVtx[3].pos.y = 100.0f;
+		pVtx[3].pos.z = 0.0f;
+
+		// 各頂点の色の設定
+		pVtx[0].col = D3DXCOLOR(g_Guage[UiCount].col);
+		pVtx[1].col = D3DXCOLOR(g_Guage[UiCount].col);
+		pVtx[2].col = D3DXCOLOR(g_Guage[UiCount].col);
+		pVtx[3].col = D3DXCOLOR(g_Guage[UiCount].col);
+
+		pVtx += 4;
+	}
+	// 頂点バッファをアンロック
+	pVtxBuffGuage->Unlock();
+}
+//*************
+// UIの終了処理
+//*************
+void UninitGuage(void)
+{
+	if (pVtxBuffGuage != NULL)
+	{// NULL以外なら
+		pVtxBuffGuage->Release();
+		pVtxBuffGuage = NULL;
+	}
+	for (int Texture = 0; Texture < GUAGETYPE_MAX; Texture++)
+	{// ゲージの種類分
+		if (pTextureGuage[Texture] != NULL)
+		{// NULL以外なら
+			pTextureGuage[Texture]->Release();
+			pTextureGuage[Texture] = NULL;
+		}
+	}
+}
+//*************
+// UIの更新処理
+//*************
+void UpdateGuage(void)
+{
+
+}
+//*************
+// UIの描画処理
+//*************
+void DrawGuage(void)
+{
+	// デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
+	// 計算用マトリックス
+	D3DXMATRIX mtxRot, mtxTrans, mtxScale;
+
+	// ライトの影響を受けない
+	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+
+	// ALPHAテストの設定
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
+	for (int guagecount = 0; guagecount < MAX_GUAGE; guagecount++)
+	{// 最大数分回す
+		if (g_Guage[guagecount].bUse == true)
+		{// 使われていたら
+			// ワールドマトリックスの初期化
+			D3DXMatrixIdentity(&g_Guage[guagecount].Object.mtxWorld);
+
+			// ビューマトリックス取得
+			D3DXMATRIX mtxView;
+			pDevice->GetTransform(D3DTS_VIEW, &mtxView);
+
+			// カメラの逆行列を設定
+			g_Guage[guagecount].Object.mtxWorld._11 = mtxView._11;
+			g_Guage[guagecount].Object.mtxWorld._12 = mtxView._21;
+			g_Guage[guagecount].Object.mtxWorld._13 = mtxView._31;
+			g_Guage[guagecount].Object.mtxWorld._21 = mtxView._12;
+			g_Guage[guagecount].Object.mtxWorld._22 = mtxView._22;
+			g_Guage[guagecount].Object.mtxWorld._23 = mtxView._32;
+			g_Guage[guagecount].Object.mtxWorld._31 = mtxView._13;
+			g_Guage[guagecount].Object.mtxWorld._32 = mtxView._23;
+			g_Guage[guagecount].Object.mtxWorld._33 = mtxView._33;
+
+			// 向きを反映
+			D3DXMatrixRotationYawPitchRoll(&mtxRot, g_Guage[guagecount].Object.Rot.y, g_Guage[guagecount].Object.Rot.x, g_Guage[guagecount].Object.Rot.z);
+			D3DXMatrixMultiply(&g_Guage[guagecount].Object.mtxWorld, &g_Guage[guagecount].Object.mtxWorld, &mtxRot);
+
+			// 位置を反映
+			D3DXMatrixTranslation(&mtxTrans, g_Guage[guagecount].Object.Pos.x, g_Guage[guagecount].Object.Pos.y, g_Guage[guagecount].Object.Pos.z);
+			D3DXMatrixMultiply(&g_Guage[guagecount].Object.mtxWorld, &g_Guage[guagecount].Object.mtxWorld, &mtxTrans);
+
+			// ワールドマトリックスの設定
+			pDevice->SetTransform(D3DTS_WORLD, &g_Guage[guagecount].Object.mtxWorld);
+			// 頂点バッファをデバイスからデータストリームに設定
+			pDevice->SetStreamSource(0, pVtxBuffGuage, 0, sizeof(VERTEX_3D));
+			// テクスチャの設定
+			pDevice->SetTexture(0, pTextureGuage[g_Guage[guagecount].nType]);
+			// 頂点フォーマットの設定
+			pDevice->SetFVF(FVF_VERTEX_3D);
+			// ポリゴンの描画
+			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 4*guagecount, 2);
+		}
+	}
+	// ライトの設定を元に戻す
+	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+
+	// 設定を元に戻す
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+}
+//*************
+// UIの設定処理
+//*************
+void SetIndxUi(int* Indx, GUAGETYPE nType, D3DXCOLOR col, D3DXVECTOR2 scale, float Side,float MaxHp)
+{
+	VERTEX_3D* pVtx = NULL;
+	// 頂点バッファをロック
+	pVtxBuffGuage->Lock(0, 0, (void**)&pVtx, 0);
+
+	for (int GuageCount = 0; GuageCount < MAX_GUAGE; GuageCount++)
+	{// 最大数分回す
+		if (g_Guage[GuageCount].bUse == false)
+		{// 使われていたら
+			g_Guage[GuageCount].bUse = true;
+			*Indx = GuageCount;
+			g_Guage[GuageCount].nType = nType;
+			g_Guage[GuageCount].col = col;
+			g_Guage[GuageCount].fMax = scale.x;
+			g_Guage[GuageCount].fWidth = scale.x;
+			g_Guage[GuageCount].fMaxHp = MaxHp;
+
+			pVtx[0].pos.x = 0.0f;
+			pVtx[0].pos.y = scale.y;
+			pVtx[0].pos.z = 0.0f;
+
+			pVtx[1].pos.x = scale.x;
+			pVtx[1].pos.y = scale.y;
+			pVtx[1].pos.z = 0.0f;
+
+			pVtx[2].pos.x = 0.0f;
+			pVtx[2].pos.y = -scale.y;
+			pVtx[2].pos.z = 0.0f;
+
+			pVtx[3].pos.x = scale.x;
+			pVtx[3].pos.y = -scale.y;
+			pVtx[3].pos.z = 0.0f;
+
+			pVtx[0].col = col;
+			pVtx[1].col = col;
+			pVtx[2].col = col;
+			pVtx[3].col = col;
+
+			pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+			pVtx[1].tex = D3DXVECTOR2(0.0f, 1.0f);
+			pVtx[2].tex = D3DXVECTOR2(1.0f, 0.0f);
+			pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+
+			break;
+		}
+		pVtx += 4;
+	}
+	// 頂点バッファをアンロック
+	pVtxBuffGuage->Unlock();
+}
+//*****************
+// UIの位置更新処理
+//*****************
+void SetUiPosition(int Indx, D3DXVECTOR3 pos)
+{
+	g_Guage[Indx].Object.Pos = pos;
+}
+//*************
+// UIの減少処理
+//*************
+void GuageDeff(int Indx, float nowhp)
+{
+	VERTEX_3D* pVtx = NULL;
+	// 頂点バッファをロック
+	pVtxBuffGuage->Lock(0, 0, (void**)&pVtx, 0);
+
+	float Width = nowhp / g_Guage[Indx].fMaxHp;
+
+	g_Guage[Indx].fWidth = g_Guage[Indx].fMax * Width;
+
+	pVtx += 4 * Indx;
+
+	// ゲージの右側だけを減らす
+	pVtx[1].pos.x = g_Guage[Indx].fWidth;
+
+	pVtx[3].pos.x = g_Guage[Indx].fWidth;
+
+	// 頂点バッファをアンロック
+	pVtxBuffGuage->Unlock();
+}
+//***************************
+// 赤ゲージを徐々に減らす処理
+//***************************
+void GuageAnim(int Indx, float nowhp)
+{
+	// HPバーの比率を計算する
+	float fMug;
+	fMug = nowhp / g_Guage[Indx].fMaxHp;
+	// 目標の値を計算する
+	float fWidthEx;
+	fWidthEx = g_Guage[Indx].fMax * fMug;
+	// 差分
+	float fWidthDiff;
+	fWidthDiff = g_Guage[Indx].fWidth - fWidthEx;
+	// 徐々に減らす
+	g_Guage[Indx].fWidth -= fWidthDiff * 0.01f;
+
+	VERTEX_3D* pVtx = NULL;
+	// 頂点バッファをロック
+	pVtxBuffGuage->Lock(0, 0, (void**)&pVtx, 0);
+
+	// ずらしたいところまでPVTXをずらす
+	pVtx += 4 * Indx;
+
+	// 右端だけずらす
+	pVtx[1].pos.x = g_Guage[Indx].fWidth;
+
+	pVtx[3].pos.x = g_Guage[Indx].fWidth;
+
+	// 頂点バッファをアンロック
+	pVtxBuffGuage->Unlock();
+}
+//***************
+// 消したUIを消す
+//***************
+void DeleteGuage(int Indx)
+{
+	g_Guage[Indx].bUse = false;
+}
