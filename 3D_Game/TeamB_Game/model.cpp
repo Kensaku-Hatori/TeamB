@@ -64,7 +64,7 @@ void UpdateStageModel()
 		{
 			Player* pPlayer = GetPlayer();
 			float fDistance = 0.0f;
-			LenOBBToPoint(g_StageModel[ModelCount].ObbModel, pPlayer->pos);
+			CollOBBs(g_StageModel[ModelCount].ObbModel, pPlayer->pos);
 		}
 	}
 }
@@ -297,9 +297,9 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p)
 	D3DXVECTOR3 NAe1 = obb.RotVec[0], Ae1 = NAe1 * obb.fLength[0];
 	D3DXVECTOR3 NAe2 = obb.RotVec[1], Ae2 = NAe2 * obb.fLength[1];
 	D3DXVECTOR3 NAe3 = obb.RotVec[2], Ae3 = NAe3 * obb.fLength[2];
-	D3DXVECTOR3 NBe1 = D3DXVECTOR3(1.0f, 0.0f, 0.0f), Be1 = NBe1 * 1.0f;
-	D3DXVECTOR3 NBe2 = D3DXVECTOR3(0.0f, 1.0f, 0.0f), Be2 = NBe2 * 1.0f;
-	D3DXVECTOR3 NBe3 = D3DXVECTOR3(0.0f, 0.0f, 1.0f), Be3 = NBe3 * 1.0f;
+	D3DXVECTOR3 NBe1 = D3DXVECTOR3(1.0f, 0.0f, 0.0f), Be1 = NBe1 * 10.0f;
+	D3DXVECTOR3 NBe2 = D3DXVECTOR3(0.0f, 1.0f, 0.0f), Be2 = NBe2 * 50.0f;
+	D3DXVECTOR3 NBe3 = D3DXVECTOR3(0.0f, 0.0f, 1.0f), Be3 = NBe3 * 10.0f;
 
 	D3DXVECTOR3 Interval = obb.CenterPos - p;
 	bool bCollision = true;
