@@ -43,6 +43,7 @@ bool g_bPause = false;  //ポーズ中かどうか
 //=============
 void InitGame(void)
 {
+	MODE Mode = GetMode();
 	//メッシュフィールドの初期化
 	InitMeshfield();
 
@@ -101,7 +102,7 @@ void InitGame(void)
 	InitMotion();
 
 	//モデルビューワーの読込
-	LoadModelViewer();
+	LoadModelViewer(Mode);
 
 	////敵の設定処理
 	SetEnemy(D3DXVECTOR3(50.0f, 0.0f, 100.0f), 1, D3DXVECTOR3(0.0f, 0.0f, 0.0f));

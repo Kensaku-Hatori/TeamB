@@ -277,8 +277,6 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	InitSound(hWnd);
 	//
 	InitRanking();
-	//モードの設定
-	SetMode(g_mode);
 	//フェード
 	InitFade(g_mode);
 
@@ -329,7 +327,10 @@ void Update(void)
 	case MODE_TITLE:
 		UpdateTitle();
 		break;
-	case MODE_GAME:
+	case MODE_STAGEONE:
+		UpdateGame();
+		break;
+	case MODE_STAGETWO:
 		UpdateGame();
 		break;
 	case MODE_RESULT:
@@ -375,7 +376,10 @@ void Draw(void)
 		case MODE_TITLE:
 			DrawTitle();
 			break;
-		case MODE_GAME:
+		case MODE_STAGEONE:
+			DrawGame();
+			break;
+		case MODE_STAGETWO:
 			DrawGame();
 			break;
 		case MODE_RESULT:
@@ -413,7 +417,10 @@ void SetMode(MODE mode)
 	case MODE_TITLE:
 		UninitTitle();
 		break;
-	case MODE_GAME:
+	case MODE_STAGEONE:
+		UninitGame();
+		break;
+	case MODE_STAGETWO:
 		UninitGame();
 		break;
 	case MODE_RESULT:
@@ -426,13 +433,18 @@ void SetMode(MODE mode)
 		break;
 	}
 
+	g_mode = mode;
+
 	//新しい画面の初期化処理
 	switch (mode)
 	{
 	case MODE_TITLE:
 		InitTitle();
 		break;
-	case MODE_GAME:
+	case MODE_STAGEONE:
+		InitGame();
+		break;
+	case MODE_STAGETWO:
 		InitGame();
 		break;
 	case MODE_RESULT:
@@ -442,13 +454,10 @@ void SetMode(MODE mode)
 		InitRanking();
 		break;
 	case MODE_END:
-
 		break;
 	default:
 		break;
 	}
-
-	g_mode = mode;
 }
 //=============
 // モード取得

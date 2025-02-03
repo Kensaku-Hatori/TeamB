@@ -28,7 +28,7 @@ typedef struct
 	int nModelType;
 }NTYPE;
 
-void LoadModelViewer();					// スクリプト以前を読み込む処理
+void LoadModelViewer(MODE Mode);					// スクリプト以前を読み込む処理
 void SkipComment(FILE* pFile);			// シャープ以降を飛ばす関数
 void LoadStart(FILE* pFile);			// スクリプト以降の読み込み処理
 void SkipEqual(FILE* pFile);			//  = を読み飛ばす処理

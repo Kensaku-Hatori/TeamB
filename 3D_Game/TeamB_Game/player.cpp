@@ -20,6 +20,7 @@
 #include "enemy.h"
 #include "game.h"
 #include"impact.h"
+#include "fade.h"
 
 //グローバル変数
 Player g_player;
@@ -149,6 +150,14 @@ void UpdatePlayer(void)
 				g_player.bJump = true;
 				g_player.move.y += g_player.nJump;
 			}
+		}
+		if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_5))
+		{
+			SetFade(MODE_STAGEONE);
+		}
+		else if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_6))
+		{
+			SetFade(MODE_STAGETWO);
 		}
 
 		g_player.move.y -= 0.3f; //重力加算

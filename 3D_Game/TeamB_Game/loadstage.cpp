@@ -11,11 +11,24 @@ char FilePathModel[MAX_FILEPATH][64] = { {} };
 //*****************************
 // スクリプト以前を読み込む処理
 //*****************************
-void LoadModelViewer()
+void LoadModelViewer(MODE Mode)
 {
 	char cData[2] = { NULL };
 	char cData1[64] = { NULL };
-	FILE* pFile = fopen("data\\TEXT\\model.txt", "r");
+	FILE* pFile;
+
+	switch (Mode)
+	{
+	case MODE_STAGEONE:
+		pFile = fopen("data\\TEXT\\model.txt", "r");
+		break;
+	case MODE_STAGETWO:
+		pFile = fopen("data\\TEXT\\middle bossstage.txt", "r");
+		break;
+	default:
+		pFile = fopen("data\\TEXT\\model.txt", "r");
+		break;
+	}
 
 	if (pFile != NULL)
 	{

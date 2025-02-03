@@ -32,7 +32,7 @@ void InitResult(void)
 	InitMotion();
 	InitStageModel();
 
-	LoadModelViewer();
+	LoadModelViewer(MODE_STAGEONE);
 }
 //==========
 //I—¹ˆ—
