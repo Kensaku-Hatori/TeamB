@@ -29,7 +29,7 @@ typedef struct
 {
 	MODELINFO PartsInfo[MAX_PARTS];
 	MOTIONINFO MotionInfo[MOTIONTYPE_MAX];
-	char cPartsPath[MAX_PARTS][62];
+	char cPartsPath[MAX_PARTS][256];
 	int nNumParts;
 	int PathCount,PartsCount,MotionCount,KeyCount,KeyPartsCount;
 }LoadInfo;
@@ -38,9 +38,9 @@ void InitMotion();
 void LoadMotionViewer(char *cMotionPath);	// スクリプト以前を読み込む処理
 void LoadMotionStart(FILE* pFile);			// スクリプト以降の読み込み処理
 
-char* LoadCharactorInfo(FILE* pFile,int *nCharactor, int* nParts, MODELINFO*Model);				// キャラクター情報を読み込む処理
-char* LoadPartsInfo(FILE* pFile,int *nParts);									// パーツ情報を読み込む処理
-char* LoadMotionInfo(FILE* pFile,int *nMotion, int* nKey, int* nKeyParts,MOTIONINFO *Motion);	// モーション情報を読み込む処理
-char* LoadKeyInfo(FILE* pFile, int* nKey, int* nKeyParts, MOTIONINFO* Motion);					// キー情報を読み込む処理
-char* LoadKeyPartsInfo(FILE* pFile,int *nKey,int *nKeyParts, MOTIONINFO* Motion);				// パーツごとのキー情報を読み込む処理
+void LoadCharactorInfo(FILE* pFile,int *nCharactor, int* nParts, MODELINFO*Model);				// キャラクター情報を読み込む処理
+void LoadPartsInfo(FILE* pFile,int *nParts);									// パーツ情報を読み込む処理
+void LoadMotionInfo(FILE* pFile,int *nMotion, int* nKey, int* nKeyParts,MOTIONINFO *Motion);	// モーション情報を読み込む処理
+void LoadKeyInfo(FILE* pFile, int* nKey, int* nKeyParts, MOTIONINFO* Motion);					// キー情報を読み込む処理
+void LoadKeyPartsInfo(FILE* pFile,int *nKey,int *nKeyParts, MOTIONINFO* Motion);				// パーツごとのキー情報を読み込む処理
 #endif // !LOADMOTION_H_

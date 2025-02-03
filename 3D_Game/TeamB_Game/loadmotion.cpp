@@ -94,28 +94,14 @@ void LoadMotionStart(FILE* pFile)
 			{
 				g_LoadInfo[nType].PathCount = 0;
 				cData1[0] = { NULL };
-				while (1)
-				{
-					cData2[0] = LoadCharactorInfo(pFile,&CharactorCount,&PartsCount,&ModelInfo[0]);
-					if (strcmp(cData2[0], CHARACTOR) == 0)
-					{
-						break;
-					}
-				}
+				LoadCharactorInfo(pFile,&CharactorCount,&PartsCount,&ModelInfo[0]);
 			}
 			else if (strcmp(&cData1[0], "MOTIONSET") == 0)
 			{
 				cData1[0] = { NULL };
-				while (1)
-				{
-					cData2[0] = LoadMotionInfo(pFile,&MotionCount,&KeyCount,&KeyPartsCount,&MotionInfo[MotionCount]);
-					if (strcmp(cData2[0], MOTION) == 0)
-					{
-						g_LoadInfo[nType].MotionCount++;
-						MotionCount++;
-						break;
-					}
-				}
+				LoadMotionInfo(pFile,&MotionCount,&KeyCount,&KeyPartsCount,&MotionInfo[MotionCount]);
+				g_LoadInfo[nType].MotionCount++;
+				MotionCount++;
 			}
 			else if (strcmp(&cData1[0], "END_SCRIPT") == 0)
 			{
@@ -152,7 +138,7 @@ void LoadMotionStart(FILE* pFile)
 //*************************************
 // キャラクター情報を読み込む処理
 //*************************************
-char* LoadCharactorInfo(FILE* pFile,int *nCharactor,int *nParts,MODELINFO *ModelInfo)
+void LoadCharactorInfo(FILE* pFile,int *nCharactor,int *nParts,MODELINFO *ModelInfo)
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
@@ -209,15 +195,8 @@ char* LoadCharactorInfo(FILE* pFile,int *nCharactor,int *nParts,MODELINFO *Model
 			else if (strcmp(&cData1[0], "PARTSSET") == 0)
 			{
 				cData1[0] = { NULL };
-				while (1)
-				{
-					cData3[0] = LoadPartsInfo(pFile,nParts);
-					if (strcmp(cData3[0], PARTS) == 0)
-					{
-						g_LoadInfo[nType].PartsCount++;
-						break;
-					}
-				}
+				LoadPartsInfo(pFile,nParts);
+				g_LoadInfo[nType].PartsCount++;
 			}
 			else if (strcmp(&cData1[0], "END_CHARACTERSET") == 0)
 			{
@@ -226,12 +205,11 @@ char* LoadCharactorInfo(FILE* pFile,int *nCharactor,int *nParts,MODELINFO *Model
 			}
 		}
 	}
-	return &cData1[0];
 }
 //*************************
 // パーツ情報を読み込む処理
 //*************************
-char* LoadPartsInfo(FILE* pFile,int *Parts)
+void LoadPartsInfo(FILE* pFile,int *Parts)
 {
 	MODELINFO ModelInfo[MAX_PARTS];
 	char cData[2] = { NULL };
@@ -287,12 +265,11 @@ char* LoadPartsInfo(FILE* pFile,int *Parts)
 			}
 		}
 	}
-	return &cData1[0];
 }
 //*************************************
 // モーション情報を読み込む処理
 //*************************************
-char* LoadMotionInfo(FILE* pFile,int *Motion,int *Key, int* nKeyParts,MOTIONINFO *MotionInfo)
+void LoadMotionInfo(FILE* pFile,int *Motion,int *Key, int* nKeyParts,MOTIONINFO *MotionInfo)
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
@@ -372,16 +349,8 @@ char* LoadMotionInfo(FILE* pFile,int *Motion,int *Key, int* nKeyParts,MOTIONINFO
 			else if (strcmp(&cData1[0], "KEYSET") == 0)
 			{
 				cData1[0] = { NULL };
-				while (1)
-				{
-					cData3[0] = LoadKeyInfo(pFile,Key, nKeyParts, MotionInfo);
-					int i = 0;
-					if (strcmp(cData3[0], KEYENDSTRING) == 0)
-					{
-						g_LoadInfo[nType].KeyCount++;
-						break;
-					}
-				}
+				LoadKeyInfo(pFile,Key, nKeyParts, MotionInfo);
+				g_LoadInfo[nType].KeyCount++;
 			}
 			else if (strcmp(&cData1[0], "END_MOTIONSET") == 0)
 			{
@@ -390,12 +359,11 @@ char* LoadMotionInfo(FILE* pFile,int *Motion,int *Key, int* nKeyParts,MOTIONINFO
 			}
 		}
 	}
-	return &cData1[0];
 }
 //*****************************
 // キー情報を読み込む処理
 //*****************************
-char* LoadKeyInfo(FILE* pFile, int* nKey, int* nKeyParts, MOTIONINFO* Motion)
+void LoadKeyInfo(FILE* pFile, int* nKey, int* nKeyParts, MOTIONINFO* Motion)
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
@@ -425,15 +393,8 @@ char* LoadKeyInfo(FILE* pFile, int* nKey, int* nKeyParts, MOTIONINFO* Motion)
 			else if (strcmp(&cData1[0], "KEY") == 0)
 			{
 				cData1[0] = { NULL };
-				while (1)
-				{
-					cData3[0] = LoadKeyPartsInfo(pFile,nKey, nKeyParts, Motion);
-					if (strcmp(cData3[0], KEYPARTS) == 0)
-					{
-						g_LoadInfo[nType].KeyPartsCount++;
-						break;
-					}
-				}
+				LoadKeyPartsInfo(pFile,nKey, nKeyParts, Motion);
+				g_LoadInfo[nType].KeyPartsCount++;
 			}
 			else if (strcmp(&cData1[0], "END_KEYSET") == 0)
 			{
@@ -442,12 +403,11 @@ char* LoadKeyInfo(FILE* pFile, int* nKey, int* nKeyParts, MOTIONINFO* Motion)
 			}
 		}
 	}
-	return &cData1[0];
 }
 //***********************************
 // パーツごとのキー情報を読み込む処理
 //***********************************
-char* LoadKeyPartsInfo(FILE* pFile,int *nKey,int* nKeyParts,MOTIONINFO *MotionInfo)
+void LoadKeyPartsInfo(FILE* pFile,int *nKey,int* nKeyParts,MOTIONINFO *MotionInfo)
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
@@ -489,5 +449,4 @@ char* LoadKeyPartsInfo(FILE* pFile,int *nKey,int* nKeyParts,MOTIONINFO *MotionIn
 			}
 		}
 	}
-	return &cData1[0];
 }

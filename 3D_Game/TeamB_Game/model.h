@@ -9,10 +9,11 @@
 
 #include "main.h"
 
-#define MAX_TEX (32)
-#define MAX_PARTS (15)//パーツの最大数
-#define MAX_STAGEMODEL (128)
+#define MAX_TEX (32)			// テクスチャの最大数
+#define MAX_PARTS (15)			// パーツの最大数
+#define MAX_STAGEMODEL (128)	// ステージに出すモデルの最大数
 
+// モデルの種類の列挙型
 typedef enum
 {
 	MODELTYPE_ZERO = 0,
@@ -29,10 +30,10 @@ typedef enum
 	MODELTYPE_ELEVEN,
 	MODELTYPE_TWELVE,
 	MODELTYPE_THIRTEEN,
-	MODELTYPE_FOURTEEN,
 	MODELTYPE_MAX
 }MODELTYPE;
 
+// OBBの構造体
 typedef struct
 {
 	D3DXVECTOR3 CenterPos;
@@ -57,6 +58,7 @@ typedef struct
 	LPDIRECT3DTEXTURE9 pTexture[128];
 }MODELINFO;
 
+// OBBのもととなる物の構造体
 typedef struct
 {
 	LPD3DXMESH pMesh;		//メッシュへのポインタ
@@ -65,6 +67,7 @@ typedef struct
 	LPDIRECT3DTEXTURE9 pTexture[MAX_TEX];
 }MODELORIGIN;
 
+// ステージに出すモデルの構造体
 typedef struct
 {
 	MODELORIGIN ModelBuff;
@@ -83,6 +86,7 @@ void UninitStageModel();
 void UpdateStageModel();
 void DrawStageModel();
 void SetStageModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot, MODELTYPE nType);
+void SetObbInfo(int Indx);
 void SetStageModelInfo(char *ModelPath[],int nType);
 void LenOBBToPoint(OBB& obb, D3DXVECTOR3& p);
 void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx);

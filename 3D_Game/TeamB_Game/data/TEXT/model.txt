@@ -276,8 +276,8 @@ END_WALLSET
 #-----------------------------------
 MODELSET
 	TYPE = 0
-	POS = 0 0 250
-	ROT = 90 135 0
+	POS = -284 0 427
+	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 

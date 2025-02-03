@@ -22,6 +22,19 @@ void InitStageModel()
 		g_StageModel[ModelCount].ObbModel.RotVec[0] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		g_StageModel[ModelCount].ObbModel.RotVec[1] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		g_StageModel[ModelCount].ObbModel.RotVec[2] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+		g_StageModel[ModelCount].Max = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		g_StageModel[ModelCount].Min = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+		g_StageModel[ModelCount].ModelBuff.dwNumMat = NULL;
+		g_StageModel[ModelCount].ModelBuff.pBuffMat = NULL;
+		g_StageModel[ModelCount].ModelBuff.pMesh = NULL;
+	}
+	for (int Origin = 0; Origin < MODELTYPE_MAX; Origin++)
+	{
+		g_ModelOrigin[Origin].dwNumMat = NULL;
+		g_ModelOrigin[Origin].pBuffMat = NULL;
+		g_ModelOrigin[Origin].pMesh = NULL;
 	}
 }
 void UninitStageModel()
@@ -146,100 +159,107 @@ void SetStageModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot, MODELTYPE nType)
 	{
 		if (g_StageModel[ModelCount].bUse == false)
 		{
-			g_StageModel[ModelCount].ModelBuff = g_ModelOrigin[nType];
 			g_StageModel[ModelCount].bUse = true;
 			g_StageModel[ModelCount].nType = nType;
 			g_StageModel[ModelCount].pos = pos;
 			g_StageModel[ModelCount].rot = rot;
-
-			int nNumVtx;   //頂点数
-			DWORD sizeFVF; //頂点フォーマットのサイズ
-			BYTE* pVtxBuff;//頂点バッファへのポインタ
-
-			//頂点数取得
-			nNumVtx = g_StageModel[ModelCount].ModelBuff.pMesh->GetNumVertices();
-			//頂点フォーマットのサイズ取得
-			sizeFVF = D3DXGetFVFVertexSize(g_StageModel[ModelCount].ModelBuff.pMesh->GetFVF());
-			//頂点バッファのロック
-			g_StageModel[ModelCount].ModelBuff.pMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&pVtxBuff);
-
-			for (int nCnt = 0; nCnt < nNumVtx; nCnt++)
-			{
-				//頂点座標の代入
-				D3DXVECTOR3 vtx = *(D3DXVECTOR3*)pVtxBuff;
-
-				//頂点座標を比較してプレイヤーの最小値、最大値を取得
-				//最小値
-				if (vtx.x < g_StageModel[ModelCount].Min.x)
-				{
-					g_StageModel[ModelCount].Min.x = vtx.x;
-				}
-				if (vtx.y < g_StageModel[ModelCount].Min.y)
-				{
-					g_StageModel[ModelCount].Min.y = vtx.y;
-				}
-				if (vtx.z < g_StageModel[ModelCount].Min.z)
-				{
-					g_StageModel[ModelCount].Min.z = vtx.z;
-				}
-				//最大値
-				if (vtx.x > g_StageModel[ModelCount].Max.x)
-				{
-					g_StageModel[ModelCount].Max.x = vtx.x;
-				}
-				if (vtx.y > g_StageModel[ModelCount].Max.y)
-				{
-					g_StageModel[ModelCount].Max.y = vtx.y;
-				}
-				if (vtx.z > g_StageModel[ModelCount].Max.z)
-				{
-					g_StageModel[ModelCount].Max.z = vtx.z;
-				}
-				//頂点フォーマットのサイズ分ポインタを進める
-				pVtxBuff += sizeFVF;
-			}
-
-			//頂点バッファのアンロック
-			g_StageModel[ModelCount].ModelBuff.pMesh->UnlockVertexBuffer();
-
-			D3DXMATRIX mtxRotModel, mtxTransModel;
-			D3DXMATRIX mtxParent;
-			D3DXMatrixIdentity(&g_StageModel[ModelCount].ObbModel.CenterMtx);
-
-			// 向きを反映
-			D3DXMatrixRotationYawPitchRoll(&mtxRotModel, g_StageModel[ModelCount].rot.y, g_StageModel[ModelCount].rot.x, g_StageModel[ModelCount].rot.z);
-			D3DXMatrixMultiply(&g_StageModel[ModelCount].ObbModel.CenterMtx, &g_StageModel[ModelCount].ObbModel.CenterMtx, &mtxRotModel);
-
-			// 位置を反映
-			D3DXMatrixTranslation(&mtxTransModel, 0.0f, g_StageModel[ModelCount].Max.y * 0.5f, 0.0f);
-			D3DXMatrixMultiply(&g_StageModel[ModelCount].ObbModel.CenterMtx, &g_StageModel[ModelCount].ObbModel.CenterMtx, &mtxTransModel);
-
-			mtxParent = g_StageModel[ModelCount].mtxWorld;
-
-			D3DXMatrixMultiply(&g_StageModel[ModelCount].ObbModel.CenterMtx,
-				&g_StageModel[ModelCount].ObbModel.CenterMtx,
-				&mtxParent);
-
-			pDevice->SetTransform(D3DTS_WORLD,
-				&g_StageModel[ModelCount].ObbModel.CenterMtx);
-
-			// 中心点
-			g_StageModel[ModelCount].ObbModel.CenterPos.x = g_StageModel[ModelCount].ObbModel.CenterMtx._41;
-			g_StageModel[ModelCount].ObbModel.CenterPos.y = g_StageModel[ModelCount].ObbModel.CenterMtx._42;
-			g_StageModel[ModelCount].ObbModel.CenterPos.z = g_StageModel[ModelCount].ObbModel.CenterMtx._43;
-
-			// 各座標軸の傾きを表すベクトルを計算
-			g_StageModel[ModelCount].ObbModel.RotVec[0] = D3DXVECTOR3(mtxRotModel._11, mtxRotModel._12, mtxRotModel._13);
-			g_StageModel[ModelCount].ObbModel.RotVec[1] = D3DXVECTOR3(mtxRotModel._21, mtxRotModel._22, mtxRotModel._23);
-			g_StageModel[ModelCount].ObbModel.RotVec[2] = D3DXVECTOR3(mtxRotModel._31, mtxRotModel._32, mtxRotModel._33);
-
-			// 中心点から面への距離の半分
-			g_StageModel[ModelCount].ObbModel.fLength[0] = fabsf(g_StageModel[ModelCount].Max.x - g_StageModel[ModelCount].Min.x) * 0.5f;
-			g_StageModel[ModelCount].ObbModel.fLength[1] = fabsf(g_StageModel[ModelCount].Max.y - g_StageModel[ModelCount].Min.y) * 0.5f;
-			g_StageModel[ModelCount].ObbModel.fLength[2] = fabsf(g_StageModel[ModelCount].Max.z - g_StageModel[ModelCount].Min.z) * 0.5f;
+			g_StageModel[ModelCount].ModelBuff = g_ModelOrigin[nType];
+			SetObbInfo(ModelCount);
 			break;
 		}
 	}
+}
+void SetObbInfo(int Indx)
+{
+	LPDIRECT3DDEVICE9 pDevice;
+	//デバイスの取得
+	pDevice = GetDevice();
+
+	int nNumVtx;   //頂点数
+	DWORD sizeFVF; //頂点フォーマットのサイズ
+	BYTE* pVtxBuff;//頂点バッファへのポインタ
+
+	//頂点数取得
+	nNumVtx = g_StageModel[Indx].ModelBuff.pMesh->GetNumVertices();
+	//頂点フォーマットのサイズ取得
+	sizeFVF = D3DXGetFVFVertexSize(g_StageModel[Indx].ModelBuff.pMesh->GetFVF());
+	//頂点バッファのロック
+	g_StageModel[Indx].ModelBuff.pMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&pVtxBuff);
+
+	for (int nCnt = 0; nCnt < nNumVtx; nCnt++)
+	{
+		//頂点座標の代入
+		D3DXVECTOR3 vtx = *(D3DXVECTOR3*)pVtxBuff;
+
+		//頂点座標を比較してプレイヤーの最小値、最大値を取得
+		//最小値
+		if (vtx.x < g_StageModel[Indx].Min.x)
+		{
+			g_StageModel[Indx].Min.x = vtx.x;
+		}
+		if (vtx.y < g_StageModel[Indx].Min.y)
+		{
+			g_StageModel[Indx].Min.y = vtx.y;
+		}
+		if (vtx.z < g_StageModel[Indx].Min.z)
+		{
+			g_StageModel[Indx].Min.z = vtx.z;
+		}
+		//最大値
+		if (vtx.x > g_StageModel[Indx].Max.x)
+		{
+			g_StageModel[Indx].Max.x = vtx.x;
+		}
+		if (vtx.y > g_StageModel[Indx].Max.y)
+		{
+			g_StageModel[Indx].Max.y = vtx.y;
+		}
+		if (vtx.z > g_StageModel[Indx].Max.z)
+		{
+			g_StageModel[Indx].Max.z = vtx.z;
+		}
+		//頂点フォーマットのサイズ分ポインタを進める
+		pVtxBuff += sizeFVF;
+	}
+
+	//頂点バッファのアンロック
+	g_StageModel[Indx].ModelBuff.pMesh->UnlockVertexBuffer();
+
+	D3DXMATRIX mtxRotModel, mtxTransModel;
+	D3DXMATRIX mtxParent;
+	D3DXMatrixIdentity(&g_StageModel[Indx].ObbModel.CenterMtx);
+
+	// 向きを反映
+	D3DXMatrixRotationYawPitchRoll(&mtxRotModel, g_StageModel[Indx].rot.y, g_StageModel[Indx].rot.x, g_StageModel[Indx].rot.z);
+	D3DXMatrixMultiply(&g_StageModel[Indx].ObbModel.CenterMtx, &g_StageModel[Indx].ObbModel.CenterMtx, &mtxRotModel);
+
+	// 位置を反映
+	D3DXMatrixTranslation(&mtxTransModel, 0.0f, g_StageModel[Indx].Max.y * 0.5f, 0.0f);
+	D3DXMatrixMultiply(&g_StageModel[Indx].ObbModel.CenterMtx, &g_StageModel[Indx].ObbModel.CenterMtx, &mtxTransModel);
+
+	mtxParent = g_StageModel[Indx].mtxWorld;
+
+	D3DXMatrixMultiply(&g_StageModel[Indx].ObbModel.CenterMtx,
+		&g_StageModel[Indx].ObbModel.CenterMtx,
+		&mtxParent);
+
+	pDevice->SetTransform(D3DTS_WORLD,
+		&g_StageModel[Indx].ObbModel.CenterMtx);
+
+	// 中心点
+	g_StageModel[Indx].ObbModel.CenterPos.x = g_StageModel[Indx].ObbModel.CenterMtx._41;
+	g_StageModel[Indx].ObbModel.CenterPos.y = g_StageModel[Indx].ObbModel.CenterMtx._42;
+	g_StageModel[Indx].ObbModel.CenterPos.z = g_StageModel[Indx].ObbModel.CenterMtx._43;
+
+	// 各座標軸の傾きを表すベクトルを計算
+	g_StageModel[Indx].ObbModel.RotVec[0] = D3DXVECTOR3(mtxRotModel._11, mtxRotModel._12, mtxRotModel._13);
+	g_StageModel[Indx].ObbModel.RotVec[1] = D3DXVECTOR3(mtxRotModel._21, mtxRotModel._22, mtxRotModel._23);
+	g_StageModel[Indx].ObbModel.RotVec[2] = D3DXVECTOR3(mtxRotModel._31, mtxRotModel._32, mtxRotModel._33);
+
+	// 中心点から面への距離の半分
+	g_StageModel[Indx].ObbModel.fLength[0] = fabsf(g_StageModel[Indx].Max.x - g_StageModel[Indx].Min.x) * 0.5f;
+	g_StageModel[Indx].ObbModel.fLength[1] = fabsf(g_StageModel[Indx].Max.y - g_StageModel[Indx].Min.y) * 0.5f;
+	g_StageModel[Indx].ObbModel.fLength[2] = fabsf(g_StageModel[Indx].Max.z - g_StageModel[Indx].Min.z) * 0.5f;
 }
 void SetStageModelInfo(char *ModelPath[], int PathType)
 {

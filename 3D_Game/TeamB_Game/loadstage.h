@@ -36,13 +36,13 @@ int LoadInt(FILE* pFile);				// 整数を読み込む処理
 float LoadFloat(FILE* pFile);			// 小数点を読み込む処理
 char *LoadPath(FILE* pFile,char *cData2);			// 文字列を読み込む処理
 
-char* LoadCameraInfo(FILE* pFile);		// カメラ情報を読み込む処理
-char* LoadLightInfo(FILE* pFile);		// ライト情報を読み込む処理
-char* LoadSkyInfo(FILE* pFile);			// 空情報を読み込む処理
-char* LoadMountInfo(FILE* pFile);		// 山情報を読み込む処理
-char* LoadFieldInfo(FILE* pFile);		// 地面情報を読み込む処理
-char* LoadWallInfo(FILE* pFile);		// 壁情報を読み込む処理
-char* LoadModelInfo(FILE* pFile);		// モデル情報を読み込む処理
-char* LoadBillBoardInfo(FILE* pFile);	// ビルボード情報を読み込む処理
-char* LoadPlayerInfo(FILE* pFile);		// プレイヤー情報を読み込む処理
+void LoadCameraInfo(FILE* pFile);		// カメラ情報を読み込む処理
+void LoadLightInfo(FILE* pFile);		// ライト情報を読み込む処理
+void LoadSkyInfo(FILE* pFile);			// 空情報を読み込む処理
+void LoadMountInfo(FILE* pFile);		// 山情報を読み込む処理
+void LoadFieldInfo(FILE* pFile);		// 地面情報を読み込む処理
+void LoadWallInfo(FILE* pFile);		// 壁情報を読み込む処理
+void LoadModelInfo(FILE* pFile);		// モデル情報を読み込む処理
+void LoadBillBoardInfo(FILE* pFile);	// ビルボード情報を読み込む処理
+void LoadPlayerInfo(FILE* pFile);		// プレイヤー情報を読み込む処理
 #endif // !LOADSTAGE_H_

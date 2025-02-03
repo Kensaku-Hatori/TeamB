@@ -5,8 +5,8 @@
 #include "camera.h"
 #include "light.h"
 
-char FilePathPoly[MAX_FILEPATH][64] = { {} };
-char FilePathModel[MAX_FILEPATH][64] = { {} };
+char FilePathPoly[MAX_FILEPATH][256] = { {} };
+char FilePathModel[MAX_FILEPATH][256] = { {} };
 
 //*****************************
 // スクリプト以前を読み込む処理
@@ -23,10 +23,10 @@ void LoadModelViewer(MODE Mode)
 		pFile = fopen("data\\TEXT\\model.txt", "r");
 		break;
 	case MODE_STAGETWO:
-		pFile = fopen("data\\TEXT\\middle bossstage.txt", "r");
+		pFile = fopen("data\\TEXT\\tutorialstage.txt", "r");
 		break;
 	default:
-		pFile = fopen("data\\TEXT\\model.txt", "r");
+		return;
 		break;
 	}
 
@@ -132,102 +132,39 @@ void LoadStart(FILE* pFile)
 			}
 			else if (strcmp(&cData1[0], "CAMERASET") == 0)
 			{
-				while (1)
-				{
-					cData2[0] = LoadCameraInfo(pFile);
-					if (strcmp(cData2[0], CAMERA) == 0)
-					{
-						break;
-					}
-				}
+				LoadCameraInfo(pFile);
 			}
 			else if (strcmp(&cData1[0], "LIGHTSET") == 0)
 			{
-				while (1)
-				{
-					cData2[0] = LoadLightInfo(pFile);
-					if (strcmp(cData2[0], LIGHT) == 0)
-					{
-						break;
-					}
-				}
+				LoadLightInfo(pFile);
 			}
 			else if (strcmp(&cData1[0], "SKYSET") == 0)
 			{
-				while (1)
-				{
-					cData2[0] = LoadSkyInfo(pFile);
-					if (strcmp(cData2[0], SKY) == 0)
-					{
-						break;
-					}
-				}
+				LoadSkyInfo(pFile);
 			}
 			else if (strcmp(&cData1[0], "MOUNTAINSET") == 0)
 			{
-				while (1)
-				{
-					cData2[0] = LoadMountInfo(pFile);
-					if (strcmp(cData2[0], MOUNTAIN) == 0)
-					{
-						break;
-					}
-				}
+				LoadMountInfo(pFile);
 			}
 			else if (strcmp(&cData1[0], "FIELDSET") == 0)
 			{
-				while (1)
-				{
-					cData2[0] = LoadFieldInfo(pFile);
-					if (strcmp(cData2[0], FIELD) == 0)
-					{
-						break;
-					}
-				}
+				LoadFieldInfo(pFile);
 			}
 			else if (strcmp(&cData1[0], "WALLSET") == 0)
 			{
-				while (1)
-				{
-					cData2[0] = LoadWallInfo(pFile);
-					if (strcmp(cData2[0], WALL) == 0)
-					{
-						break;
-					}
-				}
+				LoadWallInfo(pFile);
 			}
 			else if (strcmp(&cData1[0], "MODELSET") == 0)
 			{
-				while (1)
-				{
-					cData2[0] = LoadModelInfo(pFile);
-					if (strcmp(cData2[0], MODEL) == 0)
-					{
-						break;
-					}
-				}
+				LoadModelInfo(pFile);
 			}
 			else if (strcmp(&cData1[0], "BILLBOARDSET") == 0)
 			{
-				while (1)
-				{
-					cData2[0] = LoadBillBoardInfo(pFile);
-					if (strcmp(cData2[0], BILLBOARD) == 0)
-					{
-						break;
-					}
-				}
+				LoadBillBoardInfo(pFile);
 			}
 			else if (strcmp(&cData1[0], "PLAYERSET") == 0)
 			{
-				while (1)
-				{
-					cData2[0] = LoadPlayerInfo(pFile);
-					if (strcmp(cData2[0], PLAYER) == 0)
-					{
-						break;
-					}
-				}
+				LoadPlayerInfo(pFile);
 			}
 			else if (strcmp(&cData1[0], "END_SCRIPT") == 0)
 			{
@@ -330,7 +267,6 @@ char *LoadPath(FILE* pFile,char *cData2)
 		}
 		else
 		{
-			strcpy(filepath, cData1);
 			cData2 = cData1;
 			if (*cData == '#')
 			{
@@ -344,7 +280,7 @@ char *LoadPath(FILE* pFile,char *cData2)
 //*************************************
 // カメラ情報を読み込む処理
 //*************************************
-char* LoadCameraInfo(FILE* pFile)
+void LoadCameraInfo(FILE* pFile)
 {
 	Camera* pCamera = GetCamera();
 
@@ -392,12 +328,11 @@ char* LoadCameraInfo(FILE* pFile)
 			}
 		}
 	}
-	return &cData1[0];
 }
 //*************************************
 // ライト情報を読み込む処理
 //*************************************
-char* LoadLightInfo(FILE* pFile)
+void LoadLightInfo(FILE* pFile)
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
@@ -443,12 +378,11 @@ char* LoadLightInfo(FILE* pFile)
 			}
 		}
 	}
-	return &cData1[0];
 }
 //*************************************
 // 空情報を読み込む処理
 //*************************************
-char* LoadSkyInfo(FILE* pFile)
+void LoadSkyInfo(FILE* pFile)
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
@@ -488,12 +422,11 @@ char* LoadSkyInfo(FILE* pFile)
 			}
 		}
 	}
-	return &cData1[0];
 }
 //*************************************
 // 山情報を読み込む処理
 //*************************************
-char* LoadMountInfo(FILE* pFile)
+void LoadMountInfo(FILE* pFile)
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
@@ -526,12 +459,11 @@ char* LoadMountInfo(FILE* pFile)
 			}
 		}
 	}
-	return &cData1[0];
 }
 //*************************************
 // 地面情報を読み込む処理
 //*************************************
-char* LoadFieldInfo(FILE* pFile)
+void LoadFieldInfo(FILE* pFile)
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
@@ -598,12 +530,11 @@ char* LoadFieldInfo(FILE* pFile)
 			}
 		}
 	}
-	return &cData1[0];
 }
 //*************************************
 // 壁情報を読み込む処理
 //*************************************
-char* LoadWallInfo(FILE* pFile)
+void LoadWallInfo(FILE* pFile)
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
@@ -672,12 +603,11 @@ char* LoadWallInfo(FILE* pFile)
 			}
 		}
 	}
-	return &cData1[0];
 }
 //*************************************
 // モデル情報を読み込む処理
 //*************************************
-char* LoadModelInfo(FILE* pFile)
+void LoadModelInfo(FILE* pFile)
 {
 	char cData[2] = {};
 	char cData1[128] = {};
@@ -736,12 +666,11 @@ char* LoadModelInfo(FILE* pFile)
 			}
 		}
 	}
-	return &cData1[0];
 }
 //*************************************
 // ビルボード情報を読み込む処理
 //*************************************
-char* LoadBillBoardInfo(FILE* pFile)
+void LoadBillBoardInfo(FILE* pFile)
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
@@ -805,19 +734,18 @@ char* LoadBillBoardInfo(FILE* pFile)
 			}
 		}
 	}
-	return &cData1[0];
 }
 //*****************************
 // プレイヤー情報を読み込む処理
 //*****************************
-char* LoadPlayerInfo(FILE* pFile)
+void LoadPlayerInfo(FILE* pFile)
 {
 	char cData[2] = { NULL };
 	char cData1[128] = { NULL };
 	char cData2[64] = { NULL };
 	char *cData3[64] = { NULL };
 	D3DXVECTOR3 Pos,Rot;
-	char cFileName[64] = {};
+	char cFileName[256] = {};
 
 	while (1)
 	{
@@ -864,5 +792,4 @@ char* LoadPlayerInfo(FILE* pFile)
 			}
 		}
 	}
-	return &cData1[0];
 }

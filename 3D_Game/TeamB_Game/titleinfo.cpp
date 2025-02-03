@@ -262,7 +262,7 @@ void UpdateTitleInfo(void)
 			//メニューに合わせてモードの切り替え
 			if (g_titleinfoMenu == TITLE_START)
 			{	//STARTにいる場合
-				SetFade(MODE_STAGEONE);
+				SetFade(MODE_STAGETWO);
 			}
 			else if (g_titleinfoMenu == TITLE_RANK)
 			{	//RANKにいる場合

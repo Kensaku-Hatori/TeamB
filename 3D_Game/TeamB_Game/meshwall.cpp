@@ -117,7 +117,6 @@ void DrawMeshWall(void)
 
 			//テクスチャの設定
 			pDevice->SetTexture(0, g_pTextureMeshWall);
-
 			//メッシュ壁を描画
 			pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, g_MeshWall[nCnt].nMaxVtx, 0, g_MeshWall[nCnt].nPolyNum);
 		}
