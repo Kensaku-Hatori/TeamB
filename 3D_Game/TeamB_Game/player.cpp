@@ -62,6 +62,9 @@ void InitPlayer(void)
 	g_player.fDistance = PLAYER_RADIUS / 2;
 	g_player.bLockOn = false;
 
+	g_player.sightAngle = 0;
+	g_player.sightRange = 0;
+
 	g_nCntHealMP = 0;
 }
 //=======================
