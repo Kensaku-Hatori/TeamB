@@ -99,10 +99,12 @@ void UpdatePlayer(void)
 	{
 		SetSizeShadow(g_player.pos, g_player.nIdxShadow);
 
+		//プレイヤー移動
 		PlayerMove();
 
+		//ロックオン状態なら
 		if (g_player.bLockOn == true)
-		{	
+		{
 			g_player.rotDest.y = atan2f(pEnemy->Object.Pos.z - g_player.pos.z, pEnemy->Object.Pos.x - g_player.pos.x);
 		}
 
@@ -151,7 +153,7 @@ void UpdatePlayer(void)
 			}
 		}
 
-		g_player.move.y -= 0.3f; //重力加算
+		g_player.move.y -= GRAVITY; //重力加算
 
 		//前回の位置を保存
 		g_player.posOld = g_player.pos;
@@ -168,8 +170,6 @@ void UpdatePlayer(void)
 		{
 			g_player.bLockOn = IsEnemyInsight();
 		}
-
-
 
 		// HP0
 		if (g_player.Status.fHP <= 0.0f)
@@ -195,7 +195,6 @@ void UpdatePlayer(void)
 		//移動量を更新
 		g_player.move.x = 0.0f;
 		g_player.move.z = 0.0f;
-
 
 #ifdef _DEBUG
 		//位置を０に
@@ -470,11 +469,14 @@ Player* GetPlayer(void)
 {
 	return &g_player;
 }
+
 void SetMesh(char* pFilePath, int Indx)
 {
 
 }
-
+//===================
+// パーツ情報の設定
+//===================
 void SetPartsInfo(LoadInfo PartsInfo)
 {
 	g_player.PlayerMotion.nNumModel = PartsInfo.nNumParts;
@@ -583,9 +585,9 @@ void PlayerMotion(MOTIONINFO *pMotionInfo)
 	}
 	g_player.bUse = true;
 }
-//
-//
-//
+//=========================
+// 敵が視界にいるかどうか
+//=========================
 bool IsEnemyInsight(void)
 {
 	ENEMY* pEnemy = GetEnemy();
