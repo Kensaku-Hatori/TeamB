@@ -217,7 +217,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\ƒ‚ƒfƒ‹ƒrƒ…[ƒ Ver.1.0\\data\\TEXTURE\\bill4.jpg";
+    "data\\TEXTURE\\bill4.jpg";
    }
   }
  }

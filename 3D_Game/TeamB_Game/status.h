@@ -8,6 +8,8 @@
 //
 //=====================================
 
+#define GRAVITY (float)(0.3f)
+
 typedef struct
 {
 	float fHP;
