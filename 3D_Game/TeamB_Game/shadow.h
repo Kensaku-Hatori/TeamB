@@ -18,6 +18,7 @@ typedef struct
 	D3DXVECTOR3 pos;			//位置
 	D3DXVECTOR3 rot;			//向き
 	D3DXMATRIX mtxWorld;		//ワールドマトリックス
+	LPDIRECT3DVERTEXBUFFER9 pVtxBuffShadow;//頂点情報
 	float fRadius;				//半径
 	float fTriangle;			//三角形
 	bool bUse;					//使用しているかどうか
