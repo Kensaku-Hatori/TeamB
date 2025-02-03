@@ -128,20 +128,20 @@ void UpdateSkill(void)
 					  D3DXCOLOR(0.80f, 1.00f, 0.00f,1.0f),
 					  EFFECT_NONE);
 
-			//if ((g_Skill[nCnt].nLife % INTERVAL_IMPACT) == 0)
-			//{
+			if ((g_Skill[nCnt].nLife % INTERVAL_IMPACT) == 0)
+			{
 				//è’åÇîgÇÃê›íË
 				SetImpact(IMPACTTYPE_SKILL,
 					g_Skill[nCnt].pos,
 					D3DXCOLOR(0.9f, 1.0f, 1.0f, 1.0f),
-					10,
+					30,
 					5.0f,
 					10.0f,
 					2,
 					50,
 					0.5f,
 					g_Skill[nCnt].rot.y);
-			//}
+			}
 
 			g_Skill[nCnt].pos += g_Skill[nCnt].move;
 

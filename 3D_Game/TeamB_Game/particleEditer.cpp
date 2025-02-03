@@ -3,6 +3,7 @@
 #include "effect.h"
 #include "camera.h"
 #include "input.h"
+#include "player.h"
 
 #define COLSPEED (float)(0.01f)
 #define VECSPEED (float)(0.01f)
@@ -11,7 +12,9 @@ PARTICLEEDITER g_ParticleEditer;
 
 void InitParticleEditer()
 {
-	g_ParticleEditer.ParticleInfo.Object.Pos = D3DXVECTOR3(0.0f, 100.0f, 0.0f);
+	Player* pPlayer = GetPlayer();
+	g_ParticleEditer.ParticleInfo.Object.Pos = pPlayer->pos;
+	g_ParticleEditer.ParticleInfo.Object.Pos.y = 100.0f;
 	g_ParticleEditer.ParticleInfo.dir = D3DXVECTOR3(3.14f,3.14f, 3.14f);
 	g_ParticleEditer.ParticleInfo.col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	g_ParticleEditer.ParticleInfo.ntype = PARTICLE_NONE;

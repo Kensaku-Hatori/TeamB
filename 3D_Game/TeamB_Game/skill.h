@@ -17,15 +17,15 @@
 //ビルボードの構造体
 typedef struct
 {
-	D3DXVECTOR3 pos;//位置
-	D3DXVECTOR3 move;//位置
-	D3DXVECTOR3 rot;//向き
-	D3DXVECTOR3 dir;//向き
-	D3DXMATRIX mtxWorld;//ワールドマトリックス
-	int nIdxShadow;
-	int nLife;
-	float fDistance;
-	bool bUse;
+	D3DXVECTOR3 pos;			//位置
+	D3DXVECTOR3 move;			//移動量
+	D3DXVECTOR3 rot;			//向き
+	D3DXVECTOR3 dir;			//向き
+	D3DXMATRIX mtxWorld;		//ワールドマトリックス
+	int nIdxShadow;				//影のインデックス保存用
+	int nLife;					//寿命
+	float fDistance;			//距離
+	bool bUse;					//使用しているかどうか
 }Skill;
 
 //プロトタイプ宣言

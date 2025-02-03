@@ -63,8 +63,12 @@ void UpdateStageModel()
 		if (g_StageModel[ModelCount].bUse == true)
 		{
 			Player* pPlayer = GetPlayer();
+			D3DXVECTOR3 obb1Center;
+			obb1Center.x = pPlayer->pos.x;
+			obb1Center.y = pPlayer->pos.y + (pPlayer->size.y * 0.5f);
+			obb1Center.z = pPlayer->pos.z;
 			float fDistance = 0.0f;
-			LenOBBToPoint(g_StageModel[ModelCount].ObbModel, pPlayer->pos);
+			CollOBBs(g_StageModel[ModelCount].ObbModel, obb1Center, ModelCount);
 		}
 	}
 }
@@ -125,6 +129,10 @@ void DrawStageModel()
 }
 void SetStageModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot, MODELTYPE nType)
 {
+	LPDIRECT3DDEVICE9 pDevice;
+	//デバイスの取得
+	pDevice = GetDevice();
+
 	for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++)
 	{
 		if (g_StageModel[ModelCount].bUse == false)
@@ -185,26 +193,41 @@ void SetStageModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot, MODELTYPE nType)
 			//頂点バッファのアンロック
 			g_StageModel[ModelCount].ModelBuff.pMesh->UnlockVertexBuffer();
 
+			D3DXMATRIX mtxRotModel, mtxTransModel;
+			D3DXMATRIX mtxParent;
+			D3DXMatrixIdentity(&g_StageModel[ModelCount].ObbModel.CenterMtx);
+
+			// 向きを反映
+			D3DXMatrixRotationYawPitchRoll(&mtxRotModel, g_StageModel[ModelCount].rot.y, g_StageModel[ModelCount].rot.x, g_StageModel[ModelCount].rot.z);
+			D3DXMatrixMultiply(&g_StageModel[ModelCount].ObbModel.CenterMtx, &g_StageModel[ModelCount].ObbModel.CenterMtx, &mtxRotModel);
+
+			// 位置を反映
+			D3DXMatrixTranslation(&mtxTransModel, 0.0f, g_StageModel[ModelCount].Max.y * 0.5f, 0.0f);
+			D3DXMatrixMultiply(&g_StageModel[ModelCount].ObbModel.CenterMtx, &g_StageModel[ModelCount].ObbModel.CenterMtx, &mtxTransModel);
+
+			mtxParent = g_StageModel[ModelCount].mtxWorld;
+
+			D3DXMatrixMultiply(&g_StageModel[ModelCount].ObbModel.CenterMtx,
+				&g_StageModel[ModelCount].ObbModel.CenterMtx,
+				&mtxParent);
+
+			pDevice->SetTransform(D3DTS_WORLD,
+				&g_StageModel[ModelCount].ObbModel.CenterMtx);
+
 			// 中心点
-			g_StageModel[ModelCount].ObbModel.CenterPos.x = g_StageModel[ModelCount].pos.x;
-			g_StageModel[ModelCount].ObbModel.CenterPos.y = g_StageModel[ModelCount].Min.y + g_StageModel[ModelCount].Max.y * 0.5f + g_StageModel[ModelCount].pos.y;
-			g_StageModel[ModelCount].ObbModel.CenterPos.z = g_StageModel[ModelCount].pos.z;
-
-			//計算用マトリックス
-			D3DXMATRIX mtxRot, mtxTrans;
-
-			//向きを反転
-			D3DXMatrixRotationYawPitchRoll(&mtxRot, g_StageModel[ModelCount].rot.y, g_StageModel[ModelCount].rot.x, g_StageModel[ModelCount].rot.z);
+			g_StageModel[ModelCount].ObbModel.CenterPos.x = g_StageModel[ModelCount].ObbModel.CenterMtx._41;
+			g_StageModel[ModelCount].ObbModel.CenterPos.y = g_StageModel[ModelCount].ObbModel.CenterMtx._42;
+			g_StageModel[ModelCount].ObbModel.CenterPos.z = g_StageModel[ModelCount].ObbModel.CenterMtx._43;
 
 			// 各座標軸の傾きを表すベクトルを計算
-			g_StageModel[ModelCount].ObbModel.RotVec[0] = D3DXVECTOR3(mtxRot._11, mtxRot._12, mtxRot._13);
-			g_StageModel[ModelCount].ObbModel.RotVec[1] = D3DXVECTOR3(mtxRot._21, mtxRot._22, mtxRot._23);
-			g_StageModel[ModelCount].ObbModel.RotVec[2] = D3DXVECTOR3(mtxRot._31, mtxRot._32, mtxRot._33);
+			g_StageModel[ModelCount].ObbModel.RotVec[0] = D3DXVECTOR3(mtxRotModel._11, mtxRotModel._12, mtxRotModel._13);
+			g_StageModel[ModelCount].ObbModel.RotVec[1] = D3DXVECTOR3(mtxRotModel._21, mtxRotModel._22, mtxRotModel._23);
+			g_StageModel[ModelCount].ObbModel.RotVec[2] = D3DXVECTOR3(mtxRotModel._31, mtxRotModel._32, mtxRotModel._33);
 
 			// 中心点から面への距離の半分
-			g_StageModel[ModelCount].ObbModel.FaceLength.x = fabsf(g_StageModel[ModelCount].Max.x - g_StageModel[ModelCount].Min.x) * 0.5f;
-			g_StageModel[ModelCount].ObbModel.FaceLength.y = fabsf(g_StageModel[ModelCount].Max.y - g_StageModel[ModelCount].Min.y) * 0.5f;
-			g_StageModel[ModelCount].ObbModel.FaceLength.z = fabsf(g_StageModel[ModelCount].Max.z - g_StageModel[ModelCount].Min.z) * 0.5f;
+			g_StageModel[ModelCount].ObbModel.fLength[0] = fabsf(g_StageModel[ModelCount].Max.x - g_StageModel[ModelCount].Min.x) * 0.5f;
+			g_StageModel[ModelCount].ObbModel.fLength[1] = fabsf(g_StageModel[ModelCount].Max.y - g_StageModel[ModelCount].Min.y) * 0.5f;
+			g_StageModel[ModelCount].ObbModel.fLength[2] = fabsf(g_StageModel[ModelCount].Max.z - g_StageModel[ModelCount].Min.z) * 0.5f;
 			break;
 		}
 	}
@@ -248,15 +271,85 @@ void SetStageModelInfo(char *ModelPath[], int PathType)
 }
 void LenOBBToPoint(OBB& obb, D3DXVECTOR3& p)
 {
+	D3DXVECTOR3 Vec(0, 0, 0);   // 最終的に長さを求めるベクトル
+
+   // 各軸についてはみ出た部分のベクトルを算出
+	for (int DimensionCount = 0; DimensionCount < 3; DimensionCount++)
+	{
+		FLOAT L = obb.fLength[DimensionCount];
+		if (L <= 0) continue;  // L=0は計算できない
+		D3DXVECTOR3 test = p - obb.CenterPos;
+		FLOAT s = D3DXVec3Dot(&test, &obb.RotVec[DimensionCount]) / L;
+
+		// sの値から、はみ出した部分があればそのベクトルを加算
+		s = (float)fabs(s);
+		if (s > 1)
+			Vec += (1 - s) * L * obb.RotVec[DimensionCount];   // はみ出した部分のベクトル算出
+	}
+	FLOAT fDistance = D3DXVec3Length(&Vec);   // 長さを出力
+	if (fDistance < 10)
+	{
+		Player* pPlayer = GetPlayer();
+		pPlayer->pos = pPlayer->posOld;
+	}
+}
+void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
+{
 	Player* pPlayer = GetPlayer();
 	// 各方向ベクトルの確保
 	   // （N***:標準化方向ベクトル）
-	D3DXVECTOR3 NAe1 = obb.RotVec[0], Ae1 = NAe1 * obb.FaceLength.x;
-	D3DXVECTOR3 NAe2 = obb.RotVec[1], Ae2 = NAe2 * obb.FaceLength.y;
-	D3DXVECTOR3 NAe3 = obb.RotVec[2], Ae3 = NAe3 * obb.FaceLength.z;
-	D3DXVECTOR3 NBe1 = D3DXVECTOR3(1.0f,1.0f,1.0f), Be1 = NBe1 * 1.0f;
-	D3DXVECTOR3 NBe2 = D3DXVECTOR3(1.0f,1.0f,1.0f), Be2 = NBe2 * 1.0f;
-	D3DXVECTOR3 NBe3 = D3DXVECTOR3(1.0f,1.0f,1.0f), Be3 = NBe3 * 1.0f;
+	D3DXVECTOR3 NAe1 = obb.RotVec[0], Ae1 = NAe1 * obb.fLength[0];	// X軸
+	D3DXVECTOR3 NAe2 = obb.RotVec[1], Ae2 = NAe2 * obb.fLength[1];	// Y軸
+	D3DXVECTOR3 NAe3 = obb.RotVec[2], Ae3 = NAe3 * obb.fLength[2];	// Z軸
+	D3DXVECTOR3 NBe1 = D3DXVECTOR3(1.0f, 0.0f, 0.0f), Be1 = NBe1 * 10.0f;
+	D3DXVECTOR3 NBe2 = D3DXVECTOR3(0.0f, 1.0f, 0.0f), Be2 = NBe2 * 25.0f;
+	D3DXVECTOR3 NBe3 = D3DXVECTOR3(0.0f, 0.0f, 1.0f), Be3 = NBe3 * 10.0f;
+
+	D3DXVECTOR3 r;
+	D3DXVECTOR3 MathX;
+	D3DXVECTOR3 MathY;
+	D3DXVECTOR3 MathZ;
+	D3DXVECTOR3 MathPos;
+	MathPos = obb.CenterPos - p;
+	MathX = obb.RotVec[0] * obb.fLength[0];
+	MathY = obb.RotVec[1] * obb.fLength[1];
+	MathZ = obb.RotVec[2] * obb.fLength[2];
+	r.x = (float)fabs(D3DXVec3Dot(&MathX, &NBe1));
+	r.y = (float)fabs(D3DXVec3Dot(&MathY, &NBe2));
+	r.z = (float)fabs(D3DXVec3Dot(&MathZ, &NBe3));
+
+	FLOAT sX = D3DXVec3Dot(&MathPos, &NBe1);
+	FLOAT sY = D3DXVec3Dot(&MathPos, &NBe2);
+	FLOAT sZ = D3DXVec3Dot(&MathPos, &NBe3);
+	D3DXVECTOR3 Len;
+
+	// 戻し距離を算出
+	if (sX > 0)
+	{
+		Len.x = r.x - (float)fabs(sX);
+	}
+	else
+	{
+		Len.x = r.x + (float)fabs(sX);
+	}
+	// 戻し距離を算出
+	if (sY > 0)
+	{
+		Len.y = r.y - (float)fabs(sY);
+	}
+	else
+	{
+		Len.y = r.y + (float)fabs(sY);
+	}
+	// 戻し距離を算出
+	if (sZ > 0)
+	{
+		Len.z = r.z - (float)fabs(sZ);
+	}
+	else
+	{
+		Len.z = r.z + (float)fabs(sZ);
+	}
 
 	D3DXVECTOR3 Interval = obb.CenterPos - p;
 	bool bCollision = true;
@@ -264,120 +357,245 @@ void LenOBBToPoint(OBB& obb, D3DXVECTOR3& p)
 	// 分離軸 : Ae1
 	FLOAT rA = D3DXVec3Length(&Ae1);
 	FLOAT rB = LenSegOnSeparateAxis(&NAe1, &Be1, &Be2, &Be3);
-	FLOAT L = fabs(D3DXVec3Dot(&Interval, &NAe1));
+	FLOAT L = (float)fabs(D3DXVec3Dot(&Interval, &NAe1));
 	if (L > rA + rB)
+	{
 		bCollision = false;
-	 // 分離軸 : Ae2
+	}
+
+	// 分離軸 : Ae2
 	rA = D3DXVec3Length(&Ae2);
 	rB = LenSegOnSeparateAxis(&NAe2, &Be1, &Be2, &Be3);
-	L = fabs(D3DXVec3Dot(&Interval, &NAe2));
+	L = (float)fabs(D3DXVec3Dot(&Interval, &NAe2));
 	if (L > rA + rB)
+	{
 		bCollision = false;
+	}
 
 	// 分離軸 : Ae3
 	rA = D3DXVec3Length(&Ae3);
 	rB = LenSegOnSeparateAxis(&NAe3, &Be1, &Be2, &Be3);
-	L = fabs(D3DXVec3Dot(&Interval, &NAe3));
+	L = (float)fabs(D3DXVec3Dot(&Interval, &NAe3));
 	if (L > rA + rB)
+	{
 		bCollision = false;
+	}
 
 	// 分離軸 : Be1
 	rA = LenSegOnSeparateAxis(&NBe1, &Ae1, &Ae2, &Ae3);
 	rB = D3DXVec3Length(&Be1);
-	L = fabs(D3DXVec3Dot(&Interval, &NBe1));
+	L = (float)fabs(D3DXVec3Dot(&Interval, &NBe1));
 	if (L > rA + rB)
+	{
 		bCollision = false;
+	}
 
 	// 分離軸 : Be2
 	rA = LenSegOnSeparateAxis(&NBe2, &Ae1, &Ae2, &Ae3);
 	rB = D3DXVec3Length(&Be2);
-	L = fabs(D3DXVec3Dot(&Interval, &NBe2));
+	L = (float)fabs(D3DXVec3Dot(&Interval, &NBe2));
 	if (L > rA + rB)
+	{
 		bCollision = false;
+	}
 
 	// 分離軸 : Be3
 	rA = LenSegOnSeparateAxis(&NBe3, &Ae1, &Ae2, &Ae3);
 	rB = D3DXVec3Length(&Be3);
-	L = fabs(D3DXVec3Dot(&Interval, &NBe3));
+	L = (float)fabs(D3DXVec3Dot(&Interval, &NBe3));
 	if (L > rA + rB)
+	{
 		bCollision = false;
+	}
 
 	// 分離軸 : C11
 	D3DXVECTOR3 Cross;
 	D3DXVec3Cross(&Cross, &NAe1, &NBe1);
 	rA = LenSegOnSeparateAxis(&Cross, &Ae2, &Ae3);
 	rB = LenSegOnSeparateAxis(&Cross, &Be2, &Be3);
-	L = fabs(D3DXVec3Dot(&Interval, &Cross));
+	L = (float)fabs(D3DXVec3Dot(&Interval, &Cross));
 	if (L > rA + rB)
+	{
 		bCollision = false;
+	}
 
 	// 分離軸 : C12
 	D3DXVec3Cross(&Cross, &NAe1, &NBe2);
 	rA = LenSegOnSeparateAxis(&Cross, &Ae2, &Ae3);
 	rB = LenSegOnSeparateAxis(&Cross, &Be1, &Be3);
-	L = fabs(D3DXVec3Dot(&Interval, &Cross));
+	L = (float)fabs(D3DXVec3Dot(&Interval, &Cross));
 	if (L > rA + rB)
+	{
 		bCollision = false;
+	}
 
 	// 分離軸 : C13
 	D3DXVec3Cross(&Cross, &NAe1, &NBe3);
 	rA = LenSegOnSeparateAxis(&Cross, &Ae2, &Ae3);
 	rB = LenSegOnSeparateAxis(&Cross, &Be1, &Be2);
-	L = fabs(D3DXVec3Dot(&Interval, &Cross));
+	L = (float)fabs(D3DXVec3Dot(&Interval, &Cross));
 	if (L > rA + rB)
+	{
 		bCollision = false;
+	}
 
 	// 分離軸 : C21
 	D3DXVec3Cross(&Cross, &NAe2, &NBe1);
 	rA = LenSegOnSeparateAxis(&Cross, &Ae1, &Ae3);
 	rB = LenSegOnSeparateAxis(&Cross, &Be2, &Be3);
-	L = fabs(D3DXVec3Dot(&Interval, &Cross));
+	L = (float)fabs(D3DXVec3Dot(&Interval, &Cross));
 	if (L > rA + rB)
+	{
 		bCollision = false;
+	}
 
 	// 分離軸 : C22
 	D3DXVec3Cross(&Cross, &NAe2, &NBe2);
 	rA = LenSegOnSeparateAxis(&Cross, &Ae1, &Ae3);
 	rB = LenSegOnSeparateAxis(&Cross, &Be1, &Be3);
-	L = fabs(D3DXVec3Dot(&Interval, &Cross));
+	L = (float)fabs(D3DXVec3Dot(&Interval, &Cross));
 	if (L > rA + rB)
+	{
 		bCollision = false;
+	}
 
 	// 分離軸 : C23
 	D3DXVec3Cross(&Cross, &NAe2, &NBe3);
 	rA = LenSegOnSeparateAxis(&Cross, &Ae1, &Ae3);
 	rB = LenSegOnSeparateAxis(&Cross, &Be1, &Be2);
-	L = fabs(D3DXVec3Dot(&Interval, &Cross));
+	L = (float)fabs(D3DXVec3Dot(&Interval, &Cross));
 	if (L > rA + rB)
+	{
 		bCollision = false;
+	}
 
 	// 分離軸 : C31
 	D3DXVec3Cross(&Cross, &NAe3, &NBe1);
 	rA = LenSegOnSeparateAxis(&Cross, &Ae1, &Ae2);
 	rB = LenSegOnSeparateAxis(&Cross, &Be2, &Be3);
-	L = fabs(D3DXVec3Dot(&Interval, &Cross));
+	L = (float)fabs(D3DXVec3Dot(&Interval, &Cross));
 	if (L > rA + rB)
+	{
 		bCollision = false;
+	}
 
 	// 分離軸 : C32
 	D3DXVec3Cross(&Cross, &NAe3, &NBe2);
 	rA = LenSegOnSeparateAxis(&Cross, &Ae1, &Ae2);
 	rB = LenSegOnSeparateAxis(&Cross, &Be1, &Be3);
-	L = fabs(D3DXVec3Dot(&Interval, &Cross));
+	L = (float)fabs(D3DXVec3Dot(&Interval, &Cross));
 	if (L > rA + rB)
+	{
 		bCollision = false;
+	}
 
 	// 分離軸 : C33
 	D3DXVec3Cross(&Cross, &NAe3, &NBe3);
 	rA = LenSegOnSeparateAxis(&Cross, &Ae1, &Ae2);
 	rB = LenSegOnSeparateAxis(&Cross, &Be1, &Be2);
-	L = fabs(D3DXVec3Dot(&Interval, &Cross));
+	L = (float)fabs(D3DXVec3Dot(&Interval, &Cross));
 	if (L > rA + rB)
+	{
 		bCollision = false;
+	}
 
 	if (bCollision == true)
 	{
-		pPlayer->pos = pPlayer->posOld;
+		// X軸の面に当たっているか
+		D3DXVECTOR3 IntervalX;
+		D3DXVECTOR3 norX;
+		FLOAT fDotX;
+		D3DXVec3Normalize(&norX, &g_StageModel[Indx].ObbModel.RotVec[0]);
+		IntervalX = p - g_StageModel[Indx].ObbModel.CenterPos + g_StageModel[Indx].ObbModel.RotVec[0] * g_StageModel[Indx].ObbModel.fLength[0];
+		fDotX = D3DXVec3Dot(&IntervalX, &norX);
+		D3DXVECTOR3 IntervalX1;
+		D3DXVECTOR3 norX1;
+		D3DXVECTOR3 Math;
+		Math = g_StageModel[Indx].ObbModel.RotVec[0] * -1.0f;
+		FLOAT fDotX1;
+		D3DXVec3Normalize(&norX1, &Math);
+		IntervalX1 = p - g_StageModel[Indx].ObbModel.CenterPos - g_StageModel[Indx].ObbModel.RotVec[0] * g_StageModel[Indx].ObbModel.fLength[0];
+		fDotX1 = D3DXVec3Dot(&IntervalX1, &norX1);
+		if (fDotX > 0 && fDotX1 < 0)
+		{
+			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+			D3DXVECTOR3 nor = norX;
+			D3DXVec3Normalize(&nor, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			pPlayer->pos += test1;
+		}
+		if (fDotX1 > 0 && fDotX < 0)
+		{
+			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+			D3DXVECTOR3 nor = norX1;
+			D3DXVec3Normalize(&nor, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			pPlayer->pos += test1;
+		}
+
+		// Y軸の面に当たっているか
+		D3DXVECTOR3 IntervalY;
+		D3DXVECTOR3 norY;
+		FLOAT fDotY;
+		D3DXVec3Normalize(&norY, &g_StageModel[Indx].ObbModel.RotVec[1]);
+		IntervalY = p - g_StageModel[Indx].ObbModel.CenterPos + g_StageModel[Indx].ObbModel.RotVec[1] * g_StageModel[Indx].ObbModel.fLength[1];
+		fDotY = D3DXVec3Dot(&IntervalY, &norY);
+		D3DXVECTOR3 IntervalY1;
+		D3DXVECTOR3 norY1;
+		D3DXVECTOR3 MathY;
+		MathY = g_StageModel[Indx].ObbModel.RotVec[1] * -1.0f;
+		FLOAT fDotY1;
+		D3DXVec3Normalize(&norY1, &MathY);
+		IntervalY1 = p - g_StageModel[Indx].ObbModel.CenterPos - g_StageModel[Indx].ObbModel.RotVec[1] * g_StageModel[Indx].ObbModel.fLength[1];
+		fDotY1 = D3DXVec3Dot(&IntervalY1, &norY1);
+		if (fDotY > 0 && fDotY1 < 0)
+		{
+			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+			D3DXVECTOR3 nor = norY;
+			D3DXVec3Normalize(&nor, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			pPlayer->pos += test1;
+		}
+		if (fDotY1 > 0 && fDotY < 0)
+		{
+			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+			D3DXVECTOR3 nor = norY1;
+			D3DXVec3Normalize(&nor, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			pPlayer->pos += test1;
+		}
+
+		// Z軸の面に当たっているか
+		D3DXVECTOR3 IntervalZ;
+		D3DXVECTOR3 norZ;
+		FLOAT fDotZ;
+		D3DXVec3Normalize(&norZ, &g_StageModel[Indx].ObbModel.RotVec[2]);
+		IntervalZ = p - g_StageModel[Indx].ObbModel.CenterPos + g_StageModel[Indx].ObbModel.RotVec[2] * g_StageModel[Indx].ObbModel.fLength[2];
+		fDotZ = D3DXVec3Dot(&IntervalZ, &norZ);
+		D3DXVECTOR3 IntervalZ1;
+		D3DXVECTOR3 norZ1;
+		D3DXVECTOR3 MathZ;
+		MathZ = g_StageModel[Indx].ObbModel.RotVec[2] * -1.0f;
+		FLOAT fDotZ1;
+		D3DXVec3Normalize(&norZ1, &MathZ);
+		IntervalZ1 = p - g_StageModel[Indx].ObbModel.CenterPos - g_StageModel[Indx].ObbModel.RotVec[2] * g_StageModel[Indx].ObbModel.fLength[2];
+		fDotZ1 = D3DXVec3Dot(&IntervalZ1, &norZ1);
+		if (fDotZ > 0 && fDotZ1 < 0)
+		{
+			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+			D3DXVECTOR3 nor = norZ;
+			D3DXVec3Normalize(&nor, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			pPlayer->pos += test1;
+		}
+		if (fDotZ1 > 0 && fDotZ < 0)
+		{
+			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+			D3DXVECTOR3 nor = norZ1;
+			D3DXVec3Normalize(&nor, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			pPlayer->pos += test1;
+		}
 	}
 }
 // 分離軸に投影された軸成分から投影線分長を算出
@@ -385,10 +603,9 @@ FLOAT LenSegOnSeparateAxis(D3DXVECTOR3* Sep, D3DXVECTOR3* e1, D3DXVECTOR3* e2, D
 {
 	// 3つの内積の絶対値の和で投影線分長を計算
 	// 分離軸Sepは標準化されていること
-	D3DXVec3Normalize(Sep, Sep);
-	FLOAT r1 = fabs(D3DXVec3Dot(Sep, e1));
-	FLOAT r2 = fabs(D3DXVec3Dot(Sep, e2));
-	FLOAT r3 = e3 ? (fabs(D3DXVec3Dot(Sep, e3))) : 0;
+	FLOAT r1 = (float)fabs(D3DXVec3Dot(Sep, e1));
+	FLOAT r2 = (float)fabs(D3DXVec3Dot(Sep, e2));
+	FLOAT r3 = e3 ? (float)fabs(D3DXVec3Dot(Sep, e3)) : 0;
 	return r1 + r2 + r3;
 }
 void DotOBBToPoint(OBB& obb, D3DXVECTOR3& p)

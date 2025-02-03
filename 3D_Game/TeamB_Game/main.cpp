@@ -473,7 +473,7 @@ void DrawPlayerCollision()
 void DrawEffectEditer()
 {
 	PARTICLEEDITER* pEditer = GetParticleInfo();
-	RECT rect = { 0,30,SCREEN_WIDTH,SCREEN_HEIGHT };
+	RECT rect = { 0,40,SCREEN_WIDTH,SCREEN_HEIGHT };
 	char aStr[256];
 
 	// 文字列に代入
@@ -482,7 +482,7 @@ void DrawEffectEditer()
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 
-	rect = { 0,150,SCREEN_WIDTH,SCREEN_HEIGHT };
+	rect = { 0,160,SCREEN_WIDTH,SCREEN_HEIGHT };
 
 	// 文字列に代入
 	sprintf(&aStr[0], "R,G,B:%3.2f,%3.2f,%3.2f\nX,Y,Z:%3.2f,%3.2f,%3.2f\nエフェクトの最大数:%d\nエフェクトの寿命:%d\n粒子の大きさX,Y,Z:%3.2f,%3.2f,%3.2f", pEditer->ParticleInfo.col.r,
@@ -507,7 +507,7 @@ void DrawCameraInfo()
 {
 	Camera* pCamera = GetCamera();
 
-	RECT rect = { 0,210,SCREEN_WIDTH,SCREEN_HEIGHT };
+	RECT rect = { 0,260,SCREEN_WIDTH,SCREEN_HEIGHT };
 	char aStr[256];
 
 	// 文字列に代入
@@ -516,7 +516,7 @@ void DrawCameraInfo()
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 
-	rect = { 0,225,SCREEN_WIDTH,SCREEN_HEIGHT };
+	rect = { 0,280,SCREEN_WIDTH,SCREEN_HEIGHT };
 
 	// 文字列に代入
 	sprintf(&aStr[0], "カメラの視点の向き:%3.2f,%3.2f,%3.2f", pCamera->rot.x,
@@ -536,7 +536,7 @@ void DrawPlayerInfo()
 {
 	Player* pPlayer = GetPlayer();
 
-	RECT rect = { 0,240,SCREEN_WIDTH,SCREEN_HEIGHT };
+	RECT rect = { 0,300,SCREEN_WIDTH,SCREEN_HEIGHT };
 	char aStr[256];
 
 	// 文字列に代入
@@ -545,7 +545,7 @@ void DrawPlayerInfo()
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 
-	rect = { 0,255,SCREEN_WIDTH,SCREEN_HEIGHT };
+	rect = { 0,320,SCREEN_WIDTH,SCREEN_HEIGHT };
 
 	// 文字列に代入
 	sprintf(&aStr[0], "プレイヤーの向き:%3.2f,%3.2f,%3.2f", pPlayer->rot.x,
@@ -555,12 +555,22 @@ void DrawPlayerInfo()
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 
-	rect = { 0,270,SCREEN_WIDTH,SCREEN_HEIGHT };
+	rect = { 0,340,SCREEN_WIDTH,SCREEN_HEIGHT };
 
 	// 文字列に代入
 	sprintf(&aStr[0], "プレイヤーの目標の向き:%3.2f,%3.2f,%3.2f", pPlayer->rotDest.x,
 		pPlayer->rotDest.y,
 		pPlayer->rotDest.z);
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+
+	rect = { 0,360,SCREEN_WIDTH,SCREEN_HEIGHT };
+
+	// 文字列に代入
+	sprintf(&aStr[0], "プレイヤーの位置:%3.2f,%3.2f,%3.2f", pPlayer->pos.x,
+		pPlayer->pos.y,
+		pPlayer->pos.z);
 
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));

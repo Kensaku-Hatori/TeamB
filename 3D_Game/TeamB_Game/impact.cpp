@@ -73,8 +73,6 @@ void UninitImpact(void)
 //*****************
 void UpdateImpact(void)
 {
-	int iz = 0;
-
 	for (int ImpactCount = 0; ImpactCount < MAX_IMPACT; ImpactCount++)
 	{
 		if (g_Impact[ImpactCount].bUse == true)
@@ -91,7 +89,7 @@ void UpdateImpact(void)
 			// 頂点バッファをロック
 			g_Impact[ImpactCount].pVtxBuffImpact->Lock(0, 0, (void**)&pVtx, 0);
 
-			g_Impact[ImpactCount].col.a -= g_Impact[ImpactCount].AlphaDef;
+			//g_Impact[ImpactCount].col.a -= g_Impact[ImpactCount].AlphaDef;
 
 			//内側
 			for (int vertexcount = 0; vertexcount <= g_Impact[ImpactCount].Vertical; vertexcount++)
@@ -100,13 +98,21 @@ void UpdateImpact(void)
 				D3DXCOLOR localcol;
 				localcol = g_Impact[ImpactCount].col;
 				localcol.a -= g_Impact[ImpactCount].AlphaDef * 50;
+
 				float ratioH = (-D3DX_PI * 2 / g_Impact[ImpactCount].Vertical) * vertexcount;
+
+				//テクスチャ座標の設定
 				pVtx[nCnt].tex = D3DXVECTOR2(0.5f * vertexcount, 0.5f);
+
+				//頂点カラーの設定
 				pVtx[nCnt].col = D3DXCOLOR(localcol);
+
 				// 頂点座標の更新
 				pVtx[nCnt].pos.x = 0.0f + sinf(ratioH) * g_Impact[ImpactCount].inringsize;
 				pVtx[nCnt].pos.y = 0.0f;
 				pVtx[nCnt].pos.z = 0.0f + cosf(ratioH) * g_Impact[ImpactCount].inringsize;
+
+				//ベクトルの計算
 				MathNor = D3DXVECTOR3(pVtx[nCnt].pos.x - 0.0f, pVtx[nCnt].pos.y - 0.0f, pVtx[nCnt].pos.z - 0.0f);
 
 				//法線の正規化
@@ -260,7 +266,7 @@ void SetImpact(IMPACTTYPE nType, D3DXVECTOR3 pos, D3DXCOLOR col, int nLife, floa
 			g_Impact[ImpactCount].col = col;
 			g_Impact[ImpactCount].Object.Rot.y = RotY;
 
-			//魔法のとき角度を変える
+			// 魔法のとき角度を変える
 			if (g_Impact[ImpactCount].nType == IMPACTTYPE_SKILL)
 			{
 				g_Impact[ImpactCount].Object.Rot.x = - D3DX_PI * 0.5f;
@@ -294,9 +300,9 @@ void SetImpact(IMPACTTYPE nType, D3DXVECTOR3 pos, D3DXCOLOR col, int nLife, floa
 				pVtx[nCnt].col = D3DXCOLOR(col);
 
 				// 頂点座標の更新
-				pVtx[nCnt].pos.x = /*g_Impact[ImpactCount].Object.Pos.x +*/ sinf(ratioH) * inringsize;
+				pVtx[nCnt].pos.x = sinf(ratioH) * inringsize;
 				pVtx[nCnt].pos.y = 0.0f;
-				pVtx[nCnt].pos.z = /*g_Impact[ImpactCount].Object.Pos.z +*/ cosf(ratioH) * inringsize;
+				pVtx[nCnt].pos.z = cosf(ratioH) * inringsize;
 				//MathNor = D3DXVECTOR3(pVtx[nCnt].pos.x - 0.0f, pVtx[nCnt].pos.y - 0.0f, pVtx[nCnt].pos.z - 0.0f);
 				//D3DXVec3Normalize(&pVtx[nCnt].nor, &MathNor);
 				pVtx[nCnt].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);

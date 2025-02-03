@@ -1,0 +1,48 @@
+#ifndef HPGUAGE_H_
+#define HPGUAGE_H_
+
+// インクルード
+#include "main.h"
+#include "Object.h"
+
+// マクロ定義
+#define MAX_GUAGE (128)		// UIの数
+
+// 列挙型
+typedef enum
+{
+	GUAGETYPE_GUAGE = 0,	// 通常のゲージ
+	GUAGETYPE_REDGUAGE,		// 赤ゲージ
+	GUAGETYPE_NONE,			// 枠ゲージ
+	GUAGETYPE_MAX			// 最大数
+}GUAGETYPE;
+
+// テクスチャパス
+static const char* GUAGETEX[GUAGETYPE_MAX] =
+{
+	"data\\TEXTURE\\GUAGE.png",		// 通常ゲージのパス
+	"data\\TEXTURE\\GUAGE.png",		// 赤ゲージのパス
+	"data\\TEXTURE\\GUAGEEDGE.png",	// 枠ゲージ
+};
+
+// 構造体
+typedef struct
+{
+	GUAGETYPE nType;			// UIの種類
+	OBJECT Object;				// OBJECT情報
+	D3DXCOLOR col;				// カラー
+	float fMax, fWidth, fMaxHp;	// 最大の大きさ、今の大きさ、最大のHP
+	bool bUse;					// 使用状況
+}GUAGE;
+
+// プロトタイプ宣言
+void InitGuage(void);																				// UIの初期化処理
+void UninitGuage(void);																				// UIの終了処理
+void UpdateGuage(void);																				// UIの更新処理
+void DrawGuage(void);																				// UIの描画処理
+void SetIndxUi(int *Indx,GUAGETYPE nType,D3DXCOLOR col,D3DXVECTOR2 scale,float Side,float MaxHp);	// UIの設定処理
+void SetUiPosition(int Indx, D3DXVECTOR3 pos);														// UIの位置更新処理
+void GuageDeff(int Indx, float nowhp);																// 緑ゲージを減らす処理
+void GuageAnim(int Indx, float nowhp);																// 赤ゲージを徐々に減らす処理
+void DeleteGuage(int Indx);																			// UIを消す処理
+#endif // !UI_H_

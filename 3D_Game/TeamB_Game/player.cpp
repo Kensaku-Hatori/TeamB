@@ -59,7 +59,10 @@ void InitPlayer(void)
 	g_player.Status.fPower = PLAYER_MP;
 	g_player.Status.fSpeed = PLAYER_SPEED;
 
-
+	g_player.bLockOn = false;
+	g_player.fSightRange = 200.0f;					// éãäEãóó£
+	g_player.fSightAngle = D3DXToRadian(110.0f);	// éãäEÇÃótÇ…
+	g_player.fDistance = g_player.fSightRange / 2;
 	g_nCntHealMP = 0;
 }
 //=======================
@@ -89,15 +92,19 @@ void UninitPlayer(void)
 //=======================
 void UpdatePlayer(void)
 {
-	Camera *pCamera;
-	pCamera = GetCamera();
+	Camera *pCamera = GetCamera();
+	ENEMY* pEnemy = GetEnemy();
 
 	if (g_player.bUse == true)
 	{
-		SetPositionShadow(g_player.nIdxShadow, g_player.pos, g_player.bUse);//âe
-		//SetSizeShadow(g_player.pos, g_player.nIdxShadow, g_player.bJump);
+		SetSizeShadow(g_player.pos, g_player.nIdxShadow);
 
 		PlayerMove();
+
+		if (g_player.bLockOn == true)
+		{
+			g_player.rotDest.y = pEnemy->Object.Rot.y - D3DX_PI;
+		}
 
 		// äpìxÇÃãﬂìπ
 		if (g_player.rotDest.y - g_player.rot.y >= D3DX_PI)
@@ -110,7 +117,6 @@ void UpdatePlayer(void)
 		}
 
 		g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
-
 
 		//ñÇñ@î≠éÀ
 		if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_B) == true))
@@ -157,6 +163,14 @@ void UpdatePlayer(void)
 
 		CollisionEnemy();
 
+		//ÉçÉbÉNÉIÉì
+		if ((KeyboardTrigger(DIK_R) == true || GetJoypadTrigger(JOYKEY_R1) == true))
+		{
+			g_player.bLockOn = IsEnemyInsight();
+		}
+
+
+
 		// HP0
 		if (g_player.Status.fHP <= 0.0f)
 		{
@@ -187,7 +201,8 @@ void UpdatePlayer(void)
 		//à íuÇÇOÇ…
 		if (KeyboardTrigger(DIK_0) == true)
 		{
-			g_player.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			g_player.pos = D3DXVECTOR3(0.0f, 0.0f, 400.0f);
+			g_player.posOld = D3DXVECTOR3(0.0f, 0.0f, 400.0f);
 		}
 		//HPå∏ÇÁÇ∑
 		if (KeyboardTrigger(DIK_9) == true)
@@ -204,6 +219,7 @@ void UpdatePlayer(void)
 			g_player.Status.fHP = PLAYER_HP;
 		}
 #endif
+		SetPositionShadow(g_player.nIdxShadow, g_player.pos, g_player.bUse);//âe
 		UpdateMotion(&g_player.PlayerMotion);
 	}
 }
@@ -308,7 +324,7 @@ void PlayerMove(void)
 	//ç∂
 	if (GetKeyboardPress(DIK_A) || GetJoypadPress(JOYKEY_LEFT))
 	{
-		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE)
+		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_JUMP)
 		{
 			SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
 		}
@@ -336,7 +352,7 @@ void PlayerMove(void)
 	//âE
 	else if (GetKeyboardPress(DIK_D)|| GetJoypadPress(JOYKEY_RIGET))
 	{
-		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE)
+		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_JUMP)
 		{
 			SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
 		}
@@ -365,7 +381,7 @@ void PlayerMove(void)
 	//ëO
 	else if (GetKeyboardPress(DIK_W) == true || GetJoypadPress(JOYKEY_DOWN) == true)
 	{
-		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE)
+		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_JUMP)
 		{
 			SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
 		}
@@ -394,7 +410,7 @@ void PlayerMove(void)
 	//å„
 	else if (GetKeyboardPress(DIK_S) || GetJoypadPress(JOYKEY_UP))
 	{
-		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE)
+		if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_JUMP)
 		{
 			SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
 		}
@@ -429,6 +445,23 @@ void PlayerMove(void)
 		}
 	}
 
+	//à⁄ìÆêßå¿
+	if (g_player.pos.x <= -945.0f)
+	{
+		g_player.pos.x = -945.0f;
+	}
+	if (g_player.pos.x >= 945.0f)
+	{
+		g_player.pos.x = 945.0f;
+	}
+	if (g_player.pos.z <= -945.0f)
+	{
+		g_player.pos.z = -945.0f;
+	}
+	if (g_player.pos.z >= 945.0f)
+	{
+		g_player.pos.z = 945.0f;
+	}
 }
 //===================
 // ÉvÉåÉCÉÑÅ[ÇÃéÊìæ
@@ -441,6 +474,7 @@ void SetMesh(char* pFilePath, int Indx)
 {
 
 }
+
 void SetPartsInfo(LoadInfo PartsInfo)
 {
 	g_player.PlayerMotion.nNumModel = PartsInfo.nNumParts;
@@ -540,6 +574,7 @@ void SetPartsInfo(LoadInfo PartsInfo)
 	}
 	g_player.bUse = true;
 }
+
 void PlayerMotion(MOTIONINFO *pMotionInfo)
 {
 	for (int MotionCount = 0; MotionCount < MOTIONTYPE_MAX; MotionCount++, pMotionInfo++)
@@ -547,4 +582,69 @@ void PlayerMotion(MOTIONINFO *pMotionInfo)
 		g_player.PlayerMotion.aMotionInfo[MotionCount] = *pMotionInfo;
 	}
 	g_player.bUse = true;
+}
+//
+//
+//
+bool IsEnemyInsight(void)
+{
+	ENEMY* pEnemy = GetEnemy();
+
+	D3DXVECTOR3 playerFront;
+
+	playerFront.x = -sinf(g_player.rot.y);
+	playerFront.y = 0.0f;
+	playerFront.z = -cosf(g_player.rot.y);
+
+	D3DXVECTOR3 toEnemy;
+
+	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++)
+	{
+		if (pEnemy[EnemyCount].bUse == true)
+		{
+			toEnemy.x = pEnemy[EnemyCount].Object.Pos.x - g_player.pos.x;
+			toEnemy.y = 0.0f;
+			toEnemy.z = pEnemy[EnemyCount].Object.Pos.z - g_player.pos.z;
+
+			D3DXVec3Normalize(&playerFront, &playerFront);
+
+			D3DXVec3Normalize(&toEnemy, &toEnemy);
+
+			float dotProduct = D3DXVec3Dot(&playerFront, &toEnemy);
+
+			if (dotProduct > cosf(g_player.fSightAngle * 0.5f))
+			{
+				float distanceSquared =
+					(g_player.pos.x - pEnemy[EnemyCount].Object.Pos.x) * (g_player.pos.x - pEnemy[EnemyCount].Object.Pos.x) +
+					(g_player.pos.y - pEnemy[EnemyCount].Object.Pos.y) * (g_player.pos.y - pEnemy[EnemyCount].Object.Pos.y) +
+					(g_player.pos.z - pEnemy[EnemyCount].Object.Pos.z) * (g_player.pos.z - pEnemy[EnemyCount].Object.Pos.z);
+
+				if (distanceSquared <= g_player.fSightRange * g_player.fSightRange)
+				{
+					EnemyDistanceSort(EnemyCount);
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+//
+//
+//
+void EnemyDistanceSort(int EnemyCount)
+{
+	ENEMY* pEnemy = GetEnemy();
+
+	//ìGÇ∆ÇÃãóó£
+	pEnemy[EnemyCount].fDistance = sqrtf(((pEnemy[EnemyCount].Object.Pos.x - g_player.pos.x) * (pEnemy[EnemyCount].Object.Pos.x - g_player.pos.x))
+									   + ((pEnemy[EnemyCount].Object.Pos.y - g_player.pos.y) * (pEnemy[EnemyCount].Object.Pos.y - g_player.pos.y))
+									   + ((pEnemy[EnemyCount].Object.Pos.z - g_player.pos.z) * (pEnemy[EnemyCount].Object.Pos.z - g_player.pos.z)));
+
+	float RADIUS = (g_player.fDistance + pEnemy[EnemyCount].Radius) * (g_player.fDistance + pEnemy[EnemyCount].Radius);
+
+	if (pEnemy[EnemyCount].fDistance <= RADIUS)
+	{
+
+	}
 }

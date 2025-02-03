@@ -18,8 +18,8 @@ typedef struct
 	D3DXVECTOR3 pos;			//位置
 	D3DXVECTOR3 rot;			//向き
 	D3DXMATRIX mtxWorld;		//ワールドマトリックス
+	LPDIRECT3DVERTEXBUFFER9 pVtxBuffShadow;//頂点情報
 	float fRadius;				//半径
-	float fTriangle;			//三角形
 	bool bUse;					//使用しているかどうか
 }Shadow;
 
@@ -30,7 +30,7 @@ void UpdateShadow(void);
 void DrawShadow(void);
 int SetShadow(D3DXVECTOR3 pos, D3DXVECTOR3 rot,float fRadius);					//影の初期位置、向き、半径の設定
 void SetPositionShadow(int nIdxShadow, D3DXVECTOR3 pos,bool bUse);				//影の位置更新
-void SetSizeShadow(D3DXVECTOR3 pos,int nIndx, bool bjump);						//影のサイズ更新
+void SetSizeShadow(D3DXVECTOR3 pos,int nIndx);						//影のサイズ更新
 Shadow* GetShadow(void);
 
 #endif

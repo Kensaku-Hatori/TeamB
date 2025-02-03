@@ -376,7 +376,7 @@ char* LoadMotionInfo(FILE* pFile,int *Motion,int *Key, int* nKeyParts,MOTIONINFO
 				{
 					cData3[0] = LoadKeyInfo(pFile,Key, nKeyParts, MotionInfo);
 					int i = 0;
-					if (strcmp(cData3[0], KEY) == 0)
+					if (strcmp(cData3[0], KEYENDSTRING) == 0)
 					{
 						g_LoadInfo[nType].KeyCount++;
 						break;

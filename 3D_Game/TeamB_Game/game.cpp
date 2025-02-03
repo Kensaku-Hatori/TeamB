@@ -14,10 +14,6 @@
 #include "input.h"
 #include "player.h"
 #include "shadow.h"
-//#include "wall.h"
-//#include "explosion.h"
-//#include "effect.h"
-//#include "block.h"
 #include "meshwall.h"
 //#include "meshcylinder.h"
 #include "meshfield.h"
@@ -108,8 +104,8 @@ void InitGame(void)
 	LoadModelViewer();
 
 	////敵の設定処理
-	//SetEnemy(D3DXVECTOR3(0.0f, 0.0f, -100.0f), 1, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	//SetEnemy(D3DXVECTOR3(0.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	SetEnemy(D3DXVECTOR3(50.0f, 0.0f, 100.0f), 1, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	SetEnemy(D3DXVECTOR3(0.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	//ウェーブの初期化処理
 	InitWave();
@@ -210,12 +206,16 @@ void UpdateGame(void)
 			//パーティクルの更新処理
 			UpdateParticle(true);
 
+#ifdef _DEBUG
+
 			//エディターの切り替え
 			if (GetKeyboardPress(DIK_E) && GetKeyboardPress(DIK_F2))
 			{
 				InitParticleEditer();
 				SetGameState(GAMESTATE_EFFECTEDITER);
 			}
+
+#endif // DEBUG
 
 			////ブロックの更新処理
 			//UpdateBlock();
@@ -297,12 +297,12 @@ void UpdateGame(void)
 
 			//リザルトに飛ぶ
 			if (KeyboardTrigger(DIK_1) == true || GetJoypadTrigger(JOYKEY_START) == true)
-			{
+			{//Clear
 				SetFade(MODE_RESULT);
 				SetResult(RESULT_CLEAR);
 			}
 			if (KeyboardTrigger(DIK_2) == true || GetJoypadTrigger(JOYKEY_START) == true)
-			{
+			{//over
 				SetFade(MODE_RESULT);
 				SetResult(RESULT_GAMEOVER);
 			}
