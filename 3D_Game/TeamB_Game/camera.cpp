@@ -69,7 +69,6 @@ void UpdateCamera(void)
 	//‚»‚êˆÈŠO
 	else
 	{
-
 		//‹“_‚Ìù‰ñ
 		if (GetKeyboardPress(DIK_E) == true)
 		{
