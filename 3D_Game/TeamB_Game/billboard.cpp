@@ -9,8 +9,7 @@
 #include "shadow.h"
 
 //グローバル変数宣言
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBiillboard = NULL;
-LPDIRECT3DTEXTURE9 g_apTextureBiillboard[MAX_BILLBOARD] = {NULL};
+LPDIRECT3DTEXTURE9 g_apTextureBiillboard[MAX_BILLBOARD] = {	NULL };
 
 Biillboard g_Biillboard[MAX_BILLBOARD];
 
@@ -25,55 +24,14 @@ void InitBiillboard(void)
 	for (int nCnt = 0; nCnt < MAX_BILLBOARD; nCnt++)
 	{
 		g_Biillboard[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		g_Biillboard[nCnt].origin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		g_Biillboard[nCnt].textype = 0;
+		g_Biillboard[nCnt].nWidth = 0;
+		g_Biillboard[nCnt].nHeight = 0;
 		g_Biillboard[nCnt].bUse = false;
 	}
 
 	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\move.jpg", &g_apTextureBiillboard[0]); // 移動
-
-
-	//頂点バッファの生成
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 4 * MAX_BILLBOARD,
-		                        D3DUSAGE_WRITEONLY,
-		                        FVF_VERTEX_3D,
-		                        D3DPOOL_MANAGED,
-		                        &g_pVtxBuffBiillboard,
-		                        NULL);
-	VERTEX_3D* pVtx = NULL;
-
-	//頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffBiillboard->Lock(0, 0, (void**)&pVtx, 0);
-
-	for (int nCnt = 0; nCnt < MAX_BILLBOARD; nCnt++)
-	{
-		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(g_Biillboard[nCnt].pos.x - 65.0f, g_Biillboard[nCnt].pos.y + 40.0f, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(g_Biillboard[nCnt].pos.x + 65.0f, g_Biillboard[nCnt].pos.y + 40.0f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(g_Biillboard[nCnt].pos.x - 65.0f, g_Biillboard[nCnt].pos.y - 40.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(g_Biillboard[nCnt].pos.x + 65.0f, g_Biillboard[nCnt].pos.y - 40.0f, 0.0f);
-
-		//法線ベクトルの設定
-		pVtx[0].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
-		pVtx[1].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
-		pVtx[2].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
-		pVtx[3].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
-
-		//頂点カラーの設定
-		pVtx[0].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
-		pVtx[1].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
-		pVtx[2].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
-		pVtx[3].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
-
-		//テクスチャ座標の設定
-		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-
-		pVtx += 4;
-	}
-
-	//頂点バッファをアンロック
-	g_pVtxBuffBiillboard->Unlock();
 }
 
 //=======================
@@ -89,13 +47,13 @@ void UninitBiillboard(void)
 			g_apTextureBiillboard[nCnt]->Release();
 			g_apTextureBiillboard[nCnt] = NULL;
 		}
-	}
 
-	//頂点バッファの破棄
-	if (g_pVtxBuffBiillboard != NULL)
-	{
-		g_pVtxBuffBiillboard->Release();
-		g_pVtxBuffBiillboard = NULL;
+		//頂点バッファの破棄
+		if (g_Biillboard[nCnt].pVtxBuffBiillboard != NULL)
+		{
+			g_Biillboard[nCnt].pVtxBuffBiillboard->Release();
+			g_Biillboard[nCnt].pVtxBuffBiillboard = NULL;
+		}
 	}
 }
 
@@ -154,7 +112,7 @@ void DrawBiillboard(void)
 			pDevice->SetTransform(D3DTS_WORLD, &g_Biillboard[nCnt].mtxWorld);
 
 			//頂点バッファをデータストリームに設定
-			pDevice->SetStreamSource(0, g_pVtxBuffBiillboard, 0, sizeof(VERTEX_3D));
+			pDevice->SetStreamSource(0, g_Biillboard[nCnt].pVtxBuffBiillboard, 0, sizeof(VERTEX_3D));
 
 			//頂点フォーマットの設定
 			pDevice->SetFVF(FVF_VERTEX_3D);
@@ -163,7 +121,7 @@ void DrawBiillboard(void)
 			pDevice->SetTexture(0, g_apTextureBiillboard[nCnt]);
 
 			//ポリゴンを描画
-			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
+			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 		}
 	}
 
@@ -177,15 +135,62 @@ void DrawBiillboard(void)
 //===================
 // ビルボードの設定
 //===================
-void SetBiillboard(D3DXVECTOR3 pos)
+void SetBiillboard(D3DXVECTOR3 pos, int nWidth, int nHeigh)
 {
+	//デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
+	//頂点情報へのポインタ
+	VERTEX_3D* pVtx = NULL;
+
 	for (int nCnt = 0; nCnt < MAX_BILLBOARD; nCnt++)
 	{
 		if (g_Biillboard[nCnt].bUse == false)
 		{
-			g_Biillboard[nCnt].pos = pos;
+			//各設定
+			g_Biillboard[nCnt].pos = pos;			//位置
+			g_Biillboard[nCnt].nWidth = nWidth;		//幅
+			g_Biillboard[nCnt].nHeight = nHeigh;	//高さ
+			g_Biillboard[nCnt].bUse = true;			//使用している状態にする
 
-			g_Biillboard[nCnt].bUse = true;
+			//頂点バッファの生成
+			pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 4,
+				D3DUSAGE_WRITEONLY,
+				FVF_VERTEX_3D,
+				D3DPOOL_MANAGED,
+				&g_Biillboard[nCnt].pVtxBuffBiillboard,
+				NULL);
+
+			//頂点バッファをロックし、頂点情報へのポインタを取得
+			g_Biillboard[nCnt].pVtxBuffBiillboard->Lock(0, 0, (void**)&pVtx, 0);
+
+			//頂点座標の設定
+			pVtx[0].pos = D3DXVECTOR3( -g_Biillboard[nCnt].nWidth, g_Biillboard[nCnt].nHeight, 0.0f);
+			pVtx[1].pos = D3DXVECTOR3( +g_Biillboard[nCnt].nWidth, g_Biillboard[nCnt].nHeight, 0.0f);
+			pVtx[2].pos = D3DXVECTOR3( -g_Biillboard[nCnt].nWidth, g_Biillboard[nCnt].nHeight, 0.0f);
+			pVtx[3].pos = D3DXVECTOR3( +g_Biillboard[nCnt].nWidth, g_Biillboard[nCnt].nHeight, 0.0f);
+
+			//法線ベクトルの設定
+			pVtx[0].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+			pVtx[1].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+			pVtx[2].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+			pVtx[3].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+
+			//頂点カラーの設定
+			pVtx[0].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
+			pVtx[1].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
+			pVtx[2].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
+			pVtx[3].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
+
+			//テクスチャ座標の設定
+			pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+			pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+			pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+			pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+
+			//頂点バッファをアンロック
+			g_Biillboard[nCnt].pVtxBuffBiillboard->Unlock();
+
 			break;
 		}
 	}

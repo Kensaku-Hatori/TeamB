@@ -208,7 +208,7 @@ void SetSizeShadow(D3DXVECTOR3 pos, int nIndx)
 	VERTEX_3D* pVtx = NULL;
 
 		//posYÇÃêßå¿
-		if (posY <= 0)
+		if (posY <= 1.0f)
 		{
 			posY = 1.0f;
 		}
@@ -220,7 +220,7 @@ void SetSizeShadow(D3DXVECTOR3 pos, int nIndx)
 		//îºåaÇÃê›íË
 		fRadeius = (g_shadow[nIndx].fRadius + g_shadow[nIndx].fRadius * 0.5f) / posY - g_shadow[nIndx].fRadius * 0.5f;
 
-		if (posY <= 0)
+		if (posY <= 1.0f)
 		{
 			posY *= -1;
 		}
