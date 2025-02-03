@@ -102,8 +102,8 @@ void UpdatePlayer(void)
 		PlayerMove();
 
 		if (g_player.bLockOn == true)
-		{
-			g_player.rotDest.y = pEnemy->Object.Rot.y - D3DX_PI;
+		{	
+			g_player.rotDest.y = atan2f(pEnemy->Object.Pos.z - g_player.pos.z, pEnemy->Object.Pos.x - g_player.pos.x);
 		}
 
 		// 角度の近道
@@ -164,7 +164,7 @@ void UpdatePlayer(void)
 		CollisionEnemy();
 
 		//ロックオン
-		if ((KeyboardTrigger(DIK_R) == true || GetJoypadTrigger(JOYKEY_R1) == true))
+		if (g_player.bLockOn == false && (KeyboardTrigger(DIK_R) == true || GetJoypadTrigger(JOYKEY_R1) == true))
 		{
 			g_player.bLockOn = IsEnemyInsight();
 		}
