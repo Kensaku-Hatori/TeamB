@@ -99,7 +99,7 @@ void UpdatePlayer(void)
 
 	if (g_player.bUse == true)
 	{
-		SetSizeShadow(g_player.pos, g_player.nIdxShadow, g_player.bJump);
+		SetSizeShadow(g_player.pos, g_player.nIdxShadow);
 
 		PlayerMove();
 
