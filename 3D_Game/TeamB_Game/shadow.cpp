@@ -24,7 +24,6 @@ void InitShadow(void)
 		g_shadow[nCnt].pos = D3DXVECTOR3(0.0f, 0.1f, 0.0f);			//位置の初期化
 		g_shadow[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			//向きの初期化
 		g_shadow[nCnt].fRadius = 0.0f;								//半径の初期化
-		g_shadow[nCnt].fTriangle = g_shadow[nCnt].fRadius;			//三角形の初期化
 
 		g_shadow[nCnt].bUse = false;								//使用してしていない状態にする
 	}
@@ -201,11 +200,11 @@ void SetPositionShadow(int nIdxShadow, D3DXVECTOR3 pos, bool bUse)
 //=====================
 // 影のサイズの更新処理
 //=====================
-void SetSizeShadow(D3DXVECTOR3 pos, int nIndx, bool bjump)
+void SetSizeShadow(D3DXVECTOR3 pos, int nIndx)
 {
 	float posY = pos.y;//ユーザーの高さを格納
 	float fRadeius = 0;//半径
-	//D3DXCOLOR fAlpha = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
+	D3DXCOLOR fAlpha = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
 	VERTEX_3D* pVtx = NULL;
 
 		//posYの制限
@@ -226,8 +225,8 @@ void SetSizeShadow(D3DXVECTOR3 pos, int nIndx, bool bjump)
 			posY *= -1;
 		}
 
-		////α値の設定
-		//fAlpha.a = (1.0f / posY);
+		//α値の設定
+		fAlpha.a = (1.0f / (posY+0.5f));
 
 		//頂点バッファをロックし、頂点情報へのポインタを取得
 		g_shadow[nIndx].pVtxBuffShadow->Lock(0, 0, (void**)&pVtx, 0);
@@ -238,11 +237,11 @@ void SetSizeShadow(D3DXVECTOR3 pos, int nIndx, bool bjump)
 		pVtx[2].pos = D3DXVECTOR3(- fRadeius, 0.1f, - fRadeius);
 		pVtx[3].pos = D3DXVECTOR3(+ fRadeius, 0.1f, - fRadeius);
 
-		////頂点カラーの設定
-		//pVtx[0].col = fAlpha;
-		//pVtx[1].col = fAlpha;
-		//pVtx[2].col = fAlpha;
-		//pVtx[3].col = fAlpha;
+		//頂点カラーの設定
+		pVtx[0].col = fAlpha;
+		pVtx[1].col = fAlpha;
+		pVtx[2].col = fAlpha;
+		pVtx[3].col = fAlpha;
 		
 		//頂点バッファをアンロック
 		g_shadow[nIndx].pVtxBuffShadow->Unlock();
