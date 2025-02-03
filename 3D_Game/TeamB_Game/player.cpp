@@ -59,12 +59,10 @@ void InitPlayer(void)
 	g_player.Status.fPower = PLAYER_MP;
 	g_player.Status.fSpeed = PLAYER_SPEED;
 
-	g_player.fDistance = PLAYER_RADIUS / 2;
 	g_player.bLockOn = false;
-
-	g_player.sightAngle = 0;
-	g_player.sightRange = 0;
-
+	g_player.fSightRange = 200.0f;					// Ž‹ŠE‹——£
+	g_player.fSightAngle = D3DXToRadian(110.0f);	// Ž‹ŠE‚Ì—t‚É
+	g_player.fDistance = g_player.fSightRange / 2;
 	g_nCntHealMP = 0;
 }
 //=======================
@@ -94,14 +92,19 @@ void UninitPlayer(void)
 //=======================
 void UpdatePlayer(void)
 {
-	Camera *pCamera;
-	pCamera = GetCamera();
+	Camera *pCamera = GetCamera();
+	ENEMY* pEnemy = GetEnemy();
 
 	if (g_player.bUse == true)
 	{
 		SetSizeShadow(g_player.pos, g_player.nIdxShadow, g_player.bJump);
 
 		PlayerMove();
+
+		if (g_player.bLockOn == true)
+		{
+			g_player.rotDest.y = pEnemy->Object.Rot.y - D3DX_PI;
+		}
 
 		// Šp“x‚Ì‹ß“¹
 		if (g_player.rotDest.y - g_player.rot.y >= D3DX_PI)
@@ -114,7 +117,6 @@ void UpdatePlayer(void)
 		}
 
 		g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
-
 
 		//–‚–@”­ŽË
 		if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_B) == true))
@@ -166,6 +168,8 @@ void UpdatePlayer(void)
 		{
 			g_player.bLockOn = IsEnemyInsight();
 		}
+
+
 
 		// HP0
 		if (g_player.Status.fHP <= 0.0f)
@@ -594,13 +598,13 @@ bool IsEnemyInsight(void)
 
 	D3DXVECTOR3 toEnemy;
 
-	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++, pEnemy++)
+	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++)
 	{
-		if (pEnemy->bUse == true)
+		if (pEnemy[EnemyCount].bUse == true)
 		{
-			toEnemy.x = pEnemy->Object.Pos.x - g_player.pos.x;
+			toEnemy.x = pEnemy[EnemyCount].Object.Pos.x - g_player.pos.x;
 			toEnemy.y = 0.0f;
-			toEnemy.z = pEnemy->Object.Pos.z - g_player.pos.z;
+			toEnemy.z = pEnemy[EnemyCount].Object.Pos.z - g_player.pos.z;
 
 			D3DXVec3Normalize(&playerFront, &playerFront);
 
@@ -608,14 +612,14 @@ bool IsEnemyInsight(void)
 
 			float dotProduct = D3DXVec3Dot(&playerFront, &toEnemy);
 
-			if (dotProduct > cosf(g_player.sightAngle * 0.5f))
+			if (dotProduct > cosf(g_player.fSightAngle * 0.5f))
 			{
 				float distanceSquared =
-					(g_player.pos.x - pEnemy->Object.Pos.x) * (g_player.pos.x - pEnemy->Object.Pos.x) +
-					(g_player.pos.y - pEnemy->Object.Pos.y) * (g_player.pos.y - pEnemy->Object.Pos.y) +
-					(g_player.pos.z - pEnemy->Object.Pos.z) * (g_player.pos.z - pEnemy->Object.Pos.z);
+					(g_player.pos.x - pEnemy[EnemyCount].Object.Pos.x) * (g_player.pos.x - pEnemy[EnemyCount].Object.Pos.x) +
+					(g_player.pos.y - pEnemy[EnemyCount].Object.Pos.y) * (g_player.pos.y - pEnemy[EnemyCount].Object.Pos.y) +
+					(g_player.pos.z - pEnemy[EnemyCount].Object.Pos.z) * (g_player.pos.z - pEnemy[EnemyCount].Object.Pos.z);
 
-				if (distanceSquared <= g_player.sightRange * g_player.sightRange)
+				if (distanceSquared <= g_player.fSightRange * g_player.fSightRange)
 				{
 					EnemyDistanceSort(EnemyCount);
 					return true;
