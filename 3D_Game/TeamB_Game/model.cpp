@@ -63,8 +63,12 @@ void UpdateStageModel()
 		if (g_StageModel[ModelCount].bUse == true)
 		{
 			Player* pPlayer = GetPlayer();
+			D3DXVECTOR3 obb1Center;
+			obb1Center.x = pPlayer->pos.x;
+			obb1Center.y = pPlayer->pos.y + (pPlayer->size.y * 0.5f);
+			obb1Center.z = pPlayer->pos.z;
 			float fDistance = 0.0f;
-			CollOBBs(g_StageModel[ModelCount].ObbModel, pPlayer->pos);
+			CollOBBs(g_StageModel[ModelCount].ObbModel, obb1Center);
 		}
 	}
 }
@@ -298,7 +302,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p)
 	D3DXVECTOR3 NAe2 = obb.RotVec[1], Ae2 = NAe2 * obb.fLength[1];
 	D3DXVECTOR3 NAe3 = obb.RotVec[2], Ae3 = NAe3 * obb.fLength[2];
 	D3DXVECTOR3 NBe1 = D3DXVECTOR3(1.0f, 0.0f, 0.0f), Be1 = NBe1 * 10.0f;
-	D3DXVECTOR3 NBe2 = D3DXVECTOR3(0.0f, 1.0f, 0.0f), Be2 = NBe2 * 50.0f;
+	D3DXVECTOR3 NBe2 = D3DXVECTOR3(0.0f, 1.0f, 0.0f), Be2 = NBe2 * 20.0f;
 	D3DXVECTOR3 NBe3 = D3DXVECTOR3(0.0f, 0.0f, 1.0f), Be3 = NBe3 * 10.0f;
 
 	D3DXVECTOR3 Interval = obb.CenterPos - p;
