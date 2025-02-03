@@ -43,15 +43,14 @@ void InitPlayer(void)
 	g_player.rotDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.nIdxShadow = SetShadow(g_player.pos, g_player.rot, 20.0f);//影の設定
 	g_player.nJump = PLAYER_JUMP;
+	g_player.bJump = false;		//ジャンプ
 
 	//モーション関連
 	g_player.bLoopMotion = true;//ループ
-	g_player.nNumKey = 2;//キーの総数
-	g_player.nCntMotion = 0;//モーションカウンター
-	g_player.nKey = 0;//現在のキーNo
-	g_player.nNumModel = 13;//パーツの総数
-
-	g_player.bJump = false;//ジャンプ
+	g_player.nNumKey = 2;		//キーの総数
+	g_player.nCntMotion = 0;	//モーションカウンター
+	g_player.nKey = 0;			//現在のキーNo
+	g_player.nNumModel = 13;	//パーツの総数
 
 	//基礎ステータス
 	g_player.Status.fHP = PLAYER_HP;
@@ -59,10 +58,13 @@ void InitPlayer(void)
 	g_player.Status.fPower = PLAYER_MP;
 	g_player.Status.fSpeed = PLAYER_SPEED;
 
+	//ロックオン関連
 	g_player.bLockOn = false;
 	g_player.fSightRange = 200.0f;					// 視界距離
 	g_player.fSightAngle = D3DXToRadian(110.0f);	// 視界の葉に
 	g_player.fDistance = g_player.fSightRange / 2;
+	g_player.nLockOnEnemy = 0;
+
 	g_nCntHealMP = 0;
 }
 //=======================
@@ -647,6 +649,6 @@ void EnemyDistanceSort(int EnemyCount)
 
 	if (pEnemy[EnemyCount].fDistance <= RADIUS)
 	{
-
+		g_player.nLockOnEnemy = EnemyCount;
 	}
 }

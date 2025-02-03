@@ -309,11 +309,20 @@ int* GetNumEnemy(void)
 void DeadEnemy(int Indx)
 {
 	MODE nMode = GetMode();
+	Player* pPlayer = GetPlayer();
 
 	g_Enemy[Indx].bUse = false;
 	g_nNumEnemy--;
 	SetPositionShadow(g_Enemy[Indx].IndxShadow,g_Enemy[Indx].Object.Pos,g_Enemy[Indx].bUse);
-	SetParticle(g_Enemy[Indx].Object.Pos, D3DXVECTOR3(100.0f, 100.0f, 100.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), PARTICLE_NONE, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 100, 50);
+	SetParticle(g_Enemy[Indx].Object.Pos, D3DXVECTOR3(100.0f, 100.0f, 100.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), PARTICLE_NONE, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 100, 50);	
+	//ƒƒbƒNƒIƒ“‰ðœ
+	if (pPlayer->bLockOn == true)
+	{
+		if (pPlayer->nLockOnEnemy == Indx)
+		{
+			pPlayer->bLockOn = false;
+		}
+	}
 }
 
 //***************
