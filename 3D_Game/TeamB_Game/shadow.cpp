@@ -218,15 +218,15 @@ void SetSizeShadow(D3DXVECTOR3 pos, int nIndx)
 		}
 
 		//半径の設定
-		fRadeius = (g_shadow[nIndx].fRadius + g_shadow[nIndx].fRadius * 0.5f) / posY - g_shadow[nIndx].fRadius * 0.5f;
+		fRadeius = -5.0f * (1.0f / posY) + g_shadow[nIndx].fRadius;
 
-		if (posY <= 1.0f)
+		if (posY <= 0.0f)
 		{
 			posY *= -1;
 		}
 
 		//α値の設定
-		fAlpha.a = (1.0f / (posY+0.5f));
+		fAlpha.a = (1.0f / (posY + 0.5f));
 
 		//頂点バッファをロックし、頂点情報へのポインタを取得
 		g_shadow[nIndx].pVtxBuffShadow->Lock(0, 0, (void**)&pVtx, 0);
