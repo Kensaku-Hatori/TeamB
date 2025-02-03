@@ -90,6 +90,7 @@ void UpdateStageModel()
 			obb1Center.x = pPlayer->pos.x;
 			obb1Center.y = pPlayer->pos.y + (pPlayer->size.y * 0.5f);
 			obb1Center.z = pPlayer->pos.z;
+			SetObbInfo(ModelCount);
 			CollOBBs(g_StageModel[ModelCount].ObbModel, obb1Center, ModelCount);
 		}
 	}
@@ -164,7 +165,6 @@ void SetStageModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot, MODELTYPE nType)
 			g_StageModel[ModelCount].pos = pos;
 			g_StageModel[ModelCount].rot = rot;
 			g_StageModel[ModelCount].ModelBuff = g_ModelOrigin[nType];
-			SetObbInfo(ModelCount);
 			break;
 		}
 	}

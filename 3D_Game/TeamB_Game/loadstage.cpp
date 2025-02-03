@@ -20,10 +20,10 @@ void LoadModelViewer(MODE Mode)
 	switch (Mode)
 	{
 	case MODE_STAGEONE:
-		pFile = fopen("data\\TEXT\\model.txt", "r");
+		pFile = fopen("data\\TEXT\\tutorialstage.txt", "r");
 		break;
 	case MODE_STAGETWO:
-		pFile = fopen("data\\TEXT\\tutorialstage.txt", "r");
+		pFile = fopen("data\\TEXT\\model.txt", "r");
 		break;
 	default:
 		return;
