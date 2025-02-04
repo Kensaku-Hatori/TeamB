@@ -333,6 +333,9 @@ void Update(void)
 	case MODE_STAGETWO:
 		UpdateGame();
 		break;
+	case MODE_STAGETHREE:
+		UpdateGame();
+		break;
 	case MODE_RESULT:
 		UpdateResult();
 		break;
@@ -382,6 +385,9 @@ void Draw(void)
 		case MODE_STAGETWO:
 			DrawGame();
 			break;
+		case MODE_STAGETHREE:
+			DrawGame();
+			break;
 		case MODE_RESULT:
 			DrawResult();
 			break;
@@ -423,6 +429,9 @@ void SetMode(MODE mode)
 	case MODE_STAGETWO:
 		UninitGame();
 		break;
+	case MODE_STAGETHREE:
+		UninitGame();
+		break;
 	case MODE_RESULT:
 		UninitResult();
 		break;
@@ -445,6 +454,9 @@ void SetMode(MODE mode)
 		InitGame();
 		break;
 	case MODE_STAGETWO:
+		InitGame();
+		break;
+	case MODE_STAGETHREE:
 		InitGame();
 		break;
 	case MODE_RESULT:

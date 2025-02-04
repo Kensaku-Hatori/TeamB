@@ -4,6 +4,9 @@
 MODELORIGIN g_ModelOrigin[MODELTYPE_MAX];
 STAGEMODEL g_StageModel[MAX_STAGEMODEL];
 
+//******************************
+/// ステージに出すモデルの初期化
+//******************************
 void InitStageModel()
 {
 	for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++)
@@ -37,6 +40,9 @@ void InitStageModel()
 		g_ModelOrigin[Origin].pMesh = NULL;
 	}
 }
+//********************************
+/// ステージに出すモデルの終了処理
+//********************************
 void UninitStageModel()
 {
 	for (int ModelCount = 0; ModelCount < MODELTYPE_MAX; ModelCount++)
@@ -79,6 +85,9 @@ void UninitStageModel()
 		}
 	}
 }
+//********************************
+/// ステージに出すモデルの更新処理
+//********************************
 void UpdateStageModel()
 {
 	for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++)
@@ -95,6 +104,9 @@ void UpdateStageModel()
 		}
 	}
 }
+//********************************
+/// ステージに出すモデルの描画処理
+//********************************
 void DrawStageModel()
 {
 	LPDIRECT3DDEVICE9 pDevice;
@@ -150,6 +162,9 @@ void DrawStageModel()
 		}
 	}
 }
+//********************************
+/// ステージに出すモデルの設定処理
+//********************************
 void SetStageModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot, MODELTYPE nType)
 {
 	LPDIRECT3DDEVICE9 pDevice;
@@ -169,6 +184,9 @@ void SetStageModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot, MODELTYPE nType)
 		}
 	}
 }
+//*****************************************
+/// ステージに出すモデルのOBB情報の設定処理
+//*****************************************
 void SetObbInfo(int Indx)
 {
 	LPDIRECT3DDEVICE9 pDevice;
@@ -261,6 +279,9 @@ void SetObbInfo(int Indx)
 	g_StageModel[Indx].ObbModel.fLength[1] = fabsf(g_StageModel[Indx].Max.y - g_StageModel[Indx].Min.y) * 0.5f;
 	g_StageModel[Indx].ObbModel.fLength[2] = fabsf(g_StageModel[Indx].Max.z - g_StageModel[Indx].Min.z) * 0.5f;
 }
+//******************************************
+/// ステージに出すモデルのバッファー設定処理
+//******************************************
 void SetStageModelInfo(char *ModelPath[], int PathType)
 {
 	HRESULT Hresult;
@@ -298,6 +319,9 @@ void SetStageModelInfo(char *ModelPath[], int PathType)
 		return;
 	}
 }
+//*************************
+/// OBBと天の当たり判定処理
+//*************************
 void LenOBBToPoint(OBB& obb, D3DXVECTOR3& p)
 {
 	D3DXVECTOR3 Vec(0, 0, 0);   // 最終的に長さを求めるベクトル
@@ -322,6 +346,9 @@ void LenOBBToPoint(OBB& obb, D3DXVECTOR3& p)
 		pPlayer->pos = pPlayer->posOld;
 	}
 }
+//**************************
+/// OBBとOBBの当たり判定処理
+//**************************
 void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 {
 	Player* pPlayer = GetPlayer();
@@ -350,35 +377,6 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 	FLOAT sX = D3DXVec3Dot(&MathPos, &NBe1);
 	FLOAT sY = D3DXVec3Dot(&MathPos, &NBe2);
 	FLOAT sZ = D3DXVec3Dot(&MathPos, &NBe3);
-	D3DXVECTOR3 Len;
-
-	// 戻し距離を算出
-	if (sX > 0)
-	{
-		Len.x = r.x - (float)fabs(sX);
-	}
-	else
-	{
-		Len.x = r.x + (float)fabs(sX);
-	}
-	// 戻し距離を算出
-	if (sY > 0)
-	{
-		Len.y = r.y - (float)fabs(sY);
-	}
-	else
-	{
-		Len.y = r.y + (float)fabs(sY);
-	}
-	// 戻し距離を算出
-	if (sZ > 0)
-	{
-		Len.z = r.z - (float)fabs(sZ);
-	}
-	else
-	{
-		Len.z = r.z + (float)fabs(sZ);
-	}
 
 	D3DXVECTOR3 Interval = obb.CenterPos - p;
 	bool bCollision = true;
@@ -545,6 +543,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 		D3DXVec3Normalize(&norX1, &Math);
 		IntervalX1 = p - g_StageModel[Indx].ObbModel.CenterPos - g_StageModel[Indx].ObbModel.RotVec[0] * g_StageModel[Indx].ObbModel.fLength[0];
 		fDotX1 = D3DXVec3Dot(&IntervalX1, &norX1);
+
 		if (fDotX > 0 && fDotX1 < 0)
 		{
 			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
@@ -577,6 +576,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 		D3DXVec3Normalize(&norY1, &MathY);
 		IntervalY1 = p - g_StageModel[Indx].ObbModel.CenterPos - g_StageModel[Indx].ObbModel.RotVec[1] * g_StageModel[Indx].ObbModel.fLength[1];
 		fDotY1 = D3DXVec3Dot(&IntervalY1, &norY1);
+
 		if (fDotY > 0 && fDotY1 < 0)
 		{
 			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
@@ -609,6 +609,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 		D3DXVec3Normalize(&norZ1, &MathZ);
 		IntervalZ1 = p - g_StageModel[Indx].ObbModel.CenterPos - g_StageModel[Indx].ObbModel.RotVec[2] * g_StageModel[Indx].ObbModel.fLength[2];
 		fDotZ1 = D3DXVec3Dot(&IntervalZ1, &norZ1);
+
 		if (fDotZ > 0 && fDotZ1 < 0)
 		{
 			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
