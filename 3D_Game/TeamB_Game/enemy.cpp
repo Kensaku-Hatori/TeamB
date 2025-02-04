@@ -340,53 +340,6 @@ void EnemyState(int Indx)
 {
 
 }
-
-//void SetnNumParts(int nType,int nNumParts)
-//{
-//	g_EnemyOrigin[nType - 1].nNumParts = nNumParts;
-//}
-
-//void SetEnemyMesh(char* pFilePath, int Indx)
-//{
-//	HRESULT Hresult;
-//	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-//
-//	//Xファイルの読み込み
-//	Hresult = D3DXLoadMeshFromX(pFilePath,
-//		D3DXMESH_SYSTEMMEM,
-//		pDevice,
-//		NULL,
-//		&g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pBuffMat,
-//		NULL,
-//		&g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].dwNumMat,
-//		&g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pMesh);
-//
-//	D3DXMATERIAL* pMat;//マテリアルへのポインタ
-//	pMat = (D3DXMATERIAL*)g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pBuffMat->GetBufferPointer();
-//	for (int nCntBlockMat = 0; nCntBlockMat < (int)g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].dwNumMat; nCntBlockMat++)
-//	{
-//		if (pMat[nCntBlockMat].pTextureFilename != NULL)
-//		{
-//			D3DXCreateTextureFromFile(pDevice,
-//				pMat[nCntBlockMat].pTextureFilename,
-//				&g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pTexture[nCntBlockMat]); //1
-//		}
-//		else
-//		{
-//			g_EnemyOrigin[g_nTypeCount].EnemyMotion.aModel[Indx].pTexture[nCntBlockMat] = NULL;
-//		}
-//	}
-//
-//	if (FAILED(Hresult))
-//	{
-//		return;
-//	}
-//	if (Indx == g_EnemyOrigin[g_nTypeCount].nNumParts - 1)
-//	{
-//		g_nTypeCount++;
-//	}
-//}
-
 void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType)
 {
 	nType -= 1;
