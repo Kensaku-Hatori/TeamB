@@ -189,7 +189,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\OneDrive\\デスクトップ\\run_zump\\TeamB\\Stage\\data\\TEXTURE\\isi.png";
+    "data\\TEXTURE\\isi.png";
    }
   }
   Material {
@@ -198,7 +198,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\OneDrive\\デスクトップ\\run_zump\\TeamB\\Stage\\data\\TEXTURE\\tyoukoku3.png";
+    "data\\TEXTURE\\tyoukoku3.png";
    }
   }
   Material {
@@ -207,7 +207,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\OneDrive\\デスクトップ\\run_zump\\TeamB\\Stage\\data\\TEXTURE\\tyoukoku.png";
+    "data\\TEXTURE\\tyoukoku.png";
    }
   }
  }
