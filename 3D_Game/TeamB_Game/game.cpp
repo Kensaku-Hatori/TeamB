@@ -105,7 +105,7 @@ void InitGame(void)
 	LoadModelViewer(Mode);
 
 	//ウェーブの初期化処理
-	InitWave();
+	InitWave(Mode);
 
 	//ウェーブの読込処理
 	LoadWave();
@@ -247,7 +247,7 @@ void UpdateGame(void)
 			//敵を全て倒しているなら
 			if (*(NumEnemy) <= 0)
 			{
-				LoadWave();
+				//LoadWave();
 			}
 
 			//全てのwaveが終わったなら

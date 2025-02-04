@@ -14,7 +14,7 @@
 #define MAX_WAVE (4)
 
 //プロトタイプ宣言
-void InitWave();
+void InitWave(MODE mode);
 void LoadWave();
 int GetWave();
 bool GetFinish();

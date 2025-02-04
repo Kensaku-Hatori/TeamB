@@ -41,6 +41,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="wave.cpp" />
     <ClCompile Include="impact.cpp" />
+    <ClCompile Include="HPgauge.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h" />
@@ -86,5 +87,6 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="wave.h" />
     <ClInclude Include="impact.h" />
+    <ClInclude Include="HPgauge.h" />
   </ItemGroup>
 </Project>
