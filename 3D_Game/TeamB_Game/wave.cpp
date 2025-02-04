@@ -10,22 +10,15 @@
 #include<stdio.h>
 
 //マクロ定義
-#define WAVE_0 "data\\wave\\wave0.txt"						//ウェーブ0
-#define WAVE_1 "data\\wave\\wave1.txt"					//ウェーブ1
-//#define WAVE_2 "data\\wave2.txt"							//ウェーブ2
-//#define WAVE_3 "data\\wave3.txt"							//ウェーブ3
+#define WAVE_0 "data\\TEXT\\wave\\wave00.txt"						//ウェーブ0
+#define WAVE_1 "data\\TEXT\\wave\\wave01.txt"						//ウェーブ1
+#define WAVE_2 "data\\TEXT\\wave\\wave02.txt"						//ウェーブ2
+#define WAVE_3 "data\\TEXT\\wave\\wave03.txt"						//ウェーブ3
 
-////ウェーブ構造体
-//typedef struct
-//{
-//	D3DXVECTOR3 pos;										//位置
-//	D3DXVECTOR3 move;										//移動量
-//	int nType;												//種類
-//	bool bUse;												//使用しているかどうか
-//}LoadInfo;
 
 //グローバル変数宣言
 //LoadInfo g_Info[MAX_ENEMY];
+MODE g_gamemode;
 int g_nCntEnemy;
 int g_nWave;												//ウェーブのカウント
 bool g_bFinish;												//ウェーブの終了判定
@@ -33,16 +26,9 @@ bool g_bFinish;												//ウェーブの終了判定
 //============================================================
 // ウェーブの初期化処理
 //============================================================
-void InitWave()
+void InitWave(MODE mode)
 {
-	//for (int nCnt = 0; nCnt < MAX_ENEMY; nCnt++)
-	//{
-	//	g_Info[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	//	g_Info[nCnt].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	//	g_Info[nCnt].nType = 0;
-	//	g_Info[nCnt].bUse = false;
-	//}
-
+	g_gamemode = mode;
 	g_nCntEnemy = 0;
 	g_nWave = 0;
 	g_bFinish = false;
@@ -55,7 +41,7 @@ void LoadWave()
 {
 	FILE* pFile;											//外部ファイルへのポインタ
 
-	int type = 0/*, nLife = 0*/;
+	int type = 0;
 	int Return = 0;
 	D3DXVECTOR3 pos = {}, rot = {};
 
@@ -64,17 +50,29 @@ void LoadWave()
 	g_nCntEnemy = (int)pNumEnemy;
 
 	//各ウェーブのファイルを開く
-	switch (g_nWave)
+	switch (g_gamemode)
 	{
-	case 0://Wave1
+	case MODE_STAGEONE://Wave1
 
 		pFile = fopen(WAVE_0, "r");
 
 		break;
 
-	case 1://Wave2
+	case MODE_STAGETWO://Wave2
 
 		pFile = fopen(WAVE_1, "r");
+
+		break;
+
+	case MODE_STAGETHREE:
+
+		pFile = fopen(WAVE_2, "r");
+
+		break;
+
+	case MODE_STAGEFOUR:
+
+		pFile = fopen(WAVE_3, "r");
 
 		break;
 
@@ -141,9 +139,6 @@ void LoadWave()
 
 		//ファイルを閉じる
 		fclose(pFile);
-
-		//ウェーブのカウントアップ
-		g_nWave++;
 	}
 	else
 	{

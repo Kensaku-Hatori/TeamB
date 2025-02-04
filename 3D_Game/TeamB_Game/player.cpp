@@ -108,8 +108,24 @@ void UpdatePlayer(void)
 		//ロックオン状態なら
 		if (g_player.bLockOn == true)
 		{
-			g_player.rotDest.y = (D3DX_PI * 1.5f) - atan2f(pEnemy[g_player.nLockOnEnemy].Object.Pos.z - g_player.pos.z,
-														   pEnemy[g_player.nLockOnEnemy].Object.Pos.x - g_player.pos.x);
+			pCamera->rot.y = g_player.rot.y + D3DX_PI;
+			
+			//プレイヤーの向き
+			float fMathDistance, fMathDistance1;
+			fMathDistance = pEnemy[g_player.nLockOnEnemy].Object.Pos.x - g_player.pos.x;
+			fMathDistance1 = pEnemy[g_player.nLockOnEnemy].Object.Pos.z - g_player.pos.z;
+			g_player.rotDest.y = atan2f(fMathDistance, fMathDistance1) + D3DX_PI;
+			
+
+			//距離による解除
+			float Dis = ((g_player.pos.x - pEnemy[g_player.nLockOnEnemy].Object.Pos.x) * (g_player.pos.x - pEnemy[g_player.nLockOnEnemy].Object.Pos.x))
+				   	  + ((g_player.pos.y - pEnemy[g_player.nLockOnEnemy].Object.Pos.y) * (g_player.pos.y - pEnemy[g_player.nLockOnEnemy].Object.Pos.y))
+				      + ((g_player.pos.z - pEnemy[g_player.nLockOnEnemy].Object.Pos.z) * (g_player.pos.z - pEnemy[g_player.nLockOnEnemy].Object.Pos.z));
+			if (Dis >= g_player.fSightRange * g_player.fSightRange * 2)
+			{
+				g_player.bLockOn = false;
+				pCamera->rot.y = 0.0f; //カメラ戻す
+			}
 		}
 
 		// 角度の近道
@@ -157,11 +173,7 @@ void UpdatePlayer(void)
 			}
 		}
 		
-
-		if (g_player.bJump == true)
-		{
-			g_player.move.y -= GRAVITY; //重力加算
-		}
+		g_player.move.y -= GRAVITY; //重力加算	
 
 		//前回の位置を保存
 		g_player.posOld = g_player.pos;
@@ -179,6 +191,7 @@ void UpdatePlayer(void)
 			if (g_player.bLockOn == true)
 			{
 				g_player.bLockOn = g_player.bLockOn ? false : true;
+				pCamera->rot.y = 0.0f; //カメラ戻す
 			}
 			else if(g_player.bLockOn == false)
 			{
@@ -246,7 +259,11 @@ void UpdatePlayer(void)
 		{
 			SetFade(MODE_STAGETHREE);
 		}
-
+		if (KeyboardTrigger(DIK_3) == true)
+		{
+			SetEnemy(D3DXVECTOR3(0.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+			SetEnemy(D3DXVECTOR3(100.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		}
 
 #endif
 		SetPositionShadow(g_player.nIdxShadow, g_player.pos, g_player.bUse);//影
@@ -662,9 +679,9 @@ bool IsEnemyInsight(void)
 	}
 	return false;
 }
-//
-//
-//
+//=====================
+// 一番近い敵を判別
+//=====================
 void EnemyDistanceSort(int EnemyCount)
 {
 	ENEMY* pEnemy = GetEnemy();

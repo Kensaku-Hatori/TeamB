@@ -126,6 +126,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hInstancePrev, _
 
 	return(int)msg.wParam;
 }
+
 //========================
 // ウインドウプロシージャ
 //========================
@@ -175,6 +176,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
+
 //==================
 // デバイスの取得
 //==================
@@ -182,6 +184,7 @@ LPDIRECT3DDEVICE9 GetDevice(void)
 {
 	return g_pD3DDevice;
 }
+
 //=============
 // 初期化処理
 //=============
@@ -282,6 +285,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	return S_OK;
 }
+
 //==========
 // 終了処理
 //==========
@@ -312,6 +316,7 @@ void Uninit(void)
 	}
 
 }
+
 //==========
 // 更新処理
 //==========
@@ -359,6 +364,7 @@ void Update(void)
 
 #endif 
 }
+
 //==========
 // 描画処理
 //==========
@@ -412,6 +418,7 @@ void Draw(void)
 	//バックバッファとフロントバッファの入れ替え
 	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 }
+
 //==============
 // モードの設定
 //==============
@@ -471,6 +478,7 @@ void SetMode(MODE mode)
 		break;
 	}
 }
+
 //=============
 // モード取得
 //=============
@@ -478,6 +486,10 @@ MODE GetMode(void)
 {
 	return g_mode;
 }
+
+//===========================
+//プレイヤーの当たり判定表示
+//===========================
 void DrawPlayerCollision()
 {
 	PARTICLEEDITER* pEditer = GetParticleInfo();
@@ -491,6 +503,10 @@ void DrawPlayerCollision()
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 }
+
+//============================
+//エフェクトエディターの表示
+//============================
 void DrawEffectEditer()
 {
 	PARTICLEEDITER* pEditer = GetParticleInfo();
@@ -521,9 +537,10 @@ void DrawEffectEditer()
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 }
-//
-// 
-// 
+
+//==================
+//カメラの情報表示
+//==================
 void DrawCameraInfo()
 {
 	Camera* pCamera = GetCamera();
@@ -550,9 +567,10 @@ void DrawCameraInfo()
 
 
 }
-//
-//
-//
+
+//======================
+//プレイヤーの情報表示
+//======================
 void DrawPlayerInfo()
 {
 	Player* pPlayer = GetPlayer();

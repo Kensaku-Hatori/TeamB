@@ -310,6 +310,7 @@ void DeadEnemy(int Indx)
 {
 	MODE nMode = GetMode();
 	Player* pPlayer = GetPlayer();
+	Camera* pCamera = GetCamera();
 
 	g_Enemy[Indx].bUse = false;
 	g_nNumEnemy--;
@@ -321,6 +322,7 @@ void DeadEnemy(int Indx)
 		if (pPlayer->nLockOnEnemy == Indx)
 		{
 			pPlayer->bLockOn = false;
+			pCamera->rot.y = 0.0f; //ƒJƒƒ‰–ß‚·
 		}
 	}
 }
