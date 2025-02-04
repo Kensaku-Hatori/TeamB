@@ -275,8 +275,9 @@ void SetEnemy(D3DXVECTOR3 pos, int nType,D3DXVECTOR3 rot)
 				g_Enemy[EnemyCount].EnemyMotion.aModel[PartsCount].nIndx = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].nIndx;
 				g_Enemy[EnemyCount].EnemyMotion.aModel[PartsCount].Parent = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].Parent;
 				g_Enemy[EnemyCount].EnemyMotion.aModel[PartsCount].pos = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].pos;
-				g_Enemy[EnemyCount].EnemyMotion.aModel[PartsCount].OffSet = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].OffSet;
+				g_Enemy[EnemyCount].EnemyMotion.aModel[PartsCount].OffSetPos = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].OffSetPos;
 				g_Enemy[EnemyCount].EnemyMotion.aModel[PartsCount].rot = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].rot;
+				g_Enemy[EnemyCount].EnemyMotion.aModel[PartsCount].OffSetRot = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].OffSetRot;
 
 				g_Enemy[EnemyCount].EnemyMotion.aModel[PartsCount].dwNumMat = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].dwNumMat;
 				g_Enemy[EnemyCount].EnemyMotion.aModel[PartsCount].pBuffMat = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].pBuffMat;
@@ -352,8 +353,9 @@ void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType)
 		g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].nIndx = PartsInfo.PartsInfo[PartsCount].nIndx;
 		g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].Parent = PartsInfo.PartsInfo[PartsCount].Parent;
 		g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].pos = PartsInfo.PartsInfo[PartsCount].pos;
-		g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].OffSet = PartsInfo.PartsInfo[PartsCount].OffSet;
+		g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].OffSetPos = PartsInfo.PartsInfo[PartsCount].OffSetPos;
 		g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].rot = PartsInfo.PartsInfo[PartsCount].rot;
+		g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].OffSetRot = PartsInfo.PartsInfo[PartsCount].OffSetRot;
 
 		//デバイスの取得
 		LPDIRECT3DDEVICE9 pDevice = GetDevice();

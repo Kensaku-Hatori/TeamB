@@ -259,7 +259,7 @@ void LoadPartsInfo(FILE* pFile,int *Parts)
 				g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].pos.x = LoadFloat(pFile);
 				g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].pos.y = LoadFloat(pFile);
 				g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].pos.z = LoadFloat(pFile);
-				g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].OffSet = g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].pos;
+				g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].OffSetPos = g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].pos;
 			}
 			else if (strcmp(&cData1[0], "ROT") == 0)
 			{
@@ -268,6 +268,7 @@ void LoadPartsInfo(FILE* pFile,int *Parts)
 				g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].rot.x = LoadFloat(pFile);
 				g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].rot.y = LoadFloat(pFile);
 				g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].rot.z = LoadFloat(pFile);
+				g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].OffSetRot = g_LoadInfo[nType].PartsInfo[g_LoadInfo[nType].PartsCount].rot;
 			}
 			else if (strcmp(&cData1[0], "END_PARTSSET") == 0)
 			{
