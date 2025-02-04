@@ -59,6 +59,18 @@ typedef struct
 	int nKey;								//現在のキーNo
 	int NextKey;
 	int nCntMotion;							//モーションのカウンター
+
+	bool bFinish;					// 現在のモーションが終了しているかどうか
+	bool bBlendMotion;				// ブレンドモーションがあるかどうか
+	MOTIONTYPE motionTypeBlend;		// ブレンドモーションの種類
+	int nNumKeyBlend;				// ブレンドモーションのキーの総数
+	int nKeyBlend;					// ブレンドモーションののキーNo
+	int nCntMotionBlend;			// ブレンドモーションのカウンター
+	int nFrameBlend;				// ブレンドフレーム
+	int nCntBlend;					// ブレンドフレームカウント
+	int nNextKeyBlend;
+	bool bLoopBlend;				//ループするかどうか
+
 }OBJECTINFO;
 
 #endif // !KEY_H_
