@@ -163,6 +163,11 @@ void UpdatePlayer(void)
 		{
 			SetFade(MODE_STAGETWO);
 		}
+		else if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_7))
+		{
+			SetFade(MODE_STAGETHREE);
+		}
+
 
 		g_player.move.y -= GRAVITY; //èdóÕâ¡éZ
 

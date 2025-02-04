@@ -25,6 +25,12 @@ void LoadModelViewer(MODE Mode)
 	case MODE_STAGETWO:
 		pFile = fopen("data\\TEXT\\model.txt", "r");
 		break;
+	case MODE_STAGETHREE:
+		pFile = fopen("data\\TEXT\\middle bossstage.txt", "r");
+		break;
+	case MODE_STAGEFOUR:
+		pFile = fopen("data\\TEXT\\model.txt", "r");
+		break;
 	default:
 		return;
 		break;
