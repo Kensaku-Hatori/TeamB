@@ -1,3 +1,9 @@
+//****************************************
+//
+// モデル情報を読み込む処理[loadstage.cpp]
+// Hatori Kensaku
+//
+//****************************************
 #include "loadstage.h"
 #include "loadmotion.h"
 #include "meshfield.h"
@@ -5,6 +11,7 @@
 #include "camera.h"
 #include "light.h"
 
+// グローバル変数
 char FilePathPoly[MAX_FILEPATH][256] = { {} };
 char FilePathModel[MAX_FILEPATH][256] = { {} };
 

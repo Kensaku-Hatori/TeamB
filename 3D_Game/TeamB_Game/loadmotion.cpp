@@ -1,10 +1,20 @@
+//*********************************************
+// 
+// モーション情報を読み込む処理[loadmotion.cpp]
+// Hatori Kensaku
+//
+//*********************************************
 #include "loadmotion.h"
 #include "enemy.h"
 #include "player.h"
 
+// グローバル変数
 LoadInfo g_LoadInfo[LOADTYPE_MAX];
 int nType;
 
+//*************************************
+// モーションを読み込む用の変数の初期化
+//*************************************
 void InitMotion()
 {
 	nType = 0;
