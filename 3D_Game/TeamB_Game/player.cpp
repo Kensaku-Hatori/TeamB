@@ -173,11 +173,7 @@ void UpdatePlayer(void)
 			}
 		}
 		
-
-		if (g_player.bJump == true)
-		{
-			g_player.move.y -= GRAVITY; //重力加算
-		}
+		g_player.move.y -= GRAVITY; //重力加算	
 
 		//前回の位置を保存
 		g_player.posOld = g_player.pos;
