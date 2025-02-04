@@ -51,8 +51,9 @@ typedef struct
 	int nIdxModelParent;	//親モデルのインデックス
 	int nIndx, Parent;
 	D3DXVECTOR3 pos;		//位置(オフセット)
-	D3DXVECTOR3 OffSet;
+	D3DXVECTOR3 OffSetPos;
 	D3DXVECTOR3 rot;		//向き
+	D3DXVECTOR3 OffSetRot;
 	D3DXVECTOR3 size;		//サイズ
 	D3DXMATRIX mtxWorld;	//ワールドマトリックス
 	LPDIRECT3DTEXTURE9 pTexture[128];
