@@ -110,13 +110,6 @@ void UpdatePlayer(void)
 		{
 			g_player.rotDest.y = (D3DX_PI * 1.5f) - atan2f(pEnemy[g_player.nLockOnEnemy].Object.Pos.z - g_player.pos.z,
 														   pEnemy[g_player.nLockOnEnemy].Object.Pos.x - g_player.pos.x);
-
-			float RADIUS = (g_player.fDistance + pEnemy[g_player.nLockOnEnemy].Radius) * (g_player.fDistance + pEnemy[g_player.nLockOnEnemy].Radius);
-
-			if (pEnemy[g_player.nLockOnEnemy].fDistance > RADIUS)
-			{
-				g_player.bLockOn = false;
-			}
 		}
 
 		// 角度の近道
@@ -169,11 +162,6 @@ void UpdatePlayer(void)
 		{
 			g_player.move.y -= GRAVITY; //重力加算
 		}
-		else if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_7))
-		{
-			SetFade(MODE_STAGETHREE);
-		}
-
 
 		//前回の位置を保存
 		g_player.posOld = g_player.pos;
