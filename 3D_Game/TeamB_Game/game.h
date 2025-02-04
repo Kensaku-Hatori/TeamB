@@ -20,6 +20,7 @@ typedef enum
 	GAMESTATE_MAX
 }GAMESTATE;
 
+//ステージ
 typedef enum
 {
 	STAGE_NO_0 = 0,

@@ -46,6 +46,7 @@ typedef struct
 	D3DCOLOR col;   //頂点カラー
 	D3DXVECTOR2 tex;//テクスチャ座標
 }VERTEX_2D;
+
 //頂点情報(3D)の構造体
 typedef struct
 {

@@ -11,7 +11,7 @@
 
 //マクロ定義
 #define WAVE_0 "data\\wave\\wave0.txt"						//ウェーブ0
-#define WAVE_1 "data\\wave\\wave1.txt"					//ウェーブ1
+#define WAVE_1 "data\\wave\\wave1.txt"						//ウェーブ1
 //#define WAVE_2 "data\\wave2.txt"							//ウェーブ2
 //#define WAVE_3 "data\\wave3.txt"							//ウェーブ3
 
