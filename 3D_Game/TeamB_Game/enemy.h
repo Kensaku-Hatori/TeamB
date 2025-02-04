@@ -22,6 +22,10 @@
 #define ENEMY_SPEED (float) (2.0f)		// ë¨ìx
 #define ENEMY_AP (float)(10)			// çUåÇóÕ
 
+// çsìÆÇÃãóó£
+#define ATTACK_DIST (float)(20.0f)		// çUåÇ
+#define HOMING_DIST (float)(100.0f)		// í«Ç¢Ç©ÇØÇƒÇ≠ÇÈ
+
 // ìGÇÃèÛë‘
 typedef enum
 {
@@ -35,7 +39,7 @@ typedef enum
 {
 	ENEMYACTION_WELL,
 	ENEMYACTION_RUN,
-	ENEMYACTION_ATACK,
+	ENEMYACTION_ATTACK,
 	ENEMYACTION_MAX
 }ENEMYACTION;
 
@@ -43,6 +47,8 @@ typedef enum
 typedef enum
 {
 	ENEMYTYPE_SKELETON = 0,
+	ENEMYTYPE_ZOMBIE,
+	ENEMYTyPE_MIDBOSS,
 	ENEMYTYPE_BOSS,
 	ENEMYTYPE_MAX
 }ENEMYTYPE;
@@ -58,12 +64,13 @@ typedef struct
 typedef struct
 {
 	ENEMYSTATE state;
+	ENEMYACTION ActionType;
+	EnemyStatus Status;
+	MOTIONTYPE pMotion;
 	OBJECTINFO EnemyMotion;
 	OBJECT Object;
-	MOTIONTYPE pMotion;
-	int nType;
-	EnemyStatus Status;
 	D3DXVECTOR3 move;
+	int nType;
 	int Action;
 	int nNumKey, nKey, nCounterMotion, nNextKey;
 	int nNumModel;

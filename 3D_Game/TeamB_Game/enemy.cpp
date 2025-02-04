@@ -31,23 +31,24 @@ int g_PartsNum = 0;
 //***************
 void InitEnemy(void)
 {
+	//敵の数の初期化
 	g_nNumEnemy = 0;
+
 	for (int i = 0; i < MAX_ENEMY; i++)
 	{
-		g_nTypeCountMotion = 0;
-		g_Enemy[i].Object.Pos = D3DXVECTOR3(0.0f, 0.0f, -100.0f);
-		g_Enemy[i].Object.Rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		g_Enemy[i].bUse = false;
-		g_Enemy[i].pMotion = MOTIONTYPE_NEUTRAL;
-		g_Enemy[i].nActionCount = 0;
-		g_Enemy[i].nActionCounter = 0;
-		g_Enemy[i].Action = ENEMYACTION_WELL;
-		g_Enemy[i].Status.fPower = ENEMY_AP;
-		g_Enemy[i].Status.fSpeed = ENEMY_SPEED;
-		g_Enemy[i].Status.fHP = ENEMY_HP;
-		g_Enemy[i].state = ENEMYSTATE_NORMAL;
-		g_Enemy[i].Radius = 4.4f;
-		g_Enemy[i].pMotion = MOTIONTYPE_NEUTRAL;
+		g_nTypeCountMotion = 0;												//モーションカウンター?
+		g_Enemy[i].Object.Pos = D3DXVECTOR3(0.0f, 0.0f, -100.0f);			//位置
+		g_Enemy[i].Object.Rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				//向き
+		g_Enemy[i].bUse = false;											//使用しているかどうか
+		g_Enemy[i].pMotion = MOTIONTYPE_NEUTRAL;							//モーションの種類
+		g_Enemy[i].nActionCount = 0;										//アクションカウンター
+		g_Enemy[i].nActionCounter = 0;										//アクションカウンター
+		g_Enemy[i].Action = ENEMYACTION_WELL;								//行動の種類
+		g_Enemy[i].Status.fPower = ENEMY_AP;								//攻撃力
+		g_Enemy[i].Status.fSpeed = ENEMY_SPEED;								//スピード
+		g_Enemy[i].Status.fHP = ENEMY_HP;									//HP
+		g_Enemy[i].state = ENEMYSTATE_NORMAL;								//敵の状態
+		g_Enemy[i].Radius = 4.4f;											//半径
 	}
 }
 //*************
@@ -59,18 +60,23 @@ void UninitEnemy(void)
 	{
 		for (int PartsCount = 0; PartsCount < MAX_PARTS; PartsCount++)
 		{
+			//メッシュの破棄
 			if (g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pMesh != NULL)
 			{
 				g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pMesh->Release();
 				g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pMesh = NULL;
 			}
+
+			//マテリアルの破棄
 			if (g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pBuffMat != NULL)
 			{
 				g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pBuffMat->Release();
 				g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pBuffMat = NULL;
 			}
+
 			for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
 			{
+				//テクスチャの破棄
 				if (g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pTexture[TexCount] != NULL)
 				{
 					g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pTexture[TexCount]->Release();
@@ -79,6 +85,7 @@ void UninitEnemy(void)
 			}
 		}
 	}
+
 	for (int i = 0; i < MAX_ENEMY; i++)
 	{
 		for (int i1 = 0; i1 < MAX_ENEMYPARTS; i1++)
@@ -88,13 +95,16 @@ void UninitEnemy(void)
 			{
 				g_Enemy[i].EnemyMotion.aModel[i1].pMesh = NULL;
 			}
+
 			// マテリアルの破棄
 			if (g_Enemy[i].EnemyMotion.aModel[i1].pBuffMat != NULL)
 			{
 				g_Enemy[i].EnemyMotion.aModel[i1].pBuffMat = NULL;
 			}
+
 			for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
 			{
+				//テクスチャの破棄
 				if (g_Enemy[i].EnemyMotion.aModel[i1].pTexture[TexCount] != NULL)
 				{
 					g_Enemy[i].EnemyMotion.aModel[i1].pTexture[TexCount] = NULL;
@@ -110,6 +120,7 @@ void UninitEnemy(void)
 void UpdateEnemy(void)
 {
 	MODE nMode = GetMode();
+
 	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++)
 	{
 		if (g_Enemy[EnemyCount].bUse == true)
@@ -125,7 +136,7 @@ void UpdateEnemy(void)
 void DrawEnemy(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();	// デバイスの取得
-	D3DXMATRIX mtxRot, mtxTrans, mtxSize;				// 計算用マトリックス
+	D3DXMATRIX mtxRot, mtxTrans, mtxSize;		// 計算用マトリックス
 	D3DMATERIAL9 matDef;						// 現在のマテリアルの保存用
 	D3DXMATERIAL* pMat;							// マテリアルへのポインタ
 
@@ -305,7 +316,7 @@ int* GetNumEnemy(void)
 }
 
 //*************
-// 敵の脂肪処理
+// 敵の死亡処理
 //*************
 void DeadEnemy(int Indx)
 {
@@ -333,7 +344,32 @@ void DeadEnemy(int Indx)
 //***************
 void UpdateAction(int nCount)
 {
+	Player* pPlayer = GetPlayer();				//プレイヤーの情報取得
 
+	//敵とプレイヤーの距離計算
+	D3DXVECTOR3 vec = pPlayer->pos - g_Enemy[nCount].Object.Pos;
+	float fDistance = (vec.x) * (vec.x)+(vec.z) * (vec.z);
+	float fAngle = 0.0f;
+
+	fDistance = sqrt(fDistance);				//敵とプレイヤーの距離
+
+	//角度の取得
+	fAngle = atan2(vec.x, vec.z);
+
+
+	//攻撃
+	if (fDistance <= ATTACK_DIST)
+	{
+		g_Enemy[nCount].ActionType = ENEMYACTION_ATTACK;
+		g_Enemy[nCount].pMotion = MOTIONTYPE_ACTION;
+
+		//g_Enemy[nCount].Object.
+	}
+	//追いかける
+	else if (fDistance <= HOMING_DIST)
+	{
+
+	}
 }
 
 //*****************
@@ -343,6 +379,10 @@ void EnemyState(int Indx)
 {
 
 }
+
+//******************
+//敵のオフセット?
+//******************
 void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType)
 {
 	nType -= 1;
@@ -400,6 +440,7 @@ void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType)
 		g_EnemyOrigin[nType].EnemyMotion.aMotionInfo[MotionCount] = PartsInfo.MotionInfo[MotionCount];
 	}
 }
+
 //==============================
 // 敵とプレイヤーの当たり判定
 //==============================
