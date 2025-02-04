@@ -108,7 +108,15 @@ void UpdatePlayer(void)
 		//ロックオン状態なら
 		if (g_player.bLockOn == true)
 		{
-			g_player.rotDest.y = atan2f(pEnemy->Object.Pos.z - g_player.pos.z, pEnemy->Object.Pos.x - g_player.pos.x);
+			g_player.rotDest.y = (D3DX_PI * 1.5f) - atan2f(pEnemy[g_player.nLockOnEnemy].Object.Pos.z - g_player.pos.z,
+														   pEnemy[g_player.nLockOnEnemy].Object.Pos.x - g_player.pos.x);
+
+			float RADIUS = (g_player.fDistance + pEnemy[g_player.nLockOnEnemy].Radius) * (g_player.fDistance + pEnemy[g_player.nLockOnEnemy].Radius);
+
+			if (pEnemy[g_player.nLockOnEnemy].fDistance > RADIUS)
+			{
+				g_player.bLockOn = false;
+			}
 		}
 
 		// 角度の近道
@@ -120,7 +128,7 @@ void UpdatePlayer(void)
 		{
 			g_player.rot.y -= D3DX_PI * 2.0f;
 		}
-
+		
 		g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
 
 		//魔法発射
@@ -155,16 +163,12 @@ void UpdatePlayer(void)
 				g_player.move.y += g_player.nJump;
 			}
 		}
-		if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_5))
-		{
-			SetFade(MODE_STAGEONE);
-		}
-		else if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_6))
-		{
-			SetFade(MODE_STAGETWO);
-		}
+		
 
-		g_player.move.y -= GRAVITY; //重力加算
+		if (g_player.bJump == true)
+		{
+			g_player.move.y -= GRAVITY; //重力加算
+		}
 
 		//前回の位置を保存
 		g_player.posOld = g_player.pos;
@@ -177,9 +181,16 @@ void UpdatePlayer(void)
 		CollisionEnemy();
 
 		//ロックオン
-		if (g_player.bLockOn == false && (KeyboardTrigger(DIK_R) == true || GetJoypadTrigger(JOYKEY_R1) == true))
+		if ((KeyboardTrigger(DIK_R) == true || GetJoypadTrigger(JOYKEY_R1) == true))
 		{
-			g_player.bLockOn = IsEnemyInsight();
+			if (g_player.bLockOn == true)
+			{
+				g_player.bLockOn = g_player.bLockOn ? false : true;
+			}
+			else if(g_player.bLockOn == false)
+			{
+				g_player.bLockOn = IsEnemyInsight();
+			}
 		}
 
 		// HP0
@@ -223,11 +234,22 @@ void UpdatePlayer(void)
 				g_player.Status.fHP = 0;
 			}
 		}
+		//回復
 		if (KeyboardTrigger(DIK_8) == true)
 		{
 			g_player.Status.nMP = PLAYER_MP;
 			g_player.Status.fHP = PLAYER_HP;
 		}
+		//ステージ移動
+		if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_5))
+		{
+			SetFade(MODE_STAGEONE);
+		}
+		else if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_6))
+		{
+			SetFade(MODE_STAGETWO);
+		}
+
 #endif
 		SetPositionShadow(g_player.nIdxShadow, g_player.pos, g_player.bUse);//影
 		UpdateMotion(&g_player.PlayerMotion);
