@@ -80,7 +80,7 @@ void LoadWave()
 
 		pFile = NULL;
 
-		g_bFinish = true;									//ウェーブ終了
+		g_bFinish = true;//ウェーブ終了
 
 		break;
 	}
