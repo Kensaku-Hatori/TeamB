@@ -104,10 +104,6 @@ void InitGame(void)
 	//モデルビューワーの読込
 	LoadModelViewer(Mode);
 
-	////敵の設定処理
-	//SetEnemy(D3DXVECTOR3(50.0f, 0.0f, 100.0f), 1, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	SetEnemy(D3DXVECTOR3(0.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-
 	//ウェーブの初期化処理
 	InitWave();
 
