@@ -13,7 +13,7 @@
 #include "key.h"
 #include "loadmotion.h"
 
-#define PLAYER_JUMP (7)				// ジャンプ量
+#define PLAYER_JUMP (10)				// ジャンプ量
 #define PLAYER_RADIUS (3)			// プレイヤーの半径
 
 #define PLAYER_MP (500)				// MP

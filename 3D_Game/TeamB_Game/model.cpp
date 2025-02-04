@@ -572,11 +572,13 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 		D3DXVECTOR3 norY;
 		FLOAT fDotY;
 		D3DXVec3Normalize(&norY, &g_StageModel[Indx].ObbModel.RotVec[1]);
-		IntervalY = p - g_StageModel[Indx].ObbModel.CenterPos + g_StageModel[Indx].ObbModel.RotVec[1] * g_StageModel[Indx].ObbModel.fLength[1];
+		IntervalY = p - g_StageModel[Indx].ObbModel.CenterPos +
+			g_StageModel[Indx].ObbModel.RotVec[1] * g_StageModel[Indx].ObbModel.fLength[1];
 		fDotY = D3DXVec3Dot(&IntervalY, &norY);
 		D3DXVECTOR3 IntervalY1;
 		D3DXVECTOR3 norY1;
 		D3DXVECTOR3 MathY;
+
 		MathY = g_StageModel[Indx].ObbModel.RotVec[1] * -1.0f;
 		FLOAT fDotY1;
 		D3DXVec3Normalize(&norY1, &MathY);
