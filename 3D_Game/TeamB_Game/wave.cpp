@@ -56,6 +56,7 @@ void LoadWave()
 	FILE* pFile;											//外部ファイルへのポインタ
 
 	int type = 0/*, nLife = 0*/;
+	int Return = 0;
 	D3DXVECTOR3 pos = {}, rot = {};
 
 	//敵の数を取得
@@ -93,40 +94,44 @@ void LoadWave()
 			char aString[MAX_WORD];
 
 			//ファイルを読みこむ
-			fscanf(pFile, "%s", &aString[0]);
+			Return = fscanf(pFile, "%s", &aString[0]);
 			if (strcmp(aString, "ENEMYSET") == 0)//ENEMYSETを読込んだなら
 			{
 				while (1)
 				{
-					fscanf(pFile, "%s", &aString[0]);//TYPEを読み込んだら
+					Return = fscanf(pFile, "%s", &aString[0]);//TYPEを読み込んだら
 
 					if (strcmp(aString, "TYPE") == 0)
 					{
 						//種類の取得
-						fscanf(pFile, "%d", &type);
+						Return = fscanf(pFile, "%d", &type);
 					}
 					else if (strcmp(aString, "POS") == 0)//POSを読込んだなら
 					{
 						//位置の取得
-						fscanf(pFile, "%f", &pos.x);
-						fscanf(pFile, "%f", &pos.y);
-						fscanf(pFile, "%f", &pos.z);
+						Return = fscanf(pFile, "%f", &pos.x);
+						Return = fscanf(pFile, "%f", &pos.y);
+						Return = fscanf(pFile, "%f", &pos.z);
 					}
 					else if (strcmp(aString, "ROT") == 0)//LIFEを読込んだなら
 					{
 						//向きの取得
-						fscanf(pFile, "%f", &rot.x);
-						fscanf(pFile, "%f", &rot.y);
-						fscanf(pFile, "%f", &rot.z);
+						Return = fscanf(pFile, "%f", &rot.x);
+						Return = fscanf(pFile, "%f", &rot.y);
+						Return = fscanf(pFile, "%f", &rot.z);
 					}
 					else if (strcmp(aString, "END_ENEMYSET") == 0)//END_ENEMYSETを読込んだなら
 					{
 						//敵の設定
-						SetEnemy(pos,0, rot);
+						SetEnemy(pos, type, rot);
 
 						break;
 					}
 				}
+			}
+			if (Return == EOF)
+			{
+				break;
 			}
 			if (strcmp(aString, "END_SCRIPT") == 0)
 			{
