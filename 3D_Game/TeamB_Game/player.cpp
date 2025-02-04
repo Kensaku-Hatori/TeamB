@@ -242,6 +242,11 @@ void UpdatePlayer(void)
 		{
 			SetFade(MODE_STAGETWO);
 		}
+		else if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_7))
+		{
+			SetFade(MODE_STAGETHREE);
+		}
+
 
 #endif
 		SetPositionShadow(g_player.nIdxShadow, g_player.pos, g_player.bUse);//‰e
