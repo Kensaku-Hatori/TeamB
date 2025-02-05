@@ -552,7 +552,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 		IntervalX1 = p - g_StageModel[Indx].ObbModel.CenterPos - g_StageModel[Indx].ObbModel.RotVec[0] * g_StageModel[Indx].ObbModel.fLength[0];
 		fDotX1 = D3DXVec3Dot(&IntervalX1, &norX1);
 
-		if (fDotX > 0 && fDotX1 < 0)
+		if (fDotX > 0)
 		{
 			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 			D3DXVECTOR3 nor = norX;
@@ -560,7 +560,23 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
 			pPlayer->pos += test1;
 		}
-		else if (fDotX1 > 0 && fDotX < 0)
+		else if (fDotX > 0)
+		{
+			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+			D3DXVECTOR3 nor = norX;
+			D3DXVec3Normalize(&nor, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			pPlayer->pos += test1;
+		}
+		if (fDotX1 < 0)
+		{
+			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+			D3DXVECTOR3 nor = norX1;
+			D3DXVec3Normalize(&nor, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			pPlayer->pos += test1;
+		}
+		else if (fDotX1 < 0)
 		{
 			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 			D3DXVECTOR3 nor = norX1;
@@ -587,7 +603,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 		IntervalY1 = p - g_StageModel[Indx].ObbModel.CenterPos - g_StageModel[Indx].ObbModel.RotVec[1] * g_StageModel[Indx].ObbModel.fLength[1];
 		fDotY1 = D3DXVec3Dot(&IntervalY1, &norY1);
 
-		if (fDotY > 0 && fDotY1 < 0)
+		if (fDotY > 0)
 		{
 			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 			D3DXVECTOR3 nor = norY;
@@ -596,9 +612,26 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 			pPlayer->pos += test1;
 			pPlayer->bLanding = true;
 			pPlayer->bJump = false;
-			pPlayer->bLanding = true;
 		}
-		else if (fDotY1 > 0 && fDotY < 0)
+		else if (fDotY < 0)
+		{
+			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+			D3DXVECTOR3 nor = norY;
+			D3DXVec3Normalize(&nor, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			pPlayer->pos += test1;
+			pPlayer->bLanding = true;
+			pPlayer->bJump = false;
+		}
+		if (fDotY1 > 0)
+		{
+			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+			D3DXVECTOR3 nor = norY1;
+			D3DXVec3Normalize(&nor, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			pPlayer->pos += test1;
+		}
+		else if (fDotY1 < 0)
 		{
 			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 			D3DXVECTOR3 nor = norY1;
@@ -623,7 +656,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 		IntervalZ1 = p - g_StageModel[Indx].ObbModel.CenterPos - g_StageModel[Indx].ObbModel.RotVec[2] * g_StageModel[Indx].ObbModel.fLength[2];
 		fDotZ1 = D3DXVec3Dot(&IntervalZ1, &norZ1);
 
-		if (fDotZ > 0 && fDotZ1 < 0)
+		if (fDotZ > 0)
 		{
 			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 			D3DXVECTOR3 nor = norZ;
@@ -631,7 +664,23 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
 			pPlayer->pos += test1;
 		}
-		else if (fDotZ1 > 0 && fDotZ < 0)
+		else if (fDotZ < 0)
+		{
+			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+			D3DXVECTOR3 nor = norZ;
+			D3DXVec3Normalize(&nor, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			pPlayer->pos += test1;
+		}
+		if (fDotZ1 > 0)
+		{
+			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+			D3DXVECTOR3 nor = norZ1;
+			D3DXVec3Normalize(&nor, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			pPlayer->pos += test1;
+		}
+		else if (fDotZ1 < 0)
 		{
 			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 			D3DXVECTOR3 nor = norZ1;
