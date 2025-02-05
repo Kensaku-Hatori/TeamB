@@ -1015,7 +1015,7 @@ END_BILLBOARDSET
 # ÉvÉåÉCÉÑÅ[èÓïÒ
 #------------------------------------------------------------------------------
 PLAYERSET
-	MOTION_FILENAME = data/GOMI/PLaAYER/motion.txt
+	MOTION_FILENAME = data/GOMI/PLAYER/motion.txt
 	POS = 0 100 0
 	ROT = 0 0 0
 END_PLAYERSET
