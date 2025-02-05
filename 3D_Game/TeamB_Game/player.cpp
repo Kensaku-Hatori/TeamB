@@ -165,7 +165,7 @@ void UpdatePlayer(void)
 		//ƒWƒƒƒ“ƒv
 		if ((KeyboardTrigger(DIK_SPACE) == true || GetJoypadTrigger(JOYKEY_A) == true))
 		{// SPACE
-			if (g_player.bJump == false)
+			if (g_player.bJump == false && g_player.bLanding == false)
 			{
 				SetMotion(MOTIONTYPE_JUMP, &g_player.PlayerMotion);
 				g_player.bJump = true;
