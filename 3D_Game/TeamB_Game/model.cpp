@@ -532,6 +532,8 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 		bCollision = false;
 	}
 
+	bool bTop = false;
+
 	if (bCollision == true)
 	{
 		// XŽ²‚Ì–Ê‚É“–‚½‚Á‚Ä‚¢‚é‚©
@@ -558,7 +560,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
 			pPlayer->pos += test1;
 		}
-		if (fDotX1 > 0 && fDotX < 0)
+		else if (fDotX1 > 0 && fDotX < 0)
 		{
 			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 			D3DXVECTOR3 nor = norX1;
@@ -592,8 +594,11 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 			D3DXVec3Normalize(&nor, &nor);
 			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
 			pPlayer->pos += test1;
+			pPlayer->bLanding = true;
+			pPlayer->bJump = false;
+			pPlayer->bLanding = true;
 		}
-		if (fDotY1 > 0 && fDotY < 0)
+		else if (fDotY1 > 0 && fDotY < 0)
 		{
 			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 			D3DXVECTOR3 nor = norY1;
@@ -626,7 +631,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
 			pPlayer->pos += test1;
 		}
-		if (fDotZ1 > 0 && fDotZ < 0)
+		else if (fDotZ1 > 0 && fDotZ < 0)
 		{
 			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 			D3DXVECTOR3 nor = norZ1;
@@ -634,6 +639,10 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
 			pPlayer->pos += test1;
 		}
+	}
+	if (bTop == false)
+	{
+		pPlayer->bLanding = false;
 	}
 }
 // •ª—£Ž²‚É“Š‰e‚³‚ê‚½Ž²¬•ª‚©‚ç“Š‰eü•ª’·‚ðŽZo
