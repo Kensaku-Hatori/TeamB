@@ -25,6 +25,7 @@ EnemyOrigin g_EnemyOrigin[ENEMYTYPE_MAX];
 int g_nNumEnemy;
 int g_nTypeCountMotion = 0;
 int g_PartsNum = 0;
+float g_fDistance[MAX_ENEMY];//デバックフォント用
 
 //***************
 // 敵の初期化処理
@@ -50,6 +51,8 @@ void InitEnemy(void)
 		g_Enemy[i].Status.fHP = ENEMY_HP;									//HP
 		g_Enemy[i].state = ENEMYSTATE_NORMAL;								//敵の状態
 		g_Enemy[i].Radius = 4.4f;											//半径
+
+		g_fDistance[i] = 0.0f;
 	}
 }
 //*************
@@ -126,6 +129,7 @@ void UpdateEnemy(void)
 	{
 		if (g_Enemy[EnemyCount].bUse == true)
 		{
+			UpdateAction(EnemyCount);
 			UpdateMotion(&g_Enemy[EnemyCount].EnemyMotion);
 		}
 	}
@@ -353,25 +357,66 @@ void UpdateAction(int nCount)
 	float fAngle = 0.0f;
 
 	fDistance = sqrt(fDistance);				//敵とプレイヤーの距離
+	g_fDistance[nCount] = fDistance;
 
 	//角度の取得
 	fAngle = atan2(vec.x, vec.z);
 
+	//目標の移動方向（角度）の補正
+	if (fAngle > D3DX_PI)
+	{
+		fAngle -= D3DX_PI * 2.0f;
+	}
+	else if (fAngle < -D3DX_PI)
+	{
+		fAngle += D3DX_PI * 2.0f;
+	}
 
 	//攻撃
 	if (fDistance <= ATTACK_DIST)
 	{
+		//モーションの種類設定
 		g_Enemy[nCount].ActionType = ENEMYACTION_ATTACK;
+		g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_ACTION;//多分これしか機能していない
 		g_Enemy[nCount].pMotion = MOTIONTYPE_ACTION;
 
-		//g_Enemy[nCount].Object.
+		//角度の目標設定
+		g_Enemy[nCount].rotDest.y = fAngle + D3DX_PI;
 	}
+
 	//追いかける
 	else if (fDistance <= HOMING_DIST)
 	{
+		////位置の更新
+		//g_enemy[nCntEnemy].pos += g_enemy[nCntEnemy].move;
+
+		////移動量の更新(減衰)
+		//g_enemy[nCntEnemy].move.x = (0.0f - g_enemy[nCntEnemy].move.x) * 0.1f;
+		//g_enemy[nCntEnemy].move.y = (0.0f - g_enemy[nCntEnemy].move.y) * 0.1f;
+		//g_enemy[nCntEnemy].move.z = (0.0f - g_enemy[nCntEnemy].move.z) * 0.1f;
+
+		////床判定
+		//if (g_enemy[nCntEnemy].pos.y < 0)
+		//{
+		//	g_enemy[nCntEnemy].pos.y = 0;
+		//	g_enemy[nCntEnemy].bjump = false;
+		//}
+
+		//角度の目標設定
+		g_Enemy[nCount].rotDest.y = fAngle + D3DX_PI;
 
 	}
+
+	//様子見
+	else
+	{
+
+	}
+
+	g_Enemy[nCount].Object.Rot.y += (g_Enemy[nCount].rotDest.y - g_Enemy[nCount].Object.Rot.y) * 0.15f;
+
 }
+
 //*****************
 // 敵の状態遷移処理
 //*****************
@@ -465,4 +510,12 @@ void CollisionEnemy(void)
 			}
 		}
 	}
+}
+
+//========================
+//距離の取得
+//========================
+float GetfDistance()
+{
+	return g_fDistance[0];
 }
