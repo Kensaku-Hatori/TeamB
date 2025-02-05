@@ -24,7 +24,11 @@
 
 // 行動の距離
 #define ATTACK_DIST (float)(20.0f)		// 攻撃
-#define HOMING_DIST (float)(100.0f)		// 追いかけてくる
+#define HOMING_DIST (float)(100.0f)		// ホーミング
+
+//移動量
+#define HOMING_MOVE (float)(0.2f)		// ホーミング
+#define WELL_MOVE (float)(0.1f)			// 様子見
 
 // 敵の状態
 typedef enum

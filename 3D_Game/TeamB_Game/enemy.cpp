@@ -387,20 +387,28 @@ void UpdateAction(int nCount)
 	//追いかける
 	else if (fDistance <= HOMING_DIST)
 	{
-		////位置の更新
-		//g_enemy[nCntEnemy].pos += g_enemy[nCntEnemy].move;
+		//モーションの種類設定
+		g_Enemy[nCount].ActionType = ENEMYACTION_RUN;
+		g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_MOVE;//多分これしか機能していない
+		g_Enemy[nCount].pMotion = MOTIONTYPE_MOVE;
 
-		////移動量の更新(減衰)
-		//g_enemy[nCntEnemy].move.x = (0.0f - g_enemy[nCntEnemy].move.x) * 0.1f;
-		//g_enemy[nCntEnemy].move.y = (0.0f - g_enemy[nCntEnemy].move.y) * 0.1f;
-		//g_enemy[nCntEnemy].move.z = (0.0f - g_enemy[nCntEnemy].move.z) * 0.1f;
+		//移動量の設定
+		g_Enemy[nCount].move.x = sinf(fAngle) * HOMING_MOVE;
+		g_Enemy[nCount].move.z = cosf(fAngle) * HOMING_MOVE;
 
-		////床判定
-		//if (g_enemy[nCntEnemy].pos.y < 0)
-		//{
-		//	g_enemy[nCntEnemy].pos.y = 0;
-		//	g_enemy[nCntEnemy].bjump = false;
-		//}
+		//位置の更新
+		g_Enemy[nCount].Object.Pos += g_Enemy[nCount].move;
+
+		//移動量の更新(減衰)
+		g_Enemy[nCount].move.x = (0.0f - g_Enemy[nCount].move.x) * 0.1f;
+		g_Enemy[nCount].move.y = (0.0f - g_Enemy[nCount].move.y) * 0.1f;
+		g_Enemy[nCount].move.z = (0.0f - g_Enemy[nCount].move.z) * 0.1f;
+
+		//床判定
+		if (g_Enemy[nCount].Object.Pos.y < 0)
+		{						   
+			g_Enemy[nCount].Object.Pos.y = 0;
+		}
 
 		//角度の目標設定
 		g_Enemy[nCount].rotDest.y = fAngle + D3DX_PI;
@@ -413,7 +421,7 @@ void UpdateAction(int nCount)
 
 	}
 
-	g_Enemy[nCount].Object.Rot.y += (g_Enemy[nCount].rotDest.y - g_Enemy[nCount].Object.Rot.y) * 0.15f;
+	g_Enemy[nCount].Object.Rot.y += (g_Enemy[nCount].rotDest.y - g_Enemy[nCount].Object.Rot.y) * 0.05f;
 
 }
 
