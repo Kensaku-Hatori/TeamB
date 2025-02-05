@@ -69,6 +69,7 @@ typedef struct
 	MOTIONTYPE pMotion;
 	OBJECTINFO EnemyMotion;
 	OBJECT Object;
+	D3DXVECTOR3 rotDest;
 	D3DXVECTOR3 move;
 	int nType;
 	int Action;

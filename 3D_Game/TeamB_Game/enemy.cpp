@@ -39,6 +39,7 @@ void InitEnemy(void)
 		g_nTypeCountMotion = 0;												//モーションカウンター?
 		g_Enemy[i].Object.Pos = D3DXVECTOR3(0.0f, 0.0f, -100.0f);			//位置
 		g_Enemy[i].Object.Rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				//向き
+		g_Enemy[i].rotDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);					//向き(目標)
 		g_Enemy[i].bUse = false;											//使用しているかどうか
 		g_Enemy[i].pMotion = MOTIONTYPE_NEUTRAL;							//モーションの種類
 		g_Enemy[i].nActionCount = 0;										//アクションカウンター
