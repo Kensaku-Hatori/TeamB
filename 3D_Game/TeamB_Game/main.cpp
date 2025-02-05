@@ -614,6 +614,16 @@ void DrawPlayerInfo()
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 
+	rect = { 0,380,SCREEN_WIDTH,SCREEN_HEIGHT };
+
+	// 文字列に代入
+	sprintf(&aStr[0], "プレイヤーの昔の位置:%3.2f,%3.2f,%3.2f", pPlayer->posOld.x,
+		pPlayer->posOld.y,
+		pPlayer->posOld.z);
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+
 }
 
 //=============
