@@ -500,21 +500,21 @@ void PlayerMove(void)
 	}
 
 	//à⁄ìÆêßå¿
-	if (g_player.pos.x <= -945.0f)
+	if (g_player.pos.x <= -STAGE_SIZE)
 	{
-		g_player.pos.x = -945.0f;
+		g_player.pos.x = -STAGE_SIZE;
 	}
-	if (g_player.pos.x >= 945.0f)
+	if (g_player.pos.x >= STAGE_SIZE)
 	{
-		g_player.pos.x = 945.0f;
+		g_player.pos.x = STAGE_SIZE;
 	}
-	if (g_player.pos.z <= -945.0f)
+	if (g_player.pos.z <= -STAGE_SIZE)
 	{
-		g_player.pos.z = -945.0f;
+		g_player.pos.z = -STAGE_SIZE;
 	}
-	if (g_player.pos.z >= 945.0f)
+	if (g_player.pos.z >= STAGE_SIZE)
 	{
-		g_player.pos.z = 945.0f;
+		g_player.pos.z = STAGE_SIZE;
 	}
 }
 //===================
