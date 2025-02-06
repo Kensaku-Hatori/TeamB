@@ -42,6 +42,10 @@ typedef struct
 	bool bLoop;
 	int nNumKey;
 	KEYINFO aKeyInfo[MAX_KEY];
+	int StartKey;
+	int StartFlame;
+	int EndFlame;
+
 }MOTIONINFO;
 
 //プレイヤーの構造体

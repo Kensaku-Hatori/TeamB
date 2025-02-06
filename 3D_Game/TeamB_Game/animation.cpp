@@ -113,19 +113,21 @@ void MotionBlend(OBJECTINFO* Motion)
 	Motion->nCntMotion++;
 	Motion->nCntMotionBlend++;
 
-	//if (Motion->aMotionInfo[Motion->motionType].StartKey == Motion->nKey)
-	//{// 今のキーが開始するキーだったら
-	//	if (Motion->aMotionInfo[Motion->motionType].StartFlame <= Motion->nCntMotion
-	//		&& Motion->aMotionInfo[Motion->motionType].EndFlame >= Motion->nCntMotion)
-	//	{// 開始フレーム以上で終了フレーム以内なら
-	//		Motion->bBlendMotion = false;
-	//	}
-	//}
+	if (Motion->aMotionInfo[Motion->motionType].StartKey == Motion->nKey)
+	{// 今のキーが開始するキーだったら
+		if (Motion->aMotionInfo[Motion->motionType].StartFlame <= Motion->nCntMotion
+			&& Motion->aMotionInfo[Motion->motionType].EndFlame >= Motion->nCntMotion)
+		{// 開始フレーム以上で終了フレーム以内なら
+			Motion->bBlendMotion = false;
+		}
+	}
 	//if (Motion->aMotionInfo[Motion->motionType].aStartKey == Motion->nKey)
 	//{// 今のキーが二種類目の開始するキーだったら
 	//	if (Motion->aMotionInfo[Motion->motionType].aStartFlame <= Motion->nCntMotion
 	//		&& Motion->aMotionInfo[Motion->motionType].aEndFlame >= Motion->nCntMotion)
 	//	{// 二種類目の開始フレーム以上で二種類目の終了フレーム以内なら
+	//		Motion->bBlendMotion = true;
+
 	//		if (Motion->motionType == MOTIONTYPE_ACTION)
 	//		{
 	//
@@ -169,7 +171,7 @@ void MotionBlend(OBJECTINFO* Motion)
 						Motion->bBlendMotion = true;
 						Motion->motionTypeBlend = MOTIONTYPE_NEUTRAL;
 					}
-					//SetMotion(MOTIONTYPE_NUTORAL);
+					SetMotion(MOTIONTYPE_NEUTRAL, Motion);
 				}
 				else
 				{
