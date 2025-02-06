@@ -20,8 +20,8 @@ typedef enum
 
 typedef struct
 {
-	D3DXVECTOR3 Top, Left, Right, Bottom;
-	D3DXVECTOR3 norTop, norLeft, norRight, norBottom;
+	D3DXVECTOR3 Top, Left, Right, Bottom, Center;
+	D3DXVECTOR3 norTop, norLeft, norRight, norBottom,norWall;
 	MODE MoveStageNum;
 }Invisiblewall;
 

@@ -38,6 +38,7 @@ void InitInvisibleWall()
 		g_InvisibleWall[WALLTYPE_ENTRANCE].norBottom = D3DXVECTOR3(0.0f, -1.0f, 0.0f);
 		g_InvisibleWall[WALLTYPE_ENTRANCE].MoveStageNum = MODE_STAGEONE;
 
+		g_InvisibleWall[WALLTYPE_EXIT].Center = D3DXVECTOR3(-945.0f, 250, -650.0f);
 		g_InvisibleWall[WALLTYPE_EXIT].Top = D3DXVECTOR3(-945.0f, 500, -650.0f);
 		g_InvisibleWall[WALLTYPE_EXIT].Left = D3DXVECTOR3(-945.0f, 250.0f, -540.0f);
 		g_InvisibleWall[WALLTYPE_EXIT].Right = D3DXVECTOR3(-945.0f, 250.0f, -760.0f);
@@ -46,6 +47,7 @@ void InitInvisibleWall()
 		g_InvisibleWall[WALLTYPE_EXIT].norLeft = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
 		g_InvisibleWall[WALLTYPE_EXIT].norRight = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
 		g_InvisibleWall[WALLTYPE_EXIT].norBottom = D3DXVECTOR3(0.0f, -1.0f, 0.0f);
+		g_InvisibleWall[WALLTYPE_EXIT].norWall = D3DXVECTOR3(1.0f, 0.0f, 0.0f);
 		g_InvisibleWall[WALLTYPE_EXIT].MoveStageNum = MODE_STAGETWO;
 		break;
 	case MODE_STAGETWO:
@@ -125,22 +127,24 @@ void UpdateInvisibleWall()
 }
 void CollisionInvisibleWall(Invisiblewall Box, D3DXVECTOR3 Point)
 {
-	D3DXVECTOR3 TopVec,LeftVec,RightVec,BottomVec;
+	D3DXVECTOR3 TopVec,LeftVec,RightVec,BottomVec,WallVec;
 	TopVec = Point - Box.Top;
 	LeftVec = Point - Box.Left;
 	RightVec = Point - Box.Right;
 	BottomVec = Point - Box.Bottom;
+	WallVec = Point - Box.Center;
 	D3DXVECTOR3 test1 = D3DXVECTOR3(0.0f,0.0f,1.0f);
 	D3DXVECTOR3 test2 = D3DXVECTOR3(0.0f, 0.0f,-1.0f);
-	FLOAT fDotTop, fDotLeft, fDotRight, fDotBottom;
+	FLOAT fDotTop, fDotLeft, fDotRight, fDotBottom,fDotWall;
 	fDotTop = D3DXVec3Dot(&TopVec, &Box.norTop);
 	fDotLeft = D3DXVec3Dot(&LeftVec, &Box.norLeft);
 	fDotRight = D3DXVec3Dot(&RightVec, &Box.norRight);
 	fDotBottom = D3DXVec3Dot(&BottomVec, &Box.norBottom);
+	fDotWall = D3DXVec3Dot(&WallVec, &Box.norWall);
 	test.x = fDotTop;
 	test.y = fDotBottom;
 
-	if (fDotTop < 0 && fDotLeft < 0 && fDotRight < 0 && fDotBottom <= 0)
+	if (fDotTop < 0 && fDotLeft < 0 && fDotRight < 0 && fDotBottom <= 0,fDotWall < 0)
 	{
 		SetFade(Box.MoveStageNum);
 	}
