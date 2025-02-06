@@ -202,10 +202,12 @@ void SetPositionShadow(int nIdxShadow, D3DXVECTOR3 pos, bool bUse)
 //=====================
 void SetSizeShadow(D3DXVECTOR3 pos, int nIndx)
 {
-	float posY = pos.y;//ユーザーの高さを格納
-	float fRadeius = 0;//半径
-	D3DXCOLOR fAlpha = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
-	VERTEX_3D* pVtx = NULL;
+	if (g_shadow[nIndx].bUse == true)
+	{
+		float posY = pos.y;//ユーザーの高さを格納
+		float fRadeius = 0;//半径
+		D3DXCOLOR fAlpha = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		VERTEX_3D* pVtx = NULL;
 
 		//posYの制限
 		if (posY <= 1.0f)
@@ -232,19 +234,20 @@ void SetSizeShadow(D3DXVECTOR3 pos, int nIndx)
 		g_shadow[nIndx].pVtxBuffShadow->Lock(0, 0, (void**)&pVtx, 0);
 
 		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(- fRadeius, 0.1f, + fRadeius);
-		pVtx[1].pos = D3DXVECTOR3(+ fRadeius, 0.1f, + fRadeius);
-		pVtx[2].pos = D3DXVECTOR3(- fRadeius, 0.1f, - fRadeius);
-		pVtx[3].pos = D3DXVECTOR3(+ fRadeius, 0.1f, - fRadeius);
+		pVtx[0].pos = D3DXVECTOR3(-fRadeius, 0.1f, +fRadeius);
+		pVtx[1].pos = D3DXVECTOR3(+fRadeius, 0.1f, +fRadeius);
+		pVtx[2].pos = D3DXVECTOR3(-fRadeius, 0.1f, -fRadeius);
+		pVtx[3].pos = D3DXVECTOR3(+fRadeius, 0.1f, -fRadeius);
 
 		//頂点カラーの設定
 		pVtx[0].col = fAlpha;
 		pVtx[1].col = fAlpha;
 		pVtx[2].col = fAlpha;
 		pVtx[3].col = fAlpha;
-		
+
 		//頂点バッファをアンロック
 		g_shadow[nIndx].pVtxBuffShadow->Unlock();
+	}
 }
 
 //=====================
