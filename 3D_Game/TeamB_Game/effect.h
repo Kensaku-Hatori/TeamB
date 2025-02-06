@@ -35,8 +35,9 @@ typedef struct
 	int IndxShadow;
 	int nLife;
 	D3DXCOLOR col;
+	D3DXCOLOR colordiff;
 	int speed;
-	float alphadiff,LengthValue;
+	float LengthValue;
 	int AnimCount,Anim;
 	int AnimSpeed;
 }EFFECT;

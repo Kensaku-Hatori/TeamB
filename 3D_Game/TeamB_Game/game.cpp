@@ -32,6 +32,7 @@
 #include "loadmotion.h"
 #include "wave.h"
 #include "impact.h"
+#include "invisiblewall.h"
 
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -109,6 +110,8 @@ void InitGame(void)
 
 	//ウェーブの読込処理
 	LoadWave();
+
+	InitInvisibleWall();
 
 	//各初期化
 	g_gamestate = GAMESTATE_NORMAL;		//ゲームステート
@@ -190,6 +193,8 @@ void UpdateGame(void)
 
 			//プレイヤーの更新処理
 			UpdatePlayer();
+
+			UpdateInvisibleWall();
 
 			//敵の更新処理
 			UpdateEnemy();

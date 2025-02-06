@@ -143,10 +143,10 @@ void UpdateSkill(void)
 					g_Skill[nCnt].rot.y);
 			}
 
-			g_Skill[nCnt].pos += g_Skill[nCnt].move;
-
 			g_Skill[nCnt].move.x += sinf(g_Skill[nCnt].rot.y - D3DX_PI) * 0.5f;
 			g_Skill[nCnt].move.z += cosf(g_Skill[nCnt].rot.y - D3DX_PI) * 0.5f;
+
+			g_Skill[nCnt].pos += g_Skill[nCnt].move;
 
 			g_Skill[nCnt].nLife -= 1;
 
