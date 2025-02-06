@@ -17,7 +17,6 @@
 //***************
 // グローバル変数
 //***************
-bool g_bMotion;
 
 //*********************
 // モーションの更新処理
@@ -102,7 +101,6 @@ void SetMotion(MOTIONTYPE MotionType, OBJECTINFO* Motion)
 	Motion->nKey = 0;
 	Motion->NextKey = 1;
 	Motion->nCntMotion = 0;
-	g_bMotion = true;
 	Motion->motionType = MotionType;
 }
 //=====================
@@ -144,7 +142,7 @@ void MotionBlend(OBJECTINFO* Motion)
 			Motion->NextKey++;
 		}
 		if (Motion->aMotionInfo[Motion->motionType].bLoop == true)
-		{
+		{//ループする場合
 			if (Motion->nKey >= Motion->aMotionInfo[Motion->motionType].nNumKey - 1)
 			{// 今のキーがキーの最大数だったら
 				if (Motion->nKey > Motion->NextKey)
@@ -161,22 +159,11 @@ void MotionBlend(OBJECTINFO* Motion)
 		{
 			if (Motion->nKey >= Motion->aMotionInfo[Motion->motionType].nNumKey - 1)
 			{// 今のキーがキーの最大数だったら
-				g_bMotion = false;
 				Motion->bFinish = true;
 				Motion->NextKey = Motion->nKey;
-				if (Motion->motionType != MOTIONTYPE_JUMP)
-				{
-					if (Motion->motionType == MOTIONTYPE_ACTION)
-					{
-						Motion->bBlendMotion = true;
-						Motion->motionTypeBlend = MOTIONTYPE_NEUTRAL;
-					}
-					SetMotion(MOTIONTYPE_NEUTRAL, Motion);
-				}
-				else
-				{
-					Motion->NextKey = Motion->nKey;
-				}
+				Motion->bBlendMotion = true;
+				Motion->motionTypeBlend = MOTIONTYPE_NEUTRAL;
+				Motion->nFrameBlend = Motion->nCntMotion;
 			}
 			else if (Motion->nKey > Motion->NextKey)
 			{// 今のキーが次のキー以上だったら
@@ -185,7 +172,7 @@ void MotionBlend(OBJECTINFO* Motion)
 		}
 	}
 	if (Motion->nCntMotionBlend >= Motion->aMotionInfo[Motion->motionTypeBlend].aKeyInfo[Motion->nKeyBlend].nFrame)
-	{// モーションカウンターが目標のフレーム以上だったら
+	{// ブレンドモーションカウンターが目標のフレーム以上だったら
 		Motion->nCntMotionBlend = 0;
 		Motion->nKeyBlend++;
 		Motion->nNextKeyBlend++;
@@ -197,7 +184,6 @@ void MotionBlend(OBJECTINFO* Motion)
 			}
 			else
 			{// ループしないタイプだったら
-				g_bMotion = false;
 				Motion->bBlendMotion = false;
 				Motion->nNextKeyBlend = Motion->nKeyBlend;
 			}
@@ -216,6 +202,7 @@ void MotionBlend(OBJECTINFO* Motion)
 
 	float fRateMotion = (float)Motion->nCntMotion / (float)nKey.nFrame;
 
+	//ブレンドモーションがない時
 	if (Motion->bBlendMotion == false)
 	{
 		for (int PartsCount = 0; PartsCount < Motion->nNumModel; PartsCount++)
@@ -251,6 +238,7 @@ void MotionBlend(OBJECTINFO* Motion)
 			Motion->aModel[PartsCount].rot.z = Motion->aModel[PartsCount].OffSetRot.z + KeyDest.fRotZ;
 		}
 	}
+	//ブレンドモーションがある時
 	else
 	{
 		KEYINFO nKeyBlend = Motion->aMotionInfo[Motion->motionTypeBlend].aKeyInfo[Motion->nKeyBlend];
@@ -280,32 +268,31 @@ void MotionBlend(OBJECTINFO* Motion)
 			fRotBlend.z = nKeyBlend.aKey[PartsCount].fRotZ + (fDiffMotionBlend.z * fRateMotionBlend);
 
 			D3DXVECTOR3 fDiffBlendRot = fRotBlend - fRotCurrent;
-			D3DXVECTOR3 fRot;
 
 			D3DXVECTOR3 fDiffMotionPos;
 			fDiffMotionPos.x = nNexKey.aKey[PartsCount].fPosX - nKey.aKey[PartsCount].fPosX;
 			fDiffMotionPos.y = nNexKey.aKey[PartsCount].fPosY - nKey.aKey[PartsCount].fPosY;
 			fDiffMotionPos.z = nNexKey.aKey[PartsCount].fPosZ - nKey.aKey[PartsCount].fPosZ;
-			D3DXVECTOR3 fRotCurrentPos;
-			fRotCurrentPos.x = nKey.aKey[PartsCount].fPosX + (fDiffMotion.x * fRateMotion);
-			fRotCurrentPos.y = nKey.aKey[PartsCount].fPosY + (fDiffMotion.y * fRateMotion);
-			fRotCurrentPos.z = nKey.aKey[PartsCount].fPosZ + (fDiffMotion.z * fRateMotion);
+			D3DXVECTOR3 fPosCurrent;
+			fPosCurrent.x = nKey.aKey[PartsCount].fPosX + (fDiffMotion.x * fRateMotion);
+			fPosCurrent.y = nKey.aKey[PartsCount].fPosY + (fDiffMotion.y * fRateMotion);
+			fPosCurrent.z = nKey.aKey[PartsCount].fPosZ + (fDiffMotion.z * fRateMotion);
 
 			D3DXVECTOR3 fDiffMotionBlendPos;
 			fDiffMotionBlendPos.x = nNextKeyBlend.aKey[PartsCount].fPosX - nKeyBlend.aKey[PartsCount].fPosX;
 			fDiffMotionBlendPos.y = nNextKeyBlend.aKey[PartsCount].fPosY - nKeyBlend.aKey[PartsCount].fPosY;
 			fDiffMotionBlendPos.z = nNextKeyBlend.aKey[PartsCount].fPosZ - nKeyBlend.aKey[PartsCount].fPosZ;
-			D3DXVECTOR3 fRotBlendPos;
-			fRotBlendPos.x = nKeyBlend.aKey[PartsCount].fPosX + (fDiffMotionBlendPos.x * fRateMotionBlend);
-			fRotBlendPos.y = nKeyBlend.aKey[PartsCount].fPosY + (fDiffMotionBlendPos.y * fRateMotionBlend);
-			fRotBlendPos.z = nKeyBlend.aKey[PartsCount].fPosZ + (fDiffMotionBlendPos.z * fRateMotionBlend);
+			D3DXVECTOR3 fPosBlend;
+			fPosBlend.x = nKeyBlend.aKey[PartsCount].fPosX + (fDiffMotionBlendPos.x * fRateMotionBlend);
+			fPosBlend.y = nKeyBlend.aKey[PartsCount].fPosY + (fDiffMotionBlendPos.y * fRateMotionBlend);
+			fPosBlend.z = nKeyBlend.aKey[PartsCount].fPosZ + (fDiffMotionBlendPos.z * fRateMotionBlend);
 
-			D3DXVECTOR3 fDiffBlendPos = fRotBlendPos - fRotCurrentPos;
-			D3DXVECTOR3 fPos;
+			D3DXVECTOR3 fDiffBlendPos = fPosBlend - fPosCurrent;
+			D3DXVECTOR3 fPos, fRot;
 
-			fPos.x = fRotCurrentPos.x + (fDiffBlendPos.x * fRateBlend);
-			fPos.y = fRotCurrentPos.y + (fDiffBlendPos.y * fRateBlend);
-			fPos.z = fRotCurrentPos.z + (fDiffBlendPos.z * fRateBlend);
+			fPos.x = fPosCurrent.x + (fDiffBlendPos.x * fRateBlend);
+			fPos.y = fPosCurrent.y + (fDiffBlendPos.y * fRateBlend);
+			fPos.z = fPosCurrent.z + (fDiffBlendPos.z * fRateBlend);
 
 			fRot.x = fRotCurrent.x + (fDiffBlendRot.x * fRateBlend);
 			fRot.y = fRotCurrent.y + (fDiffBlendRot.y * fRateBlend);
@@ -313,7 +300,6 @@ void MotionBlend(OBJECTINFO* Motion)
 
 			Motion->aModel[PartsCount].pos = Motion->aModel[PartsCount].OffSetPos + fPos;
 			Motion->aModel[PartsCount].rot = Motion->aModel[PartsCount].OffSetRot + fRot;
-			int i = 0;
 		}
 		Motion->nCntBlend++;
 		if (Motion->nCntBlend >= Motion->nFrameBlend)
