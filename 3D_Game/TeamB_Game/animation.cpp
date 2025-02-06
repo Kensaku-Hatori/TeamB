@@ -118,7 +118,7 @@ void MotionBlend(OBJECTINFO* Motion)
 	//	if (Motion->aMotionInfo[Motion->motionType].StartFlame <= Motion->nCntMotion
 	//		&& Motion->aMotionInfo[Motion->motionType].EndFlame >= Motion->nCntMotion)
 	//	{// 開始フレーム以上で終了フレーム以内なら
-	//		
+	//		Motion->bBlendMotion = false;
 	//	}
 	//}
 	//if (Motion->aMotionInfo[Motion->motionType].aStartKey == Motion->nKey)
