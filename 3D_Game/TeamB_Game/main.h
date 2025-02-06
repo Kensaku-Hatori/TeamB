@@ -86,4 +86,5 @@ D3DXVECTOR3 *PitoRadian(D3DXVECTOR3 *rot);		// ƒ‰ƒWƒAƒ“’l‚©‚çPI‚É•ÏŠ·‚·‚éˆ—
 void DrawCameraInfo();
 void DrawPlayerInfo();
 void DrawTestInfo();
+
 #endif
