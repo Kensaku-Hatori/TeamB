@@ -373,12 +373,12 @@ void UpdateAction(int nCount)
 	Player* pPlayer = GetPlayer();				//プレイヤーの情報取得
 
 //敵とプレイヤーの距離計算
-	D3DXVECTOR3 vec = pPlayer->pos - g_Enemy[EnemyCount].Object.Pos;
+	D3DXVECTOR3 vec = pPlayer->pos - g_Enemy[nCount].Object.Pos;
 	float fDistance = (vec.x) * (vec.x) + (vec.z) * (vec.z);
 	float fAngle = 0.0f;
 
 	fDistance = sqrt(fDistance);				//敵とプレイヤーの距離
-	g_fDistance[EnemyCount] = fDistance;
+	g_fDistance[nCount] = fDistance;
 
 	//角度の取得
 	fAngle = atan2(vec.x, vec.z);
@@ -396,54 +396,54 @@ void UpdateAction(int nCount)
 	//攻撃
 	if (fDistance <= ATTACK_DIST)
 	{
-		g_Enemy[EnemyCount].nActionCount++;
+		g_Enemy[nCount].nActionCount++;
 
 		//角度の目標設定
-		g_Enemy[EnemyCount].rotDest.y = fAngle + D3DX_PI;
+		g_Enemy[nCount].rotDest.y = fAngle + D3DX_PI;
 
-		if (g_Enemy[EnemyCount].nActionCount >= ATTACK_FREAM)
+		if (g_Enemy[nCount].nActionCount >= ATTACK_FREAM)
 		{
-
 			//モーションの種類設定
-			g_Enemy[EnemyCount].ActionType = ENEMYACTION_ATTACK;
-			g_Enemy[EnemyCount].EnemyMotion.motionType = MOTIONTYPE_ACTION;//多分これしか機能していない
-			g_Enemy[EnemyCount].pMotion = MOTIONTYPE_ACTION;
+			g_Enemy[nCount].ActionType = ENEMYACTION_ATTACK;
+			g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_ACTION;//多分これしか機能していない
+			g_Enemy[nCount].pMotion = MOTIONTYPE_ACTION;
 		}
 
-		if (g_Enemy[EnemyCount].nActionCount >= ATTACK_FREAM + 210)
+		if (g_Enemy[nCount].nActionCount >= ATTACK_FREAM + 200)
 		{
-			g_Enemy[EnemyCount].nActionCount = 0;
-			g_Enemy[EnemyCount].ActionType = ENEMYACTION_WELL;
-			g_Enemy[EnemyCount].EnemyMotion.motionType = MOTIONTYPE_NEUTRAL;
-			g_Enemy[EnemyCount].pMotion = MOTIONTYPE_NEUTRAL;
+			g_Enemy[nCount].nActionCount = 0;
+
+			//ニュートラルに戻す
+			g_Enemy[nCount].ActionType = ENEMYACTION_WELL;
+			g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_NEUTRAL;
+			g_Enemy[nCount].pMotion = MOTIONTYPE_NEUTRAL;
 		}
 	}
 	//追いかける
 	else if (fDistance <= HOMING_DIST)
 	{
 		//モーションの種類設定
-		g_Enemy[EnemyCount].ActionType = ENEMYACTION_RUN;
-		g_Enemy[EnemyCount].EnemyMotion.motionType = MOTIONTYPE_MOVE;//多分これしか機能していない
-		g_Enemy[EnemyCount].pMotion = MOTIONTYPE_MOVE;
+		g_Enemy[nCount].ActionType = ENEMYACTION_RUN;
+		g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_MOVE;//多分これしか機能していない
+		g_Enemy[nCount].pMotion = MOTIONTYPE_MOVE;
 
 		//移動量の設定
-		g_Enemy[EnemyCount].move.x = sinf(fAngle) * HOMING_MOVE;
-		g_Enemy[EnemyCount].move.z = cosf(fAngle) * HOMING_MOVE;
+		g_Enemy[nCount].move.x = sinf(fAngle) * HOMING_MOVE;
+		g_Enemy[nCount].move.z = cosf(fAngle) * HOMING_MOVE;
 
 		//位置の更新
-		g_Enemy[EnemyCount].Object.Pos += g_Enemy[EnemyCount].move;
-
+		g_Enemy[nCount].Object.Pos += g_Enemy[nCount].move;
 
 		//角度の目標設定
-		g_Enemy[EnemyCount].rotDest.y = fAngle + D3DX_PI;
-
+		g_Enemy[nCount].rotDest.y = fAngle + D3DX_PI;
 	}
 	//様子見
 	else
 	{
-		g_Enemy[EnemyCount].ActionType = ENEMYACTION_WELL;
-		g_Enemy[EnemyCount].EnemyMotion.motionType = MOTIONTYPE_NEUTRAL;
-		g_Enemy[EnemyCount].pMotion = MOTIONTYPE_NEUTRAL;
+		//ニュートラル
+		g_Enemy[nCount].ActionType = ENEMYACTION_WELL;
+		g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_NEUTRAL;
+		g_Enemy[nCount].pMotion = MOTIONTYPE_NEUTRAL;
 	}
 }
 
