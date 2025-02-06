@@ -16,6 +16,7 @@
 #include "camera.h"
 #include "player.h"
 #include "impact.h"
+#include "invisiblewall.h"
 
 //グローバル変数宣言
 LPDIRECT3D9 g_pD3D = NULL;
@@ -407,6 +408,7 @@ void Draw(void)
 		DrawEffectEditer();
 		DrawCameraInfo();
 		DrawPlayerInfo();
+		DrawTestInfo();
 
 #endif // DEBUG
 
@@ -625,7 +627,18 @@ void DrawPlayerInfo()
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 
 }
+void DrawTestInfo()
+{
+	D3DXVECTOR2 test = Gettest();
+	RECT rect = { 0,400,SCREEN_WIDTH,SCREEN_HEIGHT };
+	char aStr[256];
 
+	// 文字列に代入
+	sprintf(&aStr[0], "内積結果:%3.2f,%3.2f",test.x,test.y);
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+}
 //=============
 // ワイヤー
 //=============
