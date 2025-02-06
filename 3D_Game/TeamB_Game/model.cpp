@@ -544,57 +544,87 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 		D3DXVECTOR3 IntervalX;
 		D3DXVECTOR3 norX;
 		FLOAT fDotX;
-		D3DXVec3Normalize(&norX, &g_StageModel[Indx].ObbModel.RotVec[0]);
-		IntervalX = p - g_StageModel[Indx].ObbModel.CenterPos + 
-			(g_StageModel[Indx].ObbModel.RotVec[0] * g_StageModel[Indx].ObbModel.fLength[0]);
-		fDotX = D3DXVec3Dot(&IntervalX, &norX);
 		D3DXVECTOR3 IntervalX1;
 		D3DXVECTOR3 norX1;
 		D3DXVECTOR3 Math;
-		Math = g_StageModel[Indx].ObbModel.RotVec[0] * -1.0f;
 		FLOAT fDotX1;
+
+		// X軸のマイナス方向のベクトル
+		Math = g_StageModel[Indx].ObbModel.RotVec[0] * -1.0f;
+		// X軸の方向ベクトル(法線)
+		D3DXVec3Normalize(&norX, &g_StageModel[Indx].ObbModel.RotVec[0]);
+		// X軸のマイナス方向の法線ベクトル
 		D3DXVec3Normalize(&norX1, &Math);
-		IntervalX1 = p - g_StageModel[Indx].ObbModel.CenterPos - 
+
+		// プレイヤーんっぽすからX軸の面の中心ポスを引いた値
+		IntervalX = p - g_StageModel[Indx].ObbModel.CenterPos + 
 			(g_StageModel[Indx].ObbModel.RotVec[0] * g_StageModel[Indx].ObbModel.fLength[0]);
+		// プレイヤーのポスからX軸のマイナス方向の中心ポスを引いた値
+		IntervalX1 = p - g_StageModel[Indx].ObbModel.CenterPos -
+			(g_StageModel[Indx].ObbModel.RotVec[0] * g_StageModel[Indx].ObbModel.fLength[0]);
+
+		// 内積(マイナスだと当たっている)
+		fDotX = D3DXVec3Dot(&IntervalX, &norX);
+		// 内積(マイナスだと当たっている)
 		fDotX1 = D3DXVec3Dot(&IntervalX1, &norX1);
 
 		// Y軸の面に当たっているか
 		D3DXVECTOR3 IntervalY;
 		D3DXVECTOR3 norY;
 		FLOAT fDotY;
-		D3DXVec3Normalize(&norY, &g_StageModel[Indx].ObbModel.RotVec[1]);
-		IntervalY = p - g_StageModel[Indx].ObbModel.CenterPos +
-			(g_StageModel[Indx].ObbModel.RotVec[1] * g_StageModel[Indx].ObbModel.fLength[1]);
-		fDotY = D3DXVec3Dot(&IntervalY, &norY);
 		D3DXVECTOR3 IntervalY1;
 		D3DXVECTOR3 norY1;
 		D3DXVECTOR3 MathY;
-
-		MathY = g_StageModel[Indx].ObbModel.RotVec[1] * -1.0f;
 		FLOAT fDotY1;
+
+		// Y軸のマイナス方向のベクトル
+		MathY = g_StageModel[Indx].ObbModel.RotVec[1] * -1.0f;
+		// Y軸の方向ベクトル(法線)
+		D3DXVec3Normalize(&norY, &g_StageModel[Indx].ObbModel.RotVec[1]);
+		// Y軸のマイナス方向のベクトル(法線)
 		D3DXVec3Normalize(&norY1, &MathY);
-		IntervalY1 = p - g_StageModel[Indx].ObbModel.CenterPos - 
+
+		// プレイヤーぽすからY軸の面の中心ポスを引いた値
+		IntervalY = p - g_StageModel[Indx].ObbModel.CenterPos +
 			(g_StageModel[Indx].ObbModel.RotVec[1] * g_StageModel[Indx].ObbModel.fLength[1]);
+		// プレイヤーぽすからY軸のマイナス方向の面の中心ポスを引いた値
+		IntervalY1 = p - g_StageModel[Indx].ObbModel.CenterPos -
+			(g_StageModel[Indx].ObbModel.RotVec[1] * g_StageModel[Indx].ObbModel.fLength[1]);
+
+		// 内積(マイナスだと当たっている)
+		fDotY = D3DXVec3Dot(&IntervalY, &norY);
+		// 内積(マイナスだと当たっている)
 		fDotY1 = D3DXVec3Dot(&IntervalY1, &norY1);
 
 		// Z軸の面に当たっているか
 		D3DXVECTOR3 IntervalZ;
 		D3DXVECTOR3 norZ;
 		FLOAT fDotZ;
-		D3DXVec3Normalize(&norZ, &g_StageModel[Indx].ObbModel.RotVec[2]);
-		IntervalZ = p - g_StageModel[Indx].ObbModel.CenterPos + 
-			(g_StageModel[Indx].ObbModel.RotVec[2] * g_StageModel[Indx].ObbModel.fLength[2]);
-		fDotZ = D3DXVec3Dot(&IntervalZ, &norZ);
 		D3DXVECTOR3 IntervalZ1;
 		D3DXVECTOR3 norZ1;
 		D3DXVECTOR3 MathZ;
-		MathZ = g_StageModel[Indx].ObbModel.RotVec[2] * -1.0f;
 		FLOAT fDotZ1;
+
+		// Z軸のマイナス方向のベクトル
+		MathZ = g_StageModel[Indx].ObbModel.RotVec[2] * -1.0f;
+		// Z軸の方向ベクトル(法線)
+		D3DXVec3Normalize(&norZ, &g_StageModel[Indx].ObbModel.RotVec[2]);
+		// Z軸のマイナスの方向ベクトル(法線)
 		D3DXVec3Normalize(&norZ1, &MathZ);
-		IntervalZ1 = p - g_StageModel[Indx].ObbModel.CenterPos - 
+
+		// プレイヤーぽすからZ軸の面の中心ポスを引いた値
+		IntervalZ = p - g_StageModel[Indx].ObbModel.CenterPos + 
 			(g_StageModel[Indx].ObbModel.RotVec[2] * g_StageModel[Indx].ObbModel.fLength[2]);
+		// プレイヤーぽすからZ軸のマイナス方向の面の中心ポスを引いた値
+		IntervalZ1 = p - g_StageModel[Indx].ObbModel.CenterPos +
+			(norZ1 * g_StageModel[Indx].ObbModel.fLength[2]);
+
+		// 内積(マイナスだと当たっている)
+		fDotZ = D3DXVec3Dot(&IntervalZ, &norZ);
+		// 内積(マイナスだと当たっている)
 		fDotZ1 = D3DXVec3Dot(&IntervalZ1, &norZ1);
 
+		// Z軸が重なっていあたら
 		if (fDotZ > 0 && fDotZ1 > 0)
 		{
 			if (fDotX > 0)
