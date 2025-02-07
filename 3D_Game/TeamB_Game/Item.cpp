@@ -252,7 +252,7 @@ void SetItem(D3DXVECTOR3 pos, int type)
 
 	for (int nCntItem = 0; nCntItem < MAX_ITEM; nCntItem++)
 	{
-		if (type<NUM_ITEMTYPE&&g_nCntItem < MAX_ITEM)//最大ドロップ数を超えてないなら
+		if (type < NUM_ITEMTYPE && g_nCntItem < MAX_ITEM)//最大ドロップ数を超えてないなら
 		{
 			if (g_Item[nCntItem].bUse == false)
 			{

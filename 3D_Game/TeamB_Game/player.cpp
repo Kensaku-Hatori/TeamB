@@ -28,6 +28,7 @@ D3DXVECTOR3 g_vtxMinPlayer;//プレイヤーの最小値
 D3DXVECTOR3 g_vtxMaxPlayer;//プレイヤーの最大値
 
 int g_nCntHealMP;
+bool bfirst = true;
 //=====================
 // プレイヤーの初期化
 //=====================
@@ -37,7 +38,15 @@ void InitPlayer(void)
 	//デバイスの取得
 	pDevice = GetDevice();
 
-	g_player.pos = D3DXVECTOR3(0.0f, 0.0f, 400.0f);
+	if (bfirst == false)
+	{
+		g_player.pos = g_player.NextPosition;
+	}
+	else
+	{
+		bfirst = false;
+		g_player.pos = D3DXVECTOR3(0.0f,0.0f,100.0f);
+	}
 	g_player.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
