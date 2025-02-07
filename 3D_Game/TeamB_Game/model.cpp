@@ -540,6 +540,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 
 	if (bCollision == true)
 	{
+		// «‚ ‚Á‚Ä‚é‚©‚í‚©‚ñ‚È‚¢
 		// XŽ²‚Ì–Ê‚É“–‚½‚Á‚Ä‚¢‚é‚©
 		D3DXVECTOR3 IntervalX;
 		D3DXVECTOR3 norX;

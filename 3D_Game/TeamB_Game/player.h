@@ -30,6 +30,7 @@ typedef struct
 	D3DXVECTOR3 move;				// 位置
 	D3DXVECTOR3 rot;				// 向き
 	D3DXVECTOR3 rotDest;			// 向き
+	D3DXVECTOR3 NextPosition;		// 初期位置
 	D3DXMATRIX mtxWorld;			// ワールドマトリックス
 	OBJECTINFO PlayerMotion;		// パーツ情報とモーション情報
 	int nIdxShadow;					// 影
