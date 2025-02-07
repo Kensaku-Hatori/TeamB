@@ -117,7 +117,7 @@ void InitGame(void)
 	// 見えない壁の初期化処理
 	InitInvisibleWall();
 
-	SetItem(D3DXVECTOR3(0.0f, 0.0f, 0.0f), ITEMTYPE_HP);
+	SetItem(D3DXVECTOR3(0.0f, 0.0f, -100.0f), ITEMTYPE_HP);
 
 	//各初期化
 	g_gamestate = GAMESTATE_NORMAL;		//ゲームステート

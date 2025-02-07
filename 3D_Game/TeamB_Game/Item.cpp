@@ -7,6 +7,7 @@
 
 #include"Item.h"
 #include "player.h"
+#include "itemui.h"
 
 //グロ－バル変数宣言
 Item g_Item[MAX_ITEM];
@@ -261,7 +262,9 @@ void SetItem(D3DXVECTOR3 pos, ITEMTYPE type)
 				g_Item[nCntItem].pos = pos;									//位置の設定
 				g_Item[nCntItem].type = type;								//種類の設定
 				g_nCntItem++;												//アイテム数カウント
+				g_Item[nCntItem].nCntTime = ITEM_TIME_DEL;					//消えるまでのフレーム初期化
 
+				break;
 			//	switch (g_Item[nCntItem].type)
 			//	{
 			//	case 0://アイテム名
@@ -381,8 +384,40 @@ void CollisionItem(int nIndexItem)
 		if (Distance <= Radius)//当たってるなら
 		{
 			g_Item[nIndexItem].bUse = false;						//使用していない状態にする
-			g_Item[nIndexItem].nCntTime = ITEM_TIME_DEL;			//消えるまでのフレーム初期化
+			g_Item[nIndexItem].nCntTime = 0;						//消えるまでのフレーム初期化
 			g_nCntItem--;											//ドロップ中のアイテム数デクリメント
+			ItemAbility(nIndexItem);
 		}
 	}
+}
+//=================
+// アイテムの効果
+//=================
+void ItemAbility(int nIndexItem)
+{
+	Player* pPlayer = GetPlayer();
+
+	switch (g_Item[nIndexItem].type)
+	{
+	case ITEMTYPE_HP:
+		pPlayer->Status.fHP += 200.0f;
+		if (pPlayer->Status.fHP >= PLAYER_HP)
+		{
+			pPlayer->Status.fHP = PLAYER_HP;
+		}
+		break;
+	case ITEMTYPE_MP:
+		pPlayer->Status.nMP += 100;
+		if (pPlayer->Status.nMP >= PLAYER_MP)
+		{
+			pPlayer->Status.nMP = PLAYER_MP;
+		}
+		break;
+	case ITEMTYPE_SPEED:
+		pPlayer->Status.fSpeed += 0.5f;
+		break;
+	default:
+		break;
+	}
+	AddItemUI(g_Item[nIndexItem].type);
 }

@@ -19,16 +19,16 @@
 //テクスチャ
 static const char* ITEM_TEXTURE[NUM_ITEMTYPE] =
 {
-	"data\\TEXTURE\\item1.png",//マナポーション
 	"data\\TEXTURE\\item2.png",//ヒールポーション
+	"data\\TEXTURE\\item1.png",//マナポーション
 	"data\\TEXTURE\\item3.png"//スピードアップポーション
 };
 
 //
 typedef enum
 {
-	ITEMTYPE_MP = 0,
-	ITEMTYPE_HP,
+	ITEMTYPE_HP = 0,
+	ITEMTYPE_MP,
 	ITEMTYPE_SPEED,
 	ITEMTYPE_MAX
 }ITEMTYPE;
@@ -54,5 +54,6 @@ void UpdateItem();										//更新処理
 void DrawItemBillboard();								//描画処理(ビルボード)
 void SetItem(D3DXVECTOR3 pos, ITEMTYPE type);			//設定処理
 void CollisionItem(int nIndexItem);						//取得処理
+void ItemAbility(int nIndexItem);						//アイテム効果処理
 
 #endif // !_MODEL_H_
