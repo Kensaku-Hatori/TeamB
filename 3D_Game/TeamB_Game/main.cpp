@@ -23,6 +23,7 @@ LPDIRECT3D9 g_pD3D = NULL;
 LPDIRECT3DDEVICE9 g_pD3DDevice = NULL;
 MODE g_mode = MODE_TITLE;
 LPD3DXFONT g_pFont;
+bool bDispFont = true;
 
 //=============
 // メイン関数
@@ -363,6 +364,12 @@ void Update(void)
 		offWireFrame();
 	}
 
+	//デバックフォントの表示非表示
+	if (KeyboardTrigger(DIK_F4) == true)
+	{
+		bDispFont = bDispFont ? false : true;
+	}
+
 #endif 
 }
 
@@ -404,11 +411,15 @@ void Draw(void)
 		}
 
 #ifdef _DEBUG
-		DrawPlayerCollision();
-		DrawEffectEditer();
-		DrawCameraInfo();
-		DrawPlayerInfo();
-		DrawTestInfo();
+
+		if (bDispFont == true)
+		{
+			DrawPlayerCollision();
+			DrawEffectEditer();
+			DrawCameraInfo();
+			DrawPlayerInfo();
+			DrawTestInfo();
+		}
 
 #endif // DEBUG
 
