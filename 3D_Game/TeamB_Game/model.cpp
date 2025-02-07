@@ -643,8 +643,16 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 				D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
 				pPlayer->pos += test1;
 			}
+			//if (fDotX > 0 && fDotX1 > 0)
+			//{
+			//	D3DXVECTOR3 pVec = IntervalX - pPlayer->pos;
+			//	D3DXVECTOR3 nor = norX1;
+			//	D3DXVec3Normalize(&nor, &nor);
+			//	D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			//	pPlayer->pos += test1;
+			//}
 		}
-		if (fDotX > 0 && fDotX1 > 0)
+		else if (fDotX > 0 && fDotX1 > 0)
 		{
 			if (fDotZ > 0)
 			{

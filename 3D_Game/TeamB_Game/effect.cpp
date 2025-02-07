@@ -294,7 +294,7 @@ void SetEffect(D3DXVECTOR3 pos, D3DXVECTOR3 dir, int nLife, int speed,D3DXVECTOR
 			g_effect[effectcount].Anim = 0;
 			g_effect[effectcount].AnimCount = 0;
 			g_effect[effectcount].AnimSpeed = 0;
-			g_effect[effectcount].colordiff = col / nLife;
+			g_effect[effectcount].colordiff.a = g_effect[effectcount].col.a / nLife;
 
 			// 各頂点の色の設定
 			pVtx[0].col = D3DXCOLOR(g_effect[effectcount].col);
@@ -302,11 +302,18 @@ void SetEffect(D3DXVECTOR3 pos, D3DXVECTOR3 dir, int nLife, int speed,D3DXVECTOR
 			pVtx[2].col = D3DXCOLOR(g_effect[effectcount].col);
 			pVtx[3].col = D3DXCOLOR(g_effect[effectcount].col);
 
+			// 各頂点のテクスチャ座標の設定
+			pVtx[0].tex = D3DXVECTOR2(0.0, 0.0f);
+			pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+			pVtx[2].tex = D3DXVECTOR2(0.0, 1.0f);
+			pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+
+
 			if (nType != EFFECT_NONE)
 			{
 				g_effect[effectcount].AnimSpeed = nLife / MAX_SMOKEANIM;
 				g_effect[effectcount].LengthValue = MAX_SMOKELENGTH / (float)nLife;
-				g_effect[effectcount].colordiff = col / nLife;
+				g_effect[effectcount].colordiff.a = g_effect[effectcount].col.a / nLife;
 				// 各頂点のテクスチャ座標の設定
 				pVtx[0].tex = D3DXVECTOR2(0.0, 0.0f);
 				pVtx[1].tex = D3DXVECTOR2(0.125f, 0.0f);
