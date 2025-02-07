@@ -12,6 +12,5 @@
 
 void UpdateMotion(OBJECTINFO *Motion);						// モーション再生処理
 void SetMotion(MOTIONTYPE MotionType, OBJECTINFO*Motion);	// モーション設定処理
-void MotionBlend(OBJECTINFO* Motion);
 
 #endif // !ANIMATION_H_

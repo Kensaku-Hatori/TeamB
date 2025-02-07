@@ -111,6 +111,7 @@ void InitGame(void)
 	//ウェーブの読込処理
 	LoadWave();
 
+	// 見えない壁の初期化処理
 	InitInvisibleWall();
 
 	//各初期化
@@ -194,6 +195,7 @@ void UpdateGame(void)
 			//プレイヤーの更新処理
 			UpdatePlayer();
 
+			// 見えない壁の更新処理
 			UpdateInvisibleWall();
 
 			//敵の更新処理
