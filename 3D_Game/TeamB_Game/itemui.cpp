@@ -272,16 +272,16 @@ void DrawItemUI(void)
 	}
 
 }
-//
-//
-//
+//=================
+// アイテムUI設定
+//=================
 void SetItemUI(void)
 {
 
 }
-//
-//
-//
+//==================
+// アイテム数加算
+//==================
 void AddItemUI(ITEMTYPE type)
 {
 	int aPosTexU[MAX_ITEMGET];

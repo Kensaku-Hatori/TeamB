@@ -401,6 +401,7 @@ void ItemAbility(int nIndexItem)
 	{
 	case ITEMTYPE_HP:
 		pPlayer->Status.fHP += 200.0f;
+		//HP§ŒÀ
 		if (pPlayer->Status.fHP >= PLAYER_HP)
 		{
 			pPlayer->Status.fHP = PLAYER_HP;
@@ -408,6 +409,7 @@ void ItemAbility(int nIndexItem)
 		break;
 	case ITEMTYPE_MP:
 		pPlayer->Status.nMP += 100;
+		//MP§ŒÀ
 		if (pPlayer->Status.nMP >= PLAYER_MP)
 		{
 			pPlayer->Status.nMP = PLAYER_MP;
