@@ -145,7 +145,7 @@ void UpdatePlayer(void)
 		{// MPÇ™ÇTÇOà»è„ÇÃéû
 			if (g_player.Status.nMP >= 50)
 			{
-				SetSkill(g_player.pos, g_player.move, g_player.rot);
+				SetSkill(g_player.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), g_player.rot);
 				g_player.Status.nMP -= 50; //MPè¡îÔ
 			}
 			SetMotion(MOTIONTYPE_ACTION,&g_player.PlayerMotion);
