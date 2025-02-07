@@ -10,6 +10,9 @@
 Invisiblewall g_InvisibleWall[WALLTYPE_MAX];
 D3DXVECTOR2 test;
 
+//***********************
+// å©Ç¶Ç»Ç¢ï«ÇÃèâä˙âªèàóù
+//***********************
 void InitInvisibleWall()
 {
 	MODE Mode = GetMode();
@@ -125,6 +128,9 @@ void InitInvisibleWall()
 		break;
 	}
 }
+//*********************
+// å©Ç¶Ç»Ç¢ï«ÇÃçXêVèàóù
+//*********************
 void UpdateInvisibleWall()
 {
 	for (int nCount = 0; nCount < WALLTYPE_MAX; nCount++)
@@ -133,6 +139,9 @@ void UpdateInvisibleWall()
 		CollisionInvisibleWall(g_InvisibleWall[nCount],pPlayer->pos);
 	}
 }
+//*************************
+// å©Ç¶Ç»Ç¢ï«Ç∆ÇÃìñÇΩÇËîªíË
+//*************************
 void CollisionInvisibleWall(Invisiblewall Box, D3DXVECTOR3 Point)
 {
 	D3DXVECTOR3 TopVec,LeftVec,RightVec,BottomVec,WallVec;

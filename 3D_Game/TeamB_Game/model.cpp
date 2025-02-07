@@ -652,6 +652,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 			//	pPlayer->pos += test1;
 			//}
 		}
+		// XŽ²‚ªd‚È‚Á‚Ä‚¢‚½‚ç
 		else if (fDotX > 0 && fDotX1 > 0)
 		{
 			if (fDotZ > 0)
@@ -671,6 +672,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 				pPlayer->pos += test1;
 			}
 		}
+		// XZŽ²‚ªd‚È‚Á‚Ä‚¢‚½‚ç
 		if (fDotZ > 0 && fDotZ1 > 0 && fDotX > 0 && fDotX1 > 0)
 		{
 			if (fDotY > 0)

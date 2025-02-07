@@ -685,7 +685,7 @@ bool IsEnemyInsight(void)
 			}
 		}
 	}
-	return false;
+	return false;W
 }
 //=====================
 // ˆê”Ô‹ß‚¢“G‚ð”»•Ê
