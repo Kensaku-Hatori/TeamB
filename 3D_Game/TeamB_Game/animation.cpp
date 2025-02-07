@@ -164,14 +164,18 @@ void MotionBlend(OBJECTINFO* Motion)
 					Motion->NextKey = 0;
 				}
 			}
+		}
+		else
+		{
 			if (Motion->nKey >= Motion->aMotionInfo[Motion->motionType].nNumKey - 1)
 			{// 今のキーがキーの最大数だったら
 				Motion->bFinish = true;
 				Motion->NextKey = Motion->nKey;
 				Motion->bBlendMotion = true;
 				Motion->motionTypeBlend = MOTIONTYPE_NEUTRAL;
-				Motion->nFrameBlend = 40;
-
+				Motion->nFrameBlend = 30;
+				Motion->bLoopBlend = Motion->aMotionInfo[Motion->motionTypeBlend].bLoop;
+				Motion->nNumKeyBlend = Motion->aMotionInfo[Motion->motionTypeBlend].nNumKey;
 			}
 			else if (Motion->nKey > Motion->NextKey)
 			{// 今のキーが次のキー以上だったら

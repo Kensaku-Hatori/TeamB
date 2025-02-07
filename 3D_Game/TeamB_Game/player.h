@@ -13,12 +13,12 @@
 #include "key.h"
 #include "loadmotion.h"
 
-#define PLAYER_JUMP (10)			// ジャンプ量
+#define PLAYER_JUMP (7)			// ジャンプ量
 #define PLAYER_RADIUS (3)			// プレイヤーの半径
 
 #define PLAYER_MP (500)				// MP
 #define PLAYER_HP (float)(1000)		// HP
-#define PLAYER_SPEED (float) (10.0f)	// 速度
+#define PLAYER_SPEED (float) (2.0f)	// 速度
 #define PLAYER_AP (10)				// 攻撃力
 
 //プレイヤーの構造体
