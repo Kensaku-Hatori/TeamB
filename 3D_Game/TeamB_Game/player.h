@@ -13,7 +13,7 @@
 #include "key.h"
 #include "loadmotion.h"
 
-#define PLAYER_JUMP (10)				// ジャンプ量
+#define PLAYER_JUMP (10)			// ジャンプ量
 #define PLAYER_RADIUS (3)			// プレイヤーの半径
 
 #define PLAYER_MP (500)				// MP
@@ -36,6 +36,7 @@ typedef struct
 	int nJump;						// ジャンプ量
 	bool bJump;						// ジャンプできるかどうか
 	bool bUse;						// 使用状況
+	bool bLanding;					// 地面に着地しているかどうか
 	PlayerStatus Status;			// ステータス
 	int nNumModel;					// パーツの総数
 	int nNumMotion;					// モーションの総数
@@ -45,16 +46,16 @@ typedef struct
 	int nKey;						// 現在のキーNo
 	int nCntMotion;					// モーションのカウンター
 
-	bool bFinish;					// 現在のモーションが終了しているかどうか
-	bool bBlendMotion;				// ブレンドモーションがあるかどうか
-	MOTIONTYPE motionTypeBlend;		// ブレンドモーションの種類
-	int nNumKeyBlend;				// ブレンドモーションのキーの総数
-	int nKeyBlend;					// ブレンドモーションののキーNo
-	int nCntMotionBlend;			// ブレンドモーションのカウンター
-	int nFrameBlend;				// ブレンドフレーム
-	int nCntBlend;					// ブレンドフレームカウント
-	int nNextKeyBlend;
-	bool bLoopBlend;				//ループするかどうか
+	//bool bFinish;					// 現在のモーションが終了しているかどうか
+	//bool bBlendMotion;				// ブレンドモーションがあるかどうか
+	//MOTIONTYPE motionTypeBlend;		// ブレンドモーションの種類
+	//int nNumKeyBlend;				// ブレンドモーションのキーの総数
+	//int nKeyBlend;					// ブレンドモーションののキーNo
+	//int nCntMotionBlend;			// ブレンドモーションのカウンター
+	//int nFrameBlend;				// ブレンドフレーム
+	//int nCntBlend;					// ブレンドフレームカウント
+	//int nNextKeyBlend;
+	//bool bLoopBlend;				//ループするかどうか
 
 	bool btest;
 

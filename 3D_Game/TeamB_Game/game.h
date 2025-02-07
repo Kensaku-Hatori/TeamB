@@ -9,6 +9,8 @@
 
 #include "main.h"
 
+#define STAGE_SIZE (float)(945.0f)
+
 //ƒQ[ƒ€‚Ìó‘Ô
 typedef enum
 {

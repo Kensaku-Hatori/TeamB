@@ -80,6 +80,7 @@ typedef struct
 	D3DXMATRIX mtxWorld;	//ワールドマトリックス
 	OBB ObbModel;
 	bool bUse;
+	bool btest;
 }STAGEMODEL;
 
 void InitStageModel();

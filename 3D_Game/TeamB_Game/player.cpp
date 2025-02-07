@@ -165,15 +165,22 @@ void UpdatePlayer(void)
 		//ジャンプ
 		if ((KeyboardTrigger(DIK_SPACE) == true || GetJoypadTrigger(JOYKEY_A) == true))
 		{// SPACE
-			if (g_player.bJump == false)
+			if (g_player.bJump == false && g_player.bLanding == false)
 			{
 				SetMotion(MOTIONTYPE_JUMP, &g_player.PlayerMotion);
 				g_player.bJump = true;
 				g_player.move.y += g_player.nJump;
 			}
 		}
-		
-		g_player.move.y -= GRAVITY; //重力加算	
+
+		if (g_player.bJump == true)
+		{
+			g_player.bLanding = false;
+		}
+		if (g_player.bLanding == false)
+		{
+			g_player.move.y -= GRAVITY; //重力加算	
+		}
 
 		//前回の位置を保存
 		g_player.posOld = g_player.pos;
@@ -493,21 +500,21 @@ void PlayerMove(void)
 	}
 
 	//移動制限
-	if (g_player.pos.x <= -945.0f)
+	if (g_player.pos.x <= -STAGE_SIZE)
 	{
-		g_player.pos.x = -945.0f;
+		g_player.pos.x = -STAGE_SIZE;
 	}
-	if (g_player.pos.x >= 945.0f)
+	if (g_player.pos.x >= STAGE_SIZE)
 	{
-		g_player.pos.x = 945.0f;
+		g_player.pos.x = STAGE_SIZE;
 	}
-	if (g_player.pos.z <= -945.0f)
+	if (g_player.pos.z <= -STAGE_SIZE)
 	{
-		g_player.pos.z = -945.0f;
+		g_player.pos.z = -STAGE_SIZE;
 	}
-	if (g_player.pos.z >= 945.0f)
+	if (g_player.pos.z >= STAGE_SIZE)
 	{
-		g_player.pos.z = 945.0f;
+		g_player.pos.z = STAGE_SIZE;
 	}
 }
 //===================
