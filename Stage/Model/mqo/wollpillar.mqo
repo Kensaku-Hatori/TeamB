@@ -2,10 +2,10 @@ Metasequoia Document
 Format Text Ver 1.0
 
 Scene {
-	pos -156.2540 -2309.1238 24414.0625
+	pos -618.0913 -357.4884 24414.0625
 	lookat 0.0000 0.0000 0.0000
-	head 3.2290
-	pich 0.0943
+	head 0.0290
+	pich 0.1192
 	bank 0.0000
 	ortho 0
 	zoom2 0.3072
@@ -93,7 +93,7 @@ Object "obj2" {
 }
 Object "obj9" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -207,7 +207,7 @@ Object "obj9" {
 }
 Object "obj10" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -321,7 +321,7 @@ Object "obj10" {
 }
 Object "obj11" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -495,7 +495,7 @@ Object "obj11" {
 }
 Object "obj12" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -771,7 +771,7 @@ Object "obj12" {
 }
 Object "obj13" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -1071,7 +1071,7 @@ Object "obj13" {
 }
 Object "obj14" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -1371,7 +1371,7 @@ Object "obj14" {
 }
 Object "obj3" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -2589,7 +2589,7 @@ Object "obj3" {
 }
 Object "obj4" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -3807,7 +3807,7 @@ Object "obj4" {
 }
 Object "obj5" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -5025,7 +5025,7 @@ Object "obj5" {
 }
 Object "obj6" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -6243,7 +6243,7 @@ Object "obj6" {
 }
 Object "obj7" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
