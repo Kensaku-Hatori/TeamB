@@ -154,9 +154,11 @@
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gauge.cpp" />
+    <ClCompile Include="guide.cpp" />
     <ClCompile Include="HPgauge.cpp" />
     <ClCompile Include="impact.cpp" />
     <ClCompile Include="input.cpp" />
+    <ClCompile Include="invisiblewall.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="itemui.cpp" />
     <ClCompile Include="light.cpp" />
@@ -197,9 +199,11 @@
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gauge.h" />
+    <ClInclude Include="guide.h" />
     <ClInclude Include="HPgauge.h" />
     <ClInclude Include="impact.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="invisiblewall.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="itemui.h" />
     <ClInclude Include="key.h" />

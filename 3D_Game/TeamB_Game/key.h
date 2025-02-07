@@ -42,9 +42,6 @@ typedef struct
 	bool bLoop;
 	int nNumKey;
 	KEYINFO aKeyInfo[MAX_KEY];
-	int StartKey;
-	int StartFlame;
-	int EndFlame;
 
 }MOTIONINFO;
 
@@ -61,19 +58,19 @@ typedef struct
 	bool bLoopMotion;						//ループするかどうか
 	int nNumKey;							//キーの総数
 	int nKey;								//現在のキーNo
-	int NextKey;
+	int NextKey;							//次のキー
 	int nCntMotion;							//モーションのカウンター
 
 	bool bFinish;							// 現在のモーションが終了しているかどうか
 	bool bBlendMotion;						// ブレンドモーションがあるかどうか
 	MOTIONTYPE motionTypeBlend;				// ブレンドモーションの種類
+	bool bLoopBlend;						//ループするかどうか
 	int nNumKeyBlend;						// ブレンドモーションのキーの総数
 	int nKeyBlend;							// ブレンドモーションののキーNo
-	int nCntMotionBlend;					// ブレンドモーションのカウンター
+	int nNextKeyBlend;						//ブレンドモーションの次のキー
 	int nFrameBlend;						// ブレンドフレーム
 	int nCntBlend;							// ブレンドフレームカウント
-	int nNextKeyBlend;
-	bool bLoopBlend;						//ループするかどうか
+	int nCntMotionBlend;					// ブレンドモーションのカウンター
 
 }OBJECTINFO;
 

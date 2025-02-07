@@ -137,10 +137,10 @@ void UpdateEffect(void)
 	{
 		if (g_effect[effectcount].bUse == true)
 		{
+			g_effect[effectcount].col -= g_effect[effectcount].colordiff;
 			if (g_effect[effectcount].ntype == EFFECT_SMOKE)
 			{
 				g_effect[effectcount].AnimCount++;
-				g_effect[effectcount].col.a -= g_effect[effectcount].alphadiff;
 				if (g_effect[effectcount].AnimCount >= g_effect[effectcount].AnimSpeed)
 				{
 					g_effect[effectcount].AnimCount = 0;
@@ -151,28 +151,27 @@ void UpdateEffect(void)
 						g_effect[effectcount].Anim = 0;
 					}
 				}
-				// 各頂点の色の設定
-				pVtx[0].col = D3DXCOLOR(g_effect[effectcount].col);
-				pVtx[1].col = D3DXCOLOR(g_effect[effectcount].col);
-				pVtx[2].col = D3DXCOLOR(g_effect[effectcount].col);
-				pVtx[3].col = D3DXCOLOR(g_effect[effectcount].col);
-
 				// 各頂点のテクスチャ座標の設定
 				pVtx[0].tex = D3DXVECTOR2(0.0f + g_effect[effectcount].Anim * 0.125f, 0.0f);
 				pVtx[1].tex = D3DXVECTOR2(0.125f + g_effect[effectcount].Anim * 0.125f, 0.0f);
 				pVtx[2].tex = D3DXVECTOR2(0.0f + g_effect[effectcount].Anim * 0.125f, 1.0f);
 				pVtx[3].tex = D3DXVECTOR2(0.125f + g_effect[effectcount].Anim * 0.125f, 1.0f);
-
-				g_effect[effectcount].Scale.x += g_effect[effectcount].LengthValue;
-				g_effect[effectcount].Scale.y += g_effect[effectcount].LengthValue;
-				g_effect[effectcount].Scale.z += g_effect[effectcount].LengthValue;
 			}
 			else
 			{
-				g_effect[effectcount].Scale.x += g_effect[effectcount].LengthValue;
-				g_effect[effectcount].Scale.y += g_effect[effectcount].LengthValue;
-				g_effect[effectcount].Scale.z += g_effect[effectcount].LengthValue;
+
 			}
+
+			// 各頂点の色の設定
+			pVtx[0].col = g_effect[effectcount].col;
+			pVtx[1].col = g_effect[effectcount].col;
+			pVtx[2].col = g_effect[effectcount].col;
+			pVtx[3].col = g_effect[effectcount].col;
+
+			g_effect[effectcount].Scale.x += g_effect[effectcount].LengthValue;
+			g_effect[effectcount].Scale.y += g_effect[effectcount].LengthValue;
+			g_effect[effectcount].Scale.z += g_effect[effectcount].LengthValue;
+
 			g_effect[effectcount].nLife--;
 			if (g_effect[effectcount].nLife <= 0)
 			{
@@ -204,7 +203,7 @@ void DrawEffect(void)
 
 	// ALPHAテストの設定
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	pDevice->SetRenderState(D3DRS_ALPHAREF,0);
+	pDevice->SetRenderState(D3DRS_ALPHAREF,1);
 	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
@@ -295,6 +294,7 @@ void SetEffect(D3DXVECTOR3 pos, D3DXVECTOR3 dir, int nLife, int speed,D3DXVECTOR
 			g_effect[effectcount].Anim = 0;
 			g_effect[effectcount].AnimCount = 0;
 			g_effect[effectcount].AnimSpeed = 0;
+			g_effect[effectcount].colordiff.a = g_effect[effectcount].col.a / nLife;
 
 			// 各頂点の色の設定
 			pVtx[0].col = D3DXCOLOR(g_effect[effectcount].col);
@@ -302,11 +302,18 @@ void SetEffect(D3DXVECTOR3 pos, D3DXVECTOR3 dir, int nLife, int speed,D3DXVECTOR
 			pVtx[2].col = D3DXCOLOR(g_effect[effectcount].col);
 			pVtx[3].col = D3DXCOLOR(g_effect[effectcount].col);
 
+			// 各頂点のテクスチャ座標の設定
+			pVtx[0].tex = D3DXVECTOR2(0.0, 0.0f);
+			pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+			pVtx[2].tex = D3DXVECTOR2(0.0, 1.0f);
+			pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+
+
 			if (nType != EFFECT_NONE)
 			{
 				g_effect[effectcount].AnimSpeed = nLife / MAX_SMOKEANIM;
 				g_effect[effectcount].LengthValue = MAX_SMOKELENGTH / (float)nLife;
-				g_effect[effectcount].alphadiff = 1.0f / nLife;
+				g_effect[effectcount].colordiff.a = g_effect[effectcount].col.a / nLife;
 				// 各頂点のテクスチャ座標の設定
 				pVtx[0].tex = D3DXVECTOR2(0.0, 0.0f);
 				pVtx[1].tex = D3DXVECTOR2(0.125f, 0.0f);

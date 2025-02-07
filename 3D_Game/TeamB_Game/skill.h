@@ -10,7 +10,7 @@
 #include "main.h"
 
 #define MAX_SKILL (256)
-#define SKILL_LIFE (100)
+#define SKILL_LIFE (30)
 #define SKILL_SIZE (10)
 #define INTERVAL_IMPACT (2)
 

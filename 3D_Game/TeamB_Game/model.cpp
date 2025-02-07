@@ -558,10 +558,10 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 
 		// プレイヤーんっぽすからX軸の面の中心ポスを引いた値
 		IntervalX = p - g_StageModel[Indx].ObbModel.CenterPos + 
-			(g_StageModel[Indx].ObbModel.RotVec[0] * g_StageModel[Indx].ObbModel.fLength[0]);
+			(norX * g_StageModel[Indx].ObbModel.fLength[0]);
 		// プレイヤーのポスからX軸のマイナス方向の中心ポスを引いた値
-		IntervalX1 = p - g_StageModel[Indx].ObbModel.CenterPos -
-			(g_StageModel[Indx].ObbModel.RotVec[0] * g_StageModel[Indx].ObbModel.fLength[0]);
+		IntervalX1 = p - g_StageModel[Indx].ObbModel.CenterPos +
+			(norX1 * g_StageModel[Indx].ObbModel.fLength[0]);
 
 		// 内積(マイナスだと当たっている)
 		fDotX = D3DXVec3Dot(&IntervalX, &norX);
@@ -586,10 +586,10 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 
 		// プレイヤーぽすからY軸の面の中心ポスを引いた値
 		IntervalY = p - g_StageModel[Indx].ObbModel.CenterPos +
-			(g_StageModel[Indx].ObbModel.RotVec[1] * g_StageModel[Indx].ObbModel.fLength[1]);
+			(norY * g_StageModel[Indx].ObbModel.fLength[1]);
 		// プレイヤーぽすからY軸のマイナス方向の面の中心ポスを引いた値
-		IntervalY1 = p - g_StageModel[Indx].ObbModel.CenterPos -
-			(g_StageModel[Indx].ObbModel.RotVec[1] * g_StageModel[Indx].ObbModel.fLength[1]);
+		IntervalY1 = p - g_StageModel[Indx].ObbModel.CenterPos +
+			(norY1 * g_StageModel[Indx].ObbModel.fLength[1]);
 
 		// 内積(マイナスだと当たっている)
 		fDotY = D3DXVec3Dot(&IntervalY, &norY);
@@ -614,7 +614,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 
 		// プレイヤーぽすからZ軸の面の中心ポスを引いた値
 		IntervalZ = p - g_StageModel[Indx].ObbModel.CenterPos + 
-			(g_StageModel[Indx].ObbModel.RotVec[2] * g_StageModel[Indx].ObbModel.fLength[2]);
+			(norZ * g_StageModel[Indx].ObbModel.fLength[2]);
 		// プレイヤーぽすからZ軸のマイナス方向の面の中心ポスを引いた値
 		IntervalZ1 = p - g_StageModel[Indx].ObbModel.CenterPos +
 			(norZ1 * g_StageModel[Indx].ObbModel.fLength[2]);
@@ -643,8 +643,17 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 				D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
 				pPlayer->pos += test1;
 			}
+			//if (fDotX > 0 && fDotX1 > 0)
+			//{
+			//	D3DXVECTOR3 pVec = IntervalX - pPlayer->pos;
+			//	D3DXVECTOR3 nor = norX1;
+			//	D3DXVec3Normalize(&nor, &nor);
+			//	D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			//	pPlayer->pos += test1;
+			//}
 		}
-		if (fDotX > 0 && fDotX1 > 0)
+		// X軸が重なっていたら
+		else if (fDotX > 0 && fDotX1 > 0)
 		{
 			if (fDotZ > 0)
 			{
@@ -663,6 +672,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 				pPlayer->pos += test1;
 			}
 		}
+		// XZ軸が重なっていたら
 		if (fDotZ > 0 && fDotZ1 > 0 && fDotX > 0 && fDotX1 > 0)
 		{
 			if (fDotY > 0)

@@ -16,12 +16,14 @@
 #include "camera.h"
 #include "player.h"
 #include "impact.h"
+#include "invisiblewall.h"
 
 //グローバル変数宣言
 LPDIRECT3D9 g_pD3D = NULL;
 LPDIRECT3DDEVICE9 g_pD3DDevice = NULL;
 MODE g_mode = MODE_TITLE;
 LPD3DXFONT g_pFont;
+bool bDispFont = true;
 
 //=============
 // メイン関数
@@ -362,6 +364,12 @@ void Update(void)
 		offWireFrame();
 	}
 
+	//デバックフォントの表示非表示
+	if (KeyboardTrigger(DIK_F4) == true)
+	{
+		bDispFont = bDispFont ? false : true;
+	}
+
 #endif 
 }
 
@@ -403,10 +411,15 @@ void Draw(void)
 		}
 
 #ifdef _DEBUG
-		DrawPlayerCollision();
-		DrawEffectEditer();
-		DrawCameraInfo();
-		DrawPlayerInfo();
+
+		if (bDispFont == true)
+		{
+			DrawPlayerCollision();
+			DrawEffectEditer();
+			DrawCameraInfo();
+			DrawPlayerInfo();
+			DrawTestInfo();
+		}
 
 #endif // DEBUG
 
@@ -625,7 +638,18 @@ void DrawPlayerInfo()
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 
 }
+void DrawTestInfo()
+{
+	D3DXVECTOR2 test = Gettest();
+	RECT rect = { 0,400,SCREEN_WIDTH,SCREEN_HEIGHT };
+	char aStr[256];
 
+	// 文字列に代入
+	sprintf(&aStr[0], "内積結果:%3.2f,%3.2f",test.x,test.y);
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+}
 //=============
 // ワイヤー
 //=============
