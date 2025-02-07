@@ -239,7 +239,7 @@ void DrawItemBillboard()
 //============================================================
 // アイテムの設定処理
 //============================================================
-void SetItem(D3DXVECTOR3 pos, int type)
+void SetItem(D3DXVECTOR3 pos, ITEMTYPE type)
 {
 	//頂点情報へのポインタ
 	VERTEX_3D* pVtx = NULL;
@@ -265,83 +265,83 @@ void SetItem(D3DXVECTOR3 pos, int type)
 			//	switch (g_Item[nCntItem].type)
 			//	{
 			//	case 0://アイテム名
-
+			//
 			//		pVtx[0].pos.x = g_Item[nCntItem].pos.x - ITEM_RADIUS;
 			//		pVtx[0].pos.y = g_Item[nCntItem].pos.y + ITEM_RADIUS * 2.0f;
 			//		pVtx[0].pos.z = g_Item[nCntItem].pos.z ;
-
+			//
 			//		pVtx[1].pos.x = g_Item[nCntItem].pos.x + ITEM_RADIUS;
 			//		pVtx[1].pos.y = g_Item[nCntItem].pos.y + ITEM_RADIUS * 2.0f;
 			//		pVtx[1].pos.z = g_Item[nCntItem].pos.z;
-
+			//
 			//		pVtx[2].pos.x = g_Item[nCntItem].pos.x - ITEM_RADIUS;
 			//		pVtx[2].pos.y = g_Item[nCntItem].pos.y;
 			//		pVtx[2].pos.z = g_Item[nCntItem].pos.z;
-
+			//
 			//		pVtx[3].pos.x = g_Item[nCntItem].pos.x + ITEM_RADIUS;
 			//		pVtx[3].pos.y = g_Item[nCntItem].pos.y;
 			//		pVtx[3].pos.z = g_Item[nCntItem].pos.z;
-
+			//
 			//		pVtx += 4;
-
+			//
 			//		break;
-
+			//
 			//	case 1://アイテム名
-
+			//
 			//		//頂点バッファをロック
 			//		g_pVtxBuffItemBill->Lock(0, 0, (void**)&pVtx, 0);
-
+			//
 			//		pVtx[0].pos.x = g_Item[nCntItem].pos.x - ITEM_RADIUS;
 			//		pVtx[0].pos.y = g_Item[nCntItem].pos.y + ITEM_RADIUS * 2.0f;
 			//		pVtx[0].pos.z = g_Item[nCntItem].pos.z;
-
+			//
 			//		pVtx[1].pos.x = g_Item[nCntItem].pos.x + ITEM_RADIUS;
 			//		pVtx[1].pos.y = g_Item[nCntItem].pos.y + ITEM_RADIUS * 2.0f;
 			//		pVtx[1].pos.z = g_Item[nCntItem].pos.z;
-
+			//
 			//		pVtx[2].pos.x = g_Item[nCntItem].pos.x - ITEM_RADIUS;
 			//		pVtx[2].pos.y = g_Item[nCntItem].pos.y;
 			//		pVtx[2].pos.z = g_Item[nCntItem].pos.z;
-
+			//
 			//		pVtx[3].pos.x = g_Item[nCntItem].pos.x + ITEM_RADIUS;
 			//		pVtx[3].pos.y = g_Item[nCntItem].pos.y;
 			//		pVtx[3].pos.z = g_Item[nCntItem].pos.z;
-
+			//
 			//		pVtx += 4;
-
+			//
 			//		break;
-
+			//
 			//	case 2://アイテム名
-
+			//
 			//		//頂点バッファをロック
 			//		g_pVtxBuffItemBill->Lock(0, 0, (void**)&pVtx, 0);
-
+			//
 			//		pVtx[0].pos.x = g_Item[nCntItem].pos.x - ITEM_RADIUS;
 			//		pVtx[0].pos.y = g_Item[nCntItem].pos.y + ITEM_RADIUS * 2.0f;
 			//		pVtx[0].pos.z = g_Item[nCntItem].pos.z;
-
+			//
 			//		pVtx[1].pos.x = g_Item[nCntItem].pos.x + ITEM_RADIUS;
 			//		pVtx[1].pos.y = g_Item[nCntItem].pos.y + ITEM_RADIUS * 2.0f;
 			//		pVtx[1].pos.z = g_Item[nCntItem].pos.z;
-
+			//
 			//		pVtx[2].pos.x = g_Item[nCntItem].pos.x - ITEM_RADIUS;
 			//		pVtx[2].pos.y = g_Item[nCntItem].pos.y;
 			//		pVtx[2].pos.z = g_Item[nCntItem].pos.z;
-
+			//
 			//		pVtx[3].pos.x = g_Item[nCntItem].pos.x + ITEM_RADIUS;
 			//		pVtx[3].pos.y = g_Item[nCntItem].pos.y;
 			//		pVtx[3].pos.z = g_Item[nCntItem].pos.z;
-
+			//
 			//		pVtx += 4;
-
+			//
 			//		break;
-
+			//
 			//	default://ドロップしない
-
+			//
 			//		g_Item[nCntItem].bUse = false;							//使用していない状態にする
 			//		g_Item[nCntItem].bDesp = false;							//描画しない
 			//		g_nCntItem--;											//アイテム数デクリメント
-
+			//
 			//		break;
 			//	}
 			}
@@ -373,7 +373,7 @@ void CollisionItem(int nIndexItem)
 
 		//距離
 		float Distance = (pPlayer->pos.x - g_Item[nIndexItem].pos.x) * (pPlayer->pos.x - g_Item[nIndexItem].pos.x) +
-			(pPlayer->pos.z - g_Item[nIndexItem].pos.z) * (pPlayer->pos.z - g_Item[nIndexItem].pos.z);
+						 (pPlayer->pos.z - g_Item[nIndexItem].pos.z) * (pPlayer->pos.z - g_Item[nIndexItem].pos.z);
 
 		//２つの半径
 		Radius = (playerRadius.z + ITEM_RADIUS) * (playerRadius.z + ITEM_RADIUS);

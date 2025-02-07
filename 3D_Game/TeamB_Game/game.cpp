@@ -20,7 +20,6 @@
 #include "fade.h"
 #include "pause.h"
 //#include "sound.h"
-//#include "enemy.h"
 #include "particle.h"
 #include "skill.h"
 #include "ui.h"
@@ -33,6 +32,7 @@
 #include "wave.h"
 #include "impact.h"
 #include "invisiblewall.h"
+#include "Item.h"
 
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -83,6 +83,9 @@ void InitGame(void)
 
 	//メッシュ壁の初期化
 	InitMeshWall();
+
+	//アイテム初期化
+	InitItem();
 	
 	//カメラの初期化
 	InitCamera();
@@ -113,6 +116,8 @@ void InitGame(void)
 
 	// 見えない壁の初期化処理
 	InitInvisibleWall();
+
+	SetItem(D3DXVECTOR3(0.0f, 0.0f, 0.0f), ITEMTYPE_HP);
 
 	//各初期化
 	g_gamestate = GAMESTATE_NORMAL;		//ゲームステート
@@ -154,6 +159,8 @@ void UninitGame(void)
 	//UninitWall();
 
 	UninitMeshWall();
+
+	UninitItem();
 
 	UninitCamera();
 
@@ -235,6 +242,9 @@ void UpdateGame(void)
 
 			//メッシュ壁の更新処理
 			UpdateMeshWall();
+
+			//アイテムの更新
+			UpdateItem();
 
 			//カメラの更新処理
 			UpdateCamera();
@@ -359,6 +369,9 @@ void DrawGame(void)
 
 	//エフェクトの描画処理
 	DrawEffect();
+
+	//アイテムの描画処理
+	DrawItemBillboard();
 
 	//エディターではないなら
 	if (g_gamestate != GAMESTATE_EFFECTEDITER)

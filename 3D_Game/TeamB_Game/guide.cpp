@@ -5,14 +5,19 @@
 // 
 //=======================================================
 
-#include "game.h"
+#include "guide.h"
+
+//グローバル変数宣言
+Guide g_Guide;					//誘導構造体
 
 //===============
 // 初期化処理
 //===============
 void InitGuide()
 {
-
+	g_Guide.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	g_Guide.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	g_Guide.bUse = false;
 }
 
 //===============

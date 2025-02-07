@@ -16,7 +16,7 @@ NUM_TEXTURE = 11
 #------------------------------------------------------------------------------
 TEXTURE_FILENAME = data/TEXTURE/sky002.jpg			# [0]空テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/mountain000.png		# [1]山テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/field00.jpg			# [2]地面テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/zimen.jpg			# [2]地面テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/street1.png			# [3]道路テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/street2.png			# [4]交差テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/wall101.jpg			# [5]壁テクスチャ
@@ -29,7 +29,7 @@ TEXTURE_FILENAME = data/TEXTURE/grass001.png		# [10]草テクスチャ
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 7
+NUM_MODEL = 10
 
 #------------------------------------------------------------------------------
 # モデルファイル名
@@ -41,6 +41,9 @@ MODEL_FILENAME = data/MODEL/kagaribi.x			# [3]篝火
 MODEL_FILENAME = data/MODEL/hasira.x			# [4]柱
 MODEL_FILENAME = data/MODEL/stagewoll.x			# [5]壁
 MODEL_FILENAME = data/MODEL/wollpillar.x		# [6]柱2
+MODEL_FILENAME = data/MODEL/hasira02.x			# [7]柱3
+MODEL_FILENAME = data/MODEL/hasira3.x			# [8]柱4
+MODEL_FILENAME = data/MODEL/doorwoll.x			# [9]扉
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -141,12 +144,6 @@ END_WALLSET
 #-----------------------------------
 # プレイヤー
 #-----------------------------------
-MODELSET
-	TYPE = 1
-	POS = 130 0 430
-	ROT = 0 0 0
-	SHADOW = 0
-END_MODELSET
 
 
 #-----------------------------------
@@ -154,7 +151,21 @@ END_MODELSET
 #-----------------------------------
 MODELSET
 	TYPE = 0
-	POS = -284 0 427
+	POS = -220 0 -110
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = 350 0 65
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -610 0 90
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
@@ -164,7 +175,21 @@ END_MODELSET
 #-----------------------------------
 MODELSET
 	TYPE = 1
-	POS = -223 0 -246
+	POS = 550 0 520
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 330 0 695
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = -470 0 550
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
@@ -174,7 +199,7 @@ END_MODELSET
 #-----------------------------------
 MODELSET
 	TYPE = 2
-	POS = -526 0 56
+	POS = 305 0 -720
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
@@ -183,8 +208,8 @@ END_MODELSET
 # ゲート
 #-----------------------------------
 MODELSET
-	TYPE = 3
-	POS = 100 0 0
+	TYPE = 9
+	POS = 45 0 -900
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
@@ -198,10 +223,25 @@ END_MODELSET
 #-----------------------------------
 MODELSET
 	TYPE = 4
-	POS = -100 0 0
+	POS = -490 0 490
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
+
+MODELSET
+	TYPE = 4
+	POS = -570 0 -630
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 4
+	POS = 560 0 -500
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+
 #-----------------------------------
 # 柱2
 #-----------------------------------
@@ -242,8 +282,49 @@ END_MODELSET
 
 MODELSET
 	TYPE = 6
-	POS = -900 0 -480
+	POS = -900 0 -485
+	ROT = 0 -15 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 6
+	POS = -900 0 500
+	ROT = 0 -15 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 6
+	POS = -470 0 945
+	ROT = 0 5 0
+	SHADOW = 0
+END_MODELSET
+
+#-----------------------------------
+# 柱3
+#-----------------------------------
+MODELSET
+	TYPE = 7
+	POS = 530 0 515
 	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+
+#-----------------------------------
+# 柱3
+#-----------------------------------
+MODELSET
+	TYPE = 8
+	POS = -65 0 -610
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 8
+	POS = 220 0 490
+	ROT = 0 5 0
 	SHADOW = 0
 END_MODELSET
 
@@ -252,7 +333,28 @@ END_MODELSET
 #-----------------------------------
 MODELSET
 	TYPE = 3
-	POS = 100 0 0
+	POS = -250 0 -250
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 3
+	POS = -250 0 250
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 3
+	POS = 250 0 -250
+	ROT = 0 0 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 3
+	POS = 250 0 250
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
@@ -304,13 +406,6 @@ END_MODELSET
 
 MODELSET
 	TYPE = 5
-	POS = 110 0 -900
-	ROT = 0 0 0
-	SHADOW = 0
-END_MODELSET
-
-MODELSET
-	TYPE = 5
 	POS = -410 0 -900
 	ROT = 0 0 0
 	SHADOW = 0
@@ -323,47 +418,54 @@ MODELSET
 	SHADOW = 0
 END_MODELSET
 
+MODELSET
+	TYPE = 5
+	POS = -900 0 -300
+	ROT = 0 90 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 5
+	POS = -900 0 220
+	ROT = 0 90 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 5
+	POS = -635 0 795
+	ROT = 0 130 0
+	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 5
+	POS = -725 0 690
+	ROT = 0 130 0
+	SHADOW = 0
+END_MODELSET
+
 #------------------------------------------------------------------------------
 # ビルボード配置情報
 #------------------------------------------------------------------------------
 #-----------------------------------
 # 木01
 #-----------------------------------
-BILLBOARDSET
-	TEXTYPE = 7
-	POS = 167 0 -883
-	SIZE = 130 130
-	ORIGIN = 50 0
-	SHADOW = 0
-END_BILLBOARDSET
 
 #-----------------------------------
 # 木02
 #-----------------------------------
-BILLBOARDSET
-	TEXTYPE = 8
-	POS = -904 0 132
-	SIZE = 130 130
-	ORIGIN = 50 0
-	SHADOW = 0
-END_BILLBOARDSET
 
 #-----------------------------------
 # 木03
 #-----------------------------------
-BILLBOARDSET
-	TEXTYPE = 9
-	POS = 200 0 -150
-	SIZE = 100 100
-	ORIGIN = 50 0
-	SHADOW = 0
-END_BILLBOARDSET
 
 #------------------------------------------------------------------------------
 # プレイヤー情報
 #------------------------------------------------------------------------------
 PLAYERSET
-	MOTION_FILENAME = data/GOMI/PLAYER/motion.txt
+	MOTION_FILENAME = data/MOTION/PLAYER/motion.txt
 	POS = 0 100 0
 	ROT = 0 0 0
 END_PLAYERSET
@@ -371,12 +473,5 @@ END_PLAYERSET
 #------------------------------------------------------------------------------
 # 草配置情報
 #------------------------------------------------------------------------------
-GRASSSET
-	TEXTYPE = 10
-	POS = 0 0 0
-	RANGE = 480 1000
-	NUM = 500
-	SIZE = 30 3
-END_GRASSSET	
 
 END_SCRIPT		# この行は絶対消さないこと！

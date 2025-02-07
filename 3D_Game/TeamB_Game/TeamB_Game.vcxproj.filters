@@ -44,6 +44,7 @@
     <ClCompile Include="HPgauge.cpp" />
     <ClCompile Include="invisiblewall.cpp" />
     <ClCompile Include="guide.cpp" />
+    <ClCompile Include="circle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h" />
@@ -92,5 +93,6 @@
     <ClInclude Include="HPgauge.h" />
     <ClInclude Include="invisiblewall.h" />
     <ClInclude Include="guide.h" />
+    <ClInclude Include="circle.h" />
   </ItemGroup>
 </Project>
