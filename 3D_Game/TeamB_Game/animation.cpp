@@ -102,14 +102,24 @@ void SetMotion(MOTIONTYPE MotionType, OBJECTINFO* Motion)
 	Motion->NextKey = 1;
 	Motion->nCntMotion = 0;
 	Motion->motionType = MotionType;
+
+	Motion->nKeyBlend = 0;
+	Motion->nNextKeyBlend = 1;
+	Motion->nCntMotionBlend = 0;
 }
 //=====================
 // モーションブレンド
 //=====================
 void MotionBlend(OBJECTINFO* Motion)
 {
-	Motion->nCntMotion++;
-	Motion->nCntMotionBlend++;
+	if (Motion->bBlendMotion == false)
+	{
+		Motion->nCntMotion++;
+	}
+	else if (Motion->bBlendMotion == true)
+	{
+		Motion->nCntMotionBlend++;
+	}
 
 	//if (Motion->aMotionInfo[Motion->motionType].StartKey == Motion->nKey)
 	//{// 今のキーが開始するキーだったら
@@ -154,16 +164,14 @@ void MotionBlend(OBJECTINFO* Motion)
 					Motion->NextKey = 0;
 				}
 			}
-		}
-		else
-		{
 			if (Motion->nKey >= Motion->aMotionInfo[Motion->motionType].nNumKey - 1)
 			{// 今のキーがキーの最大数だったら
 				Motion->bFinish = true;
 				Motion->NextKey = Motion->nKey;
 				Motion->bBlendMotion = true;
 				Motion->motionTypeBlend = MOTIONTYPE_NEUTRAL;
-				Motion->nFrameBlend = Motion->nCntMotion;
+				Motion->nFrameBlend = 40;
+
 			}
 			else if (Motion->nKey > Motion->NextKey)
 			{// 今のキーが次のキー以上だったら
@@ -176,6 +184,7 @@ void MotionBlend(OBJECTINFO* Motion)
 		Motion->nCntMotionBlend = 0;
 		Motion->nKeyBlend++;
 		Motion->nNextKeyBlend++;
+
 		if (Motion->nKeyBlend == Motion->nNumKeyBlend - 1)
 		{// 今のキーがキーの最大数だったら
 			if (Motion->bLoopBlend == true)
