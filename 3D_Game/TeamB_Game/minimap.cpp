@@ -141,7 +141,12 @@ void UninitMiniMap(void)
 //==========
 void UpdateMiniMap(void)
 {
+	MODE mode = GetMode();
 
+	if (mode == MODE_STAGEONE || mode == MODE_STAGETWO || mode == MODE_STAGETHREE || mode == MODE_STAGEFOUR)
+	{
+		SetMapPlayer(mode);
+	}
 }
 //===========
 // 描画処理
@@ -181,19 +186,19 @@ void DrawMiniMap(void)
 void SetMapPlayer(int nStageNo)
 {
 	//ステージごとの場所変更（仮）
-	if (nStageNo == 1)
+	if (nStageNo == MODE_STAGEONE)
 	{
 		g_MapPlayerpos = D3DXVECTOR3(1063.0f, 140.0f, 0.0f);
 	}
-	else if (nStageNo == 2)
+	else if (nStageNo == MODE_STAGETWO)
 	{
 		g_MapPlayerpos = D3DXVECTOR3(1153.0f, 140.0f, 0.0f);
 	}
-	else if (nStageNo == 3)
+	else if (nStageNo == MODE_STAGETHREE)
 	{
 		g_MapPlayerpos = D3DXVECTOR3(1153.0f, 55.0f, 0.0f);
 	}
-	else if (nStageNo == 4)
+	else if (nStageNo == MODE_STAGEFOUR)
 	{
 		g_MapPlayerpos = D3DXVECTOR3(1063.0f, 55.0f, 0.0f);
 	}
