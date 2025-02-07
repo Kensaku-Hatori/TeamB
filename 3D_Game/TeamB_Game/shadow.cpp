@@ -6,6 +6,7 @@
 //================================
 
 #include "shadow.h"
+#include "light.h"
 
 //グローバル変数宣言
 LPDIRECT3DTEXTURE9 g_apTextureShadow = NULL;
@@ -85,10 +86,16 @@ void DrawShadow(void)
 		if (g_shadow[nCnt].bUse == true)
 		{
 			//計算用マトリックス
-			D3DXMATRIX mtxRot, mtxTrans;
+			D3DXMATRIX mtxRot, mtxTrans, mtxShadow;
 
 			//ワールドマトリックスの初期化
 			D3DXMatrixIdentity(&g_shadow[nCnt].mtxWorld);
+
+			//D3DLIGHT9* Light = GetLight();
+			//D3DXPLANE test = {};
+			//D3DXVECTOR4 test1 = D3DXVECTOR4(Light->Direction.x, Light->Direction.y, Light->Direction.z, 0.0f);
+			//D3DXMatrixShadow(&mtxShadow, &test1, &test);
+			//D3DXMatrixMultiply(&g_shadow[nCnt].mtxWorld, &g_shadow[nCnt].mtxWorld, &mtxShadow);
 
 			//向きを反転
 			D3DXMatrixRotationYawPitchRoll(&mtxRot, g_shadow[nCnt].rot.y, g_shadow[nCnt].rot.x, g_shadow[nCnt].rot.z);

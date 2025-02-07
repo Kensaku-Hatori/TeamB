@@ -21,6 +21,7 @@
 #include "game.h"
 #include"impact.h"
 #include "fade.h"
+#include "light.h"
 
 //グローバル変数
 Player g_player;
@@ -324,7 +325,7 @@ void DrawPlayer(void)
 		//全パーツの描画
 		for (int nCntModel = 0; nCntModel < g_player.PlayerMotion.nNumModel; nCntModel++)
 		{
-			D3DXMATRIX mtxRotModel, mtxTransModel;
+			D3DXMATRIX mtxRotModel, mtxTransModel,mtxShadow;
 			D3DXMATRIX mtxParent;
 
 			//パーツのワールドマトリックスの初期化

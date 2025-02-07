@@ -551,13 +551,13 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 		FLOAT fDotX1;
 
 		// X軸のマイナス方向のベクトル
-		Math = g_StageModel[Indx].ObbModel.RotVec[0] * -1.0f;
+		Math = -g_StageModel[Indx].ObbModel.RotVec[0];
 		// X軸の方向ベクトル(法線)
 		D3DXVec3Normalize(&norX, &g_StageModel[Indx].ObbModel.RotVec[0]);
 		// X軸のマイナス方向の法線ベクトル
 		D3DXVec3Normalize(&norX1, &Math);
 
-		// プレイヤーんっぽすからX軸の面の中心ポスを引いた値
+		// プレイヤーぽすからX軸の面の中心ポスを引いた値
 		IntervalX = p - g_StageModel[Indx].ObbModel.CenterPos + 
 			(norX * g_StageModel[Indx].ObbModel.fLength[0]);
 		// プレイヤーのポスからX軸のマイナス方向の中心ポスを引いた値
@@ -607,7 +607,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 		FLOAT fDotZ1;
 
 		// Z軸のマイナス方向のベクトル
-		MathZ = g_StageModel[Indx].ObbModel.RotVec[2] * -1.0f;
+		MathZ = -g_StageModel[Indx].ObbModel.RotVec[2];
 		// Z軸の方向ベクトル(法線)
 		D3DXVec3Normalize(&norZ, &g_StageModel[Indx].ObbModel.RotVec[2]);
 		// Z軸のマイナスの方向ベクトル(法線)
@@ -625,10 +625,9 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 		// 内積(マイナスだと当たっている)
 		fDotZ1 = D3DXVec3Dot(&IntervalZ1, &norZ1);
 
-		// Z軸が重なっていあたら
-		if (fDotZ > 0 && fDotZ1 > 0)
+		if (fDotY > fDotY1)
 		{
-			if (fDotX > 0)
+			if (fDotX < fDotX1 && fDotX < fDotZ && fDotX < fDotZ1)
 			{
 				D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 				D3DXVECTOR3 nor = norX;
@@ -636,7 +635,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 				D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
 				pPlayer->pos += test1;
 			}
-			if (fDotX1 > 0)
+			else if (fDotX1 < fDotX && fDotX1 < fDotZ && fDotX1 < fDotZ1)
 			{
 				D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 				D3DXVECTOR3 nor = norX1;
@@ -644,19 +643,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 				D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
 				pPlayer->pos += test1;
 			}
-			//if (fDotX > 0 && fDotX1 > 0)
-			//{
-			//	D3DXVECTOR3 pVec = IntervalX - pPlayer->pos;
-			//	D3DXVECTOR3 nor = norX1;
-			//	D3DXVec3Normalize(&nor, &nor);
-			//	D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
-			//	pPlayer->pos += test1;
-			//}
-		}
-		// X軸が重なっていたら
-		else if (fDotX > 0 && fDotX1 > 0)
-		{
-			if (fDotZ > 0)
+			else if (fDotZ < fDotZ1 && fDotZ < fDotX && fDotZ < fDotX1)
 			{
 				D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 				D3DXVECTOR3 nor = norZ;
@@ -664,7 +651,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 				D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
 				pPlayer->pos += test1;
 			}
-			if (fDotZ1 > 0)
+			else if (fDotZ1 < fDotZ && fDotZ1 < fDotX && fDotZ1 < fDotX1)
 			{
 				D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 				D3DXVECTOR3 nor = norZ1;
@@ -673,28 +660,77 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 				pPlayer->pos += test1;
 			}
 		}
+
+		// Z軸が重なっていあたら
+		//if (fDotZ >= 0 && fDotZ1 >= 0)
+		//{
+		//	if (fDotX > 0)
+		//	{
+		//		D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+		//		D3DXVECTOR3 nor = norX;
+		//		D3DXVec3Normalize(&nor, &nor);
+		//		D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+		//		pPlayer->pos += test1;
+		//	}
+		//	else if (fDotX1 > 0)
+		//	{
+		//		D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+		//		D3DXVECTOR3 nor = norX1;
+		//		D3DXVec3Normalize(&nor, &nor);
+		//		D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+		//		pPlayer->pos += test1;
+		//	}
+		//	if (fDotX > 0 && fDotX1 > 0)
+		//	{
+		//		D3DXVECTOR3 pVec = IntervalX - pPlayer->pos;
+		//		D3DXVECTOR3 nor = norX1;
+		//		D3DXVec3Normalize(&nor, &nor);
+		//		D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+		//		pPlayer->pos += test1;
+		//	}
+		//}
+		// X軸が重なっていたら
+		//if (fDotX >= 0 && fDotX1 >= 0)
+		//{
+		//	if (fDotZ > 0)
+		//	{
+		//		D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+		//		D3DXVECTOR3 nor = norZ;
+		//		D3DXVec3Normalize(&nor, &nor);
+		//		D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+		//		pPlayer->pos += test1;
+		//	}
+		//	else if (fDotZ1 > 0)
+		//	{
+		//		D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+		//		D3DXVECTOR3 nor = norZ1;
+		//		D3DXVec3Normalize(&nor, &nor);
+		//		D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+		//		pPlayer->pos += test1;
+		//	}
+		//}
 		// XZ軸が重なっていたら
-		if (fDotZ > 0 && fDotZ1 > 0 && fDotX > 0 && fDotX1 > 0)
-		{
-			if (fDotY > 0)
-			{
-				D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
-				D3DXVECTOR3 nor = norY;
-				D3DXVec3Normalize(&nor, &nor);
-				D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
-				pPlayer->pos += test1;
-				pPlayer->bLanding = true;
-				pPlayer->bJump = false;
-			}
-			else if (fDotY1 > 0)
-			{
-				D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
-				D3DXVECTOR3 nor = norY1;
-				D3DXVec3Normalize(&nor, &nor);
-				D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
-				pPlayer->pos += test1;
-			}
-		}
+		//if (fDotZ > 0 && fDotZ1 > 0 && fDotX > 0 && fDotX1 > 0)
+		//{
+		//	if (fDotY > 0)
+		//	{
+		//		D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+		//		D3DXVECTOR3 nor = norY;
+		//		D3DXVec3Normalize(&nor, &nor);
+		//		D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+		//		pPlayer->pos += test1;
+		//		pPlayer->bLanding = true;
+		//		pPlayer->bJump = false;
+		//	}
+		//	else if (fDotY1 > 0)
+		//	{
+		//		D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+		//		D3DXVECTOR3 nor = norY1;
+		//		D3DXVec3Normalize(&nor, &nor);
+		//		D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+		//		pPlayer->pos += test1;
+		//	}
+		//}
 	}
 	if (bTop == false)
 	{

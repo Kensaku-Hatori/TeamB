@@ -16,5 +16,5 @@ void InitLight(void);
 void UninitLight(void);
 void UpdateLight(void);
 void SetLight(D3DXVECTOR3 Dir, D3DXCOLOR Diffuse);
-
+D3DLIGHT9* GetLight();
 #endif
