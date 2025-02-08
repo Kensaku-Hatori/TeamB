@@ -276,6 +276,10 @@ void UpdatePlayer(void)
 		{
 			SetFade(MODE_STAGETHREE);
 		}
+		else if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_8))
+		{
+			SetFade(MODE_STAGEFOUR);
+		}
 		if (KeyboardTrigger(DIK_3) == true)
 		{
 			SetEnemy(D3DXVECTOR3(0.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
