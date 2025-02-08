@@ -22,6 +22,7 @@
 #include"impact.h"
 #include "fade.h"
 #include "light.h"
+#include "Item.h"
 
 //ÉOÉçÅ[ÉoÉãïœêî
 Player g_player;
@@ -284,6 +285,9 @@ void UpdatePlayer(void)
 		{
 			SetEnemy(D3DXVECTOR3(0.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 			SetEnemy(D3DXVECTOR3(100.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+			SetItem(D3DXVECTOR3(0.0f, 0.0f, -100.0f), ITEMTYPE_HP);
+			SetItem(D3DXVECTOR3(100.0f, 0.0f, -100.0f), ITEMTYPE_MP);
+			SetItem(D3DXVECTOR3(-100.0f, 0.0f, -100.0f), ITEMTYPE_SPEED);
 		}
 
 #endif
