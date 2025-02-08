@@ -626,7 +626,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 		// 内積(マイナスだと当たっている)
 		fDotZ1 = D3DXVec3Dot(&IntervalZ1, &norZ1);
 
-		if (fDotY >= 0)
+		if (fDotY1 >= 0)
 		{
 			if (fDotX < fDotX1 && fDotX < fDotZ && fDotX < fDotZ1)
 			{
@@ -677,6 +677,38 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 				}
 			}
 		}
+		// 下から上
+		if (fDotY <= 0.0f && fDotX >= 0.0f && fDotX1 >= 0.0f && fDotZ >= 0.0f && fDotZ1 >= 0.0f)
+		{
+			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+			D3DXVECTOR3 nor = norY1;
+			D3DXVec3Normalize(&nor, &nor);
+			FLOAT osiete = D3DXVec3Dot(&pVec, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			if (osiete >= 0.0f)
+			{
+				pPlayer->pos = pPlayer->pos + test1;
+			}
+		}
+		// ↑から↓
+		if (fDotY1 <= 0.0f && fDotX >= 0.0f && fDotX1 >= 0.0f && fDotZ >= 0.0f && fDotZ1 >= 0.0f)
+		{
+			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+			D3DXVECTOR3 nor = norY;
+			D3DXVec3Normalize(&nor, &nor);
+			FLOAT osiete = D3DXVec3Dot(&pVec, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			if (osiete >= 0.0f)
+			{
+				pPlayer->pos = pPlayer->pos + test1;
+				pPlayer->bLanding = true;
+				pPlayer->bJump = false;
+			}
+		}
+		else
+		{
+			pPlayer->bLanding = false;
+		}
 		//else
 		//{
 		//	if (fDotY >= 0)
@@ -696,10 +728,6 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 		//		pPlayer->pos += test1;
 		//	}
 		//}
-	}
-	if (bTop == false)
-	{
-		pPlayer->bLanding = false;
 	}
 }
 // 分離軸に投影された軸成分から投影線分長を算出
