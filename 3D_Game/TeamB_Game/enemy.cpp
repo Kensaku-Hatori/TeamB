@@ -43,7 +43,7 @@ void InitEnemy(void)
 		g_Enemy[i].Status.fPower = ENEMY_AP;								//攻撃力
 		g_Enemy[i].Status.fSpeed = ENEMY_SPEED;								//スピード
 		g_Enemy[i].Status.fHP = ENEMY_HP;									//HP
-		g_Enemy[i].pMotion = MOTIONTYPE_NEUTRAL;							//モーションの種類
+		g_Enemy[i].EnemyMotion.motionType = MOTIONTYPE_NEUTRAL;				//モーションの種類
 		g_Enemy[i].Object.Pos = D3DXVECTOR3(0.0f, 0.0f, -100.0f);			//位置
 		g_Enemy[i].Object.Rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				//向き
 		g_Enemy[i].rotDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);					//向き(目標)
@@ -130,8 +130,8 @@ void UpdateEnemy(void)
 	{
 		if (g_Enemy[EnemyCount].bUse == true)
 		{
-			//行動の更新
-			UpdateAction(EnemyCount);
+			////行動の更新
+			//UpdateAction(EnemyCount);
 
 			//移動量の更新(減衰)
 			g_Enemy[EnemyCount].move.x = (0.0f - g_Enemy[EnemyCount].move.x) * 0.1f;
@@ -377,11 +377,11 @@ void UpdateAction(int nCount)
 	float fDistance = (vec.x) * (vec.x) + (vec.z) * (vec.z);
 	float fAngle = 0.0f;
 
-	fDistance = sqrt(fDistance);				//敵とプレイヤーの距離
+	fDistance = (float)sqrt(fDistance);				//敵とプレイヤーの距離
 	g_fDistance[nCount] = fDistance;
 
 	//角度の取得
-	fAngle = atan2(vec.x, vec.z);
+	fAngle = (float)atan2(vec.x, vec.z);
 
 	//目標の移動方向（角度）の補正
 	if (fAngle > D3DX_PI)
