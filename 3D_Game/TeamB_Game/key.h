@@ -3,6 +3,7 @@
 
 #define MAX_KEY (10)
 #define MAX_MOTION (5)
+#define MAX_ACTIONDIRECTION (2)
 
 #include "main.h"
 #include "model.h"
@@ -39,10 +40,17 @@ typedef struct
 
 typedef struct
 {
+	int nStartKey, nEndKey;
+	int nStartFrame, nEndFrame;
+	bool bActionStart,bFirst;
+}ACTIONFRAME;
+
+typedef struct
+{
 	bool bLoop;
 	int nNumKey;
 	KEYINFO aKeyInfo[MAX_KEY];
-
+	ACTIONFRAME ActionFrameInfo[MAX_ACTIONDIRECTION];
 }MOTIONINFO;
 
 //プレイヤーの構造体
@@ -52,22 +60,22 @@ typedef struct
 	MODELINFO aModel[MAX_PARTS];
 	int nNumModel;
 	//モーション
-	MOTIONINFO aMotionInfo[MOTIONTYPE_MAX];	//モーション情報
-	int nNumMotion;							//モーションの総数
-	MOTIONTYPE motionType;					//モーションの種類
-	bool bLoopMotion;						//ループするかどうか
-	int nNumKey;							//キーの総数
-	int nKey;								//現在のキーNo
-	int NextKey;							//次のキー
-	int nCntMotion;							//モーションのカウンター
+	MOTIONINFO aMotionInfo[MOTIONTYPE_MAX];	// モーション情報
+	int nNumMotion;							// モーションの総数
+	MOTIONTYPE motionType;					// モーションの種類
+	bool bLoopMotion;						// ループするかどうか
+	int nNumKey;							// キーの総数
+	int nKey;								// 現在のキーNo
+	int NextKey;							// 次のキー
+	int nCntMotion;							// モーションのカウンター
 
 	bool bFinish;							// 現在のモーションが終了しているかどうか
 	bool bBlendMotion;						// ブレンドモーションがあるかどうか
 	MOTIONTYPE motionTypeBlend;				// ブレンドモーションの種類
-	bool bLoopBlend;						//ループするかどうか
+	bool bLoopBlend;						// ループするかどうか
 	int nNumKeyBlend;						// ブレンドモーションのキーの総数
 	int nKeyBlend;							// ブレンドモーションののキーNo
-	int nNextKeyBlend;						//ブレンドモーションの次のキー
+	int nNextKeyBlend;						// ブレンドモーションの次のキー
 	int nFrameBlend;						// ブレンドフレーム
 	int nCntBlend;							// ブレンドフレームカウント
 	int nCntMotionBlend;					// ブレンドモーションのカウンター

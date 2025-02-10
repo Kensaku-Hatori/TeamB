@@ -29,7 +29,10 @@ void InitParticleEditer()
 		g_ParticleEditer.ParticleInfo.ntype,
 		g_ParticleEditer.ParticleInfo.Scale,
 		g_ParticleEditer.ParticleInfo.nLife,
-		g_ParticleEditer.ParticleInfo.forlimit);
+		g_ParticleEditer.ParticleInfo.forlimit,
+		10.0f,
+		1.0f,
+		1.0f);
 }
 void UpdateParticleEditer()
 {

@@ -13,6 +13,7 @@
 #include "effect.h"
 #include "impact.h"
 #include "player.h"
+#include "skill.h"
 
 //***************
 // グローバル変数
@@ -31,7 +32,6 @@ void UpdateMotion(OBJECTINFO* Motion)
 	{//ブレンドなら
 		Motion->nCntMotionBlend++;
 	}
-
 	//if (Motion->aMotionInfo[Motion->motionType].StartKey == Motion->nKey)
 	//{// 今のキーが開始するキーだったら
 	//	if (Motion->aMotionInfo[Motion->motionType].StartFlame <= Motion->nCntMotion
@@ -232,6 +232,101 @@ void UpdateMotion(OBJECTINFO* Motion)
 			SetMotion(Motion->motionTypeBlend, Motion);
 			Motion->bFinish = false;
 			Motion->bBlendMotion = false;
+		}
+	}
+
+	for (int ActionFrameCount = 0; ActionFrameCount < MAX_ACTIONDIRECTION; ActionFrameCount++)
+	{
+		if (Motion->nKey == Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].nStartKey && 
+			Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].bFirst == false)
+		{
+			if (Motion->nCntMotionBlend >= Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].nStartFrame ||
+				Motion->nCntMotion >= Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].nStartFrame)
+			{
+				Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].bFirst = true;
+				Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].bActionStart = true;
+			}
+		}
+		if (Motion->nKey == Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].nEndKey && 
+			Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].bFirst == true &&
+			Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].bActionStart == true
+			)
+		{
+			if (Motion->nCntMotionBlend >= Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].nEndFrame ||
+				Motion->nCntMotion >= Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].nEndFrame)
+			{
+				Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].bActionStart = false;
+			}
+		}
+		if (Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].bActionStart == true)
+		{
+			Player* pPlayer = GetPlayer();
+			D3DXVECTOR3 Pos;
+			Pos.x = pPlayer->mtxWand._41;
+			Pos.y = pPlayer->mtxWand._42;
+			Pos.z = pPlayer->mtxWand._43;
+
+			switch (ActionFrameCount)
+			{
+			case 0:
+				switch (Motion->motionType)
+				{
+				case MOTIONTYPE_ACTION:
+					SetSkill(Pos,
+						D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+						pPlayer->rot);
+					break;
+				default:
+					break;
+				}
+				break;
+			case 1:
+				switch (Motion->motionType)
+				{
+				case MOTIONTYPE_ACTION:
+					// エフェクトの設定
+					SetEffect(Pos,
+						D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+						50,
+						0,
+						D3DXVECTOR3(5.0f, 0.5f, 0.0f),
+						D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
+						EFFECT_SKILLFLASH,
+						0,
+						0.0f,
+						D3DXVECTOR3(0.0f, pPlayer->rotDest.y, 0.5f));
+
+					// エフェクトの設定
+					SetEffect(Pos,
+						D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+						50,
+						0,
+						D3DXVECTOR3(5.0f, 0.5f, 0.0f),
+						D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
+						EFFECT_SKILLFLASH,
+						0,
+						0.0f,
+						D3DXVECTOR3(0.0f, pPlayer->rotDest.y, -0.5f));
+
+					// エフェクトの設定
+					SetEffect(Pos,
+						D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+						50,
+						0,
+						D3DXVECTOR3(10.0f, 0.5f, 1.0f),
+						D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
+						EFFECT_SKILLFLASH,
+						0,
+						0.0f,
+						D3DXVECTOR3(0.0f, pPlayer->rotDest.y, 0.0f));
+					break;
+				default:
+					break;
+				}
+				break;
+			default:
+				break;
+			}
 		}
 	}
 }

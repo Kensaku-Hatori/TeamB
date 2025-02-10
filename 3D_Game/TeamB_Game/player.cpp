@@ -56,6 +56,7 @@ void InitPlayer(void)
 	g_player.nIdxShadow = SetShadow(g_player.pos, g_player.rot, 20.0f);//影の設定
 	g_player.nJump = PLAYER_JUMP;
 	g_player.bJump = false;		//ジャンプ
+	//g_player.bLanding = true;
 
 	//モーション関連
 	g_player.bLoopMotion = true;//ループ
@@ -155,12 +156,25 @@ void UpdatePlayer(void)
 		//魔法発射
 		if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_B) == true))
 		{// MPが５０以上の時
+			SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion);
 			if (g_player.Status.nMP >= 50)
 			{
-				SetSkill(g_player.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), g_player.rot);
+				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bActionStart = false;
+				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bFirst = false;
+				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartKey = 3;
+				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndKey = 3;
+				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartFrame = 23;
+				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndFrame = 24;
+
+				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].bActionStart = false;
+				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].bFirst = false;
+				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartKey = 3;
+				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndKey = 3;
+				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartFrame = 20;
+				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndFrame = 24;
+
 				g_player.Status.nMP -= 50; //MP消費
 			}
-			SetMotion(MOTIONTYPE_ACTION,&g_player.PlayerMotion);
 		}
 
 		//MP回復
@@ -177,7 +191,7 @@ void UpdatePlayer(void)
 		//ジャンプ
 		if ((KeyboardTrigger(DIK_SPACE) == true || GetJoypadTrigger(JOYKEY_A) == true))
 		{// SPACE
-			if (g_player.bJump == false && g_player.bLanding == false)
+			if (g_player.bJump == false)
 			{
 				SetMotion(MOTIONTYPE_JUMP, &g_player.PlayerMotion);
 				g_player.bJump = true;
@@ -380,6 +394,10 @@ void DrawPlayer(void)
 				//プレイヤーの描画
 				g_player.PlayerMotion.aModel[nCntModel].pMesh->DrawSubset(nCntMat);
 			}
+			if (nCntModel == 12)
+			{
+				MatrixWand();
+			}
 		}
 		//保存していたマテリアルを戻す
 		pDevice->SetMaterial(&matDef);
@@ -392,6 +410,7 @@ void PlayerMove(void)
 {
 	Camera* pCamera;
 	pCamera = GetCamera();
+
 
 	//移動
 	//左
@@ -724,4 +743,32 @@ void EnemyDistanceSort(int EnemyCount)
 	{
 		g_player.nLockOnEnemy = EnemyCount;
 	}
+}
+
+void MatrixWand(void)
+{
+	LPDIRECT3DDEVICE9 pDevice;
+	//デバイスの取得
+	pDevice = GetDevice();
+
+	D3DXMATRIX mtxRotPlayer, mtxTransPlayer;
+	D3DXMATRIX mtxParent;
+	D3DXMatrixIdentity(&g_player.mtxWand);
+
+	// 向きを反映
+	D3DXMatrixRotationYawPitchRoll(&mtxRotPlayer, g_player.PlayerMotion.aModel[12].rot.y, g_player.PlayerMotion.aModel[12].rot.x, g_player.PlayerMotion.aModel[12].rot.z);
+	D3DXMatrixMultiply(&g_player.mtxWand, &g_player.mtxWand, &mtxRotPlayer);
+
+	// 位置を反映
+	D3DXMatrixTranslation(&mtxTransPlayer, 0.0f, 25.0f, 0.0f);
+	D3DXMatrixMultiply(&g_player.mtxWand, &g_player.mtxWand, &mtxTransPlayer);
+
+	mtxParent = g_player.PlayerMotion.aModel[12].mtxWorld;
+
+	D3DXMatrixMultiply(&g_player.mtxWand,
+		&g_player.mtxWand,
+		&mtxParent);
+
+	pDevice->SetTransform(D3DTS_WORLD,
+		&g_player.mtxWand);
 }

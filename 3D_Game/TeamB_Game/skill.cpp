@@ -116,31 +116,51 @@ void UpdateSkill(void)
 	{
 		if (g_Skill[nCnt].bUse == true)
 		{
-			//魔法の当たり判定
+			// 魔法の当たり判定
 			SkillCollision(nCnt);
 
-			//エフェクトの設定
+			// エフェクトの設定
 			SetEffect(g_Skill[nCnt].pos,
-					  D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-					  10,
-					  0, 
-					  D3DXVECTOR3(3.0f, 3.0f, 3.0f), 
-					  D3DXCOLOR(0.80f, 1.00f, 0.00f,1.0f),
-					  EFFECT_NONE);
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+				30,
+				0,
+				D3DXVECTOR3(2.0f, 2.0f, 2.0f),
+				D3DXCOLOR(0.55f,0.75f,1.0f,1.0f),
+				EFFECT_SKILL,
+				nCnt,
+				0.0f,
+				D3DXVECTOR3(0.0f,0.0f,0.0f)
+			);
 
-			if ((g_Skill[nCnt].nLife % INTERVAL_IMPACT) == 0)
+			// エフェクトの設定
+			SetEffect(g_Skill[nCnt].pos,
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+				30,
+				0,
+				D3DXVECTOR3(3.0f, 3.0f, 3.0f),
+				D3DXCOLOR(0.05f, 0.25f, 1.0f, 1.0f),
+				EFFECT_SKILL,
+				nCnt,
+				0.0f,
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f)
+			);
+
+			if (g_Skill[nCnt].nLife > 0)
 			{
-				//衝撃波の設定
-				SetImpact(IMPACTTYPE_SKILL,
-					g_Skill[nCnt].pos,
-					D3DXCOLOR(0.9f, 1.0f, 1.0f, 1.0f),
-					30,
-					5.0f,
-					10.0f,
-					2,
-					50,
-					0.5f,
-					g_Skill[nCnt].rot.y);
+				if ((g_Skill[nCnt].nLife % INTERVAL_IMPACT) == 0)
+				{
+					//衝撃波の設定
+					SetImpact(IMPACTTYPE_SKILL,				// タイプ
+						g_Skill[nCnt].pos,					// 場所
+						D3DXCOLOR(1.0f, 1.0f, 0.5f, 1.0f),	// 色
+						30,									// 寿命
+						5.0f,								// ないリンの大きさ
+						10.0f,								// 外林の大きさ
+						2,									// ２固定
+						50,									// 分割数
+						1.0f,								// 広がるスピード
+						g_Skill[nCnt].rot.y);				// 向き
+				}
 			}
 
 			g_Skill[nCnt].move.x += sinf(g_Skill[nCnt].rot.y - D3DX_PI) * 0.5f;
@@ -148,11 +168,13 @@ void UpdateSkill(void)
 
 			g_Skill[nCnt].pos += g_Skill[nCnt].move;
 
-			g_Skill[nCnt].nLife -= 1;
+			g_Skill[nCnt].nLife--;
 
 			if (g_Skill[nCnt].nLife <= 0)
 			{
 				g_Skill[nCnt].bUse = false;
+				DeleteEffect(EFFECT_SKILL, nCnt);
+				SetSkillParticle(EFFECT_SKILL, nCnt, g_Skill[nCnt].StartPos, g_Skill[nCnt].pos, 100);
 				pShadow[g_Skill[nCnt].nIdxShadow].bUse = false;
 			}
 		}
@@ -237,7 +259,8 @@ void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot)
 	{
 		if (g_Skill[nCnt].bUse == false)
 		{
-			g_Skill[nCnt].pos = D3DXVECTOR3(pos.x, pos.y + 30, pos.z);
+			g_Skill[nCnt].pos = D3DXVECTOR3(pos.x, pos.y, pos.z);
+			g_Skill[nCnt].StartPos = g_Skill[nCnt].pos;
 			g_Skill[nCnt].move = move;
 			g_Skill[nCnt].rot = rot;
 			g_Skill[nCnt].nLife = SKILL_LIFE;

@@ -32,6 +32,7 @@ typedef struct
 	D3DXVECTOR3 rotDest;			// 向き
 	D3DXVECTOR3 NextPosition;		// 初期位置
 	D3DXMATRIX mtxWorld;			// ワールドマトリックス
+	D3DXMATRIX mtxWand;				// 杖先のマトリックス
 	OBJECTINFO PlayerMotion;		// パーツ情報とモーション情報
 	int nIdxShadow;					// 影
 	int nJump;						// ジャンプ量
@@ -80,5 +81,6 @@ void SetPartsInfo(LoadInfo PartsInfo);
 void PlayerMotion(MOTIONINFO *pMotionInfo);
 bool IsEnemyInsight(void);
 void EnemyDistanceSort(int EnemyCount);
+void MatrixWand(void);
 
 #endif

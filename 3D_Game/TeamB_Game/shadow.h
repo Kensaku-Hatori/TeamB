@@ -32,5 +32,4 @@ int SetShadow(D3DXVECTOR3 pos, D3DXVECTOR3 rot,float fRadius);					//‰e‚Ì‰ŠúˆÊ’
 void SetPositionShadow(int nIdxShadow, D3DXVECTOR3 pos,bool bUse);				//‰e‚ÌˆÊ’uXV
 void SetSizeShadow(D3DXVECTOR3 pos,int nIndx);						//‰e‚ÌƒTƒCƒYXV
 Shadow* GetShadow(void);
-
 #endif

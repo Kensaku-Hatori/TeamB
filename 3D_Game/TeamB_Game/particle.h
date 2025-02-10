@@ -25,10 +25,12 @@ typedef struct
 	int forlimit;
 	D3DXCOLOR col;
 	float speed;
+	float minspeed;
+	float gravity;
 }PARTICLE;
 
 void InitParticle();
 void UpdateParticle(bool bLimit);
-void SetParticle(D3DXVECTOR3 pos, D3DXVECTOR3 fAngle, D3DXCOLOR col, PARTICLETYPE ntype, D3DXVECTOR3 scale,int nLife,int forlimit);
+void SetParticle(D3DXVECTOR3 pos, D3DXVECTOR3 fAngle, D3DXCOLOR col, PARTICLETYPE ntype, D3DXVECTOR3 scale,int nLife,int forlimit,float speed,float minspeed,float gravity);
 void SetParticleInfo(PARTICLE Particle);
 #endif // !PARTICLE_H_
