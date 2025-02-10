@@ -59,6 +59,7 @@ void InitPlayer(void)
 
 	//モーション関連
 	g_player.bLoopMotion = true;//ループ
+	g_player.PlayerMotion.bBlendMotion = true;
 	g_player.nNumKey = 2;		//キーの総数
 	g_player.nCntMotion = 0;	//モーションカウンター
 	g_player.nKey = 0;			//現在のキーNo
