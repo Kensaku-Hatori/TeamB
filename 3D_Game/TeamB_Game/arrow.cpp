@@ -19,6 +19,7 @@ void InitArrow()
 	g_Arrow.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_Arrow.fHeight = 0.0;
 	g_Arrow.fWidth = 0.0f;
+	g_Arrow.fRadius = 0.0f;
 	g_Arrow.bUse = false;
 
 }
@@ -87,7 +88,7 @@ void DrawArrow()
 //===================
 //矢印の設定処理
 //===================
-void SetArrow(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float fWidth, float fHeight)
+void SetArrow(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float fWidth, float fHeight, float fRadius)
 {
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
@@ -108,16 +109,17 @@ void SetArrow(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float fWidth, float fHeight)
 	g_Arrow.rot = rot;
 	g_Arrow.fWidth = fWidth;
 	g_Arrow.fHeight = fHeight;
+	g_Arrow.fRadius = fRadius;
 	g_Arrow.bUse = true;
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_Arrow.VtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	//頂点情報の設定
-	pVtx[0].pos = D3DXVECTOR3(-g_Arrow.fWidth * 0.5f, 0.0f, g_Arrow.fHeight * 0.5f);
-	pVtx[1].pos = D3DXVECTOR3(g_Arrow.fWidth * 0.5f, 0.0f, g_Arrow.fHeight * 0.5f);
-	pVtx[2].pos = D3DXVECTOR3(-g_Arrow.fWidth * 0.5f, 0.0f, -g_Arrow.fHeight * 0.5f);
-	pVtx[3].pos = D3DXVECTOR3(g_Arrow.fWidth * 0.5f, 0.0f, -g_Arrow.fHeight * 0.5f);
+	pVtx[0].pos = D3DXVECTOR3(-(g_Arrow.fWidth * 0.5f + g_Arrow.fRadius), 0.0f, (g_Arrow.fHeight * 0.5f + g_Arrow.fRadius));
+	pVtx[1].pos = D3DXVECTOR3((g_Arrow.fWidth * 0.5f + g_Arrow.fRadius), 0.0f, (g_Arrow.fHeight * 0.5f + g_Arrow.fRadius));
+	pVtx[2].pos = D3DXVECTOR3(-(g_Arrow.fWidth * 0.5f + g_Arrow.fRadius), 0.0f, -(g_Arrow.fHeight * 0.5f + g_Arrow.fRadius));
+	pVtx[3].pos = D3DXVECTOR3((g_Arrow.fWidth * 0.5f + g_Arrow.fRadius), 0.0f, -(g_Arrow.fHeight * 0.5f + g_Arrow.fRadius));
 
 	//法線の設定
 	pVtx[0].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);

@@ -19,6 +19,7 @@ typedef struct
 	LPDIRECT3DVERTEXBUFFER9 VtxBuff;
 	float fHeight;
 	float fWidth;
+	float fRadius;
 	bool bUse;
 }Arrow;
 
@@ -27,6 +28,6 @@ void InitArrow();
 void UninitArrow();
 void UpdateArrow();
 void DrawArrow();
-void SetArrow(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float fWidth, float fHeight);
+void SetArrow(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float fWidth, float fHeight, float fRadius);
 
 #endif // !ARROW_H_
