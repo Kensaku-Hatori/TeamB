@@ -190,6 +190,7 @@ void CollisionInvisibleWall(Invisiblewall Box, D3DXVECTOR3 Point , D3DXVECTOR3 &
 		NextPoint = Box.PlayerPos;
 	}
 }
+
 D3DXVECTOR2 Gettest()
 {
 	return test;
