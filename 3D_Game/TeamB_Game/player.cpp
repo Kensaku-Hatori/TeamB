@@ -23,6 +23,7 @@
 #include "fade.h"
 #include "light.h"
 #include "Item.h"
+#include "circle.h"
 
 //グローバル変数
 Player g_player;
@@ -31,6 +32,8 @@ D3DXVECTOR3 g_vtxMaxPlayer;//プレイヤーの最大値
 
 int g_nCntHealMP;
 bool bfirst = true;
+bool g_bAbolition = false;//全滅フラグ
+
 //=====================
 // プレイヤーの初期化
 //=====================
@@ -54,6 +57,7 @@ void InitPlayer(void)
 	g_player.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.rotDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.nIdxShadow = SetShadow(g_player.pos, g_player.rot, 20.0f);//影の設定
+	g_player.nIndxCircle = 0;
 	g_player.nJump = PLAYER_JUMP;
 	g_player.bJump = false;		//ジャンプ
 	//g_player.bLanding = true;
@@ -79,8 +83,12 @@ void InitPlayer(void)
 	g_player.fDistance = g_player.fSightRange / 2;
 	g_player.nLockOnEnemy = 0;
 
+	//全滅フラグ
+	g_bAbolition = false;				//全滅していない状態
+
 	g_nCntHealMP = 0;
 }
+
 //=======================
 // プレイヤーの終了処理
 //=======================
@@ -103,18 +111,18 @@ void UninitPlayer(void)
 		}
 	}
 }
+
 //=======================
 // プレイヤーの更新処理
 //=======================
 void UpdatePlayer(void)
 {
-	Camera *pCamera = GetCamera();
-	ENEMY* pEnemy = GetEnemy();
+	Camera *pCamera = GetCamera();				//カメラの情報取得
+	ENEMY* pEnemy = GetEnemy();					//敵の情報取得
+	int* NumEnemy = GetNumEnemy();				//敵の数取得
 
 	if (g_player.bUse == true)
 	{
-		SetSizeShadow(g_player.pos, g_player.nIdxShadow);
-
 		//プレイヤー移動
 		PlayerMove();
 
@@ -306,10 +314,38 @@ void UpdatePlayer(void)
 		}
 
 #endif
+
+		//敵を全て倒しているなら
+		if (*(NumEnemy) <= 0)
+		{
+			if (g_bAbolition != true)
+			{
+				//サークルの設定処理
+				g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f), 12, 0, 20.0f, 25.0f, true, false);
+
+				//全滅している状態にする
+				g_bAbolition = true;
+			}
+		}
+
+		//敵が全滅しているなら
+		if (g_bAbolition == true)
+		{
+			//サークルの位置の更新処理
+			SetPositionCircle(g_player.nIndxCircle, g_player.pos, g_player.rot);
+		}
+
+		//影の大きさの更新処理
+		SetSizeShadow(g_player.pos, g_player.nIdxShadow);
+
+		//影の位置の更新処理
 		SetPositionShadow(g_player.nIdxShadow, g_player.pos, g_player.bUse);//影
+
+		//モーションの更新処理
 		UpdateMotion(&g_player.PlayerMotion);
 	}
 }
+
 //===================
 // プレイヤーの描画
 //===================
@@ -403,6 +439,7 @@ void DrawPlayer(void)
 		pDevice->SetMaterial(&matDef);
 	}
 }
+
 //======================
 // プレイヤーの移動
 //======================
@@ -555,6 +592,7 @@ void PlayerMove(void)
 		g_player.pos.z = STAGE_SIZE;
 	}
 }
+
 //===================
 // プレイヤーの取得
 //===================
@@ -567,6 +605,7 @@ void SetMesh(char* pFilePath, int Indx)
 {
 
 }
+
 //===================
 // パーツ情報の設定
 //===================
@@ -725,6 +764,7 @@ bool IsEnemyInsight(void)
 	}
 	return false;
 }
+
 //=====================
 // 一番近い敵を判別
 //=====================

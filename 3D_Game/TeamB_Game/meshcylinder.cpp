@@ -74,6 +74,7 @@ void InitMeshCylinder(void)
 
 			//頂点カラーの設定
 			pVtx[index].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
+
 			//テクスチャ座標の設定
 			pVtx[index].tex = D3DXVECTOR2((1.0f / MESHCYLINDERVTX_X) * nCntH, (1.0f / MESHCYLINDERVTX_Z) * nCntV);
 

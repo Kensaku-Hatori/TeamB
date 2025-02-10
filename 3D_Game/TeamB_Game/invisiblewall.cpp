@@ -8,6 +8,7 @@
 #include "invisiblewall.h"
 
 Invisiblewall g_InvisibleWall[WALLTYPE_MAX];
+
 // 内積結果をデバック表示するためのテスト変数
 D3DXVECTOR2 test;
 
@@ -189,6 +190,7 @@ void CollisionInvisibleWall(Invisiblewall Box, D3DXVECTOR3 Point , D3DXVECTOR3 &
 		NextPoint = Box.PlayerPos;
 	}
 }
+
 D3DXVECTOR2 Gettest()
 {
 	return test;

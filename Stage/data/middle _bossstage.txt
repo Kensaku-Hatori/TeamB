@@ -39,7 +39,7 @@ MODEL_FILENAME = data/MODEL/rubble_02.x			# [1]瓦礫02
 MODEL_FILENAME = data/MODEL/rubble_03.x			# [2]瓦礫03
 MODEL_FILENAME = data/MODEL/streetlight.x		# [3]街灯
 MODEL_FILENAME = data/MODEL/fence01.x			# [4]ゲート01
-MODEL_FILENAME = data/MODEL/fence02.x			# [5]ゲート02
+MODEL_FILENAME = data/MODEL/woll.x				# [5]ゲート02
 MODEL_FILENAME = data/MODEL/stone01.x			# [6]墓石01
 MODEL_FILENAME = data/MODEL/stone02.x			# [7]墓石02
 MODEL_FILENAME = data/MODEL/building01.x		# [8]教会
@@ -1015,7 +1015,7 @@ END_BILLBOARDSET
 # プレイヤー情報
 #------------------------------------------------------------------------------
 PLAYERSET
-	MOTION_FILENAME = data/GOMI/PLaAYER/motion.txt
+	MOTION_FILENAME = data/MOTION/PLAYER/motion.txt
 	POS = 0 100 0
 	ROT = 0 0 0
 END_PLAYERSET

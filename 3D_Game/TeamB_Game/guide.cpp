@@ -6,6 +6,8 @@
 //=======================================================
 
 #include "guide.h"
+#include "circle.h"
+#include "player.h"
 
 //グローバル変数宣言
 Guide g_Guide;					//誘導構造体
@@ -49,5 +51,9 @@ void DrawGuide()
 //================
 void SetGuide()
 {
+	//プレイヤーの情報取得
+	Player* pPlayer = GetPlayer();
 
+	//サークルの設定
+	SetCircle(pPlayer->pos, pPlayer->rot, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f), 16, 0, 20.0f, 25.0f, true, false);
 }
