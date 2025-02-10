@@ -29,6 +29,7 @@ typedef struct
 {
 	D3DXVECTOR3 pos;
 	D3DXVECTOR3 rot;
+	D3DXMATRIX mtxWorld;
 	bool bUse;
 }Guide;
 
