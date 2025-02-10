@@ -33,7 +33,8 @@ typedef struct
 	D3DXVECTOR3 NextPosition;		// 初期位置
 	D3DXMATRIX mtxWorld;			// ワールドマトリックス
 	OBJECTINFO PlayerMotion;		// パーツ情報とモーション情報
-	int nIdxShadow;					// 影
+	int nIdxShadow;					// 影のインデックス
+	int nIndxCircle;				// サークルのインデックス
 	int nJump;						// ジャンプ量
 	bool bJump;						// ジャンプできるかどうか
 	bool bUse;						// 使用状況

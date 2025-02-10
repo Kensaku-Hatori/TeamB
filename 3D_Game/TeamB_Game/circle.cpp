@@ -10,9 +10,9 @@
 //グローバル変数宣言
 Circle g_Circle[MAX_CIRCLE];
 
-//=====================
+//=========================
 //サークルの初期化処理
-//=====================
+//=========================
 void InitCircle()
 {
 	for (int nCnt = 0; nCnt < MAX_CIRCLE; nCnt++)
@@ -27,9 +27,9 @@ void InitCircle()
 	}
 }
 
-//=====================
+//=========================
 //サークルの終了処理
-//=====================
+//=========================
 void UninitCircle()
 {
 	for (int nCnt = 0; nCnt < MAX_CIRCLE; nCnt++)
@@ -50,17 +50,17 @@ void UninitCircle()
 	}
 }
 
-//=====================
+//=========================
 //サークルの更新処理
-//=====================
+//=========================
 void UpdateCircle()
 {
 
 }
 
-//=====================
+//=========================
 //サークルの描画処理
-//=====================
+//=========================
 void DrawCircle()
 {
 	// デバイスの取得
@@ -116,10 +116,10 @@ void DrawCircle()
 	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-//=====================
+//=========================
 //サークルの設定処理
-//=====================
-void SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int DiviY, float fHeight, float fRadius, bool bGradation, bool bAnime)
+//=========================
+int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int DiviY, float fHeight, float fRadius, bool bGradation, bool bAnime)
 {
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
@@ -239,7 +239,18 @@ void SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int D
 			g_Circle[nCnt].IndxBuff->Unlock();
 
 			g_Circle[nCnt].bUse = true;
+
 			break;
 		}
+		return nCnt;
 	}
+}
+
+//=========================
+//サークルの位置の更新処理
+//=========================
+void  SetPositionCircle(int indx, D3DXVECTOR3  pos, D3DXVECTOR3 rot)
+{
+	g_Circle[indx].pos = pos;
+	g_Circle[indx].rot = rot;
 }

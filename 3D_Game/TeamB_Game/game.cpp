@@ -33,6 +33,7 @@
 #include "impact.h"
 #include "invisiblewall.h"
 #include "Item.h"
+#include "circle.h"
 
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -47,6 +48,9 @@ void InitGame(void)
 	MODE Mode = GetMode();
 	//メッシュフィールドの初期化
 	InitMeshfield();
+
+	//サークルの初期化
+	InitCircle();
 
 	//影の初期化
 	InitShadow();
@@ -132,25 +136,34 @@ void InitGame(void)
 //===========
 void UninitGame(void)
 {
+	//ポーズの終了処理
 	UninitPause();
 
+	//メッシュフィールドの終了処理
+	UninitMeshfield();
+
+	//サークルの終了処理
+	UninitCircle();
+
+	//影の終了処理
 	UninitShadow();
 
+	//衝撃波の終了処理
 	UninitImpact();
 
+	//プレイヤーの終了処理
 	UninitPlayer();
 
+	//敵の終了処理
 	UninitEnemy();
 
-	//UninitEnemy();
-
+	//魔法の終了処理
 	UninitSkill();
 
+	//エフェクトの終了処理
 	UninitEffect();
 
 	//UninitBlock();
-
-	UninitMeshfield();
 
 	//UninitExplosion();
 
@@ -158,16 +171,22 @@ void UninitGame(void)
 
 	//UninitWall();
 
+	//メッシュ壁の終了処理
 	UninitMeshWall();
 
+	//アイテムの終了処理
 	UninitItem();
 
+	//カメラの終了処理
 	UninitCamera();
 
+	//ライトの終了処理
 	UninitLight();
 
+	//UIの終了処理
 	UninitUi();
 
+	//ステージの終了処理
 	UninitStageModel();
 }
 
@@ -192,6 +211,9 @@ void UpdateGame(void)
 		{
 			//メッシュフィールドの更新処理
 			UpdateMeshfield();
+
+			//サークルの更新処理
+			UpdateCircle();
 
 			//影の更新処理
 			UpdateShadow();
@@ -260,12 +282,7 @@ void UpdateGame(void)
 
 			//敵の数を取得する
 			int* NumEnemy = GetNumEnemy();
-
-			//敵を全て倒しているなら
-			if (*(NumEnemy) <= 0)
-			{
-				//LoadWave();
-			}
+			Player* pPlayer = GetPlayer();
 
 			//全てのwaveが終わったなら
 			if (GetFinish() == true)
@@ -388,6 +405,9 @@ void DrawGame(void)
 		//衝撃波の描画処理
 		DrawImpact();
 	}
+
+	//サークルの描画処理
+	DrawCircle();
 
 	//ポーズしているなら
 	if (g_bPause == true)
