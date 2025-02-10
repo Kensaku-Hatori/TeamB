@@ -22,6 +22,7 @@
 #include"impact.h"
 #include "fade.h"
 #include "light.h"
+#include "Item.h"
 
 //グローバル変数
 Player g_player;
@@ -58,6 +59,7 @@ void InitPlayer(void)
 
 	//モーション関連
 	g_player.bLoopMotion = true;//ループ
+	g_player.PlayerMotion.bBlendMotion = true;
 	g_player.nNumKey = 2;		//キーの総数
 	g_player.nCntMotion = 0;	//モーションカウンター
 	g_player.nKey = 0;			//現在のキーNo
@@ -276,10 +278,17 @@ void UpdatePlayer(void)
 		{
 			SetFade(MODE_STAGETHREE);
 		}
+		else if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_8))
+		{
+			SetFade(MODE_STAGEFOUR);
+		}
 		if (KeyboardTrigger(DIK_3) == true)
 		{
 			SetEnemy(D3DXVECTOR3(0.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 			SetEnemy(D3DXVECTOR3(100.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+			SetItem(D3DXVECTOR3(0.0f, 0.0f, -100.0f), ITEMTYPE_HP);
+			SetItem(D3DXVECTOR3(100.0f, 0.0f, -100.0f), ITEMTYPE_MP);
+			SetItem(D3DXVECTOR3(-100.0f, 0.0f, -100.0f), ITEMTYPE_SPEED);
 		}
 
 #endif

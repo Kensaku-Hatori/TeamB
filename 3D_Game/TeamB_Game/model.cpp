@@ -18,6 +18,7 @@ void InitStageModel()
 	for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++)
 	{
 		g_StageModel[ModelCount].bUse = false;
+		g_StageModel[ModelCount].btest = true;
 		g_StageModel[ModelCount].nType = MODELTYPE_ZERO;
 		g_StageModel[ModelCount].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		g_StageModel[ModelCount].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -625,104 +626,100 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 		// 内積(マイナスだと当たっている)
 		fDotZ1 = D3DXVec3Dot(&IntervalZ1, &norZ1);
 
-		if (fDotY > fDotY1)
+		if (fDotY1 >= 0)
 		{
 			if (fDotX < fDotX1 && fDotX < fDotZ && fDotX < fDotZ1)
 			{
 				D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 				D3DXVECTOR3 nor = norX;
 				D3DXVec3Normalize(&nor, &nor);
+				FLOAT osiete = D3DXVec3Dot(&pVec, &nor);
 				D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
-				pPlayer->pos += test1;
+				if (osiete <= 0.0f)
+				{
+					pPlayer->pos = pPlayer->pos + test1;
+				}
 			}
-			else if (fDotX1 < fDotX && fDotX1 < fDotZ && fDotX1 < fDotZ1)
+			if (fDotX1 < fDotX && fDotX1 < fDotZ && fDotX1 < fDotZ1)
 			{
 				D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 				D3DXVECTOR3 nor = norX1;
 				D3DXVec3Normalize(&nor, &nor);
+				FLOAT osiete = D3DXVec3Dot(&pVec, &nor);
 				D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
-				pPlayer->pos += test1;
+				if (osiete <= 0.0f)
+				{
+					pPlayer->pos = pPlayer->pos + test1;
+				}
 			}
-			else if (fDotZ < fDotZ1 && fDotZ < fDotX && fDotZ < fDotX1)
+			if (fDotZ < fDotZ1 && fDotZ <= fDotX && fDotZ <= fDotX1)
 			{
 				D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 				D3DXVECTOR3 nor = norZ;
 				D3DXVec3Normalize(&nor, &nor);
+				FLOAT osiete = D3DXVec3Dot(&pVec, &nor);
 				D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
-				pPlayer->pos += test1;
+				if (osiete <= 0.0f)
+				{
+					pPlayer->pos = pPlayer->pos + test1;
+				}
 			}
-			else if (fDotZ1 < fDotZ && fDotZ1 < fDotX && fDotZ1 < fDotX1)
+			if (fDotZ1 < fDotZ && fDotZ1 < fDotX && fDotZ1 < fDotX1)
 			{
 				D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 				D3DXVECTOR3 nor = norZ1;
 				D3DXVec3Normalize(&nor, &nor);
+				FLOAT osiete = D3DXVec3Dot(&pVec, &nor);
 				D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
-				pPlayer->pos += test1;
+				if (osiete <= 0.0f)
+				{
+					pPlayer->pos = pPlayer->pos + test1;
+				}
 			}
 		}
-
-		// Z軸が重なっていあたら
-		//if (fDotZ >= 0 && fDotZ1 >= 0)
+		// 下から上
+		if (fDotY <= 0.0f && fDotX >= 0.0f && fDotX1 >= 0.0f && fDotZ >= 0.0f && fDotZ1 >= 0.0f)
+		{
+			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+			D3DXVECTOR3 nor = norY1;
+			D3DXVec3Normalize(&nor, &nor);
+			FLOAT osiete = D3DXVec3Dot(&pVec, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			if (osiete >= 0.0f)
+			{
+				pPlayer->pos = pPlayer->pos + test1;
+			}
+		}
+		// ↑から↓
+		if (fDotY1 <= 0.0f && fDotX >= 0.0f && fDotX1 >= 0.0f && fDotZ >= 0.0f && fDotZ1 >= 0.0f)
+		{
+			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+			D3DXVECTOR3 nor = norY;
+			D3DXVec3Normalize(&nor, &nor);
+			FLOAT osiete = D3DXVec3Dot(&pVec, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			if (osiete >= 0.0f)
+			{
+				pPlayer->pos = pPlayer->pos + test1;
+				pPlayer->bLanding = true;
+				pPlayer->bJump = false;
+			}
+		}
+		else
+		{
+			pPlayer->bLanding = false;
+		}
+		//else
 		//{
-		//	if (fDotX > 0)
+		//	if (fDotY >= 0)
 		//	{
-		//		D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
-		//		D3DXVECTOR3 nor = norX;
-		//		D3DXVec3Normalize(&nor, &nor);
-		//		D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
-		//		pPlayer->pos += test1;
+				//D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
+				//D3DXVECTOR3 nor = norY;
+				//D3DXVec3Normalize(&nor, &nor);
+				//D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+				//pPlayer->pos += test1;
 		//	}
-		//	else if (fDotX1 > 0)
-		//	{
-		//		D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
-		//		D3DXVECTOR3 nor = norX1;
-		//		D3DXVec3Normalize(&nor, &nor);
-		//		D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
-		//		pPlayer->pos += test1;
-		//	}
-		//	if (fDotX > 0 && fDotX1 > 0)
-		//	{
-		//		D3DXVECTOR3 pVec = IntervalX - pPlayer->pos;
-		//		D3DXVECTOR3 nor = norX1;
-		//		D3DXVec3Normalize(&nor, &nor);
-		//		D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
-		//		pPlayer->pos += test1;
-		//	}
-		//}
-		// X軸が重なっていたら
-		//if (fDotX >= 0 && fDotX1 >= 0)
-		//{
-		//	if (fDotZ > 0)
-		//	{
-		//		D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
-		//		D3DXVECTOR3 nor = norZ;
-		//		D3DXVec3Normalize(&nor, &nor);
-		//		D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
-		//		pPlayer->pos += test1;
-		//	}
-		//	else if (fDotZ1 > 0)
-		//	{
-		//		D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
-		//		D3DXVECTOR3 nor = norZ1;
-		//		D3DXVec3Normalize(&nor, &nor);
-		//		D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
-		//		pPlayer->pos += test1;
-		//	}
-		//}
-		// XZ軸が重なっていたら
-		//if (fDotZ > 0 && fDotZ1 > 0 && fDotX > 0 && fDotX1 > 0)
-		//{
-		//	if (fDotY > 0)
-		//	{
-		//		D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
-		//		D3DXVECTOR3 nor = norY;
-		//		D3DXVec3Normalize(&nor, &nor);
-		//		D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
-		//		pPlayer->pos += test1;
-		//		pPlayer->bLanding = true;
-		//		pPlayer->bJump = false;
-		//	}
-		//	else if (fDotY1 > 0)
+		//	else if (fDotY1 >= 0)
 		//	{
 		//		D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 		//		D3DXVECTOR3 nor = norY1;
@@ -731,10 +728,6 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 		//		pPlayer->pos += test1;
 		//	}
 		//}
-	}
-	if (bTop == false)
-	{
-		pPlayer->bLanding = false;
 	}
 }
 // 分離軸に投影された軸成分から投影線分長を算出

@@ -23,8 +23,6 @@
 ENEMY g_Enemy[MAX_ENEMY];
 EnemyOrigin g_EnemyOrigin[ENEMYTYPE_MAX];
 int g_nNumEnemy;
-int g_nTypeCountMotion = 0;
-int g_PartsNum = 0;
 float g_fDistance[MAX_ENEMY];//デバックフォント用
 
 //***************
@@ -37,21 +35,23 @@ void InitEnemy(void)
 
 	for (int i = 0; i < MAX_ENEMY; i++)
 	{
-		g_nTypeCountMotion = 0;												//モーションカウンター?
-		g_Enemy[i].state = ENEMYSTATE_NORMAL;								//敵の状態
-		g_Enemy[i].ActionType = ENEMYACTION_WELL;							//モーションの種類
-		g_Enemy[i].Status.fPower = ENEMY_AP;								//攻撃力
-		g_Enemy[i].Status.fSpeed = ENEMY_SPEED;								//スピード
-		g_Enemy[i].Status.fHP = ENEMY_HP;									//HP
-		g_Enemy[i].pMotion = MOTIONTYPE_NEUTRAL;							//モーションの種類
-		g_Enemy[i].Object.Pos = D3DXVECTOR3(0.0f, 0.0f, -100.0f);			//位置
-		g_Enemy[i].Object.Rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				//向き
-		g_Enemy[i].rotDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);					//向き(目標)
-		g_Enemy[i].bUse = false;											//使用しているかどうか
-		g_Enemy[i].nActionCount = 0;										//アクションカウンター
-		g_Enemy[i].nActionCounter = 0;										//アクションカウンター
-		g_Enemy[i].Action = ENEMYACTION_WELL;								//行動の種類
-		g_Enemy[i].Radius = 4.4f;											//半径
+		g_Enemy[i].state = ENEMYSTATE_NORMAL;								// 敵の状態
+		g_Enemy[i].ActionType = ENEMYACTION_WELL;							// モーションの種類
+		g_Enemy[i].Status.fPower = ENEMY_AP;								// 攻撃力
+		g_Enemy[i].Status.fSpeed = ENEMY_SPEED;								// スピード
+		g_Enemy[i].Status.fHP = ENEMY_HP;									// HP
+		g_Enemy[i].EnemyMotion.motionType = MOTIONTYPE_NEUTRAL;				// モーションの種類
+		g_Enemy[i].EnemyMotion.nKey = 0;									// モーションのキー
+		g_Enemy[i].EnemyMotion.NextKey = 1;									// モーションの次のキー
+		g_Enemy[i].EnemyMotion.bBlendMotion = true;
+		g_Enemy[i].Object.Pos = D3DXVECTOR3(0.0f, 0.0f, -100.0f);			// 位置
+		g_Enemy[i].Object.Rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				// 向き
+		g_Enemy[i].rotDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);					// 向き(目標)
+		g_Enemy[i].bUse = false;											// 使用しているかどうか
+		g_Enemy[i].nActionCount = 0;										// アクションカウンター
+		g_Enemy[i].nActionCounter = 0;										// アクションカウンター
+		g_Enemy[i].Action = ENEMYACTION_WELL;								// 行動の種類
+		g_Enemy[i].Radius = 4.4f;											// 半径
 
 		g_fDistance[i] = 0.0f;
 	}
@@ -377,11 +377,11 @@ void UpdateAction(int nCount)
 	float fDistance = (vec.x) * (vec.x) + (vec.z) * (vec.z);
 	float fAngle = 0.0f;
 
-	fDistance = sqrt(fDistance);				//敵とプレイヤーの距離
+	fDistance = (float)sqrt(fDistance);				//敵とプレイヤーの距離
 	g_fDistance[nCount] = fDistance;
 
 	//角度の取得
-	fAngle = atan2(vec.x, vec.z);
+	fAngle = (float)atan2(vec.x, vec.z);
 
 	//目標の移動方向（角度）の補正
 	if (fAngle > D3DX_PI)
