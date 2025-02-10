@@ -21,6 +21,10 @@ typedef struct
 	D3DXMATRIX mtxWorld;
 	LPDIRECT3DVERTEXBUFFER9 VtxBuff;
 	LPDIRECT3DINDEXBUFFER9 IndxBuff;
+	int nDiviX;
+	int nDiviY;
+	int nMaxVtx;
+	int nPolyNum;
 	float fRadius;
 	bool bAnime;
 	bool bUse;
@@ -31,7 +35,7 @@ void InitCircle();
 void UninitCircle();
 void UpdateCircle();
 void DrawCircle();
-void SetCircle();
+void SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int DiviX, int DiviY, float fRadius, bool bAnime, bool bUse);
 
 #endif // !CIRCLE_H_
 
