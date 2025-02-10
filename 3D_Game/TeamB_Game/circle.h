@@ -11,21 +11,24 @@
 #include "main.h"
 
 //É}ÉNÉçíËã`
-#define MAX_CIRCLE (1)
+#define MAX_CIRCLE (10)
 
 //circle
 typedef struct
 {
 	D3DXVECTOR3 pos;
 	D3DXVECTOR3 rot;
+	D3DXCOLOR col;
 	D3DXMATRIX mtxWorld;
-	LPDIRECT3DVERTEXBUFFER9 VtxBuff;
+	LPDIRECT3DVERTEXBUFFER9 pVtxBuff;
 	LPDIRECT3DINDEXBUFFER9 IndxBuff;
 	int nDiviX;
 	int nDiviY;
 	int nMaxVtx;
 	int nPolyNum;
+	float fHeight;
 	float fRadius;
+	bool bGradation;
 	bool bAnime;
 	bool bUse;
 }Circle;
@@ -35,7 +38,8 @@ void InitCircle();
 void UninitCircle();
 void UpdateCircle();
 void DrawCircle();
-void SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int DiviX, int DiviY, float fRadius, bool bAnime, bool bUse);
+int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int DiviY, float fHeight, float fRadius, bool bGradation, bool bAnime);
+void  SetPositionCircle(int indx, D3DXVECTOR3  pos, D3DXVECTOR3 rot);
 
 #endif // !CIRCLE_H_
 
