@@ -123,8 +123,11 @@ void UpdatePlayer(void)
 
 	if (g_player.bUse == true)
 	{
-		//プレイヤー移動
-		PlayerMove();
+		if (g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION)
+		{
+			//プレイヤー移動
+			PlayerMove();
+		}
 
 		//ロックオン状態なら
 		if (g_player.bLockOn == true)
@@ -162,7 +165,7 @@ void UpdatePlayer(void)
 		g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
 
 		//魔法発射
-		if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_B) == true))
+		if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_B) == true) && g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION)
 		{// MPが５０以上の時
 			SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion);
 			if (g_player.Status.nMP >= 50)

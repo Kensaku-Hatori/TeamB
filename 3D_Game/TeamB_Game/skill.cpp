@@ -152,7 +152,7 @@ void UpdateSkill(void)
 					//衝撃波の設定
 					SetImpact(IMPACTTYPE_SKILL,				// タイプ
 						g_Skill[nCnt].pos,					// 場所
-						D3DXCOLOR(1.0f, 1.0f, 0.5f, 1.0f),	// 色
+						D3DXCOLOR(0.2f, 0.5f, 1.0f, 1.0f),	// 色
 						30,									// 寿命
 						5.0f,								// ないリンの大きさ
 						10.0f,								// 外林の大きさ
@@ -281,15 +281,15 @@ void SkillCollision(int nIdx)
 	//プレイヤーの情報取得
 	Player* pPlayer = GetPlayer();
 
-	for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
+	for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++, pEnemy++)
 	{
-		if (pEnemy[nCntEnemy].bUse == true)
+		if (pEnemy->bUse == true)
 		{
-			g_Skill[nIdx].fDistance = sqrtf(((g_Skill[nIdx].pos.x - pEnemy[nCntEnemy].Object.Pos.x) * (g_Skill[nIdx].pos.x - pEnemy[nCntEnemy].Object.Pos.x))
-										  + ((g_Skill[nIdx].pos.y - pEnemy[nCntEnemy].Object.Pos.y) * (g_Skill[nIdx].pos.y - pEnemy[nCntEnemy].Object.Pos.y))
-										  + ((g_Skill[nIdx].pos.z - pEnemy[nCntEnemy].Object.Pos.z) * (g_Skill[nIdx].pos.z - pEnemy[nCntEnemy].Object.Pos.z)));
+			g_Skill[nIdx].fDistance = sqrtf(((g_Skill[nIdx].pos.x - pEnemy->Object.Pos.x) * (g_Skill[nIdx].pos.x - pEnemy->Object.Pos.x))
+										  + ((g_Skill[nIdx].pos.y - pEnemy->Object.Pos.y) * (g_Skill[nIdx].pos.y - pEnemy->Object.Pos.y))
+										  + ((g_Skill[nIdx].pos.z - pEnemy->Object.Pos.z) * (g_Skill[nIdx].pos.z - pEnemy->Object.Pos.z)));
 
-			float RADIUS = (pEnemy[nCntEnemy].Radius + (SKILL_SIZE / 5)) * (pEnemy[nCntEnemy].Radius + (SKILL_SIZE / 5));
+			float RADIUS = (pEnemy->Radius + (SKILL_SIZE)) * (pEnemy->Radius + (SKILL_SIZE));
 
 			if (g_Skill[nIdx].fDistance <= RADIUS)
 			{

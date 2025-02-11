@@ -164,7 +164,6 @@ void DrawStageModel()
 				//ƒ‚ƒfƒ‹‚Ì•`‰æ
 				g_StageModel[ModelCount].ModelBuff.pMesh->DrawSubset(ModelMatCount);
 			}
-
 			pDevice->SetMaterial(&matDef);
 		}
 	}
