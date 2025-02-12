@@ -1,98 +1,318 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="animation.cpp" />
-    <ClCompile Include="billboard.cpp" />
-    <ClCompile Include="camera.cpp" />
-    <ClCompile Include="effect.cpp" />
-    <ClCompile Include="explosion.cpp" />
-    <ClCompile Include="fade.cpp" />
-    <ClCompile Include="game.cpp" />
-    <ClCompile Include="gauge.cpp" />
-    <ClCompile Include="input.cpp" />
-    <ClCompile Include="itemui.cpp" />
-    <ClCompile Include="light.cpp" />
-    <ClCompile Include="loadmotion.cpp" />
-    <ClCompile Include="loadstage.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="meshcylinder.cpp" />
-    <ClCompile Include="meshfield.cpp" />
-    <ClCompile Include="meshwall.cpp" />
-    <ClCompile Include="minimap.cpp" />
-    <ClCompile Include="model.cpp" />
-    <ClCompile Include="particle.cpp" />
-    <ClCompile Include="particleEditer.cpp" />
-    <ClCompile Include="pause.cpp" />
-    <ClCompile Include="player.cpp" />
-    <ClCompile Include="polygon.cpp" />
-    <ClCompile Include="ranking.cpp" />
-    <ClCompile Include="result.cpp" />
-    <ClCompile Include="resultinfo.cpp" />
-    <ClCompile Include="score.cpp" />
-    <ClCompile Include="shadow.cpp" />
-    <ClCompile Include="skill.cpp" />
-    <ClCompile Include="sound.cpp" />
-    <ClCompile Include="timer.cpp" />
-    <ClCompile Include="title.cpp" />
-    <ClCompile Include="titleinfo.cpp" />
-    <ClCompile Include="ui.cpp" />
-    <ClCompile Include="wall.cpp" />
-    <ClCompile Include="enemy.cpp" />
-    <ClCompile Include="Item.cpp" />
-    <ClCompile Include="wave.cpp" />
-    <ClCompile Include="impact.cpp" />
-    <ClCompile Include="HPgauge.cpp" />
-    <ClCompile Include="invisiblewall.cpp" />
-    <ClCompile Include="circle.cpp" />
-    <ClCompile Include="arrow.cpp" />
+    <ClCompile Include="animation.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="arrow.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="billboard.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="circle.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="explosion.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="fade.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="invisiblewall.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="polygon.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="shadow.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="skill.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="sound.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="wall.cpp">
+      <Filter>.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="HPgauge.cpp">
+      <Filter>.cpp\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="gauge.cpp">
+      <Filter>.cpp\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="itemui.cpp">
+      <Filter>.cpp\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="minimap.cpp">
+      <Filter>.cpp\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="pause.cpp">
+      <Filter>.cpp\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="score.cpp">
+      <Filter>.cpp\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ui.cpp">
+      <Filter>.cpp\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>.cpp\SEQUENCE</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>.cpp\SEQUENCE</Filter>
+    </ClCompile>
+    <ClCompile Include="result.cpp">
+      <Filter>.cpp\SEQUENCE</Filter>
+    </ClCompile>
+    <ClCompile Include="title.cpp">
+      <Filter>.cpp\SEQUENCE</Filter>
+    </ClCompile>
+    <ClCompile Include="resultinfo.cpp">
+      <Filter>.cpp\SEQUENCE</Filter>
+    </ClCompile>
+    <ClCompile Include="titleinfo.cpp">
+      <Filter>.cpp\SEQUENCE</Filter>
+    </ClCompile>
+    <ClCompile Include="meshcylinder.cpp">
+      <Filter>.cpp\MESH</Filter>
+    </ClCompile>
+    <ClCompile Include="meshfield.cpp">
+      <Filter>.cpp\MESH</Filter>
+    </ClCompile>
+    <ClCompile Include="meshwall.cpp">
+      <Filter>.cpp\MESH</Filter>
+    </ClCompile>
+    <ClCompile Include="effect.cpp">
+      <Filter>.cpp\EFFECT</Filter>
+    </ClCompile>
+    <ClCompile Include="impact.cpp">
+      <Filter>.cpp\EFFECT</Filter>
+    </ClCompile>
+    <ClCompile Include="particle.cpp">
+      <Filter>.cpp\EFFECT</Filter>
+    </ClCompile>
+    <ClCompile Include="particleEditer.cpp">
+      <Filter>.cpp\EFFECT</Filter>
+    </ClCompile>
+    <ClCompile Include="loadmotion.cpp">
+      <Filter>.cpp\LOADTEXT</Filter>
+    </ClCompile>
+    <ClCompile Include="loadstage.cpp">
+      <Filter>.cpp\LOADTEXT</Filter>
+    </ClCompile>
+    <ClCompile Include="wave.cpp">
+      <Filter>.cpp\LOADTEXT</Filter>
+    </ClCompile>
+    <ClCompile Include="ranking.cpp">
+      <Filter>.cpp\SEQUENCE</Filter>
+    </ClCompile>
+    <ClCompile Include="timer.cpp">
+      <Filter>.cpp\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="animation.h" />
-    <ClInclude Include="billboard.h" />
-    <ClInclude Include="camera.h" />
-    <ClInclude Include="effect.h" />
-    <ClInclude Include="explosion.h" />
-    <ClInclude Include="fade.h" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="gauge.h" />
-    <ClInclude Include="input.h" />
-    <ClInclude Include="itemui.h" />
-    <ClInclude Include="key.h" />
-    <ClInclude Include="light.h" />
-    <ClInclude Include="loadmotion.h" />
-    <ClInclude Include="loadstage.h" />
-    <ClInclude Include="main.h" />
-    <ClInclude Include="meshcylinder.h" />
-    <ClInclude Include="meshfield.h" />
-    <ClInclude Include="meshwall.h" />
-    <ClInclude Include="minimap.h" />
-    <ClInclude Include="model.h" />
-    <ClInclude Include="Object.h" />
-    <ClInclude Include="particle.h" />
-    <ClInclude Include="particleEditer.h" />
-    <ClInclude Include="pause.h" />
-    <ClInclude Include="player.h" />
-    <ClInclude Include="polygon.h" />
-    <ClInclude Include="ranking.h" />
-    <ClInclude Include="result.h" />
-    <ClInclude Include="resultinfo.h" />
-    <ClInclude Include="score.h" />
-    <ClInclude Include="shadow.h" />
-    <ClInclude Include="skill.h" />
-    <ClInclude Include="sound.h" />
-    <ClInclude Include="status.h" />
-    <ClInclude Include="timer.h" />
-    <ClInclude Include="title.h" />
-    <ClInclude Include="titleinfo.h" />
-    <ClInclude Include="ui.h" />
-    <ClInclude Include="wall.h" />
-    <ClInclude Include="enemy.h" />
-    <ClInclude Include="Item.h" />
-    <ClInclude Include="wave.h" />
-    <ClInclude Include="impact.h" />
-    <ClInclude Include="HPgauge.h" />
-    <ClInclude Include="invisiblewall.h" />
-    <ClInclude Include="circle.h" />
-    <ClInclude Include="arrow.h" />
+    <ClInclude Include="animation.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="arrow.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="billboard.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="circle.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="explosion.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="fade.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="invisiblewall.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="key.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="polygon.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="shadow.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="skill.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="status.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="wall.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="meshcylinder.h">
+      <Filter>.h\MESH</Filter>
+    </ClInclude>
+    <ClInclude Include="meshfield.h">
+      <Filter>.h\MESH</Filter>
+    </ClInclude>
+    <ClInclude Include="meshwall.h">
+      <Filter>.h\MESH</Filter>
+    </ClInclude>
+    <ClInclude Include="effect.h">
+      <Filter>.h\EFFECT</Filter>
+    </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>.h\EFFECT</Filter>
+    </ClInclude>
+    <ClInclude Include="particleEditer.h">
+      <Filter>.h\EFFECT</Filter>
+    </ClInclude>
+    <ClInclude Include="loadmotion.h">
+      <Filter>.h\LOADTEXT</Filter>
+    </ClInclude>
+    <ClInclude Include="loadstage.h">
+      <Filter>.h\LOADTEXT</Filter>
+    </ClInclude>
+    <ClInclude Include="wave.h">
+      <Filter>.h\LOADTEXT</Filter>
+    </ClInclude>
+    <ClInclude Include="impact.h">
+      <Filter>.h\EFFECT</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>.h\SEQUENCE</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>.h\SEQUENCE</Filter>
+    </ClInclude>
+    <ClInclude Include="ranking.h">
+      <Filter>.h\SEQUENCE</Filter>
+    </ClInclude>
+    <ClInclude Include="result.h">
+      <Filter>.h\SEQUENCE</Filter>
+    </ClInclude>
+    <ClInclude Include="title.h">
+      <Filter>.h\SEQUENCE</Filter>
+    </ClInclude>
+    <ClInclude Include="titleinfo.h">
+      <Filter>.h\SEQUENCE</Filter>
+    </ClInclude>
+    <ClInclude Include="resultinfo.h">
+      <Filter>.h\SEQUENCE</Filter>
+    </ClInclude>
+    <ClInclude Include="gauge.h">
+      <Filter>.h\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="HPgauge.h">
+      <Filter>.h\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="itemui.h">
+      <Filter>.h\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="minimap.h">
+      <Filter>.h\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="pause.h">
+      <Filter>.h\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="score.h">
+      <Filter>.h\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="timer.h">
+      <Filter>.h\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ui.h">
+      <Filter>.h\UI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include=".cpp">
+      <UniqueIdentifier>{af70fc68-90dd-4506-b5e3-3a842af8bfb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".h">
+      <UniqueIdentifier>{a2871abc-ce32-4a5b-9543-a92932568588}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".cpp\UI">
+      <UniqueIdentifier>{b493ed7f-78dd-492c-96d2-ccf09ce181f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".cpp\SEQUENCE">
+      <UniqueIdentifier>{3d4c7bdc-c8e1-49e6-89d3-d09c54e5c5d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".cpp\MESH">
+      <UniqueIdentifier>{48c3ca3c-d05f-4d52-bd89-294762b5a802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".cpp\EFFECT">
+      <UniqueIdentifier>{9e8f6837-80e8-443b-a03a-196b131f4f97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".cpp\LOADTEXT">
+      <UniqueIdentifier>{c7bfaa4a-4a86-4114-8fc6-90d1ff23d7d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".h\MESH">
+      <UniqueIdentifier>{54c65d22-8d92-4f96-a472-8a60c6cc26df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".h\EFFECT">
+      <UniqueIdentifier>{9aaf3c09-3e05-4578-8efd-84fb2e7eb596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".h\LOADTEXT">
+      <UniqueIdentifier>{af9e1816-fe1c-4a38-a556-674b734d0be3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".h\UI">
+      <UniqueIdentifier>{182c096d-2d56-4661-a9c1-e99e112b8c63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".h\SEQUENCE">
+      <UniqueIdentifier>{bf751b8e-1427-4aab-8bdf-9d5c54668f7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
