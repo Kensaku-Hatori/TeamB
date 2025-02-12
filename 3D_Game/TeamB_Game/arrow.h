@@ -11,11 +11,13 @@
 #include "main.h"
 
 //マクロ定義
-#define ARROW_TEX "data\\TEXTURE\\sirusi.png"//矢印のテクスチャパス
+#define ARROW_TEX "data\\TEXTURE\\sirusi.png"					//矢印のテクスチャパス
 
 //arrow
 typedef struct
 {
+	D3DXVECTOR3 Destpos;
+	D3DXVECTOR3 Destrot;
 	D3DXVECTOR3 pos;
 	D3DXVECTOR3 rot;
 	D3DXMATRIX mtxWorld;
@@ -32,6 +34,7 @@ void InitArrow();
 void UninitArrow();
 void UpdateArrow();
 void DrawArrow();
-void SetArrow(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float fWidth, float fHeight, float fRadius);
+void SetArrow(D3DXVECTOR3 DestPos,D3DXVECTOR3 pos, float fWidth, float fHeight, float fRadius);
+void SetPositonArrow(D3DXVECTOR3 pos);
 
 #endif // !ARROW_H_

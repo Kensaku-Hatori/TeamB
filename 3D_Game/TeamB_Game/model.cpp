@@ -625,7 +625,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 		// 内積(マイナスだと当たっている)
 		fDotZ1 = D3DXVec3Dot(&IntervalZ1, &norZ1);
 
-		if (fDotY1 >= 0)
+		if (fDotY >= 0)
 		{
 			if (fDotX < fDotX1 && fDotX < fDotZ && fDotX < fDotZ1)
 			{
@@ -677,7 +677,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 			}
 		}
 		// 下から上
-		if (fDotY <= 0.0f && fDotX >= 0.0f && fDotX1 >= 0.0f && fDotZ >= 0.0f && fDotZ1 >= 0.0f)
+		if (fDotY <= 1.0f && fDotX >= -2.0f && fDotX1 >= -2.0f && fDotZ >= -2.0f && fDotZ1 >= -2.0f)
 		{
 			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 			D3DXVECTOR3 nor = norY1;
@@ -690,7 +690,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 			}
 		}
 		// ↑から↓
-		if (fDotY1 <= 0.0f && fDotX >= 0.0f && fDotX1 >= 0.0f && fDotZ >= 0.0f && fDotZ1 >= 0.0f)
+		if (fDotY1 <= 1.0f && fDotX >= -2.0f && fDotX1 >= -2.0f && fDotZ >= -2.0f && fDotZ1 >= -2.0f)
 		{
 			D3DXVECTOR3 pVec = pPlayer->posOld - pPlayer->pos;
 			D3DXVECTOR3 nor = norY;

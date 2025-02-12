@@ -16,7 +16,6 @@
 #define MAX_SMOKEANIM (8)
 #define SMOKEANIMSPEED (20)
 #define MAX_SMOKELENGTH (float)(2)
-#define SKILL_COL (D3DXCOLOR(0.25f,0.45f,1.0f,1.0f)
 
 typedef enum
 {
@@ -53,7 +52,7 @@ static const char* EFFECTTEX[EFFECT_MAX] =
 	"data\\TEXTURE\\smoke000.png",
 	"data\\TEXTURE\\effect000.jpg",
 	"data\\TEXTURE\\effect000.jpg",
-	"data\\TEXTURE\\magiccircle00.png",
+	"data\\TEXTURE\\magiccircle.png",
 };
 
 //*****************

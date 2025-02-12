@@ -26,6 +26,7 @@ typedef struct
 	int nIdxShadow;				// 影のインデックス保存用
 	int nLife;					// 寿命
 	float fDistance;			// 距離
+	bool bHit;
 	bool bUse;					// 使用しているかどうか
 }Skill;
 

@@ -6,6 +6,8 @@
 #include "effect.h"
 
 #define MAX_PARTICLE (514)
+#define NORMALSKILL_COL (D3DXCOLOR)(0.25f,0.45f,1.0f,1.0f)
+
 typedef enum
 {
 	PARTICLE_NONE = 0,
@@ -31,6 +33,6 @@ typedef struct
 
 void InitParticle();
 void UpdateParticle(bool bLimit);
-void SetParticle(D3DXVECTOR3 pos, D3DXVECTOR3 fAngle, D3DXCOLOR col, PARTICLETYPE ntype, D3DXVECTOR3 scale,int nLife,int forlimit,float speed,float minspeed,float gravity);
+void SetParticle(D3DXVECTOR3 pos, D3DXVECTOR3 fAngle, D3DXCOLOR col, PARTICLETYPE ntype, D3DXVECTOR3 scale,int nLife,int forlimit,float speed,float minspeed,float gravity,EFFECTTYPE nType);
 void SetParticleInfo(PARTICLE Particle);
 #endif // !PARTICLE_H_

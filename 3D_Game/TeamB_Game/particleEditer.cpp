@@ -35,7 +35,8 @@ void InitParticleEditer()
 		g_ParticleEditer.ParticleInfo.forlimit,
 		10.0f,
 		1.0f,
-		1.0f);
+		1.0f,
+		EFFECT_NONE);
 }
 void UpdateParticleEditer()
 {

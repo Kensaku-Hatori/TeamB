@@ -65,7 +65,7 @@ void UpdateParticle(bool bLimit)
 //***********************
 // パーティクルの設定処理
 //***********************
-void SetParticle(D3DXVECTOR3 pos, D3DXVECTOR3 fAngle, D3DXCOLOR col, PARTICLETYPE ntype, D3DXVECTOR3 scale,int nLife,int forlimit,float speed,float minspeed,float gravity)
+void SetParticle(D3DXVECTOR3 pos, D3DXVECTOR3 fAngle, D3DXCOLOR col, PARTICLETYPE ntype, D3DXVECTOR3 scale,int nLife,int forlimit,float speed,float minspeed,float gravity,EFFECTTYPE nType)
 {
 	for (int particlecount = 0; particlecount < MAX_PARTICLE; particlecount++)
 	{
@@ -82,6 +82,7 @@ void SetParticle(D3DXVECTOR3 pos, D3DXVECTOR3 fAngle, D3DXCOLOR col, PARTICLETYP
 			g_particle[particlecount].speed = speed;
 			g_particle[particlecount].minspeed = minspeed;
 			g_particle[particlecount].gravity = gravity;
+			g_particle[particlecount].EffectnType = nType;
 
 			break;
 		}

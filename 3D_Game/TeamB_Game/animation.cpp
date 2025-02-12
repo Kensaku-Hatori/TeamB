@@ -14,6 +14,7 @@
 #include "impact.h"
 #include "player.h"
 #include "skill.h"
+#include "particle.h"
 
 //***************
 // グローバル変数
@@ -302,10 +303,36 @@ void CaceOneAction(OBJECTINFO* Motion)
 
 	switch (Motion->motionType)
 	{
+	case MOTIONTYPE_MOVE:
+		// エフェクトの設定
+		SetEffect(D3DXVECTOR3(pPlayer->PlayerMotion.aModel[7].mtxWorld._41, pPlayer->PlayerMotion.aModel[7].mtxWorld._42, pPlayer->PlayerMotion.aModel[7].mtxWorld._43),
+			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			50,
+			0,
+			D3DXVECTOR3(1.0f, 1.0f, 1.0f),
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			EFFECT_SMOKE,
+			0,
+			0.0f,
+			D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		break;
 	case MOTIONTYPE_ACTION:
 		SetSkill(Pos,
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 			pPlayer->rot);
+		break;
+	case MOTIONTYPE_LANDING:
+		SetParticle(pPlayer->pos,
+			D3DXVECTOR3(628.0f, 1.0f, 628.0f),
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			PARTICLE_NONE,
+			D3DXVECTOR3(1.0f, 1.0f, 1.0f),
+			100,
+			10,
+			50.0f,
+			50.0f,
+			0.0f,
+			EFFECT_SMOKE);
 		break;
 	default:
 		break;
@@ -318,9 +345,22 @@ void CaceTwoAction(OBJECTINFO* Motion)
 	Pos.x = pPlayer->mtxWand._41;
 	Pos.y = pPlayer->mtxWand._42;
 	Pos.z = pPlayer->mtxWand._43;
-
+	
 	switch (Motion->motionType)
 	{
+	case MOTIONTYPE_MOVE:
+		// エフェクトの設定
+		SetEffect(D3DXVECTOR3(pPlayer->PlayerMotion.aModel[9].mtxWorld._41, pPlayer->PlayerMotion.aModel[9].mtxWorld._42, pPlayer->PlayerMotion.aModel[9].mtxWorld._43),
+			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			50,
+			0,
+			D3DXVECTOR3(1.0f, 1.0f, 1.0f),
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			EFFECT_SMOKE,
+			0,
+			0.0f,
+			D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		break;
 	case MOTIONTYPE_ACTION:
 		// エフェクトの設定
 		SetEffect(Pos,
@@ -372,7 +412,7 @@ void CaceThreeAction(OBJECTINFO* Motion)
 	{
 	case MOTIONTYPE_ACTION:
 		// エフェクトの設定
-		SetEffect(pPlayer->pos,
+		SetEffect(D3DXVECTOR3(pPlayer->pos.x, pPlayer->pos.y + 1.0f, pPlayer->pos.z),
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 			215,
 			0,
