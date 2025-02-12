@@ -179,6 +179,10 @@ void UpdateEffect(void)
 					g_effect[effectcount].Scale.x += 0.1f;
 					g_effect[effectcount].Scale.y += 0.1f;
 				}
+				else
+				{
+
+				}
 			}
 			else
 			{
@@ -334,6 +338,7 @@ void SetEffect(D3DXVECTOR3 pos, D3DXVECTOR3 dir, int nLife, float speed,D3DXVECT
 			g_effect[effectcount].colordiff.a = g_effect[effectcount].col.a / nLife;
 			g_effect[effectcount].Indx = Indx;
 			g_effect[effectcount].gravity = gravity;
+			g_effect[effectcount].LengthValue = 0.0f;
 
 			// äeí∏ì_ÇÃêFÇÃê›íË
 			pVtx[0].col = D3DXCOLOR(g_effect[effectcount].col);

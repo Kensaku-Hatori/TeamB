@@ -309,7 +309,7 @@ void CaceOneAction(OBJECTINFO* Motion)
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 			50,
 			0,
-			D3DXVECTOR3(1.0f, 1.0f, 0.0f),
+			D3DXVECTOR3(1.0f, 1.0f, 1.0f),
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 			EFFECT_SMOKE,
 			0,
@@ -354,7 +354,7 @@ void CaceTwoAction(OBJECTINFO* Motion)
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 			50,
 			0,
-			D3DXVECTOR3(1.0f, 1.0f, 0.0f),
+			D3DXVECTOR3(1.0f, 1.0f, 1.0f),
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 			EFFECT_SMOKE,
 			0,
@@ -412,7 +412,7 @@ void CaceThreeAction(OBJECTINFO* Motion)
 	{
 	case MOTIONTYPE_ACTION:
 		// エフェクトの設定
-		SetEffect(pPlayer->pos,
+		SetEffect(D3DXVECTOR3(pPlayer->pos.x, pPlayer->pos.y + 1.0f, pPlayer->pos.z),
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 			215,
 			0,
