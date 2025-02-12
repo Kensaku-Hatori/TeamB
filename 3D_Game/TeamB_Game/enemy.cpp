@@ -131,7 +131,7 @@ void UpdateEnemy(void)
 		if (g_Enemy[EnemyCount].bUse == true)
 		{
 			//行動の更新
-			UpdateAction(EnemyCount);
+			UpdateAction(0);
 
 			//移動量の更新(減衰)
 			g_Enemy[EnemyCount].move.x = (0.0f - g_Enemy[EnemyCount].move.x) * 0.1f;
@@ -372,7 +372,7 @@ void UpdateAction(int nCount)
 {
 	Player* pPlayer = GetPlayer();				//プレイヤーの情報取得
 
-//敵とプレイヤーの距離計算
+	//敵とプレイヤーの距離計算
 	D3DXVECTOR3 vec = pPlayer->pos - g_Enemy[nCount].Object.Pos;
 	float fDistance = (vec.x) * (vec.x) + (vec.z) * (vec.z);
 	float fAngle = 0.0f;
@@ -396,47 +396,41 @@ void UpdateAction(int nCount)
 	//攻撃
 	if (fDistance <= ATTACK_DIST)
 	{
-		g_Enemy[nCount].nActionCount++;
-
-		//角度の目標設定
-		g_Enemy[nCount].rotDest.y = fAngle + D3DX_PI;
-
-		if (g_Enemy[nCount].nActionCount >= ATTACK_FREAM)
+		if (g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_ACTION)
 		{
-
 			//モーションの種類設定
 			g_Enemy[nCount].ActionType = ENEMYACTION_ATTACK;
 			g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_ACTION;//多分これしか機能していない
-			g_Enemy[nCount].pMotion = MOTIONTYPE_ACTION;
-		}
-
-		if (g_Enemy[nCount].nActionCount >= ATTACK_FREAM + 210)
-		{
-			g_Enemy[nCount].nActionCount = 0;
-			g_Enemy[nCount].ActionType = ENEMYACTION_WELL;
-			g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_NEUTRAL;
-			g_Enemy[nCount].pMotion = MOTIONTYPE_NEUTRAL;
+			g_Enemy[nCount].EnemyMotion.motionTypeBlend = MOTIONTYPE_NEUTRAL;
+			g_Enemy[nCount].EnemyMotion.nFrameBlend = 10.0f;
+			g_Enemy[nCount].EnemyMotion.nKey = 0;
+			g_Enemy[nCount].EnemyMotion.NextKey = 1;
 		}
 	}
 	//追いかける
 	else if (fDistance <= HOMING_DIST)
 	{
-		//モーションの種類設定
-		g_Enemy[nCount].ActionType = ENEMYACTION_RUN;
-		g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_MOVE;//多分これしか機能していない
-		g_Enemy[nCount].pMotion = MOTIONTYPE_MOVE;
+		if (g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_ACTION)
+		{
+			//モーションの種類設定
+			g_Enemy[nCount].ActionType = ENEMYACTION_RUN;
+			g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_MOVE;//多分これしか機能していない
+			g_Enemy[nCount].EnemyMotion.motionTypeBlend = MOTIONTYPE_NEUTRAL;
+			g_Enemy[nCount].EnemyMotion.nFrameBlend = 10.0f;
+			g_Enemy[nCount].EnemyMotion.nKey = 0;
+			g_Enemy[nCount].EnemyMotion.NextKey = 1;
 
-		//移動量の設定
-		g_Enemy[nCount].move.x = sinf(fAngle) * HOMING_MOVE;
-		g_Enemy[nCount].move.z = cosf(fAngle) * HOMING_MOVE;
+			//移動量の設定
+			g_Enemy[nCount].move.x = sinf(fAngle) * HOMING_MOVE;
+			g_Enemy[nCount].move.z = cosf(fAngle) * HOMING_MOVE;
 
-		//位置の更新
-		g_Enemy[nCount].Object.Pos += g_Enemy[nCount].move;
+			//位置の更新
+			g_Enemy[nCount].Object.Pos += g_Enemy[nCount].move;
 
 
-		//角度の目標設定
-		g_Enemy[nCount].rotDest.y = fAngle + D3DX_PI;
-
+			//角度の目標設定
+			g_Enemy[nCount].rotDest.y = fAngle + D3DX_PI;
+		}
 	}
 	//様子見
 	else
