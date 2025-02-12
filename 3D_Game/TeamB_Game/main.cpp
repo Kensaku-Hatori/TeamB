@@ -110,6 +110,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hInstancePrev, _
 			{
 				dwExecLastTime = dwCurrentTime;
 
+				if (g_mode == MODE_END)
+				{
+					break;
+				}
+
 				//XVˆ—
 				Update();
 				//•`‰æˆ—
@@ -352,6 +357,8 @@ void Update(void)
 	case MODE_RANK:
 		UpdateRanking();
 		break;
+	default:
+		break;
 	}
 	//
 	UpdateFade();
@@ -413,6 +420,8 @@ void Draw(void)
 			break;
 		case MODE_RANK:
 			DrawRanking();
+			break;
+		default:
 			break;
 		}
 
