@@ -163,10 +163,13 @@ void UpdateSkill(void)
 				}
 			}
 
-			g_Skill[nCnt].move.x += sinf(g_Skill[nCnt].rot.y - D3DX_PI) * 0.5f;
-			g_Skill[nCnt].move.z += cosf(g_Skill[nCnt].rot.y - D3DX_PI) * 0.5f;
+			if (g_Skill[nCnt].bHit == false)
+			{
+				g_Skill[nCnt].move.x += sinf(g_Skill[nCnt].rot.y - D3DX_PI) * 0.5f;
+				g_Skill[nCnt].move.z += cosf(g_Skill[nCnt].rot.y - D3DX_PI) * 0.5f;
 
-			g_Skill[nCnt].pos += g_Skill[nCnt].move;
+				g_Skill[nCnt].pos += g_Skill[nCnt].move;
+			}
 
 			g_Skill[nCnt].nLife--;
 
@@ -264,6 +267,7 @@ void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot)
 			g_Skill[nCnt].move = move;
 			g_Skill[nCnt].rot = rot;
 			g_Skill[nCnt].nLife = SKILL_LIFE;
+			g_Skill[nCnt].bHit = false;
 			g_Skill[nCnt].bUse = true;
 			break;
 		}
@@ -294,6 +298,8 @@ void SkillCollision(int nIdx)
 			if (g_Skill[nIdx].fDistance <= RADIUS)
 			{
 				HitEnemy(pPlayer->Status.fPower,nCntEnemy);
+				g_Skill[nIdx].nLife = 1;
+				g_Skill[nIdx].bHit = true;
 			}
 		}
 	}

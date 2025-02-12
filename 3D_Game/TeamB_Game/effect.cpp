@@ -399,4 +399,14 @@ void SetSkillParticle(EFFECTTYPE nType, int Indx, D3DXVECTOR3 StartPos, D3DXVECT
 			40.0f,
 			0.01f);
 	}
+	SetParticle(EndPos,
+		D3DXVECTOR3(628.0f, 628.0f, 628.0f),
+		D3DXCOLOR(0.25f, 0.45f, 1.0f, 1.0f),
+		PARTICLE_NONE,
+		D3DXVECTOR3(1.0f, 1.0f, 1.0f),
+		50,
+		300,
+		300.0f,
+		200.0f,
+		0.0f);
 }

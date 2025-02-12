@@ -318,7 +318,7 @@ void CaceTwoAction(OBJECTINFO* Motion)
 	Pos.x = pPlayer->mtxWand._41;
 	Pos.y = pPlayer->mtxWand._42;
 	Pos.z = pPlayer->mtxWand._43;
-
+	
 	switch (Motion->motionType)
 	{
 	case MOTIONTYPE_ACTION:
