@@ -32,4 +32,5 @@ void InitInvisibleWall();											// 見えない壁の初期化処理
 void UpdateInvisibleWall();											// 見えない壁の更新処理
 void CollisionInvisibleWall(Invisiblewall Box, D3DXVECTOR3 Point,D3DXVECTOR3 &NextPoint);	// 見えない壁との当たり判定
 D3DXVECTOR2 Gettest();	// デバック用
+D3DXVECTOR3 GetBottom();
 #endif // !INVISIBLEWALL_H_

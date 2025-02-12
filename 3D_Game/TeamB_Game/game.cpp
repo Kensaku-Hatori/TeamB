@@ -34,6 +34,7 @@
 #include "invisiblewall.h"
 #include "Item.h"
 #include "circle.h"
+#include "arrow.h"
 
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -51,6 +52,9 @@ void InitGame(void)
 
 	//サークルの初期化
 	InitCircle();
+
+	//矢印の初期化
+	InitArrow();
 
 	//影の初期化
 	InitShadow();
@@ -145,6 +149,9 @@ void UninitGame(void)
 	//サークルの終了処理
 	UninitCircle();
 
+	//矢印の終了処理
+	UninitArrow();
+
 	//影の終了処理
 	UninitShadow();
 
@@ -214,6 +221,9 @@ void UpdateGame(void)
 
 			//サークルの更新処理
 			UpdateCircle();
+
+			//矢印の更新処理
+			UpdateArrow();
 
 			//影の更新処理
 			UpdateShadow();
@@ -406,6 +416,9 @@ void DrawGame(void)
 		DrawImpact();
 	}
 
+	//矢印の描画処理
+	DrawArrow();
+	
 	//サークルの描画処理
 	DrawCircle();
 

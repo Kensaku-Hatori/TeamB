@@ -195,3 +195,8 @@ D3DXVECTOR2 Gettest()
 {
 	return test;
 }
+
+D3DXVECTOR3 GetBottom()
+{
+	return g_InvisibleWall[WALLTYPE_EXIT].Bottom;
+}

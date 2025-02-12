@@ -133,6 +133,17 @@ void UpdateEnemy(void)
 			//行動の更新
 			UpdateAction(EnemyCount);
 
+			// 角度の近道
+			if (g_Enemy[EnemyCount].rotDest.y - g_Enemy[EnemyCount].Object.Rot.y >= D3DX_PI)
+			{
+				g_Enemy[EnemyCount].Object.Rot.y += D3DX_PI * 2.0f;
+			}
+			else if (g_Enemy[EnemyCount].rotDest.y - g_Enemy[EnemyCount].Object.Rot.y <= -D3DX_PI)
+			{
+				g_Enemy[EnemyCount].Object.Rot.y -= D3DX_PI * 2.0f;
+			}
+
+
 			//移動量の更新(減衰)
 			g_Enemy[EnemyCount].move.x = (0.0f - g_Enemy[EnemyCount].move.x) * 0.1f;
 			g_Enemy[EnemyCount].move.y = (0.0f - g_Enemy[EnemyCount].move.y) * 0.1f;
@@ -412,11 +423,12 @@ void UpdateAction(int nCount)
 		{
 			//モーションの種類設定
 			g_Enemy[nCount].ActionType = ENEMYACTION_ATTACK;
-			g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_ACTION;//多分これしか機能していない
-			g_Enemy[nCount].EnemyMotion.motionTypeBlend = MOTIONTYPE_NEUTRAL;
-			g_Enemy[nCount].EnemyMotion.nFrameBlend = 10.0f;
-			g_Enemy[nCount].EnemyMotion.nKey = 0;
-			g_Enemy[nCount].EnemyMotion.NextKey = 1;
+			//g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_ACTION;//多分これしか機能していない
+			//g_Enemy[nCount].EnemyMotion.motionTypeBlend = MOTIONTYPE_NEUTRAL;
+			//g_Enemy[nCount].EnemyMotion.nFrameBlend = 10.0f;
+			//g_Enemy[nCount].EnemyMotion.nKey = 0;
+			//g_Enemy[nCount].EnemyMotion.NextKey = 1;
+			SetMotion(MOTIONTYPE_ACTION, &g_Enemy[nCount].EnemyMotion);
 		}
 	}
 	//追いかける
@@ -426,9 +438,9 @@ void UpdateAction(int nCount)
 		{
 			//モーションの種類設定
 			g_Enemy[nCount].ActionType = ENEMYACTION_RUN;
-			g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_MOVE;//多分これしか機能していない
-			g_Enemy[nCount].EnemyMotion.motionTypeBlend = MOTIONTYPE_NEUTRAL;
-			g_Enemy[nCount].EnemyMotion.nFrameBlend = 10.0f;
+			//g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_MOVE;//多分これしか機能していない
+			//g_Enemy[nCount].EnemyMotion.motionTypeBlend = MOTIONTYPE_NEUTRAL;
+			//g_Enemy[nCount].EnemyMotion.nFrameBlend = 10.0f;
 
 			//移動量の設定
 			g_Enemy[nCount].move.x = sinf(fAngle) * HOMING_MOVE;
@@ -439,14 +451,24 @@ void UpdateAction(int nCount)
 
 			//角度の目標設定
 			g_Enemy[nCount].rotDest.y = fAngle + D3DX_PI;
+
+			if (g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_MOVE)
+			{
+				SetMotion(MOTIONTYPE_MOVE, &g_Enemy[nCount].EnemyMotion);
+			}
+
 		}
 	}
 	//様子見
 	else
 	{
 		g_Enemy[nCount].ActionType = ENEMYACTION_WELL;
-		g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_NEUTRAL;
-		g_Enemy[nCount].pMotion = MOTIONTYPE_NEUTRAL;
+		//g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_NEUTRAL;
+		//g_Enemy[nCount].pMotion = MOTIONTYPE_NEUTRAL;
+		if (g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_NEUTRAL)
+		{
+			SetMotion(MOTIONTYPE_NEUTRAL, &g_Enemy[nCount].EnemyMotion);
+		}
 	}
 }
 
@@ -459,7 +481,7 @@ void EnemyState(int Indx)
 }
 
 //******************
-//敵のオフセット?
+// 敵のオフセット?
 //******************
 void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType)
 {
@@ -546,7 +568,7 @@ void CollisionEnemy(void)
 }
 
 //========================
-//距離の取得
+// 距離の取得
 //========================
 float GetfDistance()
 {
