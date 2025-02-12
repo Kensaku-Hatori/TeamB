@@ -10,7 +10,7 @@
 #include "main.h"
 #include "Item.h"
 
-#define ITEMUIFRAME_X (250)
+#define ITEMUIFRAME_X (300)
 #define ITEMUIFRAME_Y (230)
 
 #define ITEMUI_X (180)
@@ -18,7 +18,7 @@
 
 #define ITEMUINO_SIZE (40)
 
-#define MAX_ITEMGET (1)//取得できるアイテムの桁数
+#define MAX_ITEMGET (2)//取得できるアイテムの桁数
 
 //プロトタイプ宣言
 void InitItemUI(void);
