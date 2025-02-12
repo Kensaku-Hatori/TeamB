@@ -425,7 +425,6 @@ void UpdateAction(int nCount)
 			//位置の更新
 			g_Enemy[nCount].Object.Pos += g_Enemy[nCount].move;
 
-
 			//角度の目標設定
 			g_Enemy[nCount].rotDest.y = fAngle + D3DX_PI;
 		}
