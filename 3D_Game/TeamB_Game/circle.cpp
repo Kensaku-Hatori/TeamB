@@ -86,7 +86,7 @@ void DrawCircle()
 			D3DXMatrixMultiply(&g_Circle[nCnt].mtxWorld, &g_Circle[nCnt].mtxWorld, &mtxRot);
 
 			// 位置を反映
-			D3DXMatrixTranslation(&mtxTrans, g_Circle[nCnt].pos.x, g_Circle[nCnt].pos.y, g_Circle[nCnt].pos.z);
+			D3DXMatrixTranslation(&mtxTrans, g_Circle[nCnt].pos.x, 0.0f, g_Circle[nCnt].pos.z);
 			D3DXMatrixMultiply(&g_Circle[nCnt].mtxWorld, &g_Circle[nCnt].mtxWorld, &mtxTrans);
 
 			// ワールドマトリックスの設定
@@ -129,8 +129,9 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 
 	//インデックスへのポインタ
 	WORD* pIdx = NULL;
+	int nCnt = 0;
 
-	for (int nCnt = 0; nCnt < MAX_CIRCLE; nCnt++)
+	for (nCnt = 0; nCnt < MAX_CIRCLE; nCnt++)
 	{
 		if (g_Circle[nCnt].bUse == false)
 		{
@@ -242,8 +243,8 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 
 			break;
 		}
-		return nCnt;
 	}
+		return nCnt;
 }
 
 //=========================

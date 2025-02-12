@@ -19,6 +19,7 @@
 //óUì±ç\ë¢ëÃ
 typedef struct
 {
+	D3DXVECTOR3 Destpos;
 	D3DXVECTOR3 pos;
 	D3DXVECTOR3 rot;
 	D3DXMATRIX mtxWorld;

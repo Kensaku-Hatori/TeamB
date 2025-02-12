@@ -318,6 +318,9 @@ void UpdatePlayer(void)
 		{
 			SetEnemy(D3DXVECTOR3(0.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 			SetEnemy(D3DXVECTOR3(100.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		}
+		if (KeyboardTrigger(DIK_4) == true)
+		{
 			SetItem(D3DXVECTOR3(0.0f, 0.0f, -100.0f), ITEMTYPE_HP);
 			SetItem(D3DXVECTOR3(100.0f, 0.0f, -100.0f), ITEMTYPE_MP);
 			SetItem(D3DXVECTOR3(-100.0f, 0.0f, -100.0f), ITEMTYPE_SPEED);
@@ -331,7 +334,7 @@ void UpdatePlayer(void)
 			if (g_bAbolition != true)
 			{
 				//サークルの設定処理
-				g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f), 12, 0, 20.0f, 25.0f, true, false);
+				g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.6f), 12, 0, 10.0f, 25.0f, true, false);
 
 				//全滅している状態にする
 				g_bAbolition = true;
