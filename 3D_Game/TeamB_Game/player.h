@@ -13,7 +13,7 @@
 #include "key.h"
 #include "loadmotion.h"
 
-#define PLAYER_JUMP (10)			// ジャンプ量
+#define PLAYER_JUMP (7)			// ジャンプ量
 #define PLAYER_RADIUS (3)			// プレイヤーの半径
 
 #define PLAYER_MP (500)				// MP
@@ -30,9 +30,12 @@ typedef struct
 	D3DXVECTOR3 move;				// 位置
 	D3DXVECTOR3 rot;				// 向き
 	D3DXVECTOR3 rotDest;			// 向き
+	D3DXVECTOR3 NextPosition;		// 初期位置
 	D3DXMATRIX mtxWorld;			// ワールドマトリックス
+	D3DXMATRIX mtxWand;				// 杖先のマトリックス
 	OBJECTINFO PlayerMotion;		// パーツ情報とモーション情報
-	int nIdxShadow;					// 影
+	int nIdxShadow;					// 影のインデックス
+	int nIndxCircle;				// サークルのインデックス
 	int nJump;						// ジャンプ量
 	bool bJump;						// ジャンプできるかどうか
 	bool bUse;						// 使用状況
@@ -79,5 +82,6 @@ void SetPartsInfo(LoadInfo PartsInfo);
 void PlayerMotion(MOTIONINFO *pMotionInfo);
 bool IsEnemyInsight(void);
 void EnemyDistanceSort(int EnemyCount);
+void MatrixWand(void);
 
 #endif

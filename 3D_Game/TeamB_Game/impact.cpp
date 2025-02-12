@@ -81,6 +81,7 @@ void UpdateImpact(void)
 
 			//広げる処理
 			g_Impact[ImpactCount].nLife--;
+			g_Impact[ImpactCount].col.a -= g_Impact[ImpactCount].AlphaDef;
 			g_Impact[ImpactCount].inringsize = g_Impact[ImpactCount].inringsize + g_Impact[ImpactCount].Speed;
 			g_Impact[ImpactCount].outringsize = g_Impact[ImpactCount].outringsize + g_Impact[ImpactCount].Speed;
 
@@ -95,9 +96,6 @@ void UpdateImpact(void)
 			for (int vertexcount = 0; vertexcount <= g_Impact[ImpactCount].Vertical; vertexcount++)
 			{
 				D3DXVECTOR3 MathNor;
-				D3DXCOLOR localcol;
-				localcol = g_Impact[ImpactCount].col;
-				localcol.a -= g_Impact[ImpactCount].AlphaDef * 50;
 
 				float ratioH = (-D3DX_PI * 2 / g_Impact[ImpactCount].Vertical) * vertexcount;
 
@@ -105,7 +103,7 @@ void UpdateImpact(void)
 				pVtx[nCnt].tex = D3DXVECTOR2(0.5f * vertexcount, 0.5f);
 
 				//頂点カラーの設定
-				pVtx[nCnt].col = D3DXCOLOR(localcol);
+				pVtx[nCnt].col = D3DXCOLOR(g_Impact[ImpactCount].col);
 
 				// 頂点座標の更新
 				pVtx[nCnt].pos.x = 0.0f + sinf(ratioH) * g_Impact[ImpactCount].inringsize;
@@ -127,6 +125,7 @@ void UpdateImpact(void)
 				float ratioH = (-D3DX_PI * 2 / g_Impact[ImpactCount].Vertical) * vertexcount;
 				pVtx[nCnt].tex = D3DXVECTOR2(0.5f * vertexcount, 0.5f);
 				pVtx[nCnt].col = D3DXCOLOR(g_Impact[ImpactCount].col);
+
 				// 頂点座標の更新
 				pVtx[nCnt].pos.x = 0.0f + sinf(ratioH) * g_Impact[ImpactCount].outringsize;
 				pVtx[nCnt].pos.y = 0.0f;
@@ -196,6 +195,11 @@ void DrawImpact(void)
 			//魔法なら
 			if (g_Impact[ImpactCount].nType == IMPACTTYPE_SKILL)
 			{
+				// 加算合成を設定する
+				pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+				pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+				pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+
 				pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 			}
 
@@ -232,6 +236,10 @@ void DrawImpact(void)
 			if (g_Impact[ImpactCount].nType == IMPACTTYPE_SKILL)
 			{
 				pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+
+				pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+				pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+				pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 			}
 		}
 	}
@@ -254,7 +262,7 @@ void SetImpact(IMPACTTYPE nType, D3DXVECTOR3 pos, D3DXCOLOR col, int nLife, floa
 			g_Impact[ImpactCount].nLife = nLife;
 			g_Impact[ImpactCount].nType = nType;
 			g_Impact[ImpactCount].Speed = Speed;
-			g_Impact[ImpactCount].AlphaDef = 1.0f / nLife;
+			g_Impact[ImpactCount].AlphaDef = col.a / nLife;
 			g_Impact[ImpactCount].Object.Pos = pos;
 			g_Impact[ImpactCount].Horizon = Horizon;
 			g_Impact[ImpactCount].Vertical = Vertical;

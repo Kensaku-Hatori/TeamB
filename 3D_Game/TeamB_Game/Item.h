@@ -19,10 +19,19 @@
 //テクスチャ
 static const char* ITEM_TEXTURE[NUM_ITEMTYPE] =
 {
-	"data\\TEXTURE\\item1.png",//ヒールポーション
-	"data\\TEXTURE\\item2.png",//マナポーション
+	"data\\TEXTURE\\item2.png",//ヒールポーション
+	"data\\TEXTURE\\item1.png",//マナポーション
 	"data\\TEXTURE\\item3.png"//スピードアップポーション
 };
+
+//
+typedef enum
+{
+	ITEMTYPE_HP = 0,
+	ITEMTYPE_MP,
+	ITEMTYPE_SPEED,
+	ITEMTYPE_MAX
+}ITEMTYPE;
 
 //モデル構造体
 typedef struct
@@ -31,7 +40,7 @@ typedef struct
 	D3DXVECTOR3 rot;									//向き
 	D3DXVECTOR3 size;									//直径
 	D3DXMATRIX mtxWorld;								//ワールドマトリックス
-	int type;											//種類
+	ITEMTYPE type;										//種類
 	int nCntTime;										//消えるまでのフレームカウンタ
 	int nIndexShadow;									//影のインデックス格納用
 	bool bUse;											//使用しているかどうか
@@ -43,7 +52,8 @@ void InitItem();										//初期化処理
 void UninitItem();										//終了処理
 void UpdateItem();										//更新処理
 void DrawItemBillboard();								//描画処理(ビルボード)
-void SetItem(D3DXVECTOR3 pos, int type);				//設定処理
+void SetItem(D3DXVECTOR3 pos, ITEMTYPE type);			//設定処理
 void CollisionItem(int nIndexItem);						//取得処理
+void ItemAbility(int nIndexItem);						//アイテム効果処理
 
 #endif // !_MODEL_H_

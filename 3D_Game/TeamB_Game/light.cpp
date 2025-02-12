@@ -99,3 +99,10 @@ void SetLight(D3DXVECTOR3 Dir, D3DXCOLOR Diffuse)
 		}
 	}
 }
+//*****************
+// ƒ‰ƒCƒg‚Ìæ“¾ˆ—
+//*****************
+D3DLIGHT9* GetLight()
+{
+	return &g_light[0];
+}

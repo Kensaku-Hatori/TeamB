@@ -21,6 +21,9 @@ void InitParticleEditer()
 	g_ParticleEditer.ParticleInfo.Scale = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
 	g_ParticleEditer.ParticleInfo.nLife = 100;
 	g_ParticleEditer.ParticleInfo.forlimit = 10;
+	g_ParticleEditer.ParticleInfo.speed = 10.0f;
+	g_ParticleEditer.ParticleInfo.minspeed = 1.0f;
+	g_ParticleEditer.ParticleInfo.gravity = 0.0f;
 	g_ParticleEditer.ParticleInfo.bUse = true;
 
 	SetParticle(g_ParticleEditer.ParticleInfo.Object.Pos,
@@ -29,7 +32,10 @@ void InitParticleEditer()
 		g_ParticleEditer.ParticleInfo.ntype,
 		g_ParticleEditer.ParticleInfo.Scale,
 		g_ParticleEditer.ParticleInfo.nLife,
-		g_ParticleEditer.ParticleInfo.forlimit);
+		g_ParticleEditer.ParticleInfo.forlimit,
+		10.0f,
+		1.0f,
+		1.0f);
 }
 void UpdateParticleEditer()
 {

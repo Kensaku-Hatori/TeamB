@@ -31,7 +31,7 @@ void InitUi(void)
 	InitItemUI();
 
 	InitMiniMap();
-	SetMapPlayer(1);
+	SetMapPlayer(MODE_STAGEONE);
 }
 //===========
 // I—¹ˆ—

@@ -6,6 +6,7 @@
 //================================
 
 #include "shadow.h"
+#include "light.h"
 
 //グローバル変数宣言
 LPDIRECT3DTEXTURE9 g_apTextureShadow = NULL;
@@ -85,10 +86,16 @@ void DrawShadow(void)
 		if (g_shadow[nCnt].bUse == true)
 		{
 			//計算用マトリックス
-			D3DXMATRIX mtxRot, mtxTrans;
+			D3DXMATRIX mtxRot, mtxTrans, mtxShadow;
 
 			//ワールドマトリックスの初期化
 			D3DXMatrixIdentity(&g_shadow[nCnt].mtxWorld);
+
+			//D3DLIGHT9* Light = GetLight();
+			//D3DXPLANE test = {};
+			//D3DXVECTOR4 test1 = D3DXVECTOR4(Light->Direction.x, Light->Direction.y, Light->Direction.z, 0.0f);
+			//D3DXMatrixShadow(&mtxShadow, &test1, &test);
+			//D3DXMatrixMultiply(&g_shadow[nCnt].mtxWorld, &g_shadow[nCnt].mtxWorld, &mtxShadow);
 
 			//向きを反転
 			D3DXMatrixRotationYawPitchRoll(&mtxRot, g_shadow[nCnt].rot.y, g_shadow[nCnt].rot.x, g_shadow[nCnt].rot.z);
@@ -202,10 +209,12 @@ void SetPositionShadow(int nIdxShadow, D3DXVECTOR3 pos, bool bUse)
 //=====================
 void SetSizeShadow(D3DXVECTOR3 pos, int nIndx)
 {
-	float posY = pos.y;//ユーザーの高さを格納
-	float fRadeius = 0;//半径
-	D3DXCOLOR fAlpha = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
-	VERTEX_3D* pVtx = NULL;
+	if (g_shadow[nIndx].bUse == true)
+	{
+		float posY = pos.y;//ユーザーの高さを格納
+		float fRadeius = 0;//半径
+		D3DXCOLOR fAlpha = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		VERTEX_3D* pVtx = NULL;
 
 		//posYの制限
 		if (posY <= 1.0f)
@@ -232,19 +241,20 @@ void SetSizeShadow(D3DXVECTOR3 pos, int nIndx)
 		g_shadow[nIndx].pVtxBuffShadow->Lock(0, 0, (void**)&pVtx, 0);
 
 		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(- fRadeius, 0.1f, + fRadeius);
-		pVtx[1].pos = D3DXVECTOR3(+ fRadeius, 0.1f, + fRadeius);
-		pVtx[2].pos = D3DXVECTOR3(- fRadeius, 0.1f, - fRadeius);
-		pVtx[3].pos = D3DXVECTOR3(+ fRadeius, 0.1f, - fRadeius);
+		pVtx[0].pos = D3DXVECTOR3(-fRadeius, 0.1f, +fRadeius);
+		pVtx[1].pos = D3DXVECTOR3(+fRadeius, 0.1f, +fRadeius);
+		pVtx[2].pos = D3DXVECTOR3(-fRadeius, 0.1f, -fRadeius);
+		pVtx[3].pos = D3DXVECTOR3(+fRadeius, 0.1f, -fRadeius);
 
 		//頂点カラーの設定
 		pVtx[0].col = fAlpha;
 		pVtx[1].col = fAlpha;
 		pVtx[2].col = fAlpha;
 		pVtx[3].col = fAlpha;
-		
+
 		//頂点バッファをアンロック
 		g_shadow[nIndx].pVtxBuffShadow->Unlock();
+	}
 }
 
 //=====================

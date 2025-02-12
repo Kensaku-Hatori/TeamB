@@ -146,17 +146,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="animation.cpp" />
+    <ClCompile Include="arrow.cpp" />
     <ClCompile Include="billboard.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="circle.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gauge.cpp" />
+    <ClCompile Include="guide.cpp" />
     <ClCompile Include="HPgauge.cpp" />
     <ClCompile Include="impact.cpp" />
     <ClCompile Include="input.cpp" />
+    <ClCompile Include="invisiblewall.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="itemui.cpp" />
     <ClCompile Include="light.cpp" />
@@ -189,17 +193,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h" />
+    <ClInclude Include="arrow.h" />
     <ClInclude Include="billboard.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="circle.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gauge.h" />
+    <ClInclude Include="guide.h" />
     <ClInclude Include="HPgauge.h" />
     <ClInclude Include="impact.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="invisiblewall.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="itemui.h" />
     <ClInclude Include="key.h" />

@@ -36,20 +36,24 @@ void UpdateParticle(bool bLimit)
 				D3DXVECTOR3 dir;
 				D3DXVECTOR3 dir1;
 				dir1 = g_particle[particlecount].dir * 100;
-				int speed;
+				float speed;
 				int nLife;
 				dir.x = (float)(rand() %(int)dir1.x - 314) / 100.0f;
 				dir.y = (float)(rand() %(int)dir1.y - 314) / 100.0f;
 				dir.z = (float)(rand() %(int)dir1.z - 314) / 100.0f;
 				nLife = rand() % g_particle[particlecount].nLife + 1;
-				speed = rand() % 10 + 1;
+				speed = (float)(rand() % (int)g_particle[particlecount].speed - (int)g_particle[particlecount].minspeed) / 100.0f;
+
 				SetEffect(g_particle[particlecount].Object.Pos,
 					dir,
 					nLife,
 					speed,
 					g_particle[particlecount].Scale,
 					g_particle[particlecount].col,
-					g_particle[particlecount].EffectnType);
+					g_particle[particlecount].EffectnType,
+					0,
+					g_particle[particlecount].gravity,
+					D3DXVECTOR3(0.0f,0.0f,0.0f));
 			}
 			if (bLimit == true)
 			{
@@ -61,7 +65,7 @@ void UpdateParticle(bool bLimit)
 //***********************
 // パーティクルの設定処理
 //***********************
-void SetParticle(D3DXVECTOR3 pos, D3DXVECTOR3 fAngle, D3DXCOLOR col, PARTICLETYPE ntype, D3DXVECTOR3 scale,int nLife,int forlimit)
+void SetParticle(D3DXVECTOR3 pos, D3DXVECTOR3 fAngle, D3DXCOLOR col, PARTICLETYPE ntype, D3DXVECTOR3 scale,int nLife,int forlimit,float speed,float minspeed,float gravity)
 {
 	for (int particlecount = 0; particlecount < MAX_PARTICLE; particlecount++)
 	{
@@ -75,6 +79,9 @@ void SetParticle(D3DXVECTOR3 pos, D3DXVECTOR3 fAngle, D3DXCOLOR col, PARTICLETYP
 			g_particle[particlecount].Scale = scale;
 			g_particle[particlecount].nLife = nLife;
 			g_particle[particlecount].forlimit = forlimit;
+			g_particle[particlecount].speed = speed;
+			g_particle[particlecount].minspeed = minspeed;
+			g_particle[particlecount].gravity = gravity;
 
 			break;
 		}

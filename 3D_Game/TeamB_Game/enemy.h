@@ -23,8 +23,11 @@
 #define ENEMY_AP (float)(10)			// 攻撃力
 
 // 行動の距離
-#define ATTACK_DIST (float)(20.0f)		// 攻撃
+#define ATTACK_DIST (float)(50.0f)		// 攻撃
 #define HOMING_DIST (float)(100.0f)		// ホーミング
+
+//フレーム
+#define ATTACK_FREAM (180)				// 攻撃
 
 //移動量
 #define HOMING_MOVE (float)(0.2f)		// ホーミング
@@ -82,6 +85,7 @@ typedef struct
 	int IndxShadow;
 	int nActionCount,nActionCounter;
 	int statecount;
+	float ShadowRadius;
 	float ModelMinX, ModelMaxX;
 	float Radius;
 	bool bUse;

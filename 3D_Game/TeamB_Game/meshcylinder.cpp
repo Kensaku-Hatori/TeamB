@@ -4,10 +4,13 @@
 // Author:kaiti
 //
 //==============================================
+
 #include "meshcylinder.h"
+
 //グローバル変数宣言
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffMeshCylinder = NULL;
 LPDIRECT3DTEXTURE9 g_pTextureMeshCylinder = NULL;
+
 //インデックスバッファへのポインタ
 LPDIRECT3DINDEXBUFFER9 g_pIdxBuffMeshCylinder = NULL;
 
@@ -20,9 +23,8 @@ D3DXMATRIX g_mtxWorldMeshCylinder;//ワールドマトリックス
 //=================================
 void InitMeshCylinder(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	g_posMeshCylinder = D3DXVECTOR3(0.0f, -500.0f, 0.0f);
 	g_rotMeshCylinder = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -72,6 +74,7 @@ void InitMeshCylinder(void)
 
 			//頂点カラーの設定
 			pVtx[index].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
+
 			//テクスチャ座標の設定
 			pVtx[index].tex = D3DXVECTOR2((1.0f / MESHCYLINDERVTX_X) * nCntH, (1.0f / MESHCYLINDERVTX_Z) * nCntV);
 
@@ -100,13 +103,14 @@ void InitMeshCylinder(void)
 		if (nCntZ < MESHCYLINDERVTX_Z - 1)
 		{
 			pIdx[0] = (nCntX - 1) + (nCntZ * (MESHCYLINDERVTX_X + 1));
-			pIdx[1] = (nCntX - 1) + (nCntZ * (MESHCYLINDERVTX_X + 1)) + (MESHCYLINDERVTX_X + 2) * (nCntZ + 1);
+			pIdx[1] = nCntX + ((nCntZ + 1) * (MESHCYLINDERVTX_X + 1));
 
 			pIdx += 2;
 		}
 	}
 
-	////インデックスの設定(円柱)
+	////インデックスの設定(円柱)			
+
 	//pIdx[0] = 9;
 	//pIdx[1] = 0;
 	//

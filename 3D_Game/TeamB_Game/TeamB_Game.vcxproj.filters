@@ -42,6 +42,10 @@
     <ClCompile Include="wave.cpp" />
     <ClCompile Include="impact.cpp" />
     <ClCompile Include="HPgauge.cpp" />
+    <ClCompile Include="invisiblewall.cpp" />
+    <ClCompile Include="guide.cpp" />
+    <ClCompile Include="circle.cpp" />
+    <ClCompile Include="arrow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h" />
@@ -88,5 +92,9 @@
     <ClInclude Include="wave.h" />
     <ClInclude Include="impact.h" />
     <ClInclude Include="HPgauge.h" />
+    <ClInclude Include="invisiblewall.h" />
+    <ClInclude Include="guide.h" />
+    <ClInclude Include="circle.h" />
+    <ClInclude Include="arrow.h" />
   </ItemGroup>
 </Project>

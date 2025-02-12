@@ -20,7 +20,6 @@
 #include "fade.h"
 #include "pause.h"
 //#include "sound.h"
-//#include "enemy.h"
 #include "particle.h"
 #include "skill.h"
 #include "ui.h"
@@ -32,6 +31,9 @@
 #include "loadmotion.h"
 #include "wave.h"
 #include "impact.h"
+#include "invisiblewall.h"
+#include "Item.h"
+#include "circle.h"
 
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -46,6 +48,9 @@ void InitGame(void)
 	MODE Mode = GetMode();
 	//メッシュフィールドの初期化
 	InitMeshfield();
+
+	//サークルの初期化
+	InitCircle();
 
 	//影の初期化
 	InitShadow();
@@ -82,6 +87,9 @@ void InitGame(void)
 
 	//メッシュ壁の初期化
 	InitMeshWall();
+
+	//アイテム初期化
+	InitItem();
 	
 	//カメラの初期化
 	InitCamera();
@@ -110,6 +118,11 @@ void InitGame(void)
 	//ウェーブの読込処理
 	LoadWave();
 
+	// 見えない壁の初期化処理
+	InitInvisibleWall();
+
+	SetItem(D3DXVECTOR3(0.0f, 0.0f, -100.0f), ITEMTYPE_HP);
+
 	//各初期化
 	g_gamestate = GAMESTATE_NORMAL;		//ゲームステート
 	g_nCounterGameState = 0;			//ステートカウンター
@@ -123,25 +136,34 @@ void InitGame(void)
 //===========
 void UninitGame(void)
 {
+	//ポーズの終了処理
 	UninitPause();
 
+	//メッシュフィールドの終了処理
+	UninitMeshfield();
+
+	//サークルの終了処理
+	UninitCircle();
+
+	//影の終了処理
 	UninitShadow();
 
+	//衝撃波の終了処理
 	UninitImpact();
 
+	//プレイヤーの終了処理
 	UninitPlayer();
 
+	//敵の終了処理
 	UninitEnemy();
 
-	//UninitEnemy();
-
+	//魔法の終了処理
 	UninitSkill();
 
+	//エフェクトの終了処理
 	UninitEffect();
 
 	//UninitBlock();
-
-	UninitMeshfield();
 
 	//UninitExplosion();
 
@@ -149,14 +171,22 @@ void UninitGame(void)
 
 	//UninitWall();
 
+	//メッシュ壁の終了処理
 	UninitMeshWall();
 
+	//アイテムの終了処理
+	UninitItem();
+
+	//カメラの終了処理
 	UninitCamera();
 
+	//ライトの終了処理
 	UninitLight();
 
+	//UIの終了処理
 	UninitUi();
 
+	//ステージの終了処理
 	UninitStageModel();
 }
 
@@ -182,6 +212,9 @@ void UpdateGame(void)
 			//メッシュフィールドの更新処理
 			UpdateMeshfield();
 
+			//サークルの更新処理
+			UpdateCircle();
+
 			//影の更新処理
 			UpdateShadow();
 
@@ -190,6 +223,9 @@ void UpdateGame(void)
 
 			//プレイヤーの更新処理
 			UpdatePlayer();
+
+			// 見えない壁の更新処理
+			UpdateInvisibleWall();
 
 			//敵の更新処理
 			UpdateEnemy();
@@ -229,6 +265,9 @@ void UpdateGame(void)
 			//メッシュ壁の更新処理
 			UpdateMeshWall();
 
+			//アイテムの更新
+			UpdateItem();
+
 			//カメラの更新処理
 			UpdateCamera();
 
@@ -243,12 +282,7 @@ void UpdateGame(void)
 
 			//敵の数を取得する
 			int* NumEnemy = GetNumEnemy();
-
-			//敵を全て倒しているなら
-			if (*(NumEnemy) <= 0)
-			{
-				//LoadWave();
-			}
+			Player* pPlayer = GetPlayer();
 
 			//全てのwaveが終わったなら
 			if (GetFinish() == true)
@@ -353,6 +387,9 @@ void DrawGame(void)
 	//エフェクトの描画処理
 	DrawEffect();
 
+	//アイテムの描画処理
+	DrawItemBillboard();
+
 	//エディターではないなら
 	if (g_gamestate != GAMESTATE_EFFECTEDITER)
 	{
@@ -368,6 +405,9 @@ void DrawGame(void)
 		//衝撃波の描画処理
 		DrawImpact();
 	}
+
+	//サークルの描画処理
+	DrawCircle();
 
 	//ポーズしているなら
 	if (g_bPause == true)
