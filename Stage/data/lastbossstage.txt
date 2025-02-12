@@ -469,9 +469,9 @@ BILLBOARDSET
 	TEXTYPE = 11
 	POS = -250 140 -250
 	SIZE = 50 50
-	ORIGIN = 50 0
+	ORIGIN = 0 0
 	SHADOW = 0
-	ANIM = 1 8 5
+	ANIM = 6 8 18
 END_BILLBOARDSET
 
 #------------------------------------------------------------------------------
