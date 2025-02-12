@@ -318,6 +318,9 @@ void UpdatePlayer(void)
 		{
 			SetEnemy(D3DXVECTOR3(0.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 			SetEnemy(D3DXVECTOR3(100.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		}
+		if (KeyboardTrigger(DIK_4) == true)
+		{
 			SetItem(D3DXVECTOR3(0.0f, 0.0f, -100.0f), ITEMTYPE_HP);
 			SetItem(D3DXVECTOR3(100.0f, 0.0f, -100.0f), ITEMTYPE_MP);
 			SetItem(D3DXVECTOR3(-100.0f, 0.0f, -100.0f), ITEMTYPE_SPEED);
