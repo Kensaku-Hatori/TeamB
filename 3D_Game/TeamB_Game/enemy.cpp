@@ -453,8 +453,10 @@ void UpdateAction(int nCount)
 		g_Enemy[nCount].ActionType = ENEMYACTION_WELL;
 		//g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_NEUTRAL;
 		//g_Enemy[nCount].pMotion = MOTIONTYPE_NEUTRAL;
-		SetMotion(MOTIONTYPE_NEUTRAL, &g_Enemy[nCount].EnemyMotion);
-
+		if (g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_NEUTRAL)
+		{
+			SetMotion(MOTIONTYPE_NEUTRAL, &g_Enemy[nCount].EnemyMotion);
+		}
 	}
 }
 
