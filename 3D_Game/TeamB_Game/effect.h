@@ -16,7 +16,6 @@
 #define MAX_SMOKEANIM (8)
 #define SMOKEANIMSPEED (20)
 #define MAX_SMOKELENGTH (float)(2)
-#define SKILL_COL (D3DXCOLOR(0.25f,0.45f,1.0f,1.0f)
 
 typedef enum
 {

@@ -212,6 +212,14 @@ void UpdatePlayer(void)
 			if (g_player.bJump == false)
 			{
 				SetMotion(MOTIONTYPE_JUMP, &g_player.PlayerMotion);
+
+				g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_LANDING].ActionFrameInfo[0].bActionStart = false;
+				g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_LANDING].ActionFrameInfo[0].bFirst = false;
+				g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_LANDING].ActionFrameInfo[0].nStartKey = 0;
+				g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_LANDING].ActionFrameInfo[0].nEndKey = 0;
+				g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_LANDING].ActionFrameInfo[0].nStartFrame = 1;
+				g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_LANDING].ActionFrameInfo[0].nEndFrame = 2;
+
 				g_player.bJump = true;
 				g_player.move.y += g_player.nJump;
 			}
@@ -461,6 +469,19 @@ void PlayerMove(void)
 	Camera* pCamera;
 	pCamera = GetCamera();
 
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].bActionStart = false;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].bFirst = false;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].nStartKey = 1;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].nEndKey = 1;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].nStartFrame = 1;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].nEndFrame = 2;
+
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[1].bActionStart = false;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[1].bFirst = false;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[1].nStartKey = 3;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[1].nEndKey = 3;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[1].nStartFrame = 1;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[1].nEndFrame = 2;
 
 	//à⁄ìÆ
 	//ç∂

@@ -270,7 +270,7 @@ void DrawEffect(void)
 
 			if (g_effect[effectcount].ntype == EFFECT_SKILLFLASH || g_effect[effectcount].ntype == EFFECT_MAGICCIRCLE)
 			{
-				// ˆÊ’u‚ð”½‰f
+				// Œü‚«‚ð”½‰f
 				D3DXMatrixRotationYawPitchRoll(&mtxRot, g_effect[effectcount].Object.Rot.y, g_effect[effectcount].Object.Rot.x, g_effect[effectcount].Object.Rot.z);
 				D3DXMatrixMultiply(&g_effect[effectcount].Object.mtxWorld, &g_effect[effectcount].Object.mtxWorld, &mtxRot);
 
@@ -389,7 +389,7 @@ void SetSkillParticle(EFFECTTYPE nType, int Indx, D3DXVECTOR3 StartPos, D3DXVECT
 		EffectPos = EffectPos / (float)Limit * (float)EffectCount;
 
 		SetParticle(StartPos + EffectPos,
-			D3DXVECTOR3(314.0f, 314.0f, 314.0f),
+			D3DXVECTOR3(628.0f, 628.0f, 628.0f),
 			D3DXCOLOR(0.25f, 0.45f, 1.0f, 1.0f),
 			PARTICLE_NONE,
 			D3DXVECTOR3(1.0f, 1.0f, 1.0f),
@@ -397,7 +397,8 @@ void SetSkillParticle(EFFECTTYPE nType, int Indx, D3DXVECTOR3 StartPos, D3DXVECT
 			5,
 			50.0f,
 			40.0f,
-			0.01f);
+			0.01f,
+			EFFECT_NONE);
 	}
 	SetParticle(EndPos,
 		D3DXVECTOR3(628.0f, 628.0f, 628.0f),
@@ -408,5 +409,6 @@ void SetSkillParticle(EFFECTTYPE nType, int Indx, D3DXVECTOR3 StartPos, D3DXVECT
 		300,
 		100.0f,
 		100.0f,
-		0.05f);
+		0.0f,
+		EFFECT_NONE);
 }

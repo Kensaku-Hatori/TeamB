@@ -353,7 +353,19 @@ void DeadEnemy(int Indx)
 	g_Enemy[Indx].bUse = false;
 	g_nNumEnemy--;
 	SetPositionShadow(g_Enemy[Indx].IndxShadow,g_Enemy[Indx].Object.Pos,g_Enemy[Indx].bUse);
-	SetParticle(g_Enemy[Indx].Object.Pos, D3DXVECTOR3(100.0f, 100.0f, 100.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), PARTICLE_NONE, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 100, 50, 2.0f,2.0f,1.0f);
+
+	SetParticle(g_Enemy[Indx].Object.Pos, 
+		D3DXVECTOR3(100.0f, 100.0f, 100.0f), 
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		PARTICLE_NONE, 
+		D3DXVECTOR3(0.0f, 0.0f, 0.0f), 
+		100,
+		50,
+		2.0f,
+		2.0f,
+		1.0f,
+		EFFECT_NONE);
+
 	//ƒƒbƒNƒIƒ“‰ðœ
 	if (pPlayer->bLockOn == true)
 	{
