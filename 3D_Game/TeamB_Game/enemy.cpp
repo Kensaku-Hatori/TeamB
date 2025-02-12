@@ -417,8 +417,6 @@ void UpdateAction(int nCount)
 			g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_MOVE;//‘½•ª‚±‚ê‚µ‚©‹@”\‚µ‚Ä‚¢‚È‚¢
 			g_Enemy[nCount].EnemyMotion.motionTypeBlend = MOTIONTYPE_NEUTRAL;
 			g_Enemy[nCount].EnemyMotion.nFrameBlend = 10.0f;
-			g_Enemy[nCount].EnemyMotion.nKey = 0;
-			g_Enemy[nCount].EnemyMotion.NextKey = 1;
 
 			//ˆÚ“®—Ê‚Ìİ’è
 			g_Enemy[nCount].move.x = sinf(fAngle) * HOMING_MOVE;

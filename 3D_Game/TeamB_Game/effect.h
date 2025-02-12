@@ -53,7 +53,7 @@ static const char* EFFECTTEX[EFFECT_MAX] =
 	"data\\TEXTURE\\smoke000.png",
 	"data\\TEXTURE\\effect000.jpg",
 	"data\\TEXTURE\\effect000.jpg",
-	"data\\TEXTURE\\magiccircle00.png",
+	"data\\TEXTURE\\magiccircle.png",
 };
 
 //*****************
