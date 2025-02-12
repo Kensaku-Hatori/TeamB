@@ -24,6 +24,7 @@ typedef enum
 	EFFECT_SMOKE,
 	EFFECT_SKILL,
 	EFFECT_SKILLFLASH,
+	EFFECT_MAGICCIRCLE,
 	EFFECT_MAX
 }EFFECTTYPE;
 
@@ -52,6 +53,7 @@ static const char* EFFECTTEX[EFFECT_MAX] =
 	"data\\TEXTURE\\smoke000.png",
 	"data\\TEXTURE\\effect000.jpg",
 	"data\\TEXTURE\\effect000.jpg",
+	"data\\TEXTURE\\magiccircle.png",
 };
 
 //*****************

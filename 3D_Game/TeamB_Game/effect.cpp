@@ -11,6 +11,7 @@
 //*************
 #include "effect.h"
 #include "particle.h"
+#include "player.h"
 
 
 //***************
@@ -138,7 +139,10 @@ void UpdateEffect(void)
 	{
 		if (g_effect[effectcount].bUse == true)
 		{
-			g_effect[effectcount].col -= g_effect[effectcount].colordiff;
+			if (g_effect[effectcount].ntype != EFFECT_MAGICCIRCLE)
+			{
+				g_effect[effectcount].col -= g_effect[effectcount].colordiff;
+			}
 			if (g_effect[effectcount].ntype == EFFECT_SMOKE)
 			{
 				g_effect[effectcount].AnimCount++;
@@ -157,6 +161,24 @@ void UpdateEffect(void)
 				pVtx[1].tex = D3DXVECTOR2(0.125f + g_effect[effectcount].Anim * 0.125f, 0.0f);
 				pVtx[2].tex = D3DXVECTOR2(0.0f + g_effect[effectcount].Anim * 0.125f, 1.0f);
 				pVtx[3].tex = D3DXVECTOR2(0.125f + g_effect[effectcount].Anim * 0.125f, 1.0f);
+			}
+			else if (g_effect[effectcount].ntype == EFFECT_MAGICCIRCLE)
+			{
+				Player* pPLayer = GetPlayer();
+				if (g_effect[effectcount].Object.Rot.y - pPLayer->rot.y <= D3DX_PI * 2.0f)
+				{
+					g_effect[effectcount].Object.Rot.y += 0.1f;
+				}
+				else
+				{
+					g_effect[effectcount].colordiff.a = 1.0f / g_effect[effectcount].nLife;
+					g_effect[effectcount].col -= g_effect[effectcount].colordiff;
+				}
+				if (g_effect[effectcount].Scale.x <= 7.0f)
+				{
+					g_effect[effectcount].Scale.x += 0.1f;
+					g_effect[effectcount].Scale.y += 0.1f;
+				}
 			}
 			else
 			{
@@ -213,7 +235,7 @@ void DrawEffect(void)
 	{
 		if (g_effect[effectcount].bUse == true)
 		{
-			if (g_effect[effectcount].ntype != EFFECT_SMOKE)
+			if (g_effect[effectcount].ntype != EFFECT_SMOKE && g_effect[effectcount].ntype != EFFECT_MAGICCIRCLE)
 			{
 				// â¡éZçáê¨Çê›íËÇ∑ÇÈ
 				pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
@@ -228,7 +250,7 @@ void DrawEffect(void)
 			D3DXMATRIX mtxView;
 			pDevice->GetTransform(D3DTS_VIEW, &mtxView);
 
-			if (g_effect[effectcount].ntype != EFFECT_SKILLFLASH)
+			if (g_effect[effectcount].ntype != EFFECT_SKILLFLASH && g_effect[effectcount].ntype != EFFECT_MAGICCIRCLE)
 			{
 				// ÉJÉÅÉâÇÃãtçsóÒÇê›íË
 				g_effect[effectcount].Object.mtxWorld._11 = mtxView._11;
@@ -246,7 +268,7 @@ void DrawEffect(void)
 			D3DXMatrixScaling(&mtxScale, g_effect[effectcount].Scale.x, g_effect[effectcount].Scale.y, g_effect[effectcount].Scale.z);
 			D3DXMatrixMultiply(&g_effect[effectcount].Object.mtxWorld, &g_effect[effectcount].Object.mtxWorld, &mtxScale);
 
-			if (g_effect[effectcount].ntype == EFFECT_SKILLFLASH)
+			if (g_effect[effectcount].ntype == EFFECT_SKILLFLASH || g_effect[effectcount].ntype == EFFECT_MAGICCIRCLE)
 			{
 				// à íuÇîΩâf
 				D3DXMatrixRotationYawPitchRoll(&mtxRot, g_effect[effectcount].Object.Rot.y, g_effect[effectcount].Object.Rot.x, g_effect[effectcount].Object.Rot.z);

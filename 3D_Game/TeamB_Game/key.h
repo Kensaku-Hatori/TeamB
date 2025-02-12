@@ -3,7 +3,7 @@
 
 #define MAX_KEY (10)
 #define MAX_MOTION (5)
-#define MAX_ACTIONDIRECTION (2)
+#define MAX_ACTIONDIRECTION (3)
 
 #include "main.h"
 #include "model.h"
