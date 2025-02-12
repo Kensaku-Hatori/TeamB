@@ -131,7 +131,7 @@ void UpdateEnemy(void)
 		if (g_Enemy[EnemyCount].bUse == true)
 		{
 			//行動の更新
-			UpdateAction(0);
+			UpdateAction(EnemyCount);
 
 			//移動量の更新(減衰)
 			g_Enemy[EnemyCount].move.x = (0.0f - g_Enemy[EnemyCount].move.x) * 0.1f;
