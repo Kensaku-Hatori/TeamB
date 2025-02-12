@@ -10,6 +10,9 @@
 
 #include "main.h"
 
+//マクロ定義
+#define ARROW_TEX "data\\TEXTURE\\sirusi.png"//矢印のテクスチャパス
+
 //arrow
 typedef struct
 {
@@ -17,6 +20,7 @@ typedef struct
 	D3DXVECTOR3 rot;
 	D3DXMATRIX mtxWorld;
 	LPDIRECT3DVERTEXBUFFER9 VtxBuff;
+	LPDIRECT3DTEXTURE9 tex;
 	float fHeight;
 	float fWidth;
 	float fRadius;
