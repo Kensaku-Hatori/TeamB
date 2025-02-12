@@ -17,11 +17,12 @@ void InitArrow()
 {
 	g_Arrow.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_Arrow.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	g_Arrow.VtxBuff = { NULL };
+	g_Arrow.tex = { NULL };
 	g_Arrow.fHeight = 0.0;
 	g_Arrow.fWidth = 0.0f;
 	g_Arrow.fRadius = 0.0f;
 	g_Arrow.bUse = false;
-
 }
 
 //===================
@@ -29,6 +30,14 @@ void InitArrow()
 //===================
 void UninitArrow()
 {
+	//テクスチャの破棄
+	if (g_Arrow.tex != NULL)
+	{
+		g_Arrow.tex->Release();
+		g_Arrow.tex = NULL;
+	}
+
+	//頂点バッファの破棄
 	if (g_Arrow.VtxBuff != NULL)
 	{
 		g_Arrow.VtxBuff->Release();
@@ -96,6 +105,8 @@ void SetArrow(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float fWidth, float fHeight, flo
 	//頂点情報へのポインタ
 	VERTEX_3D* pVtx = NULL;
 
+	HRESULT hresult;
+
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 4,
 		D3DUSAGE_WRITEONLY,
@@ -103,6 +114,16 @@ void SetArrow(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float fWidth, float fHeight, flo
 		D3DPOOL_MANAGED,
 		&g_Arrow.VtxBuff,
 		NULL);
+
+	//テクスチャの読込
+	hresult = D3DXCreateTextureFromFile(pDevice,
+		ARROW_TEX,
+		&g_Arrow.tex);
+
+	if (FAILED(hresult))
+	{
+		return;
+	}
 
 	//各種設定
 	g_Arrow.pos = pos;

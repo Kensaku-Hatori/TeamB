@@ -334,7 +334,7 @@ void UpdatePlayer(void)
 			if (g_bAbolition != true)
 			{
 				//サークルの設定処理
-				g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f), 12, 0, 20.0f, 25.0f, true, false);
+				g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.6f), 12, 0, 10.0f, 25.0f, true, false);
 
 				//全滅している状態にする
 				g_bAbolition = true;
