@@ -140,7 +140,7 @@ void DrawArrow()
 //===================
 //矢印の設定処理
 //===================
-void SetArrow(D3DXVECTOR3 DestPos, D3DXVECTOR3 pos, D3DXCOLOR col, float fWidth, float fHeight, float fRadius, bool bAnim)
+void SetArrow(D3DXVECTOR3 DestPos, D3DXVECTOR3 pos, D3DXCOLOR col, float fWidth, float fHeight, float fRadius, bool bGradation, bool bAnim)
 {
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
@@ -221,6 +221,13 @@ void SetArrow(D3DXVECTOR3 DestPos, D3DXVECTOR3 pos, D3DXCOLOR col, float fWidth,
 		pVtx[1].col = g_Arrow.col;
 		pVtx[2].col = g_Arrow.col;
 		pVtx[3].col = g_Arrow.col;
+
+		if (bGradation == true)
+		{
+			D3DXCOLOR colBottom = D3DCOLOR_RGBA(255, 255, 50, 204);
+			pVtx[2].col = colBottom;
+			pVtx[3].col = colBottom;
+		}
 
 		//テクスチャの設定
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
