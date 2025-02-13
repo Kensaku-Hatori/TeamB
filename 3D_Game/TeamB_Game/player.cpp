@@ -208,7 +208,7 @@ void UpdatePlayer(void)
 		}
 
 		//ƒWƒƒƒ“ƒv
-		if ((KeyboardTrigger(DIK_SPACE) == true || GetJoypadTrigger(JOYKEY_A) == true))
+		if ((KeyboardTrigger(DIK_SPACE) == true || GetJoypadTrigger(JOYKEY_A) == true) && g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION)
 		{// SPACE
 			if (g_player.bJump == false)
 			{
