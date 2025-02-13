@@ -14,17 +14,17 @@ NUM_MODEL = 11
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/Kinight/00_body.x		# [0]体
-MODEL_FILENAME = data/MODEL/Kinight/01_head.x		# [1]頭
-MODEL_FILENAME = data/MODEL/Kinight/02_armR.x		# [2]右腕
-MODEL_FILENAME = data/MODEL/Kinight/03_handR.x		# [3]右手
-MODEL_FILENAME = data/MODEL/Kinight/04_armL.x		# [4]左腕
-MODEL_FILENAME = data/MODEL/Kinight/05_handL.x		# [5]左手
-MODEL_FILENAME = data/MODEL/Kinight/06_legR.x		# [6]右腿
-MODEL_FILENAME = data/MODEL/Kinight/07_foorR.x		# [7]右足
-MODEL_FILENAME = data/MODEL/Kinight/08_legL.x		# [8]左腿
-MODEL_FILENAME = data/MODEL/Kinight/09_foorL.x		# [9]左足
-MODEL_FILENAME = data/MODEL/Kinight/10_sword.x		# [10]剣
+MODEL_FILENAME = data/MODEL/Knight/00_body.x		# [0]体
+MODEL_FILENAME = data/MODEL/Knight/01_head.x		# [1]頭
+MODEL_FILENAME = data/MODEL/Knight/02_armR.x		# [2]右腕
+MODEL_FILENAME = data/MODEL/Knight/03_handR.x		# [3]右手
+MODEL_FILENAME = data/MODEL/Knight/04_armL.x		# [4]左腕
+MODEL_FILENAME = data/MODEL/Knight/05_handL.x		# [5]左手
+MODEL_FILENAME = data/MODEL/Knight/06_legR.x		# [6]右腿
+MODEL_FILENAME = data/MODEL/Knight/07_foorR.x		# [7]右足
+MODEL_FILENAME = data/MODEL/Knight/08_legL.x		# [8]左腿
+MODEL_FILENAME = data/MODEL/Knight/09_foorL.x		# [9]左足
+MODEL_FILENAME = data/MODEL/Knight/10_sword.x		# [10]剣
                             
 #------------------------------------------------------------------------------
 # キャラクター情報
@@ -714,7 +714,7 @@ END_MOTIONSET
 # [2] アクションモーション
 #========================================
 MOTIONSET
-	LOOP = 1		# ループするかどうか[0:ループしない / 1:ループする]
+	LOOP = 0		# ループするかどうか[0:ループしない / 1:ループする]
 	NUM_KEY = 7		# キー数
 
 	KEYSET			# --- << KEY : 0 / 7 >> ---
