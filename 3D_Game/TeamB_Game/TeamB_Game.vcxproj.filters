@@ -60,7 +60,6 @@
     <ClInclude Include="effect.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="explosion.h" />
-    <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gauge.h" />
     <ClInclude Include="HPgauge.h" />
@@ -100,10 +99,16 @@
     <ClInclude Include="ui.h" />
     <ClInclude Include="wall.h" />
     <ClInclude Include="wave.h" />
+    <ClInclude Include="fade.h">
+      <Filter>test2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="test">
       <UniqueIdentifier>{7a423465-15df-4cb7-b715-894f95a76322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test2">
+      <UniqueIdentifier>{abc085ba-7bf9-4986-9768-4a5569676033}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -15,7 +15,7 @@ LPDIRECT3DTEXTURE9 g_apTextureBiillboard[MAX_TEX_FIELD] = {	NULL };
 Biillboard g_Biillboard[MAX_BILLBOARD];
 
 //=========================
-// ビルボードの初期化処理
+// ビルボードの初期化処理^^
 //=========================
 void InitBiillboard(void)
 {
