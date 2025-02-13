@@ -11,6 +11,8 @@
 #include "fade.h"
 //#include "tutorial.h"
 #include "sound.h"
+#include "player.h"
+
 #define MAX_TEXTURE (3)
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTexturetitleinfo[MAX_TEXTURE] = {};
@@ -159,6 +161,8 @@ void UpdateTitleInfo(void)
 	FADE g_fade;
 	g_fade = GetFade();
 
+	Player* pPlayer = GetPlayer();
+
 	VERTEX_2D* pVtx;
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBufftitleinfo->Lock(0, 0, (void**)&pVtx, 0);
@@ -263,6 +267,7 @@ void UpdateTitleInfo(void)
 			if (g_titleinfoMenu == TITLE_START)
 			{	//STARTにいる場合
 				SetFade(MODE_STAGEONE);
+				pPlayer->bfirst = true;
 			}
 			else if (g_titleinfoMenu == TITLE_RANK)
 			{	//RANKにいる場合

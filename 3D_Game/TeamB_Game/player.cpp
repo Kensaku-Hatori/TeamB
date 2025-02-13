@@ -33,7 +33,6 @@ D3DXVECTOR3 g_vtxMinPlayer;//プレイヤーの最小値
 D3DXVECTOR3 g_vtxMaxPlayer;//プレイヤーの最大値
 
 int g_nCntHealMP;
-bool bfirst = true;
 bool g_bAbolition = false;//全滅フラグ
 
 //=====================
@@ -45,14 +44,19 @@ void InitPlayer(void)
 	//デバイスの取得
 	pDevice = GetDevice();
 
-	if (bfirst == false)
+	if (g_player.bfirst == false)
 	{
 		g_player.pos = g_player.NextPosition;
 	}
 	else
 	{
-		bfirst = false;
+		g_player.bfirst = false;
 		g_player.pos = D3DXVECTOR3(0.0f,0.0f,100.0f);
+		//基礎ステータス
+		g_player.Status.fHP = PLAYER_HP;
+		g_player.Status.nMP = PLAYER_MP;
+		g_player.Status.fPower = PLAYER_AP;
+		g_player.Status.fSpeed = PLAYER_SPEED;
 	}
 	g_player.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -71,12 +75,6 @@ void InitPlayer(void)
 	g_player.nCntMotion = 0;	//モーションカウンター
 	g_player.nKey = 0;			//現在のキーNo
 	g_player.nNumModel = 13;	//パーツの総数
-
-	//基礎ステータス
-	g_player.Status.fHP = PLAYER_HP;
-	g_player.Status.nMP = PLAYER_MP;
-	g_player.Status.fPower = PLAYER_MP;
-	g_player.Status.fSpeed = PLAYER_SPEED;
 
 	//ロックオン関連
 	g_player.bLockOn = false;

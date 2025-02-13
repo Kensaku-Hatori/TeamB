@@ -9,6 +9,8 @@
 #include "input.h"
 #include "fade.h"
 #include "sound.h"
+#include "player.h"
+
 #define MAX_TEXTURE (4)
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTexturePause[MAX_TEXTURE] = {};
@@ -122,7 +124,9 @@ void UpdatePause(void)
 {
 	FADE g_fade;
 	g_fade = GetFade();
-	
+
+	Player* pPlayer = GetPlayer();
+
 	VERTEX_2D* pVtx;
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffPause->Lock(0, 0, (void**)&pVtx, 0);
@@ -224,6 +228,7 @@ void UpdatePause(void)
 			else if (g_pauseMenu == PAUSE_MENU_RETRY)
 			{	//RETRYにいる場合
 				SetFade(MODE_STAGEONE);
+				pPlayer->bfirst = true;
 			}
 			else if (g_pauseMenu == PAUSE_MENU_QUIT)
 			{	//QUITにいる場合
