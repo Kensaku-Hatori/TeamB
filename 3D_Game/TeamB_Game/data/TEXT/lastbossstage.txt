@@ -482,6 +482,17 @@ PLAYERSET
 	ROT = 0 0 0
 END_PLAYERSET
 
+PLAYERSET
+	MOTION_FILENAME = data/MOTION/KNIGHT/motion.txt
+	POS = 0 100 0
+	ROT = 0 0 0
+END_PLAYERSET
+PLAYERSET
+	MOTION_FILENAME = data/MOTION/BOSS/motion.txt
+	POS = 0 100 0
+	ROT = 0 0 0
+END_PLAYERSET
+
 #------------------------------------------------------------------------------
 # ëêîzíuèÓïÒ
 #------------------------------------------------------------------------------

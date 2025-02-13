@@ -16,9 +16,6 @@
     <ClCompile Include="circle.cpp">
       <Filter>.cpp</Filter>
     </ClCompile>
-    <ClCompile Include="enemy.cpp">
-      <Filter>.cpp</Filter>
-    </ClCompile>
     <ClCompile Include="explosion.cpp">
       <Filter>.cpp</Filter>
     </ClCompile>
@@ -35,12 +32,6 @@
       <Filter>.cpp</Filter>
     </ClCompile>
     <ClCompile Include="light.cpp">
-      <Filter>.cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="model.cpp">
-      <Filter>.cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="player.cpp">
       <Filter>.cpp</Filter>
     </ClCompile>
     <ClCompile Include="polygon.cpp">
@@ -133,6 +124,18 @@
     <ClCompile Include="timer.cpp">
       <Filter>.cpp\UI</Filter>
     </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>.cpp\MODEL</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>.cpp\MODEL</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>.cpp\MODEL</Filter>
+    </ClCompile>
+    <ClCompile Include="boss.cpp">
+      <Filter>.cpp\MODEL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h">
@@ -148,9 +151,6 @@
       <Filter>.h</Filter>
     </ClInclude>
     <ClInclude Include="circle.h">
-      <Filter>.h</Filter>
-    </ClInclude>
-    <ClInclude Include="enemy.h">
       <Filter>.h</Filter>
     </ClInclude>
     <ClInclude Include="explosion.h">
@@ -172,15 +172,6 @@
       <Filter>.h</Filter>
     </ClInclude>
     <ClInclude Include="light.h">
-      <Filter>.h</Filter>
-    </ClInclude>
-    <ClInclude Include="model.h">
-      <Filter>.h</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>.h</Filter>
-    </ClInclude>
-    <ClInclude Include="player.h">
       <Filter>.h</Filter>
     </ClInclude>
     <ClInclude Include="polygon.h">
@@ -276,6 +267,21 @@
     <ClInclude Include="ui.h">
       <Filter>.h\UI</Filter>
     </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>.h\MODEL</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>.h\MODEL</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>.h\MODEL</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>.h\MODEL</Filter>
+    </ClInclude>
+    <ClInclude Include="boss.h">
+      <Filter>.h\MODEL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include=".cpp">
@@ -313,6 +319,12 @@
     </Filter>
     <Filter Include=".h\SEQUENCE">
       <UniqueIdentifier>{bf751b8e-1427-4aab-8bdf-9d5c54668f7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".cpp\MODEL">
+      <UniqueIdentifier>{0329ef1e-9d25-40f7-872b-cf71625919dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".h\MODEL">
+      <UniqueIdentifier>{1484de08-d277-42b6-8ad1-982f930cab06}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

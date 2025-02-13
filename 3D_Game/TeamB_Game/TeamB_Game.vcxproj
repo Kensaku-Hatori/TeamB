@@ -148,6 +148,7 @@
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="arrow.cpp" />
     <ClCompile Include="billboard.cpp" />
+    <ClCompile Include="boss.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="circle.cpp" />
     <ClCompile Include="effect.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="animation.h" />
     <ClInclude Include="arrow.h" />
     <ClInclude Include="billboard.h" />
+    <ClInclude Include="boss.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="circle.h" />
     <ClInclude Include="effect.h" />
