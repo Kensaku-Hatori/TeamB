@@ -29,11 +29,11 @@
 
 //グローバル変数
 Player g_player;
-D3DXVECTOR3 g_vtxMinPlayer;//プレイヤーの最小値
-D3DXVECTOR3 g_vtxMaxPlayer;//プレイヤーの最大値
+D3DXVECTOR3 g_vtxMinPlayer;	//プレイヤーの最小値
+D3DXVECTOR3 g_vtxMaxPlayer;	//プレイヤーの最大値
 
-int g_nCntHealMP;
-bool g_bAbolition = false;//全滅フラグ
+int g_nCntHealMP;			//MP回復時間
+bool g_bAbolition = false;	//全滅フラグ
 
 //=====================
 // プレイヤーの初期化
@@ -44,12 +44,13 @@ void InitPlayer(void)
 	//デバイスの取得
 	pDevice = GetDevice();
 
+	
 	if (g_player.bfirst == false)
-	{
+	{//最初なら
 		g_player.pos = g_player.NextPosition;
 	}
 	else
-	{
+	{//ステージ移動しているなら
 		g_player.bfirst = false;
 		g_player.pos = D3DXVECTOR3(0.0f,0.0f,100.0f);
 		//基礎ステータス
@@ -761,9 +762,9 @@ void PlayerMotion(MOTIONINFO *pMotionInfo)
 	}
 	g_player.bUse = true;
 }
-//=========================
-// 敵が視界にいるかどうか
-//=========================
+//=====================================
+// 敵が視界にいるかどうか(ロックオン)
+//=====================================
 bool IsEnemyInsight(void)
 {
 	ENEMY* pEnemy = GetEnemy();
@@ -808,9 +809,9 @@ bool IsEnemyInsight(void)
 	return false;
 }
 
-//=====================
-// 一番近い敵を判別
-//=====================
+//===============================
+// 一番近い敵を判別(ロックオン)
+//===============================
 void EnemyDistanceSort(int EnemyCount)
 {
 	ENEMY* pEnemy = GetEnemy();

@@ -11,29 +11,28 @@
 //グローバル変数宣言
 Arrow g_Arrow;
 
-//======================
+//===================
 //矢印の初期化処理
-//======================
+//===================
 void InitArrow()
 {
 	//各種初期化
-	g_Arrow.Destpos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 目的位置
-	g_Arrow.Destrot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 目的への向き
-	g_Arrow.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				// 位置
-	g_Arrow.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				// 向き
-	g_Arrow.col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);			// 色
-	g_Arrow.VtxBuff = { NULL };									// 頂点情報
-	g_Arrow.tex = { NULL };										// テクスチャポインタ
-	g_Arrow.fHeight = 0.0f;										// ポリゴンの高さ
-	g_Arrow.fWidth = 0.0f;										// ポリゴンの幅
-	g_Arrow.fRadius = 0.0f;										// posからどれだけ離すか
-	g_Arrow.bAnim = false;										// 動きをつけるかどうか
-	g_Arrow.bUse = false;										// 使用していない状態にする
+	g_Arrow.Destpos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//目的位置
+	g_Arrow.Destrot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//目的への向き
+	g_Arrow.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//位置
+	g_Arrow.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//向き
+	g_Arrow.col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);//色
+	g_Arrow.VtxBuff = { NULL };//頂点情報
+	g_Arrow.tex = { NULL };//テクスチャポインタ
+	g_Arrow.fHeight = 0.0;//ポリゴンの高さ
+	g_Arrow.fWidth = 0.0f;//ポリゴンの幅
+	g_Arrow.fRadius = 0.0f;//posからどれだけ離すか
+	g_Arrow.bUse = false;//使用していない状態にする
 }
 
-//======================
+//===================
 //矢印の終了処理
-//======================
+//===================
 void UninitArrow()
 {
 	//テクスチャの破棄
@@ -51,18 +50,55 @@ void UninitArrow()
 	}
 }
 
-//======================
+//===================
 //矢印の更新処理
-//======================
+//===================
 void UpdateArrow()
 {
-	//目標の方向を指す処理
-	TrackingArrow();
+		//目的地へのベクトル
+		D3DXVECTOR3 vec = g_Arrow.Destpos - g_Arrow.pos;
+		float fDistance = (vec.x) * (vec.x) + (vec.z) * (vec.z);			//距離
+		float fAngle = 0.0f;												//角度
+		float rotData = 0.0f;												//角度の差
+
+		//距離の取得
+		fDistance = sqrtf(fDistance);
+
+		//角度の取得
+		fAngle = (float)atan2(vec.x, vec.z);
+
+		//目標の移動方向（角度）の補正
+		if (fAngle > D3DX_PI)
+		{
+			fAngle -= D3DX_PI * 2.0f;
+		}
+		else if (fAngle < -D3DX_PI)
+		{
+			fAngle += D3DX_PI * 2.0f;
+		}
+
+		//目的への向き設定
+		g_Arrow.Destrot.y = fAngle;
+
+		rotData = g_Arrow.Destrot.y - g_Arrow.rot.y;
+
+		// 角度の近道
+		if (rotData >= D3DX_PI)
+		{
+			g_Arrow.rot.y += D3DX_PI * 2.0f;
+		}
+		else if (rotData <= -D3DX_PI)
+		{
+			g_Arrow.rot.y -= D3DX_PI * 2.0f;
+		}
+
+		//向きの反映
+		g_Arrow.rot.y += (g_Arrow.Destrot.y - g_Arrow.rot.y) * 0.1f;
 }
 
-//======================
+//===================
 //矢印の描画処理
-//======================
+//===================
 void DrawArrow()
 {
 	//デバイスの取得
@@ -101,10 +137,10 @@ void DrawArrow()
 	}
 }
 
-//======================
+//===================
 //矢印の設定処理
-//======================
-void SetArrow(D3DXVECTOR3 DestPos, D3DXVECTOR3 pos, D3DXCOLOR col, float fWidth, float fHeight, float fRadius, bool bAnim)
+//===================
+void SetArrow(D3DXVECTOR3 DestPos, D3DXVECTOR3 pos, D3DXCOLOR col, float fWidth, float fHeight, float fRadius)
 {
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
@@ -141,7 +177,6 @@ void SetArrow(D3DXVECTOR3 DestPos, D3DXVECTOR3 pos, D3DXCOLOR col, float fWidth,
 		g_Arrow.fWidth = fWidth;
 		g_Arrow.fHeight = fHeight;
 		g_Arrow.fRadius = fRadius;
-		g_Arrow.bAnim = bAnim;
 		g_Arrow.bUse = true;
 
 		//頂点バッファをロックし、頂点情報へのポインタを取得
@@ -176,56 +211,10 @@ void SetArrow(D3DXVECTOR3 DestPos, D3DXVECTOR3 pos, D3DXCOLOR col, float fWidth,
 	}
 }
 
-//======================
+//===================
 //矢印の位置の更新処理
-//======================
+//===================
 void SetPositonArrow(D3DXVECTOR3 pos)
 {
 	g_Arrow.pos = D3DXVECTOR3(pos.x, g_Arrow.pos.y, pos.z);
-}
-
-//======================
-//目標の方向を指す処理
-//======================
-void TrackingArrow()
-{
-	//目的地へのベクトル
-	D3DXVECTOR3 vec = g_Arrow.Destpos - g_Arrow.pos;
-	float fDistance = (vec.x) * (vec.x) + (vec.z) * (vec.z);			//距離
-	float fAngle = 0.0f;												//角度
-	float rotData = 0.0f;												//角度の差
-
-	//距離の取得
-	fDistance = sqrtf(fDistance);
-
-	//角度の取得
-	fAngle = (float)atan2(vec.x, vec.z);
-
-	//目標の移動方向（角度）の補正
-	if (fAngle > D3DX_PI)
-	{
-		fAngle -= D3DX_PI * 2.0f;
-	}
-	else if (fAngle < -D3DX_PI)
-	{
-		fAngle += D3DX_PI * 2.0f;
-	}
-
-	//目的への向き設定
-	g_Arrow.Destrot.y = fAngle;
-
-	rotData = g_Arrow.Destrot.y - g_Arrow.rot.y;
-
-	// 角度の近道
-	if (rotData >= D3DX_PI)
-	{
-		g_Arrow.rot.y += D3DX_PI * 2.0f;
-	}
-	else if (rotData <= -D3DX_PI)
-	{
-		g_Arrow.rot.y -= D3DX_PI * 2.0f;
-	}
-
-	//向きの反映
-	g_Arrow.rot.y += (g_Arrow.Destrot.y - g_Arrow.rot.y) * 0.1f;
 }

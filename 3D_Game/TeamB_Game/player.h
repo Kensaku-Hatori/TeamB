@@ -40,7 +40,7 @@ typedef struct
 	bool bJump;						// ジャンプできるかどうか
 	bool bUse;						// 使用状況
 	bool bLanding;					// 地面に着地しているかどうか
-	bool bfirst;
+	bool bfirst;					// 最初かどうか
 	PlayerStatus Status;			// ステータス
 	
 	int nNumModel;					// パーツの総数

@@ -294,7 +294,6 @@ void HitEnemy(float Atack,int Indx)
 	{// ダメージが最小値以上なら
 		//g_Enemy[Indx].statecount = (int)Atack * 3;
 		g_Enemy[Indx].statecount = 30;
-
 	}
 	else
 	{// ダメージが最小値以下なら
