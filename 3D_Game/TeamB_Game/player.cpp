@@ -139,8 +139,7 @@ void UpdatePlayer(void)
 			float fMathDistance, fMathDistance1;
 			fMathDistance = pEnemy[g_player.nLockOnEnemy].Object.Pos.x - g_player.pos.x;
 			fMathDistance1 = pEnemy[g_player.nLockOnEnemy].Object.Pos.z - g_player.pos.z;
-			g_player.rotDest.y = atan2f(fMathDistance, fMathDistance1) + D3DX_PI;
-			
+			g_player.rotDest.y = atan2f(fMathDistance, fMathDistance1) + D3DX_PI;			
 
 			//距離による解除
 			float Dis = ((g_player.pos.x - pEnemy[g_player.nLockOnEnemy].Object.Pos.x) * (g_player.pos.x - pEnemy[g_player.nLockOnEnemy].Object.Pos.x))
@@ -253,7 +252,7 @@ void UpdatePlayer(void)
 				g_player.bLockOn = g_player.bLockOn ? false : true;
 				pCamera->rot.y = 0.0f; //カメラ戻す
 			}
-			else if(g_player.bLockOn == false)
+			else if (g_player.bLockOn == false)
 			{
 				g_player.bLockOn = IsEnemyInsight();
 			}
@@ -786,6 +785,8 @@ bool IsEnemyInsight(void)
 
 	D3DXVECTOR3 toEnemy;
 
+	bool bLock = false;
+
 	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++)
 	{
 		if (pEnemy[EnemyCount].bUse == true)
@@ -809,26 +810,30 @@ bool IsEnemyInsight(void)
 
 				if (distanceSquared <= g_player.fSightRange * g_player.fSightRange)
 				{
-					EnemyDistanceSort(EnemyCount);
-					return true;
+					bLock = EnemyDistanceSort(EnemyCount);
 				}
 			}
 		}
 	}
-	return false;
+	return bLock;
 }
 
 //===============================
 // 一番近い敵を判別(ロックオン)
 //===============================
-void EnemyDistanceSort(int EnemyCount)
+bool EnemyDistanceSort(int EnemyCount)
 {
 	ENEMY* pEnemy = GetEnemy();
 
+	bool bLock = true;
 	//敵との距離
 	pEnemy[EnemyCount].fDistance = sqrtf(((pEnemy[EnemyCount].Object.Pos.x - g_player.pos.x) * (pEnemy[EnemyCount].Object.Pos.x - g_player.pos.x))
 									   + ((pEnemy[EnemyCount].Object.Pos.y - g_player.pos.y) * (pEnemy[EnemyCount].Object.Pos.y - g_player.pos.y))
 									   + ((pEnemy[EnemyCount].Object.Pos.z - g_player.pos.z) * (pEnemy[EnemyCount].Object.Pos.z - g_player.pos.z)));
+	
+	pEnemy[g_player.nLockOnEnemy].fDistance = sqrtf(((pEnemy[g_player.nLockOnEnemy].Object.Pos.x - g_player.pos.x) * (pEnemy[g_player.nLockOnEnemy].Object.Pos.x - g_player.pos.x))
+												  + ((pEnemy[g_player.nLockOnEnemy].Object.Pos.y - g_player.pos.y) * (pEnemy[g_player.nLockOnEnemy].Object.Pos.y - g_player.pos.y))
+												  + ((pEnemy[g_player.nLockOnEnemy].Object.Pos.z - g_player.pos.z) * (pEnemy[g_player.nLockOnEnemy].Object.Pos.z - g_player.pos.z)));
 
 	float RADIUS = (g_player.fDistance + pEnemy[EnemyCount].Radius) * (g_player.fDistance + pEnemy[EnemyCount].Radius);
 
@@ -839,6 +844,7 @@ void EnemyDistanceSort(int EnemyCount)
 			g_player.nLockOnEnemy = EnemyCount;
 		}	
 	}
+	return bLock;
 }
 
 void MatrixWand(void)
