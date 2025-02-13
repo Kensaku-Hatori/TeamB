@@ -6,10 +6,11 @@
 //==================================
 
 #include "billboard.h"
+#include "meshfield.h"
 #include "shadow.h"
 
 //グローバル変数宣言
-LPDIRECT3DTEXTURE9 g_apTextureBiillboard[MAX_BILLBOARD] = {	NULL };
+LPDIRECT3DTEXTURE9 g_apTextureBiillboard[MAX_TEX_FIELD] = {	NULL };
 
 Biillboard g_Biillboard[MAX_BILLBOARD];
 
@@ -30,8 +31,6 @@ void InitBiillboard(void)
 		g_Biillboard[nCnt].nHeight = 0;
 		g_Biillboard[nCnt].bUse = false;
 	}
-
-	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\move.jpg", &g_apTextureBiillboard[0]); // 移動
 }
 
 //=======================
@@ -194,4 +193,19 @@ void SetBiillboard(D3DXVECTOR3 pos, int nWidth, int nHeigh)
 			break;
 		}
 	}
+}
+
+//===================
+// メッシュ壁のテクスチャ設定
+//===================
+void SetwallTexture()
+{
+	//テクスチャのポインタを取得
+	LPDIRECT3DTEXTURE9 pTexture = GetTexture2(TEX_WALL);
+
+	if (pTexture != NULL)
+	{
+		g_pTextureMeshWall = pTexture;
+	}
+
 }

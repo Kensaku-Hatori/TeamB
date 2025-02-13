@@ -19,22 +19,22 @@
 #include "animation.h"
 #include "enemy.h"
 #include "game.h"
-#include"impact.h"
+#include "impact.h"
 #include "fade.h"
 #include "light.h"
 #include "Item.h"
 #include "circle.h"
 #include "arrow.h"
 #include "invisiblewall.h"
+#include "lockon.h"
 
 //グローバル変数
 Player g_player;
-D3DXVECTOR3 g_vtxMinPlayer;//プレイヤーの最小値
-D3DXVECTOR3 g_vtxMaxPlayer;//プレイヤーの最大値
+D3DXVECTOR3 g_vtxMinPlayer;	//プレイヤーの最小値
+D3DXVECTOR3 g_vtxMaxPlayer;	//プレイヤーの最大値
 
-int g_nCntHealMP;
-bool bfirst = true;
-bool g_bAbolition = false;//全滅フラグ
+int g_nCntHealMP;			//MP回復時間
+bool g_bAbolition = false;	//全滅フラグ
 
 //=====================
 // プレイヤーの初期化
@@ -45,15 +45,22 @@ void InitPlayer(void)
 	//デバイスの取得
 	pDevice = GetDevice();
 
-	if (bfirst == false)
-	{
+	
+	if (g_player.bfirst == false)
+	{//最初なら
 		g_player.pos = g_player.NextPosition;
 	}
 	else
-	{
-		bfirst = false;
+	{//ステージ移動しているなら
+		g_player.bfirst = false;
 		g_player.pos = D3DXVECTOR3(0.0f,0.0f,100.0f);
+		//基礎ステータス
+		g_player.Status.fHP = PLAYER_HP;
+		g_player.Status.nMP = PLAYER_MP;
+		g_player.Status.fPower = PLAYER_AP;
+		g_player.Status.fSpeed = PLAYER_SPEED;
 	}
+
 	g_player.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -71,12 +78,6 @@ void InitPlayer(void)
 	g_player.nCntMotion = 0;	//モーションカウンター
 	g_player.nKey = 0;			//現在のキーNo
 	g_player.nNumModel = 13;	//パーツの総数
-
-	//基礎ステータス
-	g_player.Status.fHP = PLAYER_HP;
-	g_player.Status.nMP = PLAYER_MP;
-	g_player.Status.fPower = PLAYER_MP;
-	g_player.Status.fSpeed = PLAYER_SPEED;
 
 	//ロックオン関連
 	g_player.bLockOn = false;
@@ -140,8 +141,7 @@ void UpdatePlayer(void)
 			float fMathDistance, fMathDistance1;
 			fMathDistance = pEnemy[g_player.nLockOnEnemy].Object.Pos.x - g_player.pos.x;
 			fMathDistance1 = pEnemy[g_player.nLockOnEnemy].Object.Pos.z - g_player.pos.z;
-			g_player.rotDest.y = atan2f(fMathDistance, fMathDistance1) + D3DX_PI;
-			
+			g_player.rotDest.y = atan2f(fMathDistance, fMathDistance1) + D3DX_PI;			
 
 			//距離による解除
 			float Dis = ((g_player.pos.x - pEnemy[g_player.nLockOnEnemy].Object.Pos.x) * (g_player.pos.x - pEnemy[g_player.nLockOnEnemy].Object.Pos.x))
@@ -150,7 +150,6 @@ void UpdatePlayer(void)
 			if (Dis >= g_player.fSightRange * g_player.fSightRange * 2)
 			{
 				g_player.bLockOn = false;
-				pCamera->rot.y = 0.0f; //カメラ戻す
 			}
 		}
 
@@ -252,9 +251,8 @@ void UpdatePlayer(void)
 			if (g_player.bLockOn == true)
 			{
 				g_player.bLockOn = g_player.bLockOn ? false : true;
-				pCamera->rot.y = 0.0f; //カメラ戻す
 			}
-			else if(g_player.bLockOn == false)
+			else if (g_player.bLockOn == false)
 			{
 				g_player.bLockOn = IsEnemyInsight();
 			}
@@ -345,12 +343,16 @@ void UpdatePlayer(void)
 			{
 				//エリア移動位置の取得
 				D3DXVECTOR3 Destpos = GetBottom();
+				MODE mode = GetMode();
 
 				//サークルの設定処理
-				g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DCOLOR_RGBA(255, 255, 100, 204), 12, 0, 10.0f, 25.0f, true, false);
+				g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DCOLOR_RGBA(255, 255, 50, 204), 12, 0, 10.0f, 20.0f, true, false);
 
-				//矢印の設定処理
-				SetArrow(Destpos, g_player.pos, D3DCOLOR_RGBA(255, 255, 255, 255), 40.0f, 20.0f, 26.0f);
+				if (mode != MODE_STAGEFOUR)
+				{
+					//矢印の設定処理
+					SetArrow(Destpos, g_player.pos, D3DCOLOR_RGBA(255, 200, 0, 200), 35.0f, 15.0f, 21.0f, true, false);
+				}
 
 				//全滅している状態にする
 				g_bAbolition = true;
@@ -360,11 +362,16 @@ void UpdatePlayer(void)
 		//敵が全滅しているなら
 		if (g_bAbolition == true)
 		{
+			MODE mode = GetMode();
+
 			//サークルの位置の更新処理
 			SetPositionCircle(g_player.nIndxCircle, g_player.pos, g_player.rot);
 
-			//矢印の位置更新
-			SetPositonArrow(g_player.pos);
+			if (mode != MODE_STAGEFOUR)
+			{
+				//矢印の位置更新
+				SetPositonArrow(g_player.pos);
+			}
 		}
 
 		//影の大きさの更新処理
@@ -472,9 +479,9 @@ void DrawPlayer(void)
 	}
 }
 
-//======================
+//====================
 // プレイヤーの移動
-//======================
+//====================
 void PlayerMove(void)
 {
 	Camera* pCamera;
@@ -762,72 +769,6 @@ void PlayerMotion(MOTIONINFO *pMotionInfo)
 		g_player.PlayerMotion.aMotionInfo[MotionCount] = *pMotionInfo;
 	}
 	g_player.bUse = true;
-}
-//=========================
-// 敵が視界にいるかどうか
-//=========================
-bool IsEnemyInsight(void)
-{
-	ENEMY* pEnemy = GetEnemy();
-
-	D3DXVECTOR3 playerFront;
-
-	playerFront.x = -sinf(g_player.rot.y);
-	playerFront.y = 0.0f;
-	playerFront.z = -cosf(g_player.rot.y);
-
-	D3DXVECTOR3 toEnemy;
-
-	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++)
-	{
-		if (pEnemy[EnemyCount].bUse == true)
-		{
-			toEnemy.x = pEnemy[EnemyCount].Object.Pos.x - g_player.pos.x;
-			toEnemy.y = 0.0f;
-			toEnemy.z = pEnemy[EnemyCount].Object.Pos.z - g_player.pos.z;
-
-			D3DXVec3Normalize(&playerFront, &playerFront);
-
-			D3DXVec3Normalize(&toEnemy, &toEnemy);
-
-			float dotProduct = D3DXVec3Dot(&playerFront, &toEnemy);
-
-			if (dotProduct > cosf(g_player.fSightAngle * 0.5f))
-			{
-				float distanceSquared =
-					(g_player.pos.x - pEnemy[EnemyCount].Object.Pos.x) * (g_player.pos.x - pEnemy[EnemyCount].Object.Pos.x) +
-					(g_player.pos.y - pEnemy[EnemyCount].Object.Pos.y) * (g_player.pos.y - pEnemy[EnemyCount].Object.Pos.y) +
-					(g_player.pos.z - pEnemy[EnemyCount].Object.Pos.z) * (g_player.pos.z - pEnemy[EnemyCount].Object.Pos.z);
-
-				if (distanceSquared <= g_player.fSightRange * g_player.fSightRange)
-				{
-					EnemyDistanceSort(EnemyCount);
-					return true;
-				}
-			}
-		}
-	}
-	return false;
-}
-
-//=====================
-// 一番近い敵を判別
-//=====================
-void EnemyDistanceSort(int EnemyCount)
-{
-	ENEMY* pEnemy = GetEnemy();
-
-	//敵との距離
-	pEnemy[EnemyCount].fDistance = sqrtf(((pEnemy[EnemyCount].Object.Pos.x - g_player.pos.x) * (pEnemy[EnemyCount].Object.Pos.x - g_player.pos.x))
-									   + ((pEnemy[EnemyCount].Object.Pos.y - g_player.pos.y) * (pEnemy[EnemyCount].Object.Pos.y - g_player.pos.y))
-									   + ((pEnemy[EnemyCount].Object.Pos.z - g_player.pos.z) * (pEnemy[EnemyCount].Object.Pos.z - g_player.pos.z)));
-
-	float RADIUS = (g_player.fDistance + pEnemy[EnemyCount].Radius) * (g_player.fDistance + pEnemy[EnemyCount].Radius);
-
-	if (pEnemy[EnemyCount].fDistance <= RADIUS)
-	{
-		g_player.nLockOnEnemy = EnemyCount;
-	}
 }
 
 void MatrixWand(void)

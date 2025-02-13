@@ -136,6 +136,9 @@
     <ClCompile Include="boss.cpp">
       <Filter>.cpp\MODEL</Filter>
     </ClCompile>
+    <ClCompile Include="lockon.cpp">
+      <Filter>.cpp\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h">
@@ -267,7 +270,8 @@
     <ClInclude Include="ui.h">
       <Filter>.h\UI</Filter>
     </ClInclude>
-    <ClInclude Include="enemy.h">
+ 	<ClInclude Include="lockon.h">
+      <Filter>.h\UI</Filter>    <ClInclude Include="enemy.h">
       <Filter>.h\MODEL</Filter>
     </ClInclude>
     <ClInclude Include="model.h">
@@ -281,8 +285,7 @@
     </ClInclude>
     <ClInclude Include="boss.h">
       <Filter>.h\MODEL</Filter>
-    </ClInclude>
-  </ItemGroup>
+    </ClInclude>  </ItemGroup>
   <ItemGroup>
     <Filter Include=".cpp">
       <UniqueIdentifier>{af70fc68-90dd-4506-b5e3-3a842af8bfb7}</UniqueIdentifier>
