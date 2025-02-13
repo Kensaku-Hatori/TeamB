@@ -133,6 +133,9 @@
     <ClCompile Include="timer.cpp">
       <Filter>.cpp\UI</Filter>
     </ClCompile>
+    <ClCompile Include="lockon.cpp">
+      <Filter>.cpp\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h">
@@ -274,6 +277,9 @@
       <Filter>.h\UI</Filter>
     </ClInclude>
     <ClInclude Include="ui.h">
+      <Filter>.h\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="lockon.h">
       <Filter>.h\UI</Filter>
     </ClInclude>
   </ItemGroup>
