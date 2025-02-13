@@ -169,8 +169,8 @@ void UpdatePlayer(void)
 		if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_B) == true) && g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION)
 		{// MPÇ™ÇTÇOà»è„ÇÃéû
 			SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion);
-			if (g_player.Status.nMP >= 50)
-			{
+			//if (g_player.Status.nMP >= 50)
+			//{
 				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bActionStart = false;
 				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bFirst = false;
 				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartKey = 3;
@@ -192,8 +192,8 @@ void UpdatePlayer(void)
 				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nStartFrame = 1;
 				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nEndFrame = 2;
 
-				g_player.Status.nMP -= 50; //MPè¡îÔ
-			}
+			//	g_player.Status.nMP -= 50; //MPè¡îÔ
+			//}
 		}
 
 		//MPâÒïú
