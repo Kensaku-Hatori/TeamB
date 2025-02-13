@@ -11,7 +11,7 @@ FADE g_Fade;
 MODE g_modeNext;
 D3DXCOLOR g_colorFade;
 //===========
-//‰Šú‰»ˆ—^^osikko
+//‰Šú‰»ˆ—^^unti
 //===========
 void InitFade(MODE modeNext)
 {
