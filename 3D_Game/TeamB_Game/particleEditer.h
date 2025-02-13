@@ -1,3 +1,9 @@
+//*****************************************
+//
+// パーティクルエディター[particleEditer.h]
+// Author Kensaku Hatori
+//
+//*****************************************
 #ifndef PARTICLEEDITER_H_
 #define PARTICLEEDITER_H_
 
@@ -13,5 +19,4 @@ typedef struct
 void InitParticleEditer();
 void UpdateParticleEditer();
 PARTICLEEDITER* GetParticleInfo();
-
 #endif // !PARTICLEEDITER_H_

@@ -1,3 +1,9 @@
+//*****************************************
+//
+// パーティクル[particle.h]
+// Author Kensaku Hatori
+//
+//*****************************************
 #ifndef PARTICLE_H_
 #define PARTICLE_H_
 
