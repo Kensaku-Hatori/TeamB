@@ -10,6 +10,7 @@
 #include "gauge.h"
 #include "itemui.h"
 #include "minimap.h"
+#include "lockon.h"
 
 //グローバル変数
 
@@ -32,6 +33,8 @@ void InitUi(void)
 
 	InitMiniMap();
 	SetMapPlayer(MODE_STAGEONE);
+
+	InitLockon();
 }
 //===========
 // 終了処理
@@ -47,6 +50,8 @@ void UninitUi(void)
 	UninitItemUI();
 
 	UninitMiniMap();
+
+	UninitLockon();
 }
 //===========
 // 更新処理
@@ -62,6 +67,8 @@ void UpdateUi(void)
 	UpdateItemUI();
 
 	UpdateMiniMap();
+
+	UpdateLockon();
 }
 //===========
 // 描画処理
@@ -77,4 +84,6 @@ void DrawUi(void)
 	DrawItemUI();
 
 	DrawMiniMap();
+
+	DrawLockon();
 }
