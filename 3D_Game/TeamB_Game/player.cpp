@@ -344,12 +344,16 @@ void UpdatePlayer(void)
 			{
 				//エリア移動位置の取得
 				D3DXVECTOR3 Destpos = GetBottom();
+				MODE mode = GetMode();
 
 				//サークルの設定処理
 				g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DCOLOR_RGBA(255, 255, 100, 204), 12, 0, 10.0f, 25.0f, true, false);
 
-				//矢印の設定処理
-				SetArrow(Destpos, g_player.pos, D3DCOLOR_RGBA(255, 255, 255, 255), 40.0f, 20.0f, 26.0f,false);
+				if (mode != MODE_STAGEFOUR)
+				{
+					//矢印の設定処理
+					SetArrow(Destpos, g_player.pos, D3DCOLOR_RGBA(255, 255, 0, 204), 40.0f, 20.0f, 26.0f, false);
+				}
 
 				//全滅している状態にする
 				g_bAbolition = true;
@@ -359,11 +363,16 @@ void UpdatePlayer(void)
 		//敵が全滅しているなら
 		if (g_bAbolition == true)
 		{
+			MODE mode = GetMode();
+
 			//サークルの位置の更新処理
 			SetPositionCircle(g_player.nIndxCircle, g_player.pos, g_player.rot);
 
-			//矢印の位置更新
-			SetPositonArrow(g_player.pos);
+			if (mode != MODE_STAGEFOUR)
+			{
+				//矢印の位置更新
+				SetPositonArrow(g_player.pos);
+			}
 		}
 
 		//影の大きさの更新処理
