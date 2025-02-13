@@ -70,9 +70,6 @@
     <ClCompile Include="meshwall.cpp">
       <Filter>K_A\.cpp</Filter>
     </ClCompile>
-    <ClCompile Include="model.cpp">
-      <Filter>K_A\.cpp</Filter>
-    </ClCompile>
     <ClCompile Include="particle.cpp">
       <Filter>K_A\.cpp</Filter>
     </ClCompile>
@@ -138,6 +135,9 @@
     </ClCompile>
     <ClCompile Include="minimap.cpp">
       <Filter>O_R\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>H_K\.cpp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

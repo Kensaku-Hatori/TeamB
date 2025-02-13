@@ -692,6 +692,7 @@ void LoadBillBoardInfo(FILE* pFile)
 	D3DXVECTOR2 Size, Origin;
 	int nType;
 	bool bShadow;
+	int Vertical, Horizon,AnimSpeed;
 
 	while (1)
 	{
@@ -740,6 +741,14 @@ void LoadBillBoardInfo(FILE* pFile)
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				bShadow = (bool)LoadInt(pFile);
+			}
+			else if (strcmp(&cData1[0], "ANIM") == 0)
+			{
+				cData1[0] = { NULL };
+				SkipEqual(pFile);
+				Vertical = (bool)LoadInt(pFile);
+				Horizon = (bool)LoadInt(pFile);
+				AnimSpeed = (bool)LoadInt(pFile);
 			}
 			else if (strcmp(&cData1[0], "END_BILLBOARDSET") == 0)
 			{
