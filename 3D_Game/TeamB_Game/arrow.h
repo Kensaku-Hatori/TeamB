@@ -12,6 +12,7 @@
 
 //マクロ定義
 #define ARROW_TEX "data\\TEXTURE\\sirusi.png"					//矢印のテクスチャパス
+#define MAX_
 
 //arrow
 typedef struct
@@ -38,6 +39,6 @@ void UpdateArrow();
 void DrawArrow();
 void SetArrow(D3DXVECTOR3 DestPos, D3DXVECTOR3 pos, D3DXCOLOR col, float fWidth, float fHeight, float fRadius, bool bAnim);
 void SetPositonArrow(D3DXVECTOR3 pos);
-viod TrackingArrow();
+void TrackingArrow();
 
 #endif // !ARROW_H_
