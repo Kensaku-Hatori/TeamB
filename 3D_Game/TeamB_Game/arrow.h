@@ -20,6 +20,7 @@ typedef struct
 	D3DXVECTOR3 Destrot;
 	D3DXVECTOR3 pos;
 	D3DXVECTOR3 rot;
+	D3DXCOLOR col;
 	D3DXMATRIX mtxWorld;
 	LPDIRECT3DVERTEXBUFFER9 VtxBuff;
 	LPDIRECT3DTEXTURE9 tex;
@@ -34,7 +35,7 @@ void InitArrow();
 void UninitArrow();
 void UpdateArrow();
 void DrawArrow();
-void SetArrow(D3DXVECTOR3 DestPos,D3DXVECTOR3 pos, float fWidth, float fHeight, float fRadius);
+void SetArrow(D3DXVECTOR3 DestPos, D3DXVECTOR3 pos, D3DXCOLOR col, float fWidth, float fHeight, float fRadius);
 void SetPositonArrow(D3DXVECTOR3 pos);
 
 #endif // !ARROW_H_
