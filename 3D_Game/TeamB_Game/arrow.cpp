@@ -21,6 +21,7 @@ void InitArrow()
 	g_Arrow.Destrot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//目的への向き
 	g_Arrow.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//位置
 	g_Arrow.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//向き
+	g_Arrow.col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);//色
 	g_Arrow.VtxBuff = { NULL };//頂点情報
 	g_Arrow.tex = { NULL };//テクスチャポインタ
 	g_Arrow.fHeight = 0.0;//ポリゴンの高さ
@@ -139,7 +140,7 @@ void DrawArrow()
 //===================
 //矢印の設定処理
 //===================
-void SetArrow(D3DXVECTOR3 DestPos, D3DXVECTOR3 pos, float fWidth, float fHeight, float fRadius)
+void SetArrow(D3DXVECTOR3 DestPos, D3DXVECTOR3 pos, D3DXCOLOR col, float fWidth, float fHeight, float fRadius)
 {
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
@@ -172,6 +173,7 @@ void SetArrow(D3DXVECTOR3 DestPos, D3DXVECTOR3 pos, float fWidth, float fHeight,
 		//各種設定
 		g_Arrow.Destpos = DestPos;
 		g_Arrow.pos = pos;
+		g_Arrow.col = col;
 		g_Arrow.fWidth = fWidth;
 		g_Arrow.fHeight = fHeight;
 		g_Arrow.fRadius = fRadius;
@@ -193,10 +195,10 @@ void SetArrow(D3DXVECTOR3 DestPos, D3DXVECTOR3 pos, float fWidth, float fHeight,
 		pVtx[3].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
 		//色の設定
-		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[0].col = g_Arrow.col;
+		pVtx[1].col = g_Arrow.col;
+		pVtx[2].col = g_Arrow.col;
+		pVtx[3].col = g_Arrow.col;
 
 		//テクスチャの設定
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
