@@ -271,7 +271,7 @@ void UpdateTitleInfo(void)
 			}
 			else if (g_titleinfoMenu == TITLE_FIN)
 			{	//FINÇ…Ç¢ÇÈèÍçá
-				SetMode(MODE_END);
+				SetFade(MODE_END);
 			}
 		}
 	}
