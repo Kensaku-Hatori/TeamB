@@ -12,7 +12,6 @@
 
 //マクロ定義
 #define ARROW_TEX "data\\TEXTURE\\sirusi.png"					//矢印のテクスチャパス
-#define MAX_
 
 //arrow
 typedef struct
