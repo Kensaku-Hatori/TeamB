@@ -179,6 +179,28 @@ void SetArrow(D3DXVECTOR3 DestPos, D3DXVECTOR3 pos, D3DXCOLOR col, float fWidth,
 		g_Arrow.fRadius = fRadius;
 		g_Arrow.bUse = true;
 
+		//向きの設定------------------------------------------------------------
+		D3DXVECTOR3 vec = g_Arrow.Destpos - g_Arrow.pos;
+		float fAngle = 0.0f;										//角度格納用
+
+		//角度の取得
+		fAngle = (float)atan2(vec.x, vec.z);
+
+		//目標の移動方向（角度）の補正
+		if (fAngle > D3DX_PI)
+		{
+			fAngle -= D3DX_PI * 2.0f;
+		}
+		else if (fAngle < -D3DX_PI)
+		{
+			fAngle += D3DX_PI * 2.0f;
+		}
+
+		//向き設定
+		g_Arrow.rot.y = fAngle;
+
+		//-------------------------------------------------------------------------
+
 		//頂点バッファをロックし、頂点情報へのポインタを取得
 		g_Arrow.VtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 

@@ -126,6 +126,9 @@ void LoadMotionStart(FILE* pFile)
 				case LOADTYPE_ENEMYTWO:
 					SetEnemyPartsInfo(g_LoadInfo[nType], nType);
 					break;
+				case LOADTYPE_ENEMYTHREE:
+					SetEnemyPartsInfo(g_LoadInfo[nType], nType);
+					break;
 				default:
 					break;
 				}

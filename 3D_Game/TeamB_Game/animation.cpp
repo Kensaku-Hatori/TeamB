@@ -144,6 +144,36 @@ void UpdateMotion(OBJECTINFO* Motion)
 			KeyDef.fRotY = Motion->aMotionInfo[Motion->motionType].aKeyInfo[Motion->NextKey].aKey[PartsCount].fRotY - Motion->aMotionInfo[Motion->motionType].aKeyInfo[Motion->nKey].aKey[PartsCount].fRotY;
 			KeyDef.fRotZ = Motion->aMotionInfo[Motion->motionType].aKeyInfo[Motion->NextKey].aKey[PartsCount].fRotZ - Motion->aMotionInfo[Motion->motionType].aKeyInfo[Motion->nKey].aKey[PartsCount].fRotZ;
 
+			// Šp“x‚Ì‹ß“¹
+			if (KeyDef.fRotX >= D3DX_PI)
+			{
+				KeyDef.fRotX -= D3DX_PI * 2.0f;
+			}
+			else if (KeyDef.fRotX <= -D3DX_PI)
+			{
+				KeyDef.fRotX += D3DX_PI * 2.0f;
+			}
+
+			// Šp“x‚Ì‹ß“¹
+			if (KeyDef.fRotY >= D3DX_PI)
+			{
+				KeyDef.fRotY -= D3DX_PI * 2.0f;
+			}
+			else if (KeyDef.fRotY <= -D3DX_PI)
+			{
+				KeyDef.fRotY += D3DX_PI * 2.0f;
+			}
+
+			// Šp“x‚Ì‹ß“¹
+			if (KeyDef.fRotZ >= D3DX_PI)
+			{
+				KeyDef.fRotZ -= D3DX_PI * 2.0f;
+			}
+			else if (KeyDef.fRotZ <= -D3DX_PI)
+			{
+				KeyDef.fRotZ += D3DX_PI * 2.0f;
+			}
+
 			// Šó–]‚Ì’l
 			KeyDest.fPosX = Motion->aMotionInfo[Motion->motionType].aKeyInfo[Motion->nKey].aKey[PartsCount].fPosX + KeyDef.fPosX * ((float)Motion->nCntMotion / (float)Motion->aMotionInfo[Motion->motionType].aKeyInfo[Motion->nKey].nFrame);
 			KeyDest.fPosY = Motion->aMotionInfo[Motion->motionType].aKeyInfo[Motion->nKey].aKey[PartsCount].fPosY + KeyDef.fPosY * ((float)Motion->nCntMotion / (float)Motion->aMotionInfo[Motion->motionType].aKeyInfo[Motion->nKey].nFrame);

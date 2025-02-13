@@ -20,7 +20,7 @@
 
 #define ENEMY_HP (float)(150)			// HP
 #define ENEMY_SPEED (float) (2.0f)		// ‘¬“x
-#define ENEMY_AP (float)(10)			// UŒ‚—Í
+#define ENEMY_AP (float)(100)			// UŒ‚—Í
 
 // s“®‚Ì‹——£
 #define ATTACK_DIST (float)(50.0f)		// UŒ‚

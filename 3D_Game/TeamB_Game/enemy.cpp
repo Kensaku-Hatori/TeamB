@@ -143,6 +143,12 @@ void UpdateEnemy(void)
 				g_Enemy[EnemyCount].Object.Rot.y -= D3DX_PI * 2.0f;
 			}
 
+			if (g_Enemy[EnemyCount].statecount <= 0)
+			{
+				g_Enemy[EnemyCount].state = ENEMYSTATE_NORMAL;
+				g_Enemy[EnemyCount].statecount = 0;
+			}
+			g_Enemy[EnemyCount].statecount--;
 
 			//移動量の更新(減衰)
 			g_Enemy[EnemyCount].move.x = (0.0f - g_Enemy[EnemyCount].move.x) * 0.1f;
@@ -286,11 +292,12 @@ void HitEnemy(float Atack,int Indx)
 
 	if (Atack >= 10)
 	{// ダメージが最小値以上なら
-		g_Enemy[Indx].statecount = (int)Atack * 3;
+		//g_Enemy[Indx].statecount = (int)Atack * 3;
+		g_Enemy[Indx].statecount = 30;
 	}
 	else
 	{// ダメージが最小値以下なら
-		g_Enemy[Indx].statecount = 10;
+		g_Enemy[Indx].statecount = 30;
 	}
 
 	if (g_Enemy[Indx].Status.fHP <= 0.0f && g_Enemy[Indx].bUse == true)

@@ -19,7 +19,7 @@
 #define PLAYER_MP (500)				// MP
 #define PLAYER_HP (float)(1000)		// HP
 #define PLAYER_SPEED (float) (2.0f)	// 速度
-#define PLAYER_AP (10)				// 攻撃力
+#define PLAYER_AP (100)				// 攻撃力
 
 //プレイヤーの構造体
 typedef struct
@@ -40,7 +40,9 @@ typedef struct
 	bool bJump;						// ジャンプできるかどうか
 	bool bUse;						// 使用状況
 	bool bLanding;					// 地面に着地しているかどうか
+	bool bfirst;					// 最初かどうか
 	PlayerStatus Status;			// ステータス
+	
 	int nNumModel;					// パーツの総数
 	int nNumMotion;					// モーションの総数
 	MOTIONTYPE motionType;			// モーションの種類
