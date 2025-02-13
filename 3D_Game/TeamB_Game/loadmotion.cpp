@@ -7,6 +7,7 @@
 #include "loadmotion.h"
 #include "enemy.h"
 #include "player.h"
+#include "boss.h"
 
 // ÉOÉçÅ[ÉoÉãïœêî
 LoadInfo g_LoadInfo[LOADTYPE_MAX];
@@ -128,6 +129,9 @@ void LoadMotionStart(FILE* pFile)
 					break;
 				case LOADTYPE_ENEMYTHREE:
 					SetEnemyPartsInfo(g_LoadInfo[nType], nType);
+					break;
+				case LOADTYPE_ENEMYFOUR:
+					SetBossPartsInfo(g_LoadInfo[nType]);
 					break;
 				default:
 					break;

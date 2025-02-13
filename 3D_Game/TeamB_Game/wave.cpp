@@ -7,6 +7,7 @@
 
 #include"wave.h"
 #include"enemy.h"
+#include "boss.h"
 #include<stdio.h>
 
 //ƒ}ƒNƒ’è‹`
@@ -120,8 +121,15 @@ void LoadWave()
 					}
 					else if (strcmp(aString, "END_ENEMYSET") == 0)//END_ENEMYSET‚ğ“Ç‚ñ‚¾‚È‚ç
 					{
-						//“G‚Ìİ’è
-						SetEnemy(pos, type, rot);
+						if (type == 3)
+						{
+							SetBoss(pos, rot);
+						}
+						else
+						{
+							//“G‚Ìİ’è
+							SetEnemy(pos, type, rot);
+						}
 
 						break;
 					}

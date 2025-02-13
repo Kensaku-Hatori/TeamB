@@ -35,6 +35,7 @@
 #include "Item.h"
 #include "circle.h"
 #include "arrow.h"
+#include "boss.h"
 
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -67,6 +68,9 @@ void InitGame(void)
 
 	//プレイヤーの初期化
 	InitPlayer();
+
+	//敵の初期化
+	InitBoss();
 
 	//敵の初期化
 	InitEnemy();
@@ -162,6 +166,9 @@ void UninitGame(void)
 	//敵の終了処理
 	UninitEnemy();
 
+	//敵の終了処理
+	UninitBoss();
+
 	//魔法の終了処理
 	UninitSkill();
 
@@ -237,6 +244,9 @@ void UpdateGame(void)
 
 			//敵の更新処理
 			UpdateEnemy();
+
+			//敵の更新処理
+			UpdateBoss();
 
 			//魔法の更新処理
 			UpdateSkill();
@@ -406,6 +416,9 @@ void DrawGame(void)
 
 		//敵の描画処理
 		DrawEnemy();
+
+		//敵の描画処理
+		DrawBoss();
 
 		//UIの描画処理
 		DrawUi();

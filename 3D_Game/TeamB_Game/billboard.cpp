@@ -6,10 +6,11 @@
 //==================================
 
 #include "billboard.h"
+#include "meshfield.h"
 #include "shadow.h"
 
 //グローバル変数宣言
-LPDIRECT3DTEXTURE9 g_apTextureBiillboard[MAX_BILLBOARD] = {	NULL };
+LPDIRECT3DTEXTURE9 g_apTextureBiillboard[MAX_TEX_FIELD] = {	NULL };
 
 Biillboard g_Biillboard[MAX_BILLBOARD];
 
@@ -30,8 +31,6 @@ void InitBiillboard(void)
 		g_Biillboard[nCnt].nHeight = 0;
 		g_Biillboard[nCnt].bUse = false;
 	}
-
-	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\move.jpg", &g_apTextureBiillboard[0]); // 移動
 }
 
 //=======================
@@ -165,10 +164,10 @@ void SetBiillboard(D3DXVECTOR3 pos, int nWidth, int nHeigh)
 			g_Biillboard[nCnt].pVtxBuffBiillboard->Lock(0, 0, (void**)&pVtx, 0);
 
 			//頂点座標の設定
-			pVtx[0].pos = D3DXVECTOR3( -g_Biillboard[nCnt].nWidth, g_Biillboard[nCnt].nHeight, 0.0f);
-			pVtx[1].pos = D3DXVECTOR3( +g_Biillboard[nCnt].nWidth, g_Biillboard[nCnt].nHeight, 0.0f);
-			pVtx[2].pos = D3DXVECTOR3( -g_Biillboard[nCnt].nWidth, g_Biillboard[nCnt].nHeight, 0.0f);
-			pVtx[3].pos = D3DXVECTOR3( +g_Biillboard[nCnt].nWidth, g_Biillboard[nCnt].nHeight, 0.0f);
+			pVtx[0].pos = D3DXVECTOR3( -(float)g_Biillboard[nCnt].nWidth, (float)g_Biillboard[nCnt].nHeight, 0.0f);
+			pVtx[1].pos = D3DXVECTOR3( +(float)g_Biillboard[nCnt].nWidth, (float)g_Biillboard[nCnt].nHeight, 0.0f);
+			pVtx[2].pos = D3DXVECTOR3( -(float)g_Biillboard[nCnt].nWidth, (float)g_Biillboard[nCnt].nHeight, 0.0f);
+			pVtx[3].pos = D3DXVECTOR3( +(float)g_Biillboard[nCnt].nWidth, (float)g_Biillboard[nCnt].nHeight, 0.0f);
 
 			//法線ベクトルの設定
 			pVtx[0].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
@@ -195,3 +194,18 @@ void SetBiillboard(D3DXVECTOR3 pos, int nWidth, int nHeigh)
 		}
 	}
 }
+
+//===================
+// メッシュ壁のテクスチャ設定
+//===================
+//void SetwallTexture()
+//{
+//	//テクスチャのポインタを取得
+//	LPDIRECT3DTEXTURE9 pTexture = GetTexture2(TEX_WALL);
+//
+//	if (pTexture != NULL)
+//	{
+//		//g_pTextureMeshWall = pTexture;
+//	}
+//
+//}
