@@ -825,7 +825,10 @@ void EnemyDistanceSort(int EnemyCount)
 
 	if (pEnemy[EnemyCount].fDistance <= RADIUS)
 	{
-		g_player.nLockOnEnemy = EnemyCount;
+		if (pEnemy[EnemyCount].fDistance <= pEnemy[g_player.nLockOnEnemy].fDistance)
+		{
+			g_player.nLockOnEnemy = EnemyCount;
+		}	
 	}
 }
 
