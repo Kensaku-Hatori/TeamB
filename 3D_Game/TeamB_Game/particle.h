@@ -39,6 +39,16 @@ typedef struct
 
 void InitParticle();
 void UpdateParticle(bool bLimit);
-void SetParticle(D3DXVECTOR3 pos, D3DXVECTOR3 fAngle, D3DXCOLOR col, PARTICLETYPE ntype, D3DXVECTOR3 scale,int nLife,int forlimit,float speed,float minspeed,float gravity,EFFECTTYPE nType);
+void SetParticle(D3DXVECTOR3 pos,
+	D3DXVECTOR3 fAngle, 
+	D3DXCOLOR col, 
+	PARTICLETYPE ntype,
+	D3DXVECTOR3 scale,
+	int nLife,
+	int forlimit,
+	float speed,
+	float minspeed,
+	float gravity,
+	EFFECTTYPE nType);
 void SetParticleInfo(PARTICLE Particle);
 #endif // !PARTICLE_H_
