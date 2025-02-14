@@ -39,6 +39,6 @@ void UninitMeshWall(void);
 void UpdateMeshWall(void);
 void DrawMeshWall(void);
 void SetMeshWall(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX, int nDiviZ, int nDiviY, int nWidth, int nHeight);
-void SetwallTexture();								//テクスチャ設定
+void SetwallTexture(int indx);			//テクスチャ設定
 
 #endif

@@ -132,9 +132,6 @@ void SetMeshWall(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX, int 
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	WORD* pIdx = NULL;
 
-	//テクスチャの設定
-	SetwallTexture();
-
 	for (int nCnt = 0; nCnt < MAX_MESHWALL; nCnt++)
 	{
 		if (g_MeshWall[nCnt].bUse == false)
@@ -152,6 +149,9 @@ void SetMeshWall(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX, int 
 			g_MeshWall[nCnt].nMaxVtx = (g_MeshWall[nCnt].nDiviX + 1) * (g_MeshWall[nCnt].nDiviY + 1);										//頂点数
 			g_MeshWall[nCnt].nPolyNum = (2 * g_MeshWall[nCnt].nDiviX * g_MeshWall[nCnt].nDiviY + (g_MeshWall[nCnt].nDiviY - 1) * 4);		//ポリゴン数
 			int indexNum = (2 * (g_MeshWall[nCnt].nDiviY * (2 + g_MeshWall[nCnt].nDiviX) - 1));												//インデックス
+
+			//テクスチャの設定
+			SetwallTexture(nCnt);
 
 			//頂点バッファの生成
 			pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * g_MeshWall[nCnt].nMaxVtx,
@@ -237,10 +237,10 @@ void SetMeshWall(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX, int 
 //===================
 // メッシュ壁のテクスチャ設定
 //===================
-void SetwallTexture()
+void SetwallTexture(int indx)
 {
 	//テクスチャのポインタを取得
-	LPDIRECT3DTEXTURE9 pTexture = GetTexture2(TEX_WALL);
+	LPDIRECT3DTEXTURE9 pTexture = GetTexture2(g_MeshWall[indx].textype);
 
 	if (pTexture != NULL)
 	{
