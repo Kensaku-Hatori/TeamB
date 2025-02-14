@@ -134,21 +134,24 @@ void UpdatePlayer(void)
 		//ロックオン状態なら
 		if (g_player.bLockOn == true)
 		{
-			pCamera->rot.y = g_player.rot.y + D3DX_PI;
-			
-			//プレイヤーの向き
-			float fMathDistance, fMathDistance1;
-			fMathDistance = pEnemy[g_player.nLockOnEnemy].Object.Pos.x - g_player.pos.x;
-			fMathDistance1 = pEnemy[g_player.nLockOnEnemy].Object.Pos.z - g_player.pos.z;
-			g_player.rotDest.y = atan2f(fMathDistance, fMathDistance1) + D3DX_PI;			
-
-			//距離による解除
-			float Dis = ((g_player.pos.x - pEnemy[g_player.nLockOnEnemy].Object.Pos.x) * (g_player.pos.x - pEnemy[g_player.nLockOnEnemy].Object.Pos.x))
-				   	  + ((g_player.pos.y - pEnemy[g_player.nLockOnEnemy].Object.Pos.y) * (g_player.pos.y - pEnemy[g_player.nLockOnEnemy].Object.Pos.y))
-				      + ((g_player.pos.z - pEnemy[g_player.nLockOnEnemy].Object.Pos.z) * (g_player.pos.z - pEnemy[g_player.nLockOnEnemy].Object.Pos.z));
-			if (Dis >= g_player.fSightRange * g_player.fSightRange * 2)
+			if (pEnemy[g_player.nLockOnEnemy].bUse == true)
 			{
-				g_player.bLockOn = false;
+				pCamera->rot.y = g_player.rot.y + D3DX_PI;
+
+				//プレイヤーの向き
+				float fMathDistance, fMathDistance1;
+				fMathDistance = pEnemy[g_player.nLockOnEnemy].Object.Pos.x - g_player.pos.x;
+				fMathDistance1 = pEnemy[g_player.nLockOnEnemy].Object.Pos.z - g_player.pos.z;
+				g_player.rotDest.y = atan2f(fMathDistance, fMathDistance1) + D3DX_PI;
+
+				//距離による解除
+				float Dis = ((g_player.pos.x - pEnemy[g_player.nLockOnEnemy].Object.Pos.x) * (g_player.pos.x - pEnemy[g_player.nLockOnEnemy].Object.Pos.x))
+					+ ((g_player.pos.y - pEnemy[g_player.nLockOnEnemy].Object.Pos.y) * (g_player.pos.y - pEnemy[g_player.nLockOnEnemy].Object.Pos.y))
+					+ ((g_player.pos.z - pEnemy[g_player.nLockOnEnemy].Object.Pos.z) * (g_player.pos.z - pEnemy[g_player.nLockOnEnemy].Object.Pos.z));
+				if (Dis >= g_player.fSightRange * g_player.fSightRange * 2)
+				{
+					g_player.bLockOn = false;
+				}
 			}
 		}
 

@@ -26,4 +26,5 @@ void DrawLockon(void);
 bool IsEnemyInsight(void);
 bool EnemyDistanceSort(int EnemyCount);
 
+
 #endif
