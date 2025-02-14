@@ -11,8 +11,7 @@
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffLockon = NULL;
 LPDIRECT3DTEXTURE9 g_apTextureLockon[1] = {};
 
-D3DXVECTOR3 g_posLockon;//位置
-
+Lockon g_Lockon;
 //=======================
 // ポリゴンの初期化処理
 //=======================
@@ -22,37 +21,37 @@ void InitLockon(void)
 	//デバイスの取得
 	pDevice = GetDevice();
 
-	g_posLockon = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	g_Lockon.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	g_Lockon.bUse = false;
 
-	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\yuka00.jpg", &g_apTextureLockon[0]); //1
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\lockon.png", &g_apTextureLockon[0]); //1
 
 	//頂点バッファの生成
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 4,
 		                        D3DUSAGE_WRITEONLY,
 		                        FVF_VERTEX_3D,
 		                        D3DPOOL_MANAGED,
 		                        &g_pVtxBuffLockon,
 		                        NULL);
-	VERTEX_2D* pVtx = NULL;
+	VERTEX_3D* pVtx = NULL;
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffLockon->Lock(0, 0, (void**)&pVtx, 0);
 
 	//頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	pVtx[1].pos = D3DXVECTOR3(1280.0f, 0.0f, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(0.0f, 720.0f, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(1280.0f, 720.0f, 0.0f);
-	//rhwの設定
-	pVtx[0].rhw = 1.0f;
-	pVtx[1].rhw = 1.0f;
-	pVtx[2].rhw = 1.0f;
-	pVtx[3].rhw = 1.0f;
+	pVtx[0].pos = D3DXVECTOR3(g_Lockon.pos.x - LOCKON_SIZE, g_Lockon.pos.y + LOCKON_SIZE, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(g_Lockon.pos.x + LOCKON_SIZE, g_Lockon.pos.y + LOCKON_SIZE, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(g_Lockon.pos.x - LOCKON_SIZE, g_Lockon.pos.y - LOCKON_SIZE, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(g_Lockon.pos.x + LOCKON_SIZE, g_Lockon.pos.y - LOCKON_SIZE, 0.0f);
+	//法線ベクトルの設定
+	pVtx[0].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+	pVtx[1].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+	pVtx[2].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+	pVtx[3].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
 	//頂点カラーの設定
 	pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.01f);
 	pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.01f);
 	pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.01f);
 	pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.01f);
-
 	//テクスチャ座標の設定
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
 	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
@@ -87,18 +86,23 @@ void UninitLockon(void)
 void UpdateLockon(void)
 {
 	Player* pPlayer = GetPlayer();
+	ENEMY* pEnemy = GetEnemy();
 
-	VERTEX_2D* pVtx = NULL;
+	VERTEX_3D* pVtx = NULL;
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffLockon->Lock(0, 0, (void**)&pVtx, 0);
 
-	if (pPlayer->bLockOn == true)
+	g_Lockon.bUse = pPlayer->bLockOn;
+
+	if (g_Lockon.bUse == true)
 	{
+		g_Lockon.pos = pEnemy[pPlayer->nLockOnEnemy].Object.Pos;
+		g_Lockon.pos.y += 30.0f;
 		//頂点カラーの設定
-		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
-		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
-		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
-		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
+		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 	else
 	{
@@ -121,17 +125,59 @@ void DrawLockon(void)
 	//デバイスの取得
 	pDevice = GetDevice();
 
-	//頂点フォーマットの設定
-	pDevice->SetFVF(FVF_VERTEX_2D);
+	//計算用マトリックス
+	D3DXMATRIX mtxRot, mtxTrans;
 
-	//頂点バッファをデータストリームに設定
-	pDevice->SetStreamSource(0, g_pVtxBuffLockon, 0, sizeof(VERTEX_2D));
+	//ライトを無効にする
+	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
-	//テクスチャの設定
-	pDevice->SetTexture(0, g_apTextureLockon[0]);
+	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
+	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
-	//ポリゴンを描画
-	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+	if (g_Lockon.bUse == true)
+	{
+		//ワールドマトリックスの初期化
+		D3DXMatrixIdentity(&g_Lockon.mtxWorld);
+
+		D3DXMATRIX mtxView;
+		//ビューマトリックス取得
+		pDevice->GetTransform(D3DTS_VIEW, &mtxView);
+
+		//カメラの逆行列を設定
+		g_Lockon.mtxWorld._11 = mtxView._11;
+		g_Lockon.mtxWorld._12 = mtxView._21;
+		g_Lockon.mtxWorld._13 = mtxView._31;
+		g_Lockon.mtxWorld._21 = mtxView._12;
+		g_Lockon.mtxWorld._22 = mtxView._22;
+		g_Lockon.mtxWorld._23 = mtxView._32;
+		g_Lockon.mtxWorld._31 = mtxView._13;
+		g_Lockon.mtxWorld._32 = mtxView._23;
+		g_Lockon.mtxWorld._33 = mtxView._33;
+
+		//位置を反映
+		D3DXMatrixTranslation(&mtxTrans, g_Lockon.pos.x, g_Lockon.pos.y, g_Lockon.pos.z);
+		D3DXMatrixMultiply(&g_Lockon.mtxWorld, &g_Lockon.mtxWorld, &mtxTrans);
+
+		//ワールドマトリックスの設定
+		pDevice->SetTransform(D3DTS_WORLD, &g_Lockon.mtxWorld);
+
+		//頂点バッファをデータストリームに設定
+		pDevice->SetStreamSource(0, g_pVtxBuffLockon, 0, sizeof(VERTEX_3D));
+
+		//頂点フォーマットの設定
+		pDevice->SetFVF(FVF_VERTEX_3D);
+
+		//テクスチャの設定
+		pDevice->SetTexture(0, g_apTextureLockon[0]);
+
+		//ポリゴンを描画
+		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+	}
+	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+
+	//ライトを有効に戻す
+	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 }
 //=====================================
 // 敵が視界にいるかどうか(ロックオン)
@@ -192,22 +238,25 @@ bool EnemyDistanceSort(int EnemyCount)
 	ENEMY* pEnemy = GetEnemy();
 
 	bool bLock = true;
-	//敵との距離
-	pEnemy[EnemyCount].fDistance = sqrtf(((pEnemy[EnemyCount].Object.Pos.x - pPlayer->pos.x) * (pEnemy[EnemyCount].Object.Pos.x - pPlayer->pos.x))
-									   + ((pEnemy[EnemyCount].Object.Pos.y - pPlayer->pos.y) * (pEnemy[EnemyCount].Object.Pos.y - pPlayer->pos.y))
-									   + ((pEnemy[EnemyCount].Object.Pos.z - pPlayer->pos.z) * (pEnemy[EnemyCount].Object.Pos.z - pPlayer->pos.z)));
-
-	pEnemy[pPlayer->nLockOnEnemy].fDistance = sqrtf(((pEnemy[pPlayer->nLockOnEnemy].Object.Pos.x - pPlayer->pos.x) * (pEnemy[pPlayer->nLockOnEnemy].Object.Pos.x - pPlayer->pos.x))
-											  	  + ((pEnemy[pPlayer->nLockOnEnemy].Object.Pos.y - pPlayer->pos.y) * (pEnemy[pPlayer->nLockOnEnemy].Object.Pos.y - pPlayer->pos.y))
-											  	  + ((pEnemy[pPlayer->nLockOnEnemy].Object.Pos.z - pPlayer->pos.z) * (pEnemy[pPlayer->nLockOnEnemy].Object.Pos.z - pPlayer->pos.z)));
-
-	float RADIUS = (pPlayer->fDistance + pEnemy[EnemyCount].Radius) * (pPlayer->fDistance + pEnemy[EnemyCount].Radius);
-
-	if (pEnemy[EnemyCount].fDistance <= RADIUS)
+	if (pEnemy[EnemyCount].bUse == true && pEnemy[pPlayer->nLockOnEnemy].bUse == true)
 	{
-		if (pEnemy[EnemyCount].fDistance <= pEnemy[pPlayer->nLockOnEnemy].fDistance)
+		//敵との距離
+		pEnemy[EnemyCount].fDistance = sqrtf(((pEnemy[EnemyCount].Object.Pos.x - pPlayer->pos.x) * (pEnemy[EnemyCount].Object.Pos.x - pPlayer->pos.x))
+										   + ((pEnemy[EnemyCount].Object.Pos.y - pPlayer->pos.y) * (pEnemy[EnemyCount].Object.Pos.y - pPlayer->pos.y))
+										   + ((pEnemy[EnemyCount].Object.Pos.z - pPlayer->pos.z) * (pEnemy[EnemyCount].Object.Pos.z - pPlayer->pos.z)));
+
+		pEnemy[pPlayer->nLockOnEnemy].fDistance = sqrtf(((pEnemy[pPlayer->nLockOnEnemy].Object.Pos.x - pPlayer->pos.x) * (pEnemy[pPlayer->nLockOnEnemy].Object.Pos.x - pPlayer->pos.x))
+													  + ((pEnemy[pPlayer->nLockOnEnemy].Object.Pos.y - pPlayer->pos.y) * (pEnemy[pPlayer->nLockOnEnemy].Object.Pos.y - pPlayer->pos.y))
+													  + ((pEnemy[pPlayer->nLockOnEnemy].Object.Pos.z - pPlayer->pos.z) * (pEnemy[pPlayer->nLockOnEnemy].Object.Pos.z - pPlayer->pos.z)));
+
+		float RADIUS = (pPlayer->fDistance + pEnemy[EnemyCount].Radius) * (pPlayer->fDistance + pEnemy[EnemyCount].Radius);
+
+		if (pEnemy[EnemyCount].fDistance <= RADIUS)
 		{
-			pPlayer->nLockOnEnemy = EnemyCount;
+			if (pEnemy[EnemyCount].fDistance <= pEnemy[pPlayer->nLockOnEnemy].fDistance)
+			{
+				pPlayer->nLockOnEnemy = EnemyCount;
+			}
 		}
 	}
 	return bLock;

@@ -390,7 +390,6 @@ void DeadEnemy(int Indx)
 		if (pPlayer->nLockOnEnemy == Indx)
 		{
 			pPlayer->bLockOn = false;
-			pCamera->rot.y = 0.0f; //ƒJƒƒ‰–ß‚·
 		}
 	}
 }
