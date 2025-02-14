@@ -11,7 +11,7 @@
 #define BOSS_HP (100)
 #define BOSS_SPEED (1)
 #define	BOSSATTACK_DIST (50)
-#define BOSSHORMING_DIST (150)
+#define BOSSHORMING_DIST (300)
 #define BOSSHORMING_MOVE (float)(-2.0f)
 
 #include "main.h"

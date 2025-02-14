@@ -24,11 +24,10 @@
 
 // 行動の距離
 #define ATTACK_DIST (float)(50.0f)		// 攻撃
-#define HOMING_DIST (float)(100.0f)		// ホーミング
-#define WELL_DIST (float)(200.0f)		// ホーミング
+#define HOMING_DIST (float)(300.0f)		// ホーミング
 
 //フレーム
-#define ATTACK_FREAM (180)				// 攻撃
+#define ATTACK_FREAM (180)				// 攻撃a
 
 //移動量
 #define HOMING_MOVE (float)(0.2f)		// ホーミング
