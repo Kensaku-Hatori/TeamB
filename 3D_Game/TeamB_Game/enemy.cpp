@@ -16,7 +16,10 @@
 #include "shadow.h"
 #include "animation.h"
 #include "player.h"
+#include "item.h"
 #include "skill.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 //*******************
 // グローバル変数宣言
@@ -376,10 +379,22 @@ void DeadEnemy(int Indx)
 	MODE nMode = GetMode();
 	Player* pPlayer = GetPlayer();
 	Camera* pCamera = GetCamera();
+	int Drop = 0;			//ドロップ確率
+	int Itemtype = 0;		//アイテムの種類
 
 	g_Enemy[Indx].bUse = false;
 	g_nNumEnemy--;
 	SetPositionShadow(g_Enemy[Indx].IndxShadow,g_Enemy[Indx].Object.Pos,g_Enemy[Indx].bUse);
+
+	//アイテムドロップ
+	Drop = rand() % 10;
+	Itemtype = rand() % NUM_ITEMTYPE;
+
+	if (Drop <= 2)
+	{
+		//アイテムの設定
+		SetItem(g_Enemy[Indx].Object.Pos, (ITEMTYPE)Itemtype);
+	}
 
 	SetParticle(g_Enemy[Indx].Object.Pos, 
 		D3DXVECTOR3(100.0f, 100.0f, 100.0f), 
