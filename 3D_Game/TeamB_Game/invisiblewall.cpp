@@ -117,7 +117,7 @@ void InitInvisibleWall()
 		g_InvisibleWall[WALLTYPE_EXIT].norRight = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
 		g_InvisibleWall[WALLTYPE_EXIT].norBottom = D3DXVECTOR3(0.0f, -1.0f, 0.0f);
 		g_InvisibleWall[WALLTYPE_EXIT].norWall = D3DXVECTOR3(1.0f, 0.0f, 0.0f);
-		g_InvisibleWall[WALLTYPE_EXIT].PlayerPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		g_InvisibleWall[WALLTYPE_EXIT].PlayerPos = D3DXVECTOR3(45.0f, 0.0f, -560.0f);
 		g_InvisibleWall[WALLTYPE_EXIT].MoveStageNum = MODE_STAGEFOUR;
 		break;
 	case MODE_STAGEFOUR:

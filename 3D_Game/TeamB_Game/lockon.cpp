@@ -7,6 +7,7 @@
 #include "lockon.h"
 #include "player.h"
 #include "enemy.h"
+#include "camera.h"
 //グローバル変数宣言
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffLockon = NULL;
 LPDIRECT3DTEXTURE9 g_apTextureLockon[1] = {};
@@ -96,13 +97,17 @@ void UpdateLockon(void)
 
 	if (g_Lockon.bUse == true)
 	{
-		g_Lockon.pos = pEnemy[pPlayer->nLockOnEnemy].Object.Pos;
-		g_Lockon.pos.y += 30.0f;
-		//頂点カラーの設定
-		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		if (pEnemy[pPlayer->nLockOnEnemy].bUse == true)
+		{
+			g_Lockon.pos = pEnemy[pPlayer->nLockOnEnemy].Object.Pos;
+			g_Lockon.pos.y += 30.0f;
+
+			//頂点カラーの設定
+			pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		}
 	}
 	else
 	{
@@ -238,26 +243,24 @@ bool EnemyDistanceSort(int EnemyCount)
 	ENEMY* pEnemy = GetEnemy();
 
 	bool bLock = true;
-	if (pEnemy[EnemyCount].bUse == true && pEnemy[pPlayer->nLockOnEnemy].bUse == true)
+	//敵との距離
+	pEnemy[EnemyCount].fDistance = sqrtf(((pEnemy[EnemyCount].Object.Pos.x - pPlayer->pos.x) * (pEnemy[EnemyCount].Object.Pos.x - pPlayer->pos.x))
+									   + ((pEnemy[EnemyCount].Object.Pos.y - pPlayer->pos.y) * (pEnemy[EnemyCount].Object.Pos.y - pPlayer->pos.y))
+									   + ((pEnemy[EnemyCount].Object.Pos.z - pPlayer->pos.z) * (pEnemy[EnemyCount].Object.Pos.z - pPlayer->pos.z)));
+
+	pEnemy[pPlayer->nLockOnEnemy].fDistance = sqrtf(((pEnemy[pPlayer->nLockOnEnemy].Object.Pos.x - pPlayer->pos.x) * (pEnemy[pPlayer->nLockOnEnemy].Object.Pos.x - pPlayer->pos.x))
+												  + ((pEnemy[pPlayer->nLockOnEnemy].Object.Pos.y - pPlayer->pos.y) * (pEnemy[pPlayer->nLockOnEnemy].Object.Pos.y - pPlayer->pos.y))
+												  + ((pEnemy[pPlayer->nLockOnEnemy].Object.Pos.z - pPlayer->pos.z) * (pEnemy[pPlayer->nLockOnEnemy].Object.Pos.z - pPlayer->pos.z)));
+
+	float RADIUS = (pPlayer->fDistance + pEnemy[EnemyCount].Radius) * (pPlayer->fDistance + pEnemy[EnemyCount].Radius);
+
+	if (pEnemy[EnemyCount].fDistance <= RADIUS)
 	{
-		//敵との距離
-		pEnemy[EnemyCount].fDistance = sqrtf(((pEnemy[EnemyCount].Object.Pos.x - pPlayer->pos.x) * (pEnemy[EnemyCount].Object.Pos.x - pPlayer->pos.x))
-										   + ((pEnemy[EnemyCount].Object.Pos.y - pPlayer->pos.y) * (pEnemy[EnemyCount].Object.Pos.y - pPlayer->pos.y))
-										   + ((pEnemy[EnemyCount].Object.Pos.z - pPlayer->pos.z) * (pEnemy[EnemyCount].Object.Pos.z - pPlayer->pos.z)));
-
-		pEnemy[pPlayer->nLockOnEnemy].fDistance = sqrtf(((pEnemy[pPlayer->nLockOnEnemy].Object.Pos.x - pPlayer->pos.x) * (pEnemy[pPlayer->nLockOnEnemy].Object.Pos.x - pPlayer->pos.x))
-													  + ((pEnemy[pPlayer->nLockOnEnemy].Object.Pos.y - pPlayer->pos.y) * (pEnemy[pPlayer->nLockOnEnemy].Object.Pos.y - pPlayer->pos.y))
-													  + ((pEnemy[pPlayer->nLockOnEnemy].Object.Pos.z - pPlayer->pos.z) * (pEnemy[pPlayer->nLockOnEnemy].Object.Pos.z - pPlayer->pos.z)));
-
-		float RADIUS = (pPlayer->fDistance + pEnemy[EnemyCount].Radius) * (pPlayer->fDistance + pEnemy[EnemyCount].Radius);
-
-		if (pEnemy[EnemyCount].fDistance <= RADIUS)
+		if (pEnemy[EnemyCount].fDistance <= pEnemy[pPlayer->nLockOnEnemy].fDistance)
 		{
-			if (pEnemy[EnemyCount].fDistance <= pEnemy[pPlayer->nLockOnEnemy].fDistance)
-			{
-				pPlayer->nLockOnEnemy = EnemyCount;
-			}
+			pPlayer->nLockOnEnemy = EnemyCount;
 		}
 	}
+	
 	return bLock;
 }
