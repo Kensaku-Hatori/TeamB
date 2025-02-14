@@ -35,9 +35,9 @@ bool collisioncircle(D3DXVECTOR3 Pos, float fRadius, D3DXVECTOR3 Pos1, float fRa
 {
 	D3DXVECTOR3 Math = Pos - Pos1;
 	float fDistance = D3DXVec3Length(&Math);
-	float fRadius = fRadius + fRadius1;
-	fRadius = fRadius * fRadius;
-	if (fDistance < fRadius)
+	float fMathRadius = fRadius + fRadius1;
+	fMathRadius = fMathRadius * fMathRadius;
+	if (fDistance < fMathRadius)
 	{
 		return true;
 	}

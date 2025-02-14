@@ -69,6 +69,7 @@ typedef struct
 	float fSightAngle;
 	float fDistance;
 	bool bLockOn;
+	bool bWantLockOn;
 	int nLockOnEnemy;
 
 }Player;
