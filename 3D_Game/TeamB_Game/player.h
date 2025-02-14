@@ -52,18 +52,18 @@ typedef struct
 	int nCntMotion;					// モーションのカウンター
 
 	//bool bFinish;					// 現在のモーションが終了しているかどうか
-	//bool bBlendMotion;				// ブレンドモーションがあるかどうか
-	//MOTIONTYPE motionTypeBlend;		// ブレンドモーションの種類
+	//bool bBlendMotion;			// ブレンドモーションがあるかどうか
+	//MOTIONTYPE motionTypeBlend;	// ブレンドモーションの種類
 	//int nNumKeyBlend;				// ブレンドモーションのキーの総数
-	//int nKeyBlend;					// ブレンドモーションののキーNo
+	//int nKeyBlend;				// ブレンドモーションののキーNo
 	//int nCntMotionBlend;			// ブレンドモーションのカウンター
 	//int nFrameBlend;				// ブレンドフレーム
-	//int nCntBlend;					// ブレンドフレームカウント
+	//int nCntBlend;				// ブレンドフレームカウント
 	//int nNextKeyBlend;
 	//bool bLoopBlend;				//ループするかどうか
 
 	bool btest;
-	bool bAbolition;				// 全滅フラグ
+	bool bAbolition;				// 全滅フラグ(trueで全滅)
 
 	float fSightRange;
 	float fSightAngle;
