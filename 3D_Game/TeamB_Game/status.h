@@ -1,5 +1,3 @@
-#ifndef STATUS_H_
-#define STATUS_H_
 
 //=====================================
 //
@@ -7,6 +5,8 @@
 // Author:kaiti
 //
 //=====================================
+#ifndef STATUS_H_
+#define STATUS_H_
 
 #define GRAVITY (float)(0.3f)
 

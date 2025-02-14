@@ -9,8 +9,14 @@
 
 #include "main.h"
 
-#define LOCKON_X (100)
-#define LOCKON_Y (100)
+#define LOCKON_SIZE (20)
+
+typedef struct
+{
+	D3DXVECTOR3 pos;	//位置
+	D3DXMATRIX mtxWorld;//ワールドマトリックス
+	bool bUse;
+}Lockon;
 
 //プロトタイプ宣言
 void InitLockon(void);

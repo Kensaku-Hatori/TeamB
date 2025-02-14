@@ -11,7 +11,7 @@
 #define BOSS_HP (100)
 #define BOSS_SPEED (1)
 #define	BOSSATTACK_DIST (50)
-#define BOSSHORMING_DIST (150)
+#define BOSSHORMING_DIST (300)
 #define BOSSHORMING_MOVE (float)(-2.0f)
 
 #include "main.h"
@@ -37,6 +37,14 @@ typedef enum
 	BOSSACTION_MAX
 }BOSSACTION;
 
+typedef struct
+{
+	BOSSACTION Action;
+	float primary[BOSSACTION_MAX];
+	int routine, routinecount;
+	bool fFinishAction;
+}BossAi;
+
 // 敵のバッファ・モーション格納
 typedef struct
 {
@@ -55,6 +63,7 @@ typedef struct
 	OBJECT Object;
 	D3DXVECTOR3 rotDest;
 	D3DXVECTOR3 move;
+	BossAi BossAi;
 	int Action;
 	int nNumKey, nKey, nCounterMotion, nNextKey;
 	int nNumModel;
@@ -69,22 +78,21 @@ typedef struct
 	bool bHit;
 	int IndxGuage[3];
 	float fDistance;
-
 }BOSS;
 
 //*****************
 // プロトタイプ宣言
 //*****************
-void InitBoss(void);										// 敵の初期化処理
-void UninitBoss(void);										// 敵の終了処理
-void UpdateBoss(void);										// 敵の更新処理
-void DrawBoss(void);										// 敵の描画処理
-BOSS* GetBoss();											// 敵の取得処理
-void HitBoss(float Atack);						// 敵のヒット処理
-void DeadBoss();									// 敵の死亡処理
-void SetBoss(D3DXVECTOR3 pos, D3DXVECTOR3 rot);	// 敵の設定処理
-void UpdateBossAction();								// 敵の行動パターン更新処理
-void BossState();									// 敵の状態更新処理
-void SetBossPartsInfo(LoadInfo PartsInfo);		// 敵のバッファやモーション設定処理
-void CollisionBoss(void);									// 敵の当たり判定処理
+void InitBoss(void);										// ボスの初期化処理
+void UninitBoss(void);										// ボスの終了処理
+void UpdateBoss(void);										// ボスの更新処理
+void DrawBoss(void);										// ボスの描画処理
+BOSS* GetBoss();											// ボスの取得処理
+void HitBoss(float Atack);									// ボスのヒット処理
+void DeadBoss();											// ボスの死亡処理
+void SetBoss(D3DXVECTOR3 pos, D3DXVECTOR3 rot);				// ボスの設定処理
+void UpdateBossAction();									// ボスの行動パターン更新処理
+void BossState();											// ボスの状態更新処理
+void SetBossPartsInfo(LoadInfo PartsInfo);					// ボスのバッファやモーション設定処理
+void CollisionBoss(void);									// ボスの当たり判定処理
 #endif // !ENEMY_H_

@@ -34,7 +34,6 @@ D3DXVECTOR3 g_vtxMinPlayer;	//プレイヤーの最小値
 D3DXVECTOR3 g_vtxMaxPlayer;	//プレイヤーの最大値
 
 int g_nCntHealMP;			//MP回復時間
-bool g_bAbolition = false;	//全滅フラグ
 
 //=====================
 // プレイヤーの初期化
@@ -87,7 +86,7 @@ void InitPlayer(void)
 	g_player.nLockOnEnemy = 0;
 
 	//全滅フラグ
-	g_bAbolition = false;				//全滅していない状態
+	g_player.bAbolition = false;				//全滅していない状態
 
 	g_nCntHealMP = 0;
 }
@@ -169,8 +168,8 @@ void UpdatePlayer(void)
 		if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_B) == true) && g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION)
 		{// MPが５０以上の時
 			SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion);
-			if (g_player.Status.nMP >= 50)
-			{
+			//if (g_player.Status.nMP >= 50)
+			//{
 				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bActionStart = false;
 				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bFirst = false;
 				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartKey = 3;
@@ -192,8 +191,8 @@ void UpdatePlayer(void)
 				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nStartFrame = 1;
 				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nEndFrame = 2;
 
-				g_player.Status.nMP -= 50; //MP消費
-			}
+			//	g_player.Status.nMP -= 50; //MP消費
+			//}
 		}
 
 		//MP回復
@@ -208,7 +207,7 @@ void UpdatePlayer(void)
 		}
 
 		//ジャンプ
-		if ((KeyboardTrigger(DIK_SPACE) == true || GetJoypadTrigger(JOYKEY_A) == true))
+		if ((KeyboardTrigger(DIK_SPACE) == true || GetJoypadTrigger(JOYKEY_A) == true) && g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION)
 		{// SPACE
 			if (g_player.bJump == false)
 			{
@@ -339,7 +338,7 @@ void UpdatePlayer(void)
 		//敵を全て倒しているなら
 		if (*(NumEnemy) <= 0)
 		{
-			if (g_bAbolition != true)
+			if (g_player.bAbolition != true)
 			{
 				//エリア移動位置の取得
 				D3DXVECTOR3 Destpos = GetBottom();
@@ -355,12 +354,12 @@ void UpdatePlayer(void)
 				}
 
 				//全滅している状態にする
-				g_bAbolition = true;
+				g_player.bAbolition = true;
 			}
 		}
 
 		//敵が全滅しているなら
-		if (g_bAbolition == true)
+		if (g_player.bAbolition == true)
 		{
 			MODE mode = GetMode();
 

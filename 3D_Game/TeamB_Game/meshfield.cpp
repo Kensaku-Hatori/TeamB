@@ -273,7 +273,7 @@ void SetfieldTexture(char* pFileName, int TexIndx)
 //================================
 //テクスチャの取得処理
 //================================
-LPDIRECT3DTEXTURE9 GetTexture2(TEX_TYPE TexType)
+LPDIRECT3DTEXTURE9 GetTexture2(int TexType)
 {
 	return g_pTextureMeshfield[(int)TexType];
 }

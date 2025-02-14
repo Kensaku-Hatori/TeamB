@@ -347,9 +347,13 @@ void CaceOneAction(OBJECTINFO* Motion)
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		break;
 	case MOTIONTYPE_ACTION:
-		SetSkill(Pos,
-			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			pPlayer->rot);
+		if (pPlayer->Status.nMP >= 50)
+		{
+			SetSkill(Pos,
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+				pPlayer->rot);
+			pPlayer->Status.nMP -= 50;
+		}
 		break;
 	case MOTIONTYPE_LANDING:
 		SetParticle(pPlayer->pos,
@@ -392,41 +396,44 @@ void CaceTwoAction(OBJECTINFO* Motion)
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		break;
 	case MOTIONTYPE_ACTION:
-		// エフェクトの設定
-		SetEffect(Pos,
-			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			50,
-			0,
-			D3DXVECTOR3(5.0f, 0.5f, 0.0f),
-			D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
-			EFFECT_SKILLFLASH,
-			0,
-			0.0f,
-			D3DXVECTOR3(0.0f, pPlayer->rotDest.y, 0.5f));
+		if (pPlayer->Status.nMP >= 50)
+		{
+			// エフェクトの設定
+			SetEffect(Pos,
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+				50,
+				0,
+				D3DXVECTOR3(5.0f, 0.5f, 0.0f),
+				D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
+				EFFECT_SKILLFLASH,
+				0,
+				0.0f,
+				D3DXVECTOR3(0.0f, pPlayer->rotDest.y, 0.5f));
 
-		// エフェクトの設定
-		SetEffect(Pos,
-			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			50,
-			0,
-			D3DXVECTOR3(5.0f, 0.5f, 0.0f),
-			D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
-			EFFECT_SKILLFLASH,
-			0,
-			0.0f,
-			D3DXVECTOR3(0.0f, pPlayer->rotDest.y, -0.5f));
+			// エフェクトの設定
+			SetEffect(Pos,
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+				50,
+				0,
+				D3DXVECTOR3(5.0f, 0.5f, 0.0f),
+				D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
+				EFFECT_SKILLFLASH,
+				0,
+				0.0f,
+				D3DXVECTOR3(0.0f, pPlayer->rotDest.y, -0.5f));
 
-		// エフェクトの設定
-		SetEffect(Pos,
-			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			50,
-			0,
-			D3DXVECTOR3(10.0f, 0.5f, 1.0f),
-			D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
-			EFFECT_SKILLFLASH,
-			0,
-			0.0f,
-			D3DXVECTOR3(0.0f, pPlayer->rotDest.y, 0.0f));
+			// エフェクトの設定
+			SetEffect(Pos,
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+				50,
+				0,
+				D3DXVECTOR3(10.0f, 0.5f, 1.0f),
+				D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
+				EFFECT_SKILLFLASH,
+				0,
+				0.0f,
+				D3DXVECTOR3(0.0f, pPlayer->rotDest.y, 0.0f));
+		}
 		break;
 	}
 }
