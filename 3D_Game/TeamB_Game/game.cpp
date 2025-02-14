@@ -420,18 +420,18 @@ void DrawGame(void)
 		//敵の描画処理
 		DrawBoss();
 
+		//矢印の描画処理
+		DrawArrow();
+
+		//サークルの描画処理
+		DrawCircle();
+
 		//UIの描画処理
 		DrawUi();
 
 		//衝撃波の描画処理
 		DrawImpact();
 	}
-
-	//矢印の描画処理
-	DrawArrow();
-	
-	//サークルの描画処理
-	DrawCircle();
 
 	//ポーズしているなら
 	if (g_bPause == true)
