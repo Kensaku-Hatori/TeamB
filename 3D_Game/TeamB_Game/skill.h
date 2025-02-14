@@ -36,6 +36,6 @@ void UninitSkill(void);
 void UpdateSkill(void);
 void DrawSkill(void);
 void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move,D3DXVECTOR3 rot);
-void SkillCollision(int nIdx);
+bool SkillCollision(D3DXVECTOR3 pos,float radius);
 
 #endif

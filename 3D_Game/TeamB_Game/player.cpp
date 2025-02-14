@@ -27,6 +27,7 @@
 #include "arrow.h"
 #include "invisiblewall.h"
 #include "lockon.h"
+#include "boss.h"
 
 //グローバル変数
 Player g_player;
@@ -246,6 +247,7 @@ void UpdatePlayer(void)
 		g_player.pos.z += g_player.move.z;
 
 		CollisionEnemy();
+		CollisionBoss();
 
 		//ロックオン
 		if ((KeyboardTrigger(DIK_R) == true || GetJoypadTrigger(JOYKEY_R1) == true))
