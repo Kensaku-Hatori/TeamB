@@ -34,7 +34,6 @@ D3DXVECTOR3 g_vtxMinPlayer;	//プレイヤーの最小値
 D3DXVECTOR3 g_vtxMaxPlayer;	//プレイヤーの最大値
 
 int g_nCntHealMP;			//MP回復時間
-bool g_bAbolition = false;	//全滅フラグ
 
 //=====================
 // プレイヤーの初期化
@@ -87,7 +86,7 @@ void InitPlayer(void)
 	g_player.nLockOnEnemy = 0;
 
 	//全滅フラグ
-	g_bAbolition = false;				//全滅していない状態
+	g_player.bAbolition = false;				//全滅していない状態
 
 	g_nCntHealMP = 0;
 }
@@ -339,7 +338,7 @@ void UpdatePlayer(void)
 		//敵を全て倒しているなら
 		if (*(NumEnemy) <= 0)
 		{
-			if (g_bAbolition != true)
+			if (g_player.bAbolition != true)
 			{
 				//エリア移動位置の取得
 				D3DXVECTOR3 Destpos = GetBottom();
@@ -355,12 +354,12 @@ void UpdatePlayer(void)
 				}
 
 				//全滅している状態にする
-				g_bAbolition = true;
+				g_player.bAbolition = true;
 			}
 		}
 
 		//敵が全滅しているなら
-		if (g_bAbolition == true)
+		if (g_player.bAbolition == true)
 		{
 			MODE mode = GetMode();
 
