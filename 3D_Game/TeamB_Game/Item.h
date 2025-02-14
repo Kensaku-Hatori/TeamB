@@ -19,17 +19,17 @@
 //テクスチャ
 static const char* ITEM_TEXTURE[NUM_ITEMTYPE] =
 {
-	"data\\TEXTURE\\item2.png",	//ヒールポーション
-	"data\\TEXTURE\\item1.png",	//マナポーション
-	"data\\TEXTURE\\item3.png"	//スピードアップポーション
+	"data\\TEXTURE\\item2.png",							//ヒールポーション
+	"data\\TEXTURE\\item1.png",							//マナポーション
+	"data\\TEXTURE\\item3.png"							//スピードアップポーション
 };
 
-//
+//アイテムの種類
 typedef enum
 {
-	ITEMTYPE_HP = 0,
-	ITEMTYPE_MP,
-	ITEMTYPE_SPEED,
+	ITEMTYPE_HP = 0,									//ヒールポーション
+	ITEMTYPE_MP,										//マナポーション
+	ITEMTYPE_SPEED,										//スピードアップポーション
 	ITEMTYPE_MAX
 }ITEMTYPE;
 
