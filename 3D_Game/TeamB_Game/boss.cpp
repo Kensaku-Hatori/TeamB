@@ -228,7 +228,7 @@ BOSS* GetEnemy()
 //***************
 // ボスのヒット処理
 //***************
-void HitoBoss(float Atack)
+void HitBoss(float Atack)
 {
 	Camera* pCamera = GetCamera();
 

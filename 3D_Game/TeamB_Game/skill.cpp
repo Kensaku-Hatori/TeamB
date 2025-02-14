@@ -13,6 +13,7 @@
 #include "particle.h"
 #include "enemy.h"
 #include "impact.h"
+#include "boss.h"
 
 //グローバル変数宣言
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffSkill = NULL;
@@ -116,9 +117,6 @@ void UpdateSkill(void)
 	{
 		if (g_Skill[nCnt].bUse == true)
 		{
-			// 魔法の当たり判定
-			SkillCollision(nCnt);
-
 			// エフェクトの設定
 			SetEffect(g_Skill[nCnt].pos,
 				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
@@ -277,30 +275,25 @@ void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot)
 //========================
 // 敵と魔法の当たり判定
 //========================
-void SkillCollision(int nIdx)
+bool SkillCollision(D3DXVECTOR3 pos, float radius)
 {
-	//敵の情報取得
-	ENEMY* pEnemy = GetEnemy();
-
-	//プレイヤーの情報取得
-	Player* pPlayer = GetPlayer();
-
-	for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++, pEnemy++)
+	for (int nCnt = 0; nCnt < MAX_SKILL; nCnt++)
 	{
-		if (pEnemy->bUse == true)
+		if (g_Skill[nCnt].bUse == true)
 		{
-			g_Skill[nIdx].fDistance = sqrtf(((g_Skill[nIdx].pos.x - pEnemy->Object.Pos.x) * (g_Skill[nIdx].pos.x - pEnemy->Object.Pos.x))
-										  + ((g_Skill[nIdx].pos.y - pEnemy->Object.Pos.y) * (g_Skill[nIdx].pos.y - pEnemy->Object.Pos.y))
-										  + ((g_Skill[nIdx].pos.z - pEnemy->Object.Pos.z) * (g_Skill[nIdx].pos.z - pEnemy->Object.Pos.z)));
+			g_Skill[nCnt].fDistance = sqrtf(((g_Skill[nCnt].pos.x - pos.x) * (g_Skill[nCnt].pos.x - pos.x))
+										  + ((g_Skill[nCnt].pos.y - pos.y) * (g_Skill[nCnt].pos.y - pos.y))
+										  + ((g_Skill[nCnt].pos.z - pos.z) * (g_Skill[nCnt].pos.z - pos.z)));
 
-			float RADIUS = (pEnemy->Radius + (SKILL_SIZE)) * (pEnemy->Radius + (SKILL_SIZE));
+			float RADIUS = (radius + (SKILL_SIZE)) * (radius + (SKILL_SIZE));
 
-			if (g_Skill[nIdx].fDistance <= RADIUS)
+			if (g_Skill[nCnt].fDistance <= RADIUS)
 			{
-				HitEnemy(pPlayer->Status.fPower,nCntEnemy);
-				g_Skill[nIdx].nLife = 1;
-				g_Skill[nIdx].bHit = true;
+				g_Skill[nCnt].nLife = 1;
+				g_Skill[nCnt].bHit = true;
+				return true;
 			}
 		}
 	}
+	return false;
 }

@@ -16,6 +16,7 @@
 #include "shadow.h"
 #include "animation.h"
 #include "player.h"
+#include "skill.h"
 
 //*******************
 // グローバル変数宣言
@@ -125,13 +126,21 @@ void UninitEnemy(void)
 void UpdateEnemy(void)
 {
 	MODE nMode = GetMode();
+	Player* pPlayer = GetPlayer();
 
 	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++)
 	{
 		if (g_Enemy[EnemyCount].bUse == true)
 		{
-			//行動の更新
+			// 行動の更新
 			UpdateAction(EnemyCount);
+
+			// 当たり判定
+			if (SkillCollision(g_Enemy[EnemyCount].Object.Pos,g_Enemy[EnemyCount].Radius) == true)
+			{
+				HitEnemy(pPlayer->Status.fPower, EnemyCount);
+			
+			}
 
 			// 角度の近道
 			if (g_Enemy[EnemyCount].rotDest.y - g_Enemy[EnemyCount].Object.Rot.y >= D3DX_PI)

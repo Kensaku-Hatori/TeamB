@@ -265,6 +265,17 @@ void UpdateGame(void)
 				InitParticleEditer();
 				SetGameState(GAMESTATE_EFFECTEDITER);
 			}
+			//リザルトに飛ぶ
+			if (KeyboardTrigger(DIK_1) == true || GetJoypadTrigger(JOYKEY_START) == true)
+			{//Clear
+				SetFade(MODE_RESULT);
+				SetResult(RESULT_CLEAR);
+			}
+			if (KeyboardTrigger(DIK_2) == true || GetJoypadTrigger(JOYKEY_START) == true)
+			{//over
+				SetFade(MODE_RESULT);
+				SetResult(RESULT_GAMEOVER);
+			}
 
 #endif // DEBUG
 
@@ -342,18 +353,6 @@ void UpdateGame(void)
 			case GAMESTATE_EFFECTEDITER:
 
 				break;
-			}
-
-			//リザルトに飛ぶ
-			if (KeyboardTrigger(DIK_1) == true || GetJoypadTrigger(JOYKEY_START) == true)
-			{//Clear
-				SetFade(MODE_RESULT);
-				SetResult(RESULT_CLEAR);
-			}
-			if (KeyboardTrigger(DIK_2) == true || GetJoypadTrigger(JOYKEY_START) == true)
-			{//over
-				SetFade(MODE_RESULT);
-				SetResult(RESULT_GAMEOVER);
 			}
 		}
 	}
