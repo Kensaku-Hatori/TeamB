@@ -63,6 +63,7 @@ typedef struct
 	//bool bLoopBlend;				//ループするかどうか
 
 	bool btest;
+	bool bAbolition;				// 全滅フラグ
 
 	float fSightRange;
 	float fSightAngle;
