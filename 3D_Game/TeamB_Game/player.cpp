@@ -194,7 +194,7 @@ void UpdatePlayer(void)
 		{//MP‚ªŒ¸‚Á‚Ä‚¢‚½‚ç
 			g_nCntHealMP++;
 		}
-		if (g_nCntHealMP >= 60)
+		if (g_nCntHealMP >= 180)
 		{
 			g_player.Status.nMP += 10;
 			g_nCntHealMP = 0;
