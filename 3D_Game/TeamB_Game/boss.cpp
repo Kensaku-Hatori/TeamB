@@ -19,6 +19,8 @@
 #include "skill.h"
 #include "collision.h"
 #include "lockon.h"
+#include "resultinfo.h"
+#include "fade.h"
 
 //*******************
 // グローバル変数宣言
@@ -339,6 +341,9 @@ void DeadBoss()
 			pCamera->rot.y = 0.0f;			// カメラ戻す
 		}
 	}
+
+	SetFade(MODE_RESULT);
+	SetResult(RESULT_CLEAR);
 }
 
 //***************
