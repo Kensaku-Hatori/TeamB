@@ -264,88 +264,6 @@ void SetItem(D3DXVECTOR3 pos, ITEMTYPE type)
 				g_nCntItem++;												//アイテム数カウント
 				g_Item[nCntItem].nCntTime = ITEM_TIME_DEL;					//消えるまでのフレーム初期化
 
-				switch (g_Item[nCntItem].type)
-				{
-				case 0://アイテム名
-			
-					pVtx[0].pos.x = g_Item[nCntItem].pos.x - ITEM_RADIUS;
-					pVtx[0].pos.y = g_Item[nCntItem].pos.y + ITEM_RADIUS * 2.0f;
-					pVtx[0].pos.z = g_Item[nCntItem].pos.z ;
-			
-					pVtx[1].pos.x = g_Item[nCntItem].pos.x + ITEM_RADIUS;
-					pVtx[1].pos.y = g_Item[nCntItem].pos.y + ITEM_RADIUS * 2.0f;
-					pVtx[1].pos.z = g_Item[nCntItem].pos.z;
-			
-					pVtx[2].pos.x = g_Item[nCntItem].pos.x - ITEM_RADIUS;
-					pVtx[2].pos.y = g_Item[nCntItem].pos.y;
-					pVtx[2].pos.z = g_Item[nCntItem].pos.z;
-			
-					pVtx[3].pos.x = g_Item[nCntItem].pos.x + ITEM_RADIUS;
-					pVtx[3].pos.y = g_Item[nCntItem].pos.y;
-					pVtx[3].pos.z = g_Item[nCntItem].pos.z;
-			
-					pVtx += 4;
-			
-					break;
-			
-				case 1://アイテム名
-			
-					//頂点バッファをロック
-					g_pVtxBuffItemBill->Lock(0, 0, (void**)&pVtx, 0);
-			
-					pVtx[0].pos.x = g_Item[nCntItem].pos.x - ITEM_RADIUS;
-					pVtx[0].pos.y = g_Item[nCntItem].pos.y + ITEM_RADIUS * 2.0f;
-					pVtx[0].pos.z = g_Item[nCntItem].pos.z;
-			
-					pVtx[1].pos.x = g_Item[nCntItem].pos.x + ITEM_RADIUS;
-					pVtx[1].pos.y = g_Item[nCntItem].pos.y + ITEM_RADIUS * 2.0f;
-					pVtx[1].pos.z = g_Item[nCntItem].pos.z;
-			
-					pVtx[2].pos.x = g_Item[nCntItem].pos.x - ITEM_RADIUS;
-					pVtx[2].pos.y = g_Item[nCntItem].pos.y;
-					pVtx[2].pos.z = g_Item[nCntItem].pos.z;
-			
-					pVtx[3].pos.x = g_Item[nCntItem].pos.x + ITEM_RADIUS;
-					pVtx[3].pos.y = g_Item[nCntItem].pos.y;
-					pVtx[3].pos.z = g_Item[nCntItem].pos.z;
-			
-					pVtx += 4;
-			
-					break;
-			
-				case 2://アイテム名
-			
-					//頂点バッファをロック
-					g_pVtxBuffItemBill->Lock(0, 0, (void**)&pVtx, 0);
-			
-					pVtx[0].pos.x = g_Item[nCntItem].pos.x - ITEM_RADIUS;
-					pVtx[0].pos.y = g_Item[nCntItem].pos.y + ITEM_RADIUS * 2.0f;
-					pVtx[0].pos.z = g_Item[nCntItem].pos.z;
-			
-					pVtx[1].pos.x = g_Item[nCntItem].pos.x + ITEM_RADIUS;
-					pVtx[1].pos.y = g_Item[nCntItem].pos.y + ITEM_RADIUS * 2.0f;
-					pVtx[1].pos.z = g_Item[nCntItem].pos.z;
-			
-					pVtx[2].pos.x = g_Item[nCntItem].pos.x - ITEM_RADIUS;
-					pVtx[2].pos.y = g_Item[nCntItem].pos.y;
-					pVtx[2].pos.z = g_Item[nCntItem].pos.z;
-			
-					pVtx[3].pos.x = g_Item[nCntItem].pos.x + ITEM_RADIUS;
-					pVtx[3].pos.y = g_Item[nCntItem].pos.y;
-					pVtx[3].pos.z = g_Item[nCntItem].pos.z;
-			
-					pVtx += 4;
-			
-					break;
-			
-				default://ドロップしない
-			
-					g_Item[nCntItem].bUse = false;							//使用していない状態にする
-					g_Item[nCntItem].bDesp = false;							//描画しない
-					g_nCntItem--;											//アイテム数デクリメント
-			
-					break;
-				}
 				break;
 			}
 		}
@@ -390,6 +308,7 @@ void CollisionItem(int nIndexItem)
 		}
 	}
 }
+
 //=================
 // アイテムの効果
 //=================

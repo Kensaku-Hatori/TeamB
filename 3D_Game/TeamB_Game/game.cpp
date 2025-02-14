@@ -36,6 +36,7 @@
 #include "circle.h"
 #include "arrow.h"
 #include "boss.h"
+#include <time.h>
 
 //ƒOƒ[ƒoƒ‹•Ï”
 GAMESTATE g_gamestate = GAMESTATE_NONE;
