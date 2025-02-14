@@ -165,6 +165,7 @@ void UpdateInvisibleWall()
 //*************************
 void CollisionInvisibleWall(Invisiblewall Box, D3DXVECTOR3 Point , D3DXVECTOR3 &NextPoint)
 {
+	Player* pPlayer = GetPlayer();
 	D3DXVECTOR3 TopVec,LeftVec,RightVec,BottomVec,WallVec;
 	TopVec = Point - Box.Top;
 	LeftVec = Point - Box.Left;
@@ -181,7 +182,7 @@ void CollisionInvisibleWall(Invisiblewall Box, D3DXVECTOR3 Point , D3DXVECTOR3 &
 	fDotWall = D3DXVec3Dot(&WallVec, &Box.norWall);
 
 	// 各面とプレイヤーとの内積結果が０以上で出口に対して水平な面の内積結果が０以上だったら
-	if (fDotTop < 0 && fDotLeft < 0 && fDotRight < 0 && fDotBottom <= 0 && fDotWall < 0)
+	if (fDotTop < 0 && fDotLeft < 0 && fDotRight < 0 && fDotBottom <= 0 && fDotWall < 0 && pPlayer->bAbolition == true)
 	{
 		// 各入口出口に設定されている移動先のステージ番号に移動する
 		SetFade(Box.MoveStageNum);
