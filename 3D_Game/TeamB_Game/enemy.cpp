@@ -384,14 +384,11 @@ void DeadEnemy(int Indx)
 		1.0f,
 		EFFECT_NONE);
 
-	//ロックオン解除
-	if (pPlayer->bLockOn == true)
+	if (Indx == pPlayer->nLockOnEnemy)
 	{
-		if (pPlayer->nLockOnEnemy == Indx)
-		{
-			pPlayer->bLockOn = false;
-			pCamera->rot.y = 0.0f; //カメラ戻す
-		}
+		g_Enemy[pPlayer->nLockOnEnemy].fDistance = 0;
+		pPlayer->nLockOnEnemy = 0;
+		pPlayer->bLockOn = false;
 	}
 }
 
