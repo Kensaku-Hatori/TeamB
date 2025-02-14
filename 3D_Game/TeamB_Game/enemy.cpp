@@ -138,8 +138,7 @@ void UpdateEnemy(void)
 			// “–‚½‚è”»’è
 			if (SkillCollision(g_Enemy[EnemyCount].Object.Pos,g_Enemy[EnemyCount].Radius) == true)
 			{
-				HitEnemy(pPlayer->Status.fPower, EnemyCount);
-			
+				HitEnemy(pPlayer->Status.fPower, EnemyCount);			
 			}
 
 			// Šp“x‚Ì‹ß“¹

@@ -16,6 +16,7 @@
 #include "shadow.h"
 #include "animation.h"
 #include "player.h"
+#include "skill.h"
 
 //*******************
 // グローバル変数宣言
@@ -82,10 +83,18 @@ void UninitBoss(void)
 //*************
 void UpdateBoss(void)
 {
+	Player* pPlayer = GetPlayer();
+
 	if (g_Boss.bUse == true)
 	{
 		// 行動の更新
 		UpdateBossAction();
+
+		// 当たり判定
+		if (SkillCollision(g_Boss.Object.Pos, g_Boss.Radius) == true)
+		{
+			HitBoss(pPlayer->Status.fPower);
+		}
 
 		// 角度の近道
 		if (g_Boss.rotDest.y - g_Boss.Object.Rot.y >= D3DX_PI)
