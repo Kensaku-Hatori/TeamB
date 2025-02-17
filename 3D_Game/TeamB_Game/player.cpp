@@ -236,7 +236,7 @@ void UpdatePlayer(void)
 		g_player.pos.y += g_player.move.y;
 		g_player.pos.z += g_player.move.z;
 
-		CollisionEnemy();
+		//CollisionEnemy();
 		CollisionBoss();
 
 		//ロックオン
@@ -250,12 +250,6 @@ void UpdatePlayer(void)
 			{
 				g_player.bWantLockOn = true;
 			}
-		}
-
-		// HP0
-		if (g_player.Status.fHP <= 0.0f)
-		{
-			SetGameState(GAMESTATE_GAMEOVER);
 		}
 
 		//地面との判定
@@ -645,6 +639,20 @@ void PlayerMove(void)
 Player* GetPlayer(void)
 {
 	return &g_player;
+}
+
+//=========================
+// プレイヤーのヒット処理
+//=========================
+void HitPlayer(float Atack)
+{
+	g_player.Status.fHP -= (int)Atack;
+
+
+	if (g_player.Status.fHP <= 0.0f && g_player.bUse == true)
+	{// 使われていて体力が０以下なら
+		SetGameState(GAMESTATE_GAMEOVER);
+	}
 }
 
 void SetMesh(char* pFilePath, int Indx)

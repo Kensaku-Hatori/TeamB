@@ -56,7 +56,6 @@ typedef enum
 	ENEMYTYPE_SKELETON = 0,
 	ENEMYTYPE_ZOMBIE,
 	ENEMYTyPE_MIDBOSS,
-	ENEMYTYPE_BOSS,
 	ENEMYTYPE_MAX
 }ENEMYTYPE;
 
@@ -93,6 +92,7 @@ typedef struct
 	bool bHit;
 	int IndxGuage[3];
 	float fDistance;
+	float fActionDistance;
 
 }ENEMY;
 
@@ -112,5 +112,6 @@ void UpdateAction(int nCount);								// 敵の行動パターン更新処理
 void EnemyState(int Indx);									// 敵の状態更新処理
 void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType);		// 敵のバッファやモーション設定処理
 void CollisionEnemy(void);									// 敵の当たり判定処理
+void CollisionEnemyAction(int nCnt);						// 敵のアクション時の当たり判定処理
 
 #endif // !ENEMY_H_

@@ -503,14 +503,14 @@ void CollisionBoss(void)
 	{
 		//“G‚Æ‚Ì‹——£
 		g_Boss.fDistance = sqrtf(((g_Boss.Object.Pos.x - pPlayer->pos.x) * (g_Boss.Object.Pos.x - pPlayer->pos.x))
-			+ ((g_Boss.Object.Pos.y - pPlayer->pos.y) * (g_Boss.Object.Pos.y - pPlayer->pos.y))
-			+ ((g_Boss.Object.Pos.z - pPlayer->pos.z) * (g_Boss.Object.Pos.z - pPlayer->pos.z)));
+							   + ((g_Boss.Object.Pos.y - pPlayer->pos.y) * (g_Boss.Object.Pos.y - pPlayer->pos.y))
+							   + ((g_Boss.Object.Pos.z - pPlayer->pos.z) * (g_Boss.Object.Pos.z - pPlayer->pos.z)));
 
 		float RADIUS = ((PLAYER_RADIUS / 2) + g_Boss.Radius) * ((PLAYER_RADIUS / 2) + g_Boss.Radius);
 
 		if (g_Boss.fDistance <= RADIUS)
 		{
-			pPlayer->Status.fHP -= g_Boss.Status.fPower;
+			HitPlayer(g_Boss.Status.fPower);
 		}
 	}
 }
