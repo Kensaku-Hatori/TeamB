@@ -21,7 +21,10 @@ void InitHPgauge()
 		g_HPgauge[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			//位置
 		g_HPgauge[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			//向き
 		g_HPgauge[nCnt].pVtxHPgaugeBuff = NULL;							//頂点情報
-		g_HPgauge[nCnt].nLife = 0;										//体力
+		g_HPgauge[nCnt].fNowHP = 0.0f;									//現在のHP
+		g_HPgauge[nCnt].fMaxHP = 0.0f;
+		g_HPgauge[nCnt].fWidth = 0.0f;									//幅
+		g_HPgauge[nCnt].fHeight = 0.0f;									//高さ
 		g_HPgauge[nCnt].bUse = false;									//使用していない状態にする
 	}
 }
