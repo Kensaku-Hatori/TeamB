@@ -349,21 +349,84 @@ void CaceOneAction(OBJECTINFO* Motion)
 	case MOTIONTYPE_ACTION:
 		if (pPlayer->Status.nMP >= 50)
 		{
-			//SetSkill(Pos,
+			for (int nCount = 0; nCount < 5; nCount++)
+			{
+				D3DXVECTOR3 fDistance;
+				float fRatio = 0.29f + D3DX_PI / 5 * nCount;
+				fDistance.x = cosf(fRatio) * sinf(pPlayer->rot.y + D3DX_PI * 0.5f) * 50.0f;
+				fDistance.y = sinf(fRatio) * 50.0f;
+				fDistance.z = cosf(fRatio) * cosf(pPlayer->rot.y + D3DX_PI * 0.5f) * 50.0f;
+
+				SetSkill(D3DXVECTOR3(pPlayer->PlayerMotion.aModel[1].mtxWorld._41,
+					pPlayer->PlayerMotion.aModel[1].mtxWorld._42,
+					pPlayer->PlayerMotion.aModel[1].mtxWorld._43) + fDistance,
+					D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+					pPlayer->rot,
+					SKILLTYPE_HORMING,
+					fRatio);
+			}
+
+			pPlayer->Status.nMP -= 50;
+
+			//// エフェクトの設定
+			//SetEffect(Pos,
 			//	D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			//	pPlayer->rot);
-			//pPlayer->Status.nMP -= 50;
-					// エフェクトの設定
-			SetEffect(D3DXVECTOR3(pPlayer->PlayerMotion.aModel[7].mtxWorld._41, pPlayer->PlayerMotion.aModel[7].mtxWorld._42, pPlayer->PlayerMotion.aModel[7].mtxWorld._43),
-				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-				50,
-				0,
-				D3DXVECTOR3(1.0f, 1.0f, 1.0f),
-				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-				EFFECT_NONE,
-				0,
-				0.0f,
-				D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+			//	100,
+			//	0,
+			//	D3DXVECTOR3(2.0f, 2.0f, 2.0f),
+			//	D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			//	EFFECT_NONE,
+			//	0,
+			//	0.0f,
+			//	D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
+			//// エフェクトの設定
+			//SetEffect(Pos,
+			//	D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			//	100,
+			//	0,
+			//	D3DXVECTOR3(3.0f, 3.0f, 3.0f),
+			//	D3DXCOLOR(1.0f, 0.65f, 0.0f, 1.0f),
+			//	EFFECT_NONE,
+			//	0,
+			//	0.0f,
+			//	D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
+			//// エフェクトの設定
+			//SetEffect(Pos,
+			//	D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			//	50,
+			//	0,
+			//	D3DXVECTOR3(12.0f, 1.0f, 0.0f),
+			//	D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
+			//	EFFECT_SKILLFLASH,
+			//	0,
+			//	0.0f,
+			//	D3DXVECTOR3(0.0f, pPlayer->rotDest.y, 0.0f));
+
+			//// エフェクトの設定
+			//SetEffect(Pos,
+			//	D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			//	50,
+			//	0,
+			//	D3DXVECTOR3(12.0f, 1.0f, 0.0f),
+			//	D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
+			//	EFFECT_SKILLFLASH,
+			//	0,
+			//	0.0f,
+			//	D3DXVECTOR3(0.0f, pPlayer->rotDest.y, D3DX_PI * 0.5f));
+
+			//SetParticle(Pos,
+			//	D3DXVECTOR3(628.0f, 1.0f, 628.0f),
+			//	D3DXCOLOR(1.0f, 0.65f, 0.0f, 1.0f),
+			//	PARTICLE_NONE,
+			//	D3DXVECTOR3(2.0f, 2.0f, 2.0f),
+			//	100,
+			//	3,
+			//	1.0f,
+			//	1.0f,
+			//	0.0f,
+			//	EFFECT_EXPROSION);
 		}
 		break;
 	case MOTIONTYPE_LANDING:
@@ -409,41 +472,41 @@ void CaceTwoAction(OBJECTINFO* Motion)
 	case MOTIONTYPE_ACTION:
 		if (pPlayer->Status.nMP >= 50)
 		{
-			// エフェクトの設定
-			SetEffect(Pos,
-				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-				50,
-				0,
-				D3DXVECTOR3(5.0f, 0.5f, 0.0f),
-				D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
-				EFFECT_SKILLFLASH,
-				0,
-				0.0f,
-				D3DXVECTOR3(0.0f, pPlayer->rotDest.y, 0.5f));
+			//// エフェクトの設定
+			//SetEffect(Pos,
+			//	D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			//	50,
+			//	0,
+			//	D3DXVECTOR3(5.0f, 0.5f, 0.0f),
+			//	D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
+			//	EFFECT_SKILLFLASH,
+			//	0,
+			//	0.0f,
+			//	D3DXVECTOR3(0.0f, pPlayer->rotDest.y, 0.5f));
 
-			// エフェクトの設定
-			SetEffect(Pos,
-				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-				50,
-				0,
-				D3DXVECTOR3(5.0f, 0.5f, 0.0f),
-				D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
-				EFFECT_SKILLFLASH,
-				0,
-				0.0f,
-				D3DXVECTOR3(0.0f, pPlayer->rotDest.y, -0.5f));
+			//// エフェクトの設定
+			//SetEffect(Pos,
+			//	D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			//	50,
+			//	0,
+			//	D3DXVECTOR3(5.0f, 0.5f, 0.0f),
+			//	D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
+			//	EFFECT_SKILLFLASH,
+			//	0,
+			//	0.0f,
+			//	D3DXVECTOR3(0.0f, pPlayer->rotDest.y, -0.5f));
 
-			// エフェクトの設定
-			SetEffect(Pos,
-				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-				50,
-				0,
-				D3DXVECTOR3(10.0f, 0.5f, 1.0f),
-				D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
-				EFFECT_SKILLFLASH,
-				0,
-				0.0f,
-				D3DXVECTOR3(0.0f, pPlayer->rotDest.y, 0.0f));
+			//// エフェクトの設定
+			//SetEffect(Pos,
+			//	D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			//	50,
+			//	0,
+			//	D3DXVECTOR3(10.0f, 0.5f, 1.0f),
+			//	D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
+			//	EFFECT_SKILLFLASH,
+			//	0,
+			//	0.0f,
+			//	D3DXVECTOR3(0.0f, pPlayer->rotDest.y, 0.0f));
 		}
 		break;
 	}

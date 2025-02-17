@@ -109,7 +109,6 @@ void UpdateSkill(void)
 {
 	//プレイヤーの情報取得
 	Player* pPlayer = GetPlayer();
-	
 	//影の情報取得
 	Shadow* pShadow = GetShadow();
 	
@@ -117,6 +116,43 @@ void UpdateSkill(void)
 	{
 		if (g_Skill[nCnt].bUse == true)
 		{
+			if (g_Skill[nCnt].ntype == SKILLTYPE_HORMING)
+			{
+				ENEMY* pEnemy = GetEnemy();
+				g_Skill[nCnt].nCounter++;
+				if (g_Skill[nCnt].nCounter >= g_Skill[nCnt].nCount && g_Skill[nCnt].bHorming == false)
+				{
+					g_Skill[nCnt].nCounter = 0;
+					g_Skill[nCnt].bHorming = true;
+					g_Skill[nCnt].nLife = 30.0f;
+					SerchHormingEnemy(nCnt);
+					g_Skill[nCnt].rot = pPlayer->rot;
+					if (pPlayer->bLockOn != true)
+					{
+						pEnemy += g_Skill[nCnt].nIndxHorming;
+					}
+					else
+					{
+						pEnemy += pPlayer->nLockOnEnemy;
+					}
+					if (pEnemy->bUse == true)
+					{
+						D3DXVECTOR3 fMoveVec = pEnemy->Object.Pos - g_Skill[nCnt].pos;
+						D3DXVec3Normalize(&fMoveVec, &fMoveVec);
+						g_Skill[nCnt].moveDest = fMoveVec * 10.0f;
+					}
+				}
+				if (g_Skill[nCnt].bHorming == true && g_Skill[nCnt].bHit == false)
+				{
+					g_Skill[nCnt].AnimCounter++;
+					//if(g_Skill[nCnt].AnimCounter >= )
+					g_Skill[nCnt].pos += g_Skill[nCnt].move * 10.0f;
+				}
+				else
+				{
+					UpdateHormingPosition(nCnt);
+				}
+			}
 			// エフェクトの設定
 			SetEffect(g_Skill[nCnt].pos,
 				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
@@ -145,7 +181,7 @@ void UpdateSkill(void)
 
 			if (g_Skill[nCnt].nLife > 0)
 			{
-				if ((g_Skill[nCnt].nLife % INTERVAL_IMPACT) == 0)
+				if ((g_Skill[nCnt].nLife % INTERVAL_IMPACT) == 0 && g_Skill[nCnt].ntype != SKILLTYPE_HORMING)
 				{
 					//衝撃波の設定
 					SetImpact(IMPACTTYPE_SKILL,				// タイプ
@@ -161,10 +197,10 @@ void UpdateSkill(void)
 				}
 			}
 
-			if (g_Skill[nCnt].bHit == false)
+			if (g_Skill[nCnt].bHit == false && g_Skill[nCnt].ntype != SKILLTYPE_HORMING)
 			{
-				g_Skill[nCnt].move.x += sinf(g_Skill[nCnt].rot.y - D3DX_PI) * 0.5f;
-				g_Skill[nCnt].move.z += cosf(g_Skill[nCnt].rot.y - D3DX_PI) * 0.5f;
+				g_Skill[nCnt].move.x += sinf(g_Skill[nCnt].rot.y - D3DX_PI) * g_Skill[nCnt].Speed;
+				g_Skill[nCnt].move.z += cosf(g_Skill[nCnt].rot.y - D3DX_PI) * g_Skill[nCnt].Speed;
 
 				g_Skill[nCnt].pos += g_Skill[nCnt].move;
 			}
@@ -241,7 +277,6 @@ void DrawSkill(void)
 
 			//ポリゴンを描画
 			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
-
 		}
 	}
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
@@ -253,7 +288,7 @@ void DrawSkill(void)
 //===================
 // 弾の設定
 //===================
-void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot)
+void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot, SKILLTYPE ntype, float fRotRatio)
 {
 	int nCnt;
 	for (nCnt = 0; nCnt < MAX_SKILL; nCnt++)
@@ -263,13 +298,73 @@ void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot)
 			g_Skill[nCnt].pos = D3DXVECTOR3(pos.x, pos.y, pos.z);
 			g_Skill[nCnt].StartPos = g_Skill[nCnt].pos;
 			g_Skill[nCnt].move = move;
+			g_Skill[nCnt].Speed = 0.5f;
 			g_Skill[nCnt].rot = rot;
+			g_Skill[nCnt].ntype = ntype;
 			g_Skill[nCnt].nLife = SKILL_LIFE;
+
+			if (ntype == SKILLTYPE_HORMING)
+			{
+				g_Skill[nCnt].fRotRatio = fRotRatio;
+				g_Skill[nCnt].nCounter = 0;
+				g_Skill[nCnt].nCount = 120;
+				g_Skill[nCnt].nIndxHorming = 0;
+				g_Skill[nCnt].bHorming = false;
+				g_Skill[nCnt].move = D3DXVECTOR3(0.0f,0.0f,0.0f);
+				g_Skill[nCnt].Speed = 0.0f;
+				g_Skill[nCnt].fDistance = 0.0f;
+				g_Skill[nCnt].nLife = 300;
+			}
 			g_Skill[nCnt].bHit = false;
 			g_Skill[nCnt].bUse = true;
 			break;
 		}
 	}
+}
+//***************************************
+// ホーミング範囲に敵がいるか検索する関数
+//***************************************
+void SerchHormingEnemy(int Indx)
+{
+	ENEMY* pEnemy = GetEnemy();
+	Player* pPLayer = GetPlayer();
+	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++, pEnemy++)
+	{
+		if (pEnemy->bUse == true)
+		{
+			D3DXVECTOR3 fDistance = pPLayer->pos - pEnemy->Object.Pos;
+			if (sqrtf((fDistance.x * fDistance.x) + (fDistance.y + fDistance.y) + (fDistance.z * fDistance.z)) <= DISTANCE_HORMING)
+			{
+				if (g_Skill[Indx].fDistance <= sqrtf((fDistance.x * fDistance.x) + (fDistance.y + fDistance.y) + (fDistance.z * fDistance.z)))
+				{
+					g_Skill[Indx].fDistance = sqrtf((fDistance.x * fDistance.x) + (fDistance.y + fDistance.y) + (fDistance.z * fDistance.z));
+				}
+				g_Skill[Indx].nIndxHorming = EnemyCount;
+				g_Skill[Indx].nCount = INTERVAL_HORMING;
+				break;
+			}
+		}
+	}
+}
+//***********************************
+// ホーミングの球の位置を更新する関数
+//***********************************
+void UpdateHormingPosition(int Indx)
+{
+	Player* pPlayer = GetPlayer();
+	D3DXVECTOR3 fDistance;
+	fDistance.x = cosf(g_Skill[Indx].fRotRatio) * sinf(pPlayer->rot.y + D3DX_PI * 0.5f) * 50.0f;
+	fDistance.y = sinf(g_Skill[Indx].fRotRatio) * 50.0f;
+	fDistance.z = cosf(g_Skill[Indx].fRotRatio) * cosf(pPlayer->rot.y + D3DX_PI * 0.5f) * 50.0f;
+
+	g_Skill[Indx].pos = D3DXVECTOR3(pPlayer->PlayerMotion.aModel[1].mtxWorld._41,
+		pPlayer->PlayerMotion.aModel[1].mtxWorld._42,
+		pPlayer->PlayerMotion.aModel[1].mtxWorld._43) + fDistance;
+	g_Skill[Indx].StartPos = g_Skill[Indx].pos;
+}
+void UpdateHormingAnim(int Indx)
+{
+
 }
 //==============
 // 魔法の取得

@@ -26,6 +26,7 @@ typedef enum
 	EFFECT_SKILL,
 	EFFECT_SKILLFLASH,
 	EFFECT_MAGICCIRCLE,
+	EFFECT_EXPROSION,
 	EFFECT_MAX
 }EFFECTTYPE;
 
@@ -38,6 +39,7 @@ typedef struct
 	D3DXVECTOR3 dir;		// 向き
 	EFFECTTYPE ntype;		// タイプ
 	bool bUse;				// 使用状況
+	bool bExprosion;
 	int IndxShadow;			// 影のインデックス
 	int nLife;				// 寿命
 	D3DXCOLOR col;			// 色
@@ -57,6 +59,7 @@ static const char* EFFECTTEX[EFFECT_MAX] =
 	"data\\TEXTURE\\effect000.jpg",
 	"data\\TEXTURE\\effect000.jpg",
 	"data\\TEXTURE\\magiccircle.png",
+	"data\\TEXTURE\\effect000.jpg",
 };
 
 //*****************
