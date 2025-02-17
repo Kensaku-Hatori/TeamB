@@ -632,7 +632,6 @@ void CollisionEnemyAction(int nCnt)
 	{
 		HitPlayer(g_Enemy[nCnt].Status.fPower);
 	}
-
 }
 
 //========================

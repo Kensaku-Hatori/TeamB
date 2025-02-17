@@ -41,6 +41,7 @@ typedef struct
 	bool bUse;						// 使用状況
 	bool bLanding;					// 地面に着地しているかどうか
 	bool bfirst;					// 最初かどうか
+	bool bHit;
 	PlayerStatus Status;			// ステータス
 	
 	int nNumModel;					// パーツの総数

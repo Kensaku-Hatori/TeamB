@@ -69,6 +69,7 @@ void InitPlayer(void)
 	g_player.nIndxCircle = 0;
 	g_player.nJump = PLAYER_JUMP;
 	g_player.bJump = false;		//ジャンプ
+	g_player.bHit = false;
 	//g_player.bLanding = true;
 
 	//モーション関連
@@ -647,10 +648,11 @@ Player* GetPlayer(void)
 void HitPlayer(float Atack)
 {
 	g_player.Status.fHP -= (int)Atack;
-
+	g_player.bHit = true;
 
 	if (g_player.Status.fHP <= 0.0f && g_player.bUse == true)
 	{// 使われていて体力が０以下なら
+		g_player.bUse = false;
 		SetGameState(GAMESTATE_GAMEOVER);
 	}
 }
