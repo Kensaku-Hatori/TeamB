@@ -8,11 +8,14 @@
 #include "player.h"
 #include "enemy.h"
 #include "camera.h"
+#include "boss.h"
 //グローバル変数宣言
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffLockon = NULL;
 LPDIRECT3DTEXTURE9 g_apTextureLockon[1] = {};
 
 Lockon g_Lockon;
+LockonEnemy g_LockonEnemy;
+
 //=======================
 // ポリゴンの初期化処理
 //=======================
@@ -86,8 +89,19 @@ void UninitLockon(void)
 //=====================
 void UpdateLockon(void)
 {
+	Camera* pCamera = GetCamera();				//カメラの情報取得
 	Player* pPlayer = GetPlayer();
 	ENEMY* pEnemy = GetEnemy();
+	BOSS* pBoss = GetBoss();
+
+	if (g_LockonEnemy.type == 0)
+	{
+		g_LockonEnemy.pos = pEnemy[pPlayer->nLockOnEnemy].Object.Pos;
+	}
+	else
+	{
+		g_LockonEnemy.pos = pBoss->Object.Pos;
+	}
 
 	VERTEX_3D* pVtx = NULL;
 	//頂点バッファをロックし、頂点情報へのポインタを取得
@@ -97,17 +111,33 @@ void UpdateLockon(void)
 
 	if (g_Lockon.bUse == true)
 	{
-		if (pEnemy[pPlayer->nLockOnEnemy].bUse == true)
-		{
-			g_Lockon.pos = pEnemy[pPlayer->nLockOnEnemy].Object.Pos;
-			g_Lockon.pos.y += 30.0f;
+		g_Lockon.pos = g_LockonEnemy.pos;
+		g_Lockon.pos.y += 30.0f;
 
-			//頂点カラーの設定
-			pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-			pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-			pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-			pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		//頂点カラーの設定
+		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+
+		//pCamera->rot.y = pPlayer->rot.y + D3DX_PI;
+
+		////プレイヤーの向き
+		//float fMathDistance, fMathDistance1;
+		//fMathDistance = g_Lockon.pos.x - pPlayer->pos.x;
+		//fMathDistance1 = g_Lockon.pos.z - pPlayer->pos.z;
+		//pPlayer->rotDest.y = atan2f(fMathDistance, fMathDistance1) + D3DX_PI;
+
+		//距離による解除
+		float Dis = ((pPlayer->pos.x - g_Lockon.pos.x) * (pPlayer->pos.x - g_Lockon.pos.x))
+				  + ((pPlayer->pos.y - g_Lockon.pos.y) * (pPlayer->pos.y - g_Lockon.pos.y))
+				  + ((pPlayer->pos.z - g_Lockon.pos.z) * (pPlayer->pos.z - g_Lockon.pos.z));
+		if (Dis >= pPlayer->fSightRange * pPlayer->fSightRange * 2)
+		{
+			pPlayer->bLockOn = false;
 		}
+		pPlayer->bWantLockOn = false;
+
 	}
 	else
 	{
@@ -187,10 +217,9 @@ void DrawLockon(void)
 //=====================================
 // 敵が視界にいるかどうか(ロックオン)
 //=====================================
-bool IsEnemyInsight(void)
+bool IsEnemyInsight(D3DXVECTOR3 Pos, int type)
 {
 	Player* pPlayer = GetPlayer();
-	ENEMY* pEnemy = GetEnemy();
 
 	D3DXVECTOR3 playerFront;
 
@@ -202,47 +231,42 @@ bool IsEnemyInsight(void)
 
 	bool bLock = false;
 
-	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++)
+	toEnemy.x = Pos.x - pPlayer->pos.x;
+	toEnemy.y = 0.0f;
+	toEnemy.z = Pos.z - pPlayer->pos.z;
+
+	D3DXVec3Normalize(&playerFront, &playerFront);
+
+	D3DXVec3Normalize(&toEnemy, &toEnemy);
+
+	float dotProduct = D3DXVec3Dot(&playerFront, &toEnemy);
+
+	if (dotProduct > cosf(pPlayer->fSightAngle * 0.5f))
 	{
-		if (pEnemy[EnemyCount].bUse == true)
+		float distanceSquared =
+			(pPlayer->pos.x - Pos.x) * (pPlayer->pos.x - Pos.x) +
+			(pPlayer->pos.y - Pos.y) * (pPlayer->pos.y - Pos.y) +
+			(pPlayer->pos.z - Pos.z) * (pPlayer->pos.z - Pos.z);
+
+		if (distanceSquared <= pPlayer->fSightRange * pPlayer->fSightRange)
 		{
-			toEnemy.x = pEnemy[EnemyCount].Object.Pos.x - pPlayer->pos.x;
-			toEnemy.y = 0.0f;
-			toEnemy.z = pEnemy[EnemyCount].Object.Pos.z - pPlayer->pos.z;
-
-			D3DXVec3Normalize(&playerFront, &playerFront);
-
-			D3DXVec3Normalize(&toEnemy, &toEnemy);
-
-			float dotProduct = D3DXVec3Dot(&playerFront, &toEnemy);
-
-			if (dotProduct > cosf(pPlayer->fSightAngle * 0.5f))
-			{
-				float distanceSquared =
-					(pPlayer->pos.x - pEnemy[EnemyCount].Object.Pos.x) * (pPlayer->pos.x - pEnemy[EnemyCount].Object.Pos.x) +
-					(pPlayer->pos.y - pEnemy[EnemyCount].Object.Pos.y) * (pPlayer->pos.y - pEnemy[EnemyCount].Object.Pos.y) +
-					(pPlayer->pos.z - pEnemy[EnemyCount].Object.Pos.z) * (pPlayer->pos.z - pEnemy[EnemyCount].Object.Pos.z);
-
-				if (distanceSquared <= pPlayer->fSightRange * pPlayer->fSightRange)
-				{
-					bLock = EnemyDistanceSort(EnemyCount);
-				}
-			}
+			g_LockonEnemy.type = type;
+			bLock = true;
 		}
 	}
+
 	return bLock;
 }
 
 //===============================
 // 一番近い敵を判別
 //===============================
-bool EnemyDistanceSort(int EnemyCount)
+void EnemyDistanceSort(int EnemyCount)
 {
 	Player* pPlayer = GetPlayer();
 
 	ENEMY* pEnemy = GetEnemy();
 
-	bool bLock = true;
 	//敵との距離
 	pEnemy[EnemyCount].fDistance = sqrtf(((pEnemy[EnemyCount].Object.Pos.x - pPlayer->pos.x) * (pEnemy[EnemyCount].Object.Pos.x - pPlayer->pos.x))
 									   + ((pEnemy[EnemyCount].Object.Pos.y - pPlayer->pos.y) * (pEnemy[EnemyCount].Object.Pos.y - pPlayer->pos.y))
@@ -261,6 +285,11 @@ bool EnemyDistanceSort(int EnemyCount)
 			pPlayer->nLockOnEnemy = EnemyCount;
 		}
 	}
-	
-	return bLock;
+}
+//
+//
+//
+Lockon* GetLockOn(void)
+{
+	return &g_Lockon;
 }

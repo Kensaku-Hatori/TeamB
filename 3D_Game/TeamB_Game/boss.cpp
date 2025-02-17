@@ -16,6 +16,11 @@
 #include "shadow.h"
 #include "animation.h"
 #include "player.h"
+#include "skill.h"
+#include "collision.h"
+#include "lockon.h"
+#include "resultinfo.h"
+#include "fade.h"
 
 //*******************
 // グローバル変数宣言
@@ -82,10 +87,37 @@ void UninitBoss(void)
 //*************
 void UpdateBoss(void)
 {
+	Player* pPlayer = GetPlayer();
+	Skill* pSkill = GetSkill();
+
 	if (g_Boss.bUse == true)
 	{
 		// 行動の更新
 		UpdateBossAction();
+
+		// 魔法との当たり判定
+		for (int SkillCount = 0; SkillCount < MAX_SKILL; SkillCount++)
+		{
+			if (pSkill[SkillCount].bUse == true)
+			{
+				// 当たり判定
+				if (collisioncircle(g_Boss.Object.Pos, g_Boss.Radius, pSkill[SkillCount].pos, SKILL_SIZE) == true)
+				{
+					pSkill[SkillCount].nLife = 1;
+					pSkill[SkillCount].bHit = true;
+					HitBoss(pPlayer->Status.fPower);
+				}
+			}
+		}
+
+		//ロックオン
+		if (pPlayer->bWantLockOn == true)
+		{
+			if (IsEnemyInsight(g_Boss.Object.Pos, 1) == true)
+			{
+				pPlayer->bLockOn = true;
+			}
+		}
 
 		// 角度の近道
 		if (g_Boss.rotDest.y - g_Boss.Object.Rot.y >= D3DX_PI)
@@ -97,6 +129,12 @@ void UpdateBoss(void)
 			g_Boss.Object.Rot.y -= D3DX_PI * 2.0f;
 		}
 
+		if (g_Boss.statecount <= 0)
+		{
+			g_Boss.state = BOSSSTATE_NORMAL;
+			g_Boss.statecount = 0;
+		}
+		g_Boss.statecount--;
 
 		// 移動量の更新(減衰)
 		g_Boss.move.x = (0.0f - g_Boss.move.x) * 0.1f;
@@ -220,7 +258,7 @@ void DrawBoss(void)
 //*************
 // ボスの取得処理
 //*************
-BOSS* GetEnemy()
+BOSS* GetBoss()
 {
 	return &g_Boss;
 }
@@ -239,11 +277,11 @@ void HitBoss(float Atack)
 
 	if (Atack >= 10)
 	{// ダメージが最小値以上なら
-		g_Boss.statecount = (int)Atack * 3;
+		g_Boss.statecount = 30;
 	}
 	else
 	{// ダメージが最小値以下なら
-		g_Boss.statecount = 10;
+		g_Boss.statecount = 30;
 	}
 
 	if (g_Boss.Status.fHP <= 0.0f && g_Boss.bUse == true)
@@ -303,6 +341,9 @@ void DeadBoss()
 			pCamera->rot.y = 0.0f;			// カメラ戻す
 		}
 	}
+
+	SetFade(MODE_RESULT);
+	SetResult(RESULT_CLEAR);
 }
 
 //***************

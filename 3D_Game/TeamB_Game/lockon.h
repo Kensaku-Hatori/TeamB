@@ -18,13 +18,20 @@ typedef struct
 	bool bUse;
 }Lockon;
 
+typedef struct
+{
+	D3DXVECTOR3 pos;	//位置
+	int type;
+}LockonEnemy;
+
 //プロトタイプ宣言
 void InitLockon(void);
 void UninitLockon(void);
 void UpdateLockon(void);
 void DrawLockon(void);
-bool IsEnemyInsight(void);
-bool EnemyDistanceSort(int EnemyCount);
+bool IsEnemyInsight(D3DXVECTOR3 Pos ,int type);
+void EnemyDistanceSort(int EnemyCount);
+Lockon* GetLockOn(void);
 
 
 #endif

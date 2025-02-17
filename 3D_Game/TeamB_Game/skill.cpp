@@ -271,29 +271,10 @@ void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot)
 		}
 	}
 }
-
-//========================
-// “G‚Æ–‚–@‚Ì“–‚½‚è”»’è
-//========================
-bool SkillCollision(D3DXVECTOR3 pos, float radius)
+//==============
+// –‚–@‚ÌŽæ“¾
+//==============
+Skill* GetSkill()
 {
-	for (int nCnt = 0; nCnt < MAX_SKILL; nCnt++)
-	{
-		if (g_Skill[nCnt].bUse == true)
-		{
-			g_Skill[nCnt].fDistance = sqrtf(((g_Skill[nCnt].pos.x - pos.x) * (g_Skill[nCnt].pos.x - pos.x))
-										  + ((g_Skill[nCnt].pos.y - pos.y) * (g_Skill[nCnt].pos.y - pos.y))
-										  + ((g_Skill[nCnt].pos.z - pos.z) * (g_Skill[nCnt].pos.z - pos.z)));
-
-			float RADIUS = (radius + (SKILL_SIZE)) * (radius + (SKILL_SIZE));
-
-			if (g_Skill[nCnt].fDistance <= RADIUS)
-			{
-				g_Skill[nCnt].nLife = 1;
-				g_Skill[nCnt].bHit = true;
-				return true;
-			}
-		}
-	}
-	return false;
+	return &g_Skill[0];
 }

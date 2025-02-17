@@ -85,6 +85,7 @@ void InitPlayer(void)
 	g_player.fSightAngle = D3DXToRadian(110.0f);	// 視界の葉に
 	g_player.fDistance = g_player.fSightRange / 2;
 	g_player.nLockOnEnemy = 0;
+	g_player.bWantLockOn = false;
 
 	//全滅フラグ
 	g_player.bAbolition = false;				//全滅していない状態
@@ -121,6 +122,7 @@ void UninitPlayer(void)
 void UpdatePlayer(void)
 {
 	Camera *pCamera = GetCamera();				//カメラの情報取得
+	Lockon* pLockon = GetLockOn();
 	ENEMY* pEnemy = GetEnemy();					//敵の情報取得
 	int* NumEnemy = GetNumEnemy();				//敵の数取得
 
@@ -135,25 +137,13 @@ void UpdatePlayer(void)
 		//ロックオン状態なら
 		if (g_player.bLockOn == true)
 		{
-			if (pEnemy[g_player.nLockOnEnemy].bUse == true)
-			{
-				pCamera->rot.y = g_player.rot.y + D3DX_PI;
+			pCamera->rot.y = g_player.rot.y + D3DX_PI;
 
-				//プレイヤーの向き
-				float fMathDistance, fMathDistance1;
-				fMathDistance = pEnemy[g_player.nLockOnEnemy].Object.Pos.x - g_player.pos.x;
-				fMathDistance1 = pEnemy[g_player.nLockOnEnemy].Object.Pos.z - g_player.pos.z;
-				g_player.rotDest.y = atan2f(fMathDistance, fMathDistance1) + D3DX_PI;
-
-				//距離による解除
-				float Dis = ((g_player.pos.x - pEnemy[g_player.nLockOnEnemy].Object.Pos.x) * (g_player.pos.x - pEnemy[g_player.nLockOnEnemy].Object.Pos.x))
-					+ ((g_player.pos.y - pEnemy[g_player.nLockOnEnemy].Object.Pos.y) * (g_player.pos.y - pEnemy[g_player.nLockOnEnemy].Object.Pos.y))
-					+ ((g_player.pos.z - pEnemy[g_player.nLockOnEnemy].Object.Pos.z) * (g_player.pos.z - pEnemy[g_player.nLockOnEnemy].Object.Pos.z));
-				if (Dis >= g_player.fSightRange * g_player.fSightRange * 2)
-				{
-					g_player.bLockOn = false;
-				}
-			}
+			//プレイヤーの向き
+			float fMathDistance, fMathDistance1;
+			fMathDistance = pLockon->pos.x - g_player.pos.x;
+			fMathDistance1 = pLockon->pos.z - g_player.pos.z;
+			g_player.rotDest.y = atan2f(fMathDistance, fMathDistance1) + D3DX_PI;
 		}
 
 		// 角度の近道
@@ -204,7 +194,7 @@ void UpdatePlayer(void)
 		{//MPが減っていたら
 			g_nCntHealMP++;
 		}
-		if (g_nCntHealMP >= 60)
+		if (g_nCntHealMP >= 180)
 		{
 			g_player.Status.nMP += 10;
 			g_nCntHealMP = 0;
@@ -258,7 +248,7 @@ void UpdatePlayer(void)
 			}
 			else if (g_player.bLockOn == false)
 			{
-				g_player.bLockOn = IsEnemyInsight();
+				g_player.bWantLockOn = true;
 			}
 		}
 

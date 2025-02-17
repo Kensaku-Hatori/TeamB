@@ -18,8 +18,8 @@
 #include "player.h"
 #include "item.h"
 #include "skill.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "collision.h"
+#include "lockon.h"
 
 //*******************
 // グローバル変数宣言
@@ -130,6 +130,8 @@ void UpdateEnemy(void)
 {
 	MODE nMode = GetMode();
 	Player* pPlayer = GetPlayer();
+	Skill* pSkill = GetSkill();
+
 
 	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++)
 	{
@@ -138,11 +140,29 @@ void UpdateEnemy(void)
 			// 行動の更新
 			UpdateAction(EnemyCount);
 
-			// 当たり判定
-			if (SkillCollision(g_Enemy[EnemyCount].Object.Pos,g_Enemy[EnemyCount].Radius) == true)
+			// 魔法との当たり判定
+			for (int SkillCount = 0; SkillCount < MAX_SKILL; SkillCount++)
 			{
-				HitEnemy(pPlayer->Status.fPower, EnemyCount);
-			
+				if (pSkill[SkillCount].bUse == true)
+				{
+					// 当たり判定
+					if (collisioncircle(g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].Radius, pSkill[SkillCount].pos, SKILL_SIZE) == true)
+					{
+						pSkill[SkillCount].nLife = 1;
+						pSkill[SkillCount].bHit = true;
+						HitEnemy(pPlayer->Status.fPower, EnemyCount);
+					}
+				}
+			}
+
+			//ロックオン
+			if (pPlayer->bWantLockOn == true)
+			{
+				if (IsEnemyInsight(g_Enemy[EnemyCount].Object.Pos, 0) == true)
+				{
+					EnemyDistanceSort(EnemyCount);
+					pPlayer->bLockOn = true;
+				}
 			}
 
 			// 角度の近道
