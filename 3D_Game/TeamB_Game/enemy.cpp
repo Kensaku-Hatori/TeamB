@@ -155,6 +155,12 @@ void UpdateEnemy(void)
 				}
 			}
 
+			// 攻撃時の当たり判定
+			if (g_Enemy[EnemyCount].EnemyMotion.motionType == MOTIONTYPE_ACTION)
+			{
+				CollisionEnemyAction(EnemyCount);
+			}
+
 			//ロックオン
 			if (pPlayer->bWantLockOn == true)
 			{
@@ -315,8 +321,6 @@ ENEMY* GetEnemy()
 //***************
 void HitEnemy(float Atack,int Indx)
 {
-	Camera* pCamera = GetCamera();
-
 	g_Enemy[Indx].Status.fHP -= (int)Atack;
 
 	g_Enemy[Indx].Action = ENEMYACTION_WELL;
@@ -471,11 +475,6 @@ void UpdateAction(int nCount)
 		{
 			//モーションの種類設定
 			g_Enemy[nCount].ActionType = ENEMYACTION_ATTACK;
-			//g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_ACTION;//多分これしか機能していない
-			//g_Enemy[nCount].EnemyMotion.motionTypeBlend = MOTIONTYPE_NEUTRAL;
-			//g_Enemy[nCount].EnemyMotion.nFrameBlend = 10.0f;
-			//g_Enemy[nCount].EnemyMotion.nKey = 0;
-			//g_Enemy[nCount].EnemyMotion.NextKey = 1;
 			SetMotion(MOTIONTYPE_ACTION, &g_Enemy[nCount].EnemyMotion);
 		}
 	}
@@ -486,10 +485,6 @@ void UpdateAction(int nCount)
 		{
 			//モーションの種類設定
 			g_Enemy[nCount].ActionType = ENEMYACTION_RUN;
-			//g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_MOVE;//多分これしか機能していない
-			//g_Enemy[nCount].EnemyMotion.motionTypeBlend = MOTIONTYPE_NEUTRAL;
-			//g_Enemy[nCount].EnemyMotion.nFrameBlend = 10.0f;
-
 			//移動量の設定
 			g_Enemy[nCount].move.x = sinf(fAngle) * HOMING_MOVE;
 			g_Enemy[nCount].move.z = cosf(fAngle) * HOMING_MOVE;
@@ -504,15 +499,12 @@ void UpdateAction(int nCount)
 			{
 				SetMotion(MOTIONTYPE_MOVE, &g_Enemy[nCount].EnemyMotion);
 			}
-
 		}
 	}
 	//様子見
 	else
 	{
 		g_Enemy[nCount].ActionType = ENEMYACTION_WELL;
-		//g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_NEUTRAL;
-		//g_Enemy[nCount].pMotion = MOTIONTYPE_NEUTRAL;
 		if (g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_NEUTRAL && g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_ACTION)
 		{
 			SetMotion(MOTIONTYPE_NEUTRAL, &g_Enemy[nCount].EnemyMotion);
@@ -609,9 +601,36 @@ void CollisionEnemy(void)
 
 			if (g_Enemy[nCntEnemy].fDistance <= RADIUS)
 			{
-				pPlayer->Status.fHP -= g_Enemy[nCntEnemy].Status.fPower;
+				HitPlayer(g_Enemy[nCntEnemy].Status.fPower);
 			}
 		}
+	}
+}
+//===================================
+// 敵のアクション時の当たり判定処理
+//===================================
+void CollisionEnemyAction(int nCnt)
+{
+	Player* pPlayer = GetPlayer();
+	int nModel = 0; // 当たり判定のあるモデル
+
+	switch (g_Enemy[nCnt].nType)
+	{
+	case 0: // スケルトン
+		nModel = 3;
+		break;
+
+	case 1: // ゾンビ
+		nModel = 1;
+		break;
+
+	default:
+		break;
+	}
+
+	if (collisioncircle(g_Enemy[nCnt].EnemyMotion.aModel[nModel].pos, g_Enemy[nCnt].Radius * 1.5f, pPlayer->pos, PLAYER_RADIUS) == true)
+	{
+		HitPlayer(g_Enemy[nCnt].Status.fPower);
 	}
 }
 

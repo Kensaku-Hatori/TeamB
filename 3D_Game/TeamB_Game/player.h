@@ -41,6 +41,7 @@ typedef struct
 	bool bUse;						// 使用状況
 	bool bLanding;					// 地面に着地しているかどうか
 	bool bfirst;					// 最初かどうか
+	bool bHit;
 	PlayerStatus Status;			// ステータス
 	
 	int nNumModel;					// パーツの総数
@@ -50,17 +51,6 @@ typedef struct
 	int nNumKey;					// キーの総数
 	int nKey;						// 現在のキーNo
 	int nCntMotion;					// モーションのカウンター
-
-	//bool bFinish;					// 現在のモーションが終了しているかどうか
-	//bool bBlendMotion;			// ブレンドモーションがあるかどうか
-	//MOTIONTYPE motionTypeBlend;	// ブレンドモーションの種類
-	//int nNumKeyBlend;				// ブレンドモーションのキーの総数
-	//int nKeyBlend;				// ブレンドモーションののキーNo
-	//int nCntMotionBlend;			// ブレンドモーションのカウンター
-	//int nFrameBlend;				// ブレンドフレーム
-	//int nCntBlend;				// ブレンドフレームカウント
-	//int nNextKeyBlend;
-	//bool bLoopBlend;				//ループするかどうか
 
 	bool btest;
 	bool bAbolition;				// 全滅フラグ(trueで全滅)
@@ -81,6 +71,7 @@ void UpdatePlayer(void);
 void DrawPlayer(void);
 void PlayerMove(void);
 Player* GetPlayer(void);
+void HitPlayer(float Atack);
 void SetMesh(char* pFilePath, int Indx);
 void SetPartsInfo(LoadInfo PartsInfo);
 void PlayerMotion(MOTIONINFO *pMotionInfo);

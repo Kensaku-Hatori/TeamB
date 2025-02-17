@@ -110,6 +110,11 @@ void UpdateBoss(void)
 			}
 		}
 
+		if (g_Boss.BossMotion.motionType == MOTIONTYPE_ACTION)
+		{
+			CollisionBossAction();
+		}
+
 		//ロックオン
 		if (pPlayer->bWantLockOn == true)
 		{
@@ -503,14 +508,26 @@ void CollisionBoss(void)
 	{
 		//敵との距離
 		g_Boss.fDistance = sqrtf(((g_Boss.Object.Pos.x - pPlayer->pos.x) * (g_Boss.Object.Pos.x - pPlayer->pos.x))
-			+ ((g_Boss.Object.Pos.y - pPlayer->pos.y) * (g_Boss.Object.Pos.y - pPlayer->pos.y))
-			+ ((g_Boss.Object.Pos.z - pPlayer->pos.z) * (g_Boss.Object.Pos.z - pPlayer->pos.z)));
+							   + ((g_Boss.Object.Pos.y - pPlayer->pos.y) * (g_Boss.Object.Pos.y - pPlayer->pos.y))
+							   + ((g_Boss.Object.Pos.z - pPlayer->pos.z) * (g_Boss.Object.Pos.z - pPlayer->pos.z)));
 
 		float RADIUS = ((PLAYER_RADIUS / 2) + g_Boss.Radius) * ((PLAYER_RADIUS / 2) + g_Boss.Radius);
 
 		if (g_Boss.fDistance <= RADIUS)
 		{
-			pPlayer->Status.fHP -= g_Boss.Status.fPower;
+			HitPlayer(g_Boss.Status.fPower);
 		}
+	}
+}
+//===================================
+// 敵のアクション時の当たり判定処理
+//===================================
+void CollisionBossAction(void)
+{
+	Player* pPlayer = GetPlayer();
+
+	if (collisioncircle(g_Boss.BossMotion.aModel[12].pos, g_Boss.Radius * 1.5f, pPlayer->pos, PLAYER_RADIUS) == true)
+	{
+		HitPlayer(g_Boss.Status.fPower);
 	}
 }
