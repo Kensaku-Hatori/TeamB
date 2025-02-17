@@ -110,6 +110,11 @@ void UpdateBoss(void)
 			}
 		}
 
+		if (g_Boss.BossMotion.motionType == MOTIONTYPE_ACTION)
+		{
+			CollisionBossAction();
+		}
+
 		//ロックオン
 		if (pPlayer->bWantLockOn == true)
 		{
@@ -512,5 +517,17 @@ void CollisionBoss(void)
 		{
 			HitPlayer(g_Boss.Status.fPower);
 		}
+	}
+}
+//===================================
+// 敵のアクション時の当たり判定処理
+//===================================
+void CollisionBossAction(void)
+{
+	Player* pPlayer = GetPlayer();
+
+	if (collisioncircle(g_Boss.BossMotion.aModel[12].pos, g_Boss.Radius * 1.5f, pPlayer->pos, PLAYER_RADIUS) == true)
+	{
+		HitPlayer(g_Boss.Status.fPower);
 	}
 }
