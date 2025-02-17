@@ -349,10 +349,21 @@ void CaceOneAction(OBJECTINFO* Motion)
 	case MOTIONTYPE_ACTION:
 		if (pPlayer->Status.nMP >= 50)
 		{
-			SetSkill(Pos,
+			//SetSkill(Pos,
+			//	D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			//	pPlayer->rot);
+			//pPlayer->Status.nMP -= 50;
+					// エフェクトの設定
+			SetEffect(D3DXVECTOR3(pPlayer->PlayerMotion.aModel[7].mtxWorld._41, pPlayer->PlayerMotion.aModel[7].mtxWorld._42, pPlayer->PlayerMotion.aModel[7].mtxWorld._43),
 				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-				pPlayer->rot);
-			pPlayer->Status.nMP -= 50;
+				50,
+				0,
+				D3DXVECTOR3(1.0f, 1.0f, 1.0f),
+				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+				EFFECT_NONE,
+				0,
+				0.0f,
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		}
 		break;
 	case MOTIONTYPE_LANDING:
