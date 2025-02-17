@@ -6,12 +6,11 @@
 //==================================
 
 #include "billboard.h"
+#include "meshfield.h"
 #include "shadow.h"
 
 //グローバル変数宣言
-LPDIRECT3DTEXTURE9 g_apTextureBiillboard[MAX_BILLBOARD] = {	NULL };
-
-Biillboard g_Biillboard[MAX_BILLBOARD];
+Biillboard g_Billboard[MAX_BILLBOARD];
 
 //=========================
 // ビルボードの初期化処理
@@ -23,15 +22,15 @@ void InitBiillboard(void)
 
 	for (int nCnt = 0; nCnt < MAX_BILLBOARD; nCnt++)
 	{
-		g_Biillboard[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		g_Biillboard[nCnt].origin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		g_Biillboard[nCnt].textype = 0;
-		g_Biillboard[nCnt].nWidth = 0;
-		g_Biillboard[nCnt].nHeight = 0;
-		g_Biillboard[nCnt].bUse = false;
+		g_Billboard[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		g_Billboard[nCnt].origin = D3DXVECTOR2(0.0f, 0.0f);
+		g_Billboard[nCnt].pTextureBiillboard = { NULL };
+		g_Billboard[nCnt].textype = 0;
+		g_Billboard[nCnt].nWidth = 0;
+		g_Billboard[nCnt].nHeight = 0;
+		g_Billboard[nCnt].bShadow = false;
+		g_Billboard[nCnt].bUse = false;
 	}
-
-	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\move.jpg", &g_apTextureBiillboard[0]); // 移動
 }
 
 //=======================
@@ -42,17 +41,17 @@ void UninitBiillboard(void)
 	for (int nCnt = 0; nCnt < MAX_BILLBOARD; nCnt++)
 	{
 		//テクスチャの破棄
-		if (g_apTextureBiillboard[nCnt] != NULL)
+		if (g_Billboard[nCnt].pTextureBiillboard != NULL)
 		{
-			g_apTextureBiillboard[nCnt]->Release();
-			g_apTextureBiillboard[nCnt] = NULL;
+			g_Billboard[nCnt].pTextureBiillboard->Release();
+			g_Billboard[nCnt].pTextureBiillboard = NULL;
 		}
 
 		//頂点バッファの破棄
-		if (g_Biillboard[nCnt].pVtxBuffBiillboard != NULL)
+		if (g_Billboard[nCnt].pVtxBuffBiillboard != NULL)
 		{
-			g_Biillboard[nCnt].pVtxBuffBiillboard->Release();
-			g_Biillboard[nCnt].pVtxBuffBiillboard = NULL;
+			g_Billboard[nCnt].pVtxBuffBiillboard->Release();
+			g_Billboard[nCnt].pVtxBuffBiillboard = NULL;
 		}
 	}
 }
@@ -83,10 +82,10 @@ void DrawBiillboard(void)
 
 	for (int nCnt = 0; nCnt < MAX_BILLBOARD; nCnt++)
 	{
-		if (g_Biillboard[nCnt].bUse == true)
+		if (g_Billboard[nCnt].bUse == true)
 		{
 			//ワールドマトリックスの初期化
-			D3DXMatrixIdentity(&g_Biillboard[nCnt].mtxWorld);
+			D3DXMatrixIdentity(&g_Billboard[nCnt].mtxWorld);
 
 			D3DXMATRIX mtxView;
 
@@ -94,31 +93,31 @@ void DrawBiillboard(void)
 			pDevice->GetTransform(D3DTS_VIEW, &mtxView);
 
 			//カメラの逆行列を設定
-			g_Biillboard[nCnt].mtxWorld._11 = mtxView._11;
-			g_Biillboard[nCnt].mtxWorld._12 = mtxView._21;
-			g_Biillboard[nCnt].mtxWorld._13 = mtxView._31;
-			g_Biillboard[nCnt].mtxWorld._21 = mtxView._12;
-			g_Biillboard[nCnt].mtxWorld._22 = mtxView._22;
-			g_Biillboard[nCnt].mtxWorld._23 = mtxView._32;
-			g_Biillboard[nCnt].mtxWorld._31 = mtxView._13;
-			g_Biillboard[nCnt].mtxWorld._32 = mtxView._23;
-			g_Biillboard[nCnt].mtxWorld._33 = mtxView._33;
+			g_Billboard[nCnt].mtxWorld._11 = mtxView._11;
+			g_Billboard[nCnt].mtxWorld._12 = mtxView._21;
+			g_Billboard[nCnt].mtxWorld._13 = mtxView._31;
+			g_Billboard[nCnt].mtxWorld._21 = mtxView._12;
+			g_Billboard[nCnt].mtxWorld._22 = mtxView._22;
+			g_Billboard[nCnt].mtxWorld._23 = mtxView._32;
+			g_Billboard[nCnt].mtxWorld._31 = mtxView._13;
+			g_Billboard[nCnt].mtxWorld._32 = mtxView._23;
+			g_Billboard[nCnt].mtxWorld._33 = mtxView._33;
 
 			//位置を反映
-			D3DXMatrixTranslation(&mtxTrans, g_Biillboard[nCnt].pos.x, g_Biillboard[nCnt].pos.y, g_Biillboard[nCnt].pos.z);
-			D3DXMatrixMultiply(&g_Biillboard[nCnt].mtxWorld, &g_Biillboard[nCnt].mtxWorld, &mtxTrans);
+			D3DXMatrixTranslation(&mtxTrans, g_Billboard[nCnt].pos.x, g_Billboard[nCnt].pos.y, g_Billboard[nCnt].pos.z);
+			D3DXMatrixMultiply(&g_Billboard[nCnt].mtxWorld, &g_Billboard[nCnt].mtxWorld, &mtxTrans);
 
 			//ワールドマトリックスの設定
-			pDevice->SetTransform(D3DTS_WORLD, &g_Biillboard[nCnt].mtxWorld);
+			pDevice->SetTransform(D3DTS_WORLD, &g_Billboard[nCnt].mtxWorld);
 
 			//頂点バッファをデータストリームに設定
-			pDevice->SetStreamSource(0, g_Biillboard[nCnt].pVtxBuffBiillboard, 0, sizeof(VERTEX_3D));
+			pDevice->SetStreamSource(0, g_Billboard[nCnt].pVtxBuffBiillboard, 0, sizeof(VERTEX_3D));
 
 			//頂点フォーマットの設定
 			pDevice->SetFVF(FVF_VERTEX_3D);
 
 			//テクスチャの設定
-			pDevice->SetTexture(0, g_apTextureBiillboard[nCnt]);
+			pDevice->SetTexture(0, g_Billboard[nCnt].pTextureBiillboard);
 
 			//ポリゴンを描画
 			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
@@ -135,7 +134,7 @@ void DrawBiillboard(void)
 //===================
 // ビルボードの設定
 //===================
-void SetBiillboard(D3DXVECTOR3 pos, int nWidth, int nHeigh)
+void SetBiillboard(D3DXVECTOR3 pos, int nWidth, int nHeigh, int textype, D3DXVECTOR2 origin, bool bShadow)
 {
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
@@ -145,30 +144,36 @@ void SetBiillboard(D3DXVECTOR3 pos, int nWidth, int nHeigh)
 
 	for (int nCnt = 0; nCnt < MAX_BILLBOARD; nCnt++)
 	{
-		if (g_Biillboard[nCnt].bUse == false)
+		if (g_Billboard[nCnt].bUse == false)
 		{
 			//各設定
-			g_Biillboard[nCnt].pos = pos;			//位置
-			g_Biillboard[nCnt].nWidth = nWidth;		//幅
-			g_Biillboard[nCnt].nHeight = nHeigh;	//高さ
-			g_Biillboard[nCnt].bUse = true;			//使用している状態にする
+			g_Billboard[nCnt].pos = pos;			//位置
+			g_Billboard[nCnt].nWidth = nWidth;		//幅
+			g_Billboard[nCnt].nHeight = nHeigh;		//高さ
+			g_Billboard[nCnt].textype = textype;	//テクスチャタイプ
+			g_Billboard[nCnt].origin = origin;		//posからずらす量
+			g_Billboard[nCnt].bShadow = bShadow;	//影をつけるかどうか
+			g_Billboard[nCnt].bUse = true;			//使用している状態にする
+
+			//テクスチャの設定
+			SetBillTexture(nCnt);
 
 			//頂点バッファの生成
 			pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 4,
 				D3DUSAGE_WRITEONLY,
 				FVF_VERTEX_3D,
 				D3DPOOL_MANAGED,
-				&g_Biillboard[nCnt].pVtxBuffBiillboard,
+				&g_Billboard[nCnt].pVtxBuffBiillboard,
 				NULL);
 
 			//頂点バッファをロックし、頂点情報へのポインタを取得
-			g_Biillboard[nCnt].pVtxBuffBiillboard->Lock(0, 0, (void**)&pVtx, 0);
+			g_Billboard[nCnt].pVtxBuffBiillboard->Lock(0, 0, (void**)&pVtx, 0);
 
 			//頂点座標の設定
-			pVtx[0].pos = D3DXVECTOR3( -g_Biillboard[nCnt].nWidth, g_Biillboard[nCnt].nHeight, 0.0f);
-			pVtx[1].pos = D3DXVECTOR3( +g_Biillboard[nCnt].nWidth, g_Biillboard[nCnt].nHeight, 0.0f);
-			pVtx[2].pos = D3DXVECTOR3( -g_Biillboard[nCnt].nWidth, g_Biillboard[nCnt].nHeight, 0.0f);
-			pVtx[3].pos = D3DXVECTOR3( +g_Biillboard[nCnt].nWidth, g_Biillboard[nCnt].nHeight, 0.0f);
+			pVtx[0].pos = D3DXVECTOR3(-(g_Billboard[nCnt].origin.x), (g_Billboard[nCnt].nHeight - g_Billboard[nCnt].origin.y), 0.0f);
+			pVtx[1].pos = D3DXVECTOR3(+(g_Billboard[nCnt].nWidth - g_Billboard[nCnt].origin.x), (g_Billboard[nCnt].nHeight - g_Billboard[nCnt].origin.y), 0.0f);
+			pVtx[2].pos = D3DXVECTOR3(-(g_Billboard[nCnt].origin.x), (-g_Billboard[nCnt].origin.y), 0.0f);
+			pVtx[3].pos = D3DXVECTOR3(+(g_Billboard[nCnt].nWidth - g_Billboard[nCnt].origin.x), (-g_Billboard[nCnt].origin.y), 0.0f);
 
 			//法線ベクトルの設定
 			pVtx[0].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
@@ -189,9 +194,33 @@ void SetBiillboard(D3DXVECTOR3 pos, int nWidth, int nHeigh)
 			pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
 			//頂点バッファをアンロック
-			g_Biillboard[nCnt].pVtxBuffBiillboard->Unlock();
+			g_Billboard[nCnt].pVtxBuffBiillboard->Unlock();
+
+			//影の設定
+			if (g_Billboard[nCnt].bShadow)
+			{
+				//影の設定
+				g_Billboard[nCnt].nIndexShadow = SetShadow(D3DXVECTOR3((g_Billboard[nCnt].nWidth - g_Billboard[nCnt].origin.x) * 0.5f, 0.1f, g_Billboard[nCnt].pos.z),
+															D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+															(g_Billboard[nCnt].nWidth - g_Billboard[nCnt].origin.x) * 0.5f);
+			}
 
 			break;
 		}
 	}
+}
+
+//===================
+// メッシュ壁のテクスチャ設定
+//===================
+void SetBillTexture(int Indx)
+{
+	//テクスチャのポインタを取得
+	LPDIRECT3DTEXTURE9 pTexture = GetTexture2(g_Billboard[Indx].textype);
+
+	if (pTexture != NULL)
+	{
+		g_Billboard[Indx].pTextureBiillboard = pTexture;
+	}
+
 }

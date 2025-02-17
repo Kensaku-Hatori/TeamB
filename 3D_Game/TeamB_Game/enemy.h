@@ -20,14 +20,14 @@
 
 #define ENEMY_HP (float)(150)			// HP
 #define ENEMY_SPEED (float) (2.0f)		// 速度
-#define ENEMY_AP (float)(10)			// 攻撃力
+#define ENEMY_AP (float)(100)			// 攻撃力
 
 // 行動の距離
 #define ATTACK_DIST (float)(50.0f)		// 攻撃
-#define HOMING_DIST (float)(100.0f)		// ホーミング
+#define HOMING_DIST (float)(300.0f)		// ホーミング
 
 //フレーム
-#define ATTACK_FREAM (180)				// 攻撃
+#define ATTACK_FREAM (180)				// 攻撃a
 
 //移動量
 #define HOMING_MOVE (float)(0.2f)		// ホーミング
@@ -56,7 +56,6 @@ typedef enum
 	ENEMYTYPE_SKELETON = 0,
 	ENEMYTYPE_ZOMBIE,
 	ENEMYTyPE_MIDBOSS,
-	ENEMYTYPE_BOSS,
 	ENEMYTYPE_MAX
 }ENEMYTYPE;
 
@@ -93,6 +92,7 @@ typedef struct
 	bool bHit;
 	int IndxGuage[3];
 	float fDistance;
+	float fActionDistance;
 
 }ENEMY;
 
@@ -112,5 +112,6 @@ void UpdateAction(int nCount);								// 敵の行動パターン更新処理
 void EnemyState(int Indx);									// 敵の状態更新処理
 void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType);		// 敵のバッファやモーション設定処理
 void CollisionEnemy(void);									// 敵の当たり判定処理
+void CollisionEnemyAction(int nCnt);						// 敵のアクション時の当たり判定処理
 
 #endif // !ENEMY_H_

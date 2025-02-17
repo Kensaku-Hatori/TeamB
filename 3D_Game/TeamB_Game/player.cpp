@@ -19,20 +19,22 @@
 #include "animation.h"
 #include "enemy.h"
 #include "game.h"
-#include"impact.h"
+#include "impact.h"
 #include "fade.h"
 #include "light.h"
 #include "Item.h"
 #include "circle.h"
+#include "arrow.h"
+#include "invisiblewall.h"
+#include "lockon.h"
+#include "boss.h"
 
 //グローバル変数
 Player g_player;
-D3DXVECTOR3 g_vtxMinPlayer;//プレイヤーの最小値
-D3DXVECTOR3 g_vtxMaxPlayer;//プレイヤーの最大値
+D3DXVECTOR3 g_vtxMinPlayer;	//プレイヤーの最小値
+D3DXVECTOR3 g_vtxMaxPlayer;	//プレイヤーの最大値
 
-int g_nCntHealMP;
-bool bfirst = true;
-bool g_bAbolition = false;//全滅フラグ
+int g_nCntHealMP;			//MP回復時間
 
 //=====================
 // プレイヤーの初期化
@@ -43,15 +45,22 @@ void InitPlayer(void)
 	//デバイスの取得
 	pDevice = GetDevice();
 
-	if (bfirst == false)
-	{
+	
+	if (g_player.bfirst == false)
+	{//最初なら
 		g_player.pos = g_player.NextPosition;
 	}
 	else
-	{
-		bfirst = false;
+	{//ステージ移動しているなら
+		g_player.bfirst = false;
 		g_player.pos = D3DXVECTOR3(0.0f,0.0f,100.0f);
+		//基礎ステータス
+		g_player.Status.fHP = PLAYER_HP;
+		g_player.Status.nMP = PLAYER_MP;
+		g_player.Status.fPower = PLAYER_AP;
+		g_player.Status.fSpeed = PLAYER_SPEED;
 	}
+
 	g_player.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -70,21 +79,16 @@ void InitPlayer(void)
 	g_player.nKey = 0;			//現在のキーNo
 	g_player.nNumModel = 13;	//パーツの総数
 
-	//基礎ステータス
-	g_player.Status.fHP = PLAYER_HP;
-	g_player.Status.nMP = PLAYER_MP;
-	g_player.Status.fPower = PLAYER_MP;
-	g_player.Status.fSpeed = PLAYER_SPEED;
-
 	//ロックオン関連
 	g_player.bLockOn = false;
 	g_player.fSightRange = 200.0f;					// 視界距離
 	g_player.fSightAngle = D3DXToRadian(110.0f);	// 視界の葉に
 	g_player.fDistance = g_player.fSightRange / 2;
 	g_player.nLockOnEnemy = 0;
+	g_player.bWantLockOn = false;
 
 	//全滅フラグ
-	g_bAbolition = false;				//全滅していない状態
+	g_player.bAbolition = false;				//全滅していない状態
 
 	g_nCntHealMP = 0;
 }
@@ -118,6 +122,7 @@ void UninitPlayer(void)
 void UpdatePlayer(void)
 {
 	Camera *pCamera = GetCamera();				//カメラの情報取得
+	Lockon* pLockon = GetLockOn();
 	ENEMY* pEnemy = GetEnemy();					//敵の情報取得
 	int* NumEnemy = GetNumEnemy();				//敵の数取得
 
@@ -133,23 +138,12 @@ void UpdatePlayer(void)
 		if (g_player.bLockOn == true)
 		{
 			pCamera->rot.y = g_player.rot.y + D3DX_PI;
-			
+
 			//プレイヤーの向き
 			float fMathDistance, fMathDistance1;
-			fMathDistance = pEnemy[g_player.nLockOnEnemy].Object.Pos.x - g_player.pos.x;
-			fMathDistance1 = pEnemy[g_player.nLockOnEnemy].Object.Pos.z - g_player.pos.z;
+			fMathDistance = pLockon->pos.x - g_player.pos.x;
+			fMathDistance1 = pLockon->pos.z - g_player.pos.z;
 			g_player.rotDest.y = atan2f(fMathDistance, fMathDistance1) + D3DX_PI;
-			
-
-			//距離による解除
-			float Dis = ((g_player.pos.x - pEnemy[g_player.nLockOnEnemy].Object.Pos.x) * (g_player.pos.x - pEnemy[g_player.nLockOnEnemy].Object.Pos.x))
-				   	  + ((g_player.pos.y - pEnemy[g_player.nLockOnEnemy].Object.Pos.y) * (g_player.pos.y - pEnemy[g_player.nLockOnEnemy].Object.Pos.y))
-				      + ((g_player.pos.z - pEnemy[g_player.nLockOnEnemy].Object.Pos.z) * (g_player.pos.z - pEnemy[g_player.nLockOnEnemy].Object.Pos.z));
-			if (Dis >= g_player.fSightRange * g_player.fSightRange * 2)
-			{
-				g_player.bLockOn = false;
-				pCamera->rot.y = 0.0f; //カメラ戻す
-			}
 		}
 
 		// 角度の近道
@@ -168,8 +162,8 @@ void UpdatePlayer(void)
 		if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_B) == true) && g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION)
 		{// MPが５０以上の時
 			SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion);
-			if (g_player.Status.nMP >= 50)
-			{
+			//if (g_player.Status.nMP >= 50)
+			//{
 				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bActionStart = false;
 				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bFirst = false;
 				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartKey = 3;
@@ -191,8 +185,8 @@ void UpdatePlayer(void)
 				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nStartFrame = 1;
 				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nEndFrame = 2;
 
-				g_player.Status.nMP -= 50; //MP消費
-			}
+			//	g_player.Status.nMP -= 50; //MP消費
+			//}
 		}
 
 		//MP回復
@@ -200,18 +194,26 @@ void UpdatePlayer(void)
 		{//MPが減っていたら
 			g_nCntHealMP++;
 		}
-		if (g_nCntHealMP >= 60)
+		if (g_nCntHealMP >= 180)
 		{
 			g_player.Status.nMP += 10;
 			g_nCntHealMP = 0;
 		}
 
 		//ジャンプ
-		if ((KeyboardTrigger(DIK_SPACE) == true || GetJoypadTrigger(JOYKEY_A) == true))
+		if ((KeyboardTrigger(DIK_SPACE) == true || GetJoypadTrigger(JOYKEY_A) == true) && g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION)
 		{// SPACE
 			if (g_player.bJump == false)
 			{
 				SetMotion(MOTIONTYPE_JUMP, &g_player.PlayerMotion);
+
+				g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_LANDING].ActionFrameInfo[0].bActionStart = false;
+				g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_LANDING].ActionFrameInfo[0].bFirst = false;
+				g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_LANDING].ActionFrameInfo[0].nStartKey = 0;
+				g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_LANDING].ActionFrameInfo[0].nEndKey = 0;
+				g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_LANDING].ActionFrameInfo[0].nStartFrame = 1;
+				g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_LANDING].ActionFrameInfo[0].nEndFrame = 2;
+
 				g_player.bJump = true;
 				g_player.move.y += g_player.nJump;
 			}
@@ -234,7 +236,8 @@ void UpdatePlayer(void)
 		g_player.pos.y += g_player.move.y;
 		g_player.pos.z += g_player.move.z;
 
-		CollisionEnemy();
+		//CollisionEnemy();
+		CollisionBoss();
 
 		//ロックオン
 		if ((KeyboardTrigger(DIK_R) == true || GetJoypadTrigger(JOYKEY_R1) == true))
@@ -242,18 +245,11 @@ void UpdatePlayer(void)
 			if (g_player.bLockOn == true)
 			{
 				g_player.bLockOn = g_player.bLockOn ? false : true;
-				pCamera->rot.y = 0.0f; //カメラ戻す
 			}
-			else if(g_player.bLockOn == false)
+			else if (g_player.bLockOn == false)
 			{
-				g_player.bLockOn = IsEnemyInsight();
+				g_player.bWantLockOn = true;
 			}
-		}
-
-		// HP0
-		if (g_player.Status.fHP <= 0.0f)
-		{
-			SetGameState(GAMESTATE_GAMEOVER);
 		}
 
 		//地面との判定
@@ -331,21 +327,39 @@ void UpdatePlayer(void)
 		//敵を全て倒しているなら
 		if (*(NumEnemy) <= 0)
 		{
-			if (g_bAbolition != true)
+			if (g_player.bAbolition != true)
 			{
+				//エリア移動位置の取得
+				D3DXVECTOR3 Destpos = GetBottom();
+				MODE mode = GetMode();
+
 				//サークルの設定処理
-				g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.6f), 12, 0, 10.0f, 25.0f, true, false);
+				g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DCOLOR_RGBA(255, 255, 50, 204), 12, 0, 10.0f, 20.0f, true, false);
+
+				if (mode != MODE_STAGEFOUR)
+				{
+					//矢印の設定処理
+					SetArrow(Destpos, g_player.pos, D3DCOLOR_RGBA(255, 200, 0, 200), 35.0f, 15.0f, 21.0f, true, false);
+				}
 
 				//全滅している状態にする
-				g_bAbolition = true;
+				g_player.bAbolition = true;
 			}
 		}
 
 		//敵が全滅しているなら
-		if (g_bAbolition == true)
+		if (g_player.bAbolition == true)
 		{
+			MODE mode = GetMode();
+
 			//サークルの位置の更新処理
 			SetPositionCircle(g_player.nIndxCircle, g_player.pos, g_player.rot);
+
+			if (mode != MODE_STAGEFOUR)
+			{
+				//矢印の位置更新
+				SetPositonArrow(g_player.pos);
+			}
 		}
 
 		//影の大きさの更新処理
@@ -453,14 +467,27 @@ void DrawPlayer(void)
 	}
 }
 
-//======================
+//====================
 // プレイヤーの移動
-//======================
+//====================
 void PlayerMove(void)
 {
 	Camera* pCamera;
 	pCamera = GetCamera();
 
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].bActionStart = false;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].bFirst = false;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].nStartKey = 1;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].nEndKey = 1;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].nStartFrame = 1;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].nEndFrame = 2;
+
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[1].bActionStart = false;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[1].bFirst = false;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[1].nStartKey = 3;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[1].nEndKey = 3;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[1].nStartFrame = 1;
+	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[1].nEndFrame = 2;
 
 	//移動
 	//左
@@ -614,6 +641,20 @@ Player* GetPlayer(void)
 	return &g_player;
 }
 
+//=========================
+// プレイヤーのヒット処理
+//=========================
+void HitPlayer(float Atack)
+{
+	g_player.Status.fHP -= (int)Atack;
+
+
+	if (g_player.Status.fHP <= 0.0f && g_player.bUse == true)
+	{// 使われていて体力が０以下なら
+		SetGameState(GAMESTATE_GAMEOVER);
+	}
+}
+
 void SetMesh(char* pFilePath, int Indx)
 {
 
@@ -730,72 +771,6 @@ void PlayerMotion(MOTIONINFO *pMotionInfo)
 		g_player.PlayerMotion.aMotionInfo[MotionCount] = *pMotionInfo;
 	}
 	g_player.bUse = true;
-}
-//=========================
-// 敵が視界にいるかどうか
-//=========================
-bool IsEnemyInsight(void)
-{
-	ENEMY* pEnemy = GetEnemy();
-
-	D3DXVECTOR3 playerFront;
-
-	playerFront.x = -sinf(g_player.rot.y);
-	playerFront.y = 0.0f;
-	playerFront.z = -cosf(g_player.rot.y);
-
-	D3DXVECTOR3 toEnemy;
-
-	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++)
-	{
-		if (pEnemy[EnemyCount].bUse == true)
-		{
-			toEnemy.x = pEnemy[EnemyCount].Object.Pos.x - g_player.pos.x;
-			toEnemy.y = 0.0f;
-			toEnemy.z = pEnemy[EnemyCount].Object.Pos.z - g_player.pos.z;
-
-			D3DXVec3Normalize(&playerFront, &playerFront);
-
-			D3DXVec3Normalize(&toEnemy, &toEnemy);
-
-			float dotProduct = D3DXVec3Dot(&playerFront, &toEnemy);
-
-			if (dotProduct > cosf(g_player.fSightAngle * 0.5f))
-			{
-				float distanceSquared =
-					(g_player.pos.x - pEnemy[EnemyCount].Object.Pos.x) * (g_player.pos.x - pEnemy[EnemyCount].Object.Pos.x) +
-					(g_player.pos.y - pEnemy[EnemyCount].Object.Pos.y) * (g_player.pos.y - pEnemy[EnemyCount].Object.Pos.y) +
-					(g_player.pos.z - pEnemy[EnemyCount].Object.Pos.z) * (g_player.pos.z - pEnemy[EnemyCount].Object.Pos.z);
-
-				if (distanceSquared <= g_player.fSightRange * g_player.fSightRange)
-				{
-					EnemyDistanceSort(EnemyCount);
-					return true;
-				}
-			}
-		}
-	}
-	return false;
-}
-
-//=====================
-// 一番近い敵を判別
-//=====================
-void EnemyDistanceSort(int EnemyCount)
-{
-	ENEMY* pEnemy = GetEnemy();
-
-	//敵との距離
-	pEnemy[EnemyCount].fDistance = sqrtf(((pEnemy[EnemyCount].Object.Pos.x - g_player.pos.x) * (pEnemy[EnemyCount].Object.Pos.x - g_player.pos.x))
-									   + ((pEnemy[EnemyCount].Object.Pos.y - g_player.pos.y) * (pEnemy[EnemyCount].Object.Pos.y - g_player.pos.y))
-									   + ((pEnemy[EnemyCount].Object.Pos.z - g_player.pos.z) * (pEnemy[EnemyCount].Object.Pos.z - g_player.pos.z)));
-
-	float RADIUS = (g_player.fDistance + pEnemy[EnemyCount].Radius) * (g_player.fDistance + pEnemy[EnemyCount].Radius);
-
-	if (pEnemy[EnemyCount].fDistance <= RADIUS)
-	{
-		g_player.nLockOnEnemy = EnemyCount;
-	}
 }
 
 void MatrixWand(void)

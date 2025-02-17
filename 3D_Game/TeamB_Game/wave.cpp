@@ -7,21 +7,22 @@
 
 #include"wave.h"
 #include"enemy.h"
+#include "boss.h"
 #include<stdio.h>
 
 //マクロ定義
-#define WAVE_0 "data\\TEXT\\wave\\wave00.txt"						//ウェーブ0
-#define WAVE_1 "data\\TEXT\\wave\\wave01.txt"						//ウェーブ1
-#define WAVE_2 "data\\TEXT\\wave\\wave02.txt"						//ウェーブ2
-#define WAVE_3 "data\\TEXT\\wave\\wave03.txt"						//ウェーブ3
+#define WAVE_0 "data\\TEXT\\wave\\wave00.txt"						// ウェーブ0
+#define WAVE_1 "data\\TEXT\\wave\\wave01.txt"						// ウェーブ1
+#define WAVE_2 "data\\TEXT\\wave\\wave02.txt"						// ウェーブ2
+#define WAVE_3 "data\\TEXT\\wave\\wave03.txt"						// ウェーブ3
 
 
 //グローバル変数宣言
 //LoadInfo g_Info[MAX_ENEMY];
 MODE g_gamemode;
 int g_nCntEnemy;
-int g_nWave;												//ウェーブのカウント
-bool g_bFinish;												//ウェーブの終了判定
+int g_nWave;												// ウェーブのカウント
+bool g_bFinish;												// ウェーブの終了判定
 
 //============================================================
 // ウェーブの初期化処理
@@ -39,7 +40,7 @@ void InitWave(MODE mode)
 //============================================================
 void LoadWave()
 {
-	FILE* pFile;											//外部ファイルへのポインタ
+	FILE* pFile;											// 外部ファイルへのポインタ
 
 	int type = 0;
 	int Return = 0;
@@ -120,8 +121,15 @@ void LoadWave()
 					}
 					else if (strcmp(aString, "END_ENEMYSET") == 0)//END_ENEMYSETを読込んだなら
 					{
-						//敵の設定
-						SetEnemy(pos, type, rot);
+						if (type == 3)
+						{
+							SetBoss(pos, rot);
+						}
+						else
+						{
+							//敵の設定
+							SetEnemy(pos, type, rot);
+						}
 
 						break;
 					}

@@ -13,6 +13,7 @@
 #include "particle.h"
 #include "enemy.h"
 #include "impact.h"
+#include "boss.h"
 
 //グローバル変数宣言
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffSkill = NULL;
@@ -116,9 +117,6 @@ void UpdateSkill(void)
 	{
 		if (g_Skill[nCnt].bUse == true)
 		{
-			// 魔法の当たり判定
-			SkillCollision(nCnt);
-
 			// エフェクトの設定
 			SetEffect(g_Skill[nCnt].pos,
 				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
@@ -163,10 +161,13 @@ void UpdateSkill(void)
 				}
 			}
 
-			g_Skill[nCnt].move.x += sinf(g_Skill[nCnt].rot.y - D3DX_PI) * 0.5f;
-			g_Skill[nCnt].move.z += cosf(g_Skill[nCnt].rot.y - D3DX_PI) * 0.5f;
+			if (g_Skill[nCnt].bHit == false)
+			{
+				g_Skill[nCnt].move.x += sinf(g_Skill[nCnt].rot.y - D3DX_PI) * 0.5f;
+				g_Skill[nCnt].move.z += cosf(g_Skill[nCnt].rot.y - D3DX_PI) * 0.5f;
 
-			g_Skill[nCnt].pos += g_Skill[nCnt].move;
+				g_Skill[nCnt].pos += g_Skill[nCnt].move;
+			}
 
 			g_Skill[nCnt].nLife--;
 
@@ -264,37 +265,16 @@ void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot)
 			g_Skill[nCnt].move = move;
 			g_Skill[nCnt].rot = rot;
 			g_Skill[nCnt].nLife = SKILL_LIFE;
+			g_Skill[nCnt].bHit = false;
 			g_Skill[nCnt].bUse = true;
 			break;
 		}
 	}
 }
-
-//========================
-// 敵と魔法の当たり判定
-//========================
-void SkillCollision(int nIdx)
+//==============
+// 魔法の取得
+//==============
+Skill* GetSkill()
 {
-	//敵の情報取得
-	ENEMY* pEnemy = GetEnemy();
-
-	//プレイヤーの情報取得
-	Player* pPlayer = GetPlayer();
-
-	for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++, pEnemy++)
-	{
-		if (pEnemy->bUse == true)
-		{
-			g_Skill[nIdx].fDistance = sqrtf(((g_Skill[nIdx].pos.x - pEnemy->Object.Pos.x) * (g_Skill[nIdx].pos.x - pEnemy->Object.Pos.x))
-										  + ((g_Skill[nIdx].pos.y - pEnemy->Object.Pos.y) * (g_Skill[nIdx].pos.y - pEnemy->Object.Pos.y))
-										  + ((g_Skill[nIdx].pos.z - pEnemy->Object.Pos.z) * (g_Skill[nIdx].pos.z - pEnemy->Object.Pos.z)));
-
-			float RADIUS = (pEnemy->Radius + (SKILL_SIZE)) * (pEnemy->Radius + (SKILL_SIZE));
-
-			if (g_Skill[nIdx].fDistance <= RADIUS)
-			{
-				HitEnemy(pPlayer->Status.fPower,nCntEnemy);
-			}
-		}
-	}
+	return &g_Skill[0];
 }

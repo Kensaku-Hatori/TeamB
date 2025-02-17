@@ -26,6 +26,7 @@ typedef struct
 	int nIdxShadow;				// 影のインデックス保存用
 	int nLife;					// 寿命
 	float fDistance;			// 距離
+	bool bHit;
 	bool bUse;					// 使用しているかどうか
 }Skill;
 
@@ -35,6 +36,7 @@ void UninitSkill(void);
 void UpdateSkill(void);
 void DrawSkill(void);
 void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move,D3DXVECTOR3 rot);
-void SkillCollision(int nIdx);
+bool SkillCollision(D3DXVECTOR3 pos,float radius);
+Skill* GetSkill();
 
 #endif

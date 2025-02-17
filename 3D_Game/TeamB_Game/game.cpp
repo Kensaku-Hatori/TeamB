@@ -34,6 +34,9 @@
 #include "invisiblewall.h"
 #include "Item.h"
 #include "circle.h"
+#include "arrow.h"
+#include "boss.h"
+#include <time.h>
 
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -52,6 +55,9 @@ void InitGame(void)
 	//サークルの初期化
 	InitCircle();
 
+	//矢印の初期化
+	InitArrow();
+
 	//影の初期化
 	InitShadow();
 
@@ -63,6 +69,9 @@ void InitGame(void)
 
 	//プレイヤーの初期化
 	InitPlayer();
+
+	//敵の初期化
+	InitBoss();
 
 	//敵の初期化
 	InitEnemy();
@@ -121,8 +130,6 @@ void InitGame(void)
 	// 見えない壁の初期化処理
 	InitInvisibleWall();
 
-	SetItem(D3DXVECTOR3(0.0f, 0.0f, -100.0f), ITEMTYPE_HP);
-
 	//各初期化
 	g_gamestate = GAMESTATE_NORMAL;		//ゲームステート
 	g_nCounterGameState = 0;			//ステートカウンター
@@ -145,6 +152,9 @@ void UninitGame(void)
 	//サークルの終了処理
 	UninitCircle();
 
+	//矢印の終了処理
+	UninitArrow();
+
 	//影の終了処理
 	UninitShadow();
 
@@ -156,6 +166,9 @@ void UninitGame(void)
 
 	//敵の終了処理
 	UninitEnemy();
+
+	//敵の終了処理
+	UninitBoss();
 
 	//魔法の終了処理
 	UninitSkill();
@@ -215,6 +228,9 @@ void UpdateGame(void)
 			//サークルの更新処理
 			UpdateCircle();
 
+			//矢印の更新処理
+			UpdateArrow();
+
 			//影の更新処理
 			UpdateShadow();
 
@@ -229,6 +245,9 @@ void UpdateGame(void)
 
 			//敵の更新処理
 			UpdateEnemy();
+
+			//敵の更新処理
+			UpdateBoss();
 
 			//魔法の更新処理
 			UpdateSkill();
@@ -246,6 +265,17 @@ void UpdateGame(void)
 			{
 				InitParticleEditer();
 				SetGameState(GAMESTATE_EFFECTEDITER);
+			}
+			//リザルトに飛ぶ
+			if (KeyboardTrigger(DIK_1) == true || GetJoypadTrigger(JOYKEY_START) == true)
+			{//Clear
+				SetFade(MODE_RESULT);
+				SetResult(RESULT_CLEAR);
+			}
+			if (KeyboardTrigger(DIK_2) == true || GetJoypadTrigger(JOYKEY_START) == true)
+			{//over
+				SetFade(MODE_RESULT);
+				SetResult(RESULT_GAMEOVER);
 			}
 
 #endif // DEBUG
@@ -325,18 +355,6 @@ void UpdateGame(void)
 
 				break;
 			}
-
-			//リザルトに飛ぶ
-			if (KeyboardTrigger(DIK_1) == true || GetJoypadTrigger(JOYKEY_START) == true)
-			{//Clear
-				SetFade(MODE_RESULT);
-				SetResult(RESULT_CLEAR);
-			}
-			if (KeyboardTrigger(DIK_2) == true || GetJoypadTrigger(JOYKEY_START) == true)
-			{//over
-				SetFade(MODE_RESULT);
-				SetResult(RESULT_GAMEOVER);
-			}
 		}
 	}
 	else
@@ -399,15 +417,21 @@ void DrawGame(void)
 		//敵の描画処理
 		DrawEnemy();
 
+		//敵の描画処理
+		DrawBoss();
+
+		//矢印の描画処理
+		DrawArrow();
+
+		//サークルの描画処理
+		DrawCircle();
+
 		//UIの描画処理
 		DrawUi();
 
 		//衝撃波の描画処理
 		DrawImpact();
 	}
-
-	//サークルの描画処理
-	DrawCircle();
 
 	//ポーズしているなら
 	if (g_bPause == true)

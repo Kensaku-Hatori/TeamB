@@ -16,6 +16,10 @@
 #include "shadow.h"
 #include "animation.h"
 #include "player.h"
+#include "item.h"
+#include "skill.h"
+#include "collision.h"
+#include "lockon.h"
 
 //*******************
 // グローバル変数宣言
@@ -125,13 +129,64 @@ void UninitEnemy(void)
 void UpdateEnemy(void)
 {
 	MODE nMode = GetMode();
+	Player* pPlayer = GetPlayer();
+	Skill* pSkill = GetSkill();
+
 
 	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++)
 	{
 		if (g_Enemy[EnemyCount].bUse == true)
 		{
-			//行動の更新
+			// 行動の更新
 			UpdateAction(EnemyCount);
+
+			// 魔法との当たり判定
+			for (int SkillCount = 0; SkillCount < MAX_SKILL; SkillCount++)
+			{
+				if (pSkill[SkillCount].bUse == true)
+				{
+					// 当たり判定
+					if (collisioncircle(g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].Radius, pSkill[SkillCount].pos, SKILL_SIZE) == true)
+					{
+						pSkill[SkillCount].nLife = 1;
+						pSkill[SkillCount].bHit = true;
+						HitEnemy(pPlayer->Status.fPower, EnemyCount);
+					}
+				}
+			}
+
+			// 攻撃時の当たり判定
+			if (g_Enemy[EnemyCount].EnemyMotion.motionType == MOTIONTYPE_ACTION)
+			{
+				CollisionEnemyAction(EnemyCount);
+			}
+
+			//ロックオン
+			if (pPlayer->bWantLockOn == true)
+			{
+				if (IsEnemyInsight(g_Enemy[EnemyCount].Object.Pos, 0) == true)
+				{
+					EnemyDistanceSort(EnemyCount);
+					pPlayer->bLockOn = true;
+				}
+			}
+
+			// 角度の近道
+			if (g_Enemy[EnemyCount].rotDest.y - g_Enemy[EnemyCount].Object.Rot.y >= D3DX_PI)
+			{
+				g_Enemy[EnemyCount].Object.Rot.y += D3DX_PI * 2.0f;
+			}
+			else if (g_Enemy[EnemyCount].rotDest.y - g_Enemy[EnemyCount].Object.Rot.y <= -D3DX_PI)
+			{
+				g_Enemy[EnemyCount].Object.Rot.y -= D3DX_PI * 2.0f;
+			}
+
+			if (g_Enemy[EnemyCount].statecount <= 0)
+			{
+				g_Enemy[EnemyCount].state = ENEMYSTATE_NORMAL;
+				g_Enemy[EnemyCount].statecount = 0;
+			}
+			g_Enemy[EnemyCount].statecount--;
 
 			//移動量の更新(減衰)
 			g_Enemy[EnemyCount].move.x = (0.0f - g_Enemy[EnemyCount].move.x) * 0.1f;
@@ -266,8 +321,6 @@ ENEMY* GetEnemy()
 //***************
 void HitEnemy(float Atack,int Indx)
 {
-	Camera* pCamera = GetCamera();
-
 	g_Enemy[Indx].Status.fHP -= (int)Atack;
 
 	g_Enemy[Indx].Action = ENEMYACTION_WELL;
@@ -275,11 +328,12 @@ void HitEnemy(float Atack,int Indx)
 
 	if (Atack >= 10)
 	{// ダメージが最小値以上なら
-		g_Enemy[Indx].statecount = (int)Atack * 3;
+		//g_Enemy[Indx].statecount = (int)Atack * 3;
+		g_Enemy[Indx].statecount = 30;
 	}
 	else
 	{// ダメージが最小値以下なら
-		g_Enemy[Indx].statecount = 10;
+		g_Enemy[Indx].statecount = 30;
 	}
 
 	if (g_Enemy[Indx].Status.fHP <= 0.0f && g_Enemy[Indx].bUse == true)
@@ -349,19 +403,40 @@ void DeadEnemy(int Indx)
 	MODE nMode = GetMode();
 	Player* pPlayer = GetPlayer();
 	Camera* pCamera = GetCamera();
+	int Drop = 0;			//ドロップ確率
+	int Itemtype = 0;		//アイテムの種類
 
 	g_Enemy[Indx].bUse = false;
 	g_nNumEnemy--;
 	SetPositionShadow(g_Enemy[Indx].IndxShadow,g_Enemy[Indx].Object.Pos,g_Enemy[Indx].bUse);
-	SetParticle(g_Enemy[Indx].Object.Pos, D3DXVECTOR3(100.0f, 100.0f, 100.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), PARTICLE_NONE, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 100, 50, 2.0f,2.0f,1.0f);
-	//ロックオン解除
-	if (pPlayer->bLockOn == true)
+
+	//アイテムドロップ
+	Drop = rand() % 10;
+	Itemtype = rand() % NUM_ITEMTYPE;
+
+	if (Drop <= 2)
 	{
-		if (pPlayer->nLockOnEnemy == Indx)
-		{
-			pPlayer->bLockOn = false;
-			pCamera->rot.y = 0.0f; //カメラ戻す
-		}
+		//アイテムの設定
+		SetItem(g_Enemy[Indx].Object.Pos, (ITEMTYPE)Itemtype);
+	}
+
+	SetParticle(g_Enemy[Indx].Object.Pos, 
+		D3DXVECTOR3(100.0f, 100.0f, 100.0f), 
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		PARTICLE_NONE, 
+		D3DXVECTOR3(0.0f, 0.0f, 0.0f), 
+		100,
+		50,
+		2.0f,
+		2.0f,
+		1.0f,
+		EFFECT_NONE);
+
+	if (Indx == pPlayer->nLockOnEnemy)
+	{
+		g_Enemy[pPlayer->nLockOnEnemy].fDistance = 0;
+		pPlayer->nLockOnEnemy = 0;
+		pPlayer->bLockOn = false;
 	}
 }
 
@@ -372,7 +447,7 @@ void UpdateAction(int nCount)
 {
 	Player* pPlayer = GetPlayer();				//プレイヤーの情報取得
 
-//敵とプレイヤーの距離計算
+	//敵とプレイヤーの距離計算
 	D3DXVECTOR3 vec = pPlayer->pos - g_Enemy[nCount].Object.Pos;
 	float fDistance = (vec.x) * (vec.x) + (vec.z) * (vec.z);
 	float fAngle = 0.0f;
@@ -396,54 +471,44 @@ void UpdateAction(int nCount)
 	//攻撃
 	if (fDistance <= ATTACK_DIST)
 	{
-		g_Enemy[nCount].nActionCount++;
-
-		//角度の目標設定
-		g_Enemy[nCount].rotDest.y = fAngle + D3DX_PI;
-
-		if (g_Enemy[nCount].nActionCount >= ATTACK_FREAM)
+		if (g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_ACTION)
 		{
-
 			//モーションの種類設定
 			g_Enemy[nCount].ActionType = ENEMYACTION_ATTACK;
-			g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_ACTION;//多分これしか機能していない
-			g_Enemy[nCount].pMotion = MOTIONTYPE_ACTION;
-		}
-
-		if (g_Enemy[nCount].nActionCount >= ATTACK_FREAM + 210)
-		{
-			g_Enemy[nCount].nActionCount = 0;
-			g_Enemy[nCount].ActionType = ENEMYACTION_WELL;
-			g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_NEUTRAL;
-			g_Enemy[nCount].pMotion = MOTIONTYPE_NEUTRAL;
+			SetMotion(MOTIONTYPE_ACTION, &g_Enemy[nCount].EnemyMotion);
 		}
 	}
 	//追いかける
 	else if (fDistance <= HOMING_DIST)
 	{
-		//モーションの種類設定
-		g_Enemy[nCount].ActionType = ENEMYACTION_RUN;
-		g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_MOVE;//多分これしか機能していない
-		g_Enemy[nCount].pMotion = MOTIONTYPE_MOVE;
+		if (g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_ACTION)
+		{
+			//モーションの種類設定
+			g_Enemy[nCount].ActionType = ENEMYACTION_RUN;
+			//移動量の設定
+			g_Enemy[nCount].move.x = sinf(fAngle) * HOMING_MOVE;
+			g_Enemy[nCount].move.z = cosf(fAngle) * HOMING_MOVE;
 
-		//移動量の設定
-		g_Enemy[nCount].move.x = sinf(fAngle) * HOMING_MOVE;
-		g_Enemy[nCount].move.z = cosf(fAngle) * HOMING_MOVE;
+			//位置の更新
+			g_Enemy[nCount].Object.Pos += g_Enemy[nCount].move;
 
-		//位置の更新
-		g_Enemy[nCount].Object.Pos += g_Enemy[nCount].move;
+			//角度の目標設定
+			g_Enemy[nCount].rotDest.y = fAngle + D3DX_PI;
 
-
-		//角度の目標設定
-		g_Enemy[nCount].rotDest.y = fAngle + D3DX_PI;
-
+			if (g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_MOVE)
+			{
+				SetMotion(MOTIONTYPE_MOVE, &g_Enemy[nCount].EnemyMotion);
+			}
+		}
 	}
 	//様子見
 	else
 	{
 		g_Enemy[nCount].ActionType = ENEMYACTION_WELL;
-		g_Enemy[nCount].EnemyMotion.motionType = MOTIONTYPE_NEUTRAL;
-		g_Enemy[nCount].pMotion = MOTIONTYPE_NEUTRAL;
+		if (g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_NEUTRAL && g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_ACTION)
+		{
+			SetMotion(MOTIONTYPE_NEUTRAL, &g_Enemy[nCount].EnemyMotion);
+		}
 	}
 }
 
@@ -456,7 +521,7 @@ void EnemyState(int Indx)
 }
 
 //******************
-//敵のオフセット?
+// 敵のオフセット?
 //******************
 void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType)
 {
@@ -536,14 +601,42 @@ void CollisionEnemy(void)
 
 			if (g_Enemy[nCntEnemy].fDistance <= RADIUS)
 			{
-				pPlayer->Status.fHP -= g_Enemy[nCntEnemy].Status.fPower;
+				HitPlayer(g_Enemy[nCntEnemy].Status.fPower);
 			}
 		}
 	}
 }
+//===================================
+// 敵のアクション時の当たり判定処理
+//===================================
+void CollisionEnemyAction(int nCnt)
+{
+	Player* pPlayer = GetPlayer();
+	int nModel = 0; // 当たり判定のあるモデル
+
+	switch (g_Enemy[nCnt].nType)
+	{
+	case 0: // スケルトン
+		nModel = 3;
+		break;
+
+	case 1: // ゾンビ
+		nModel = 1;
+		break;
+
+	default:
+		break;
+	}
+
+	if (collisioncircle(g_Enemy[nCnt].EnemyMotion.aModel[nModel].pos, g_Enemy[nCnt].Radius * 1.5f, pPlayer->pos, PLAYER_RADIUS) == true)
+	{
+		HitPlayer(g_Enemy[nCnt].Status.fPower);
+	}
+
+}
 
 //========================
-//距離の取得
+// 距離の取得
 //========================
 float GetfDistance()
 {

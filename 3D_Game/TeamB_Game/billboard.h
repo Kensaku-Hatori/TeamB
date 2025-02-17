@@ -15,12 +15,15 @@
 typedef struct
 {
 	D3DXVECTOR3 pos;									//位置
-	D3DXVECTOR3 origin;									//原点
+	D3DXVECTOR2 origin;									//原点
 	D3DXMATRIX mtxWorld;								//ワールドマトリックス
 	LPDIRECT3DVERTEXBUFFER9 pVtxBuffBiillboard;			//頂点情報
+	LPDIRECT3DTEXTURE9 pTextureBiillboard;
+	int nIndexShadow;									//影のインデックス
 	int textype;										//テクスチャの種類
 	int nWidth;											//幅
 	int nHeight;										//高さ
+	bool bShadow;										//影をつけるかどうか
 	bool bUse;											//使用しているかどうか
 }Biillboard;
 
@@ -29,6 +32,6 @@ void InitBiillboard(void);
 void UninitBiillboard(void);
 void UpdateBiillboard(void);
 void DrawBiillboard(void);
-void SetBiillboard(D3DXVECTOR3 pos,int nWidth,int nHeigh);
-
+void SetBiillboard(D3DXVECTOR3 pos, int nWidth, int nHeigh, int textype, D3DXVECTOR2 origin, bool bShadow);
+void SetBillTexture(int Indx);
 #endif

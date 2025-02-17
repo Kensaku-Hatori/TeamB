@@ -14,6 +14,7 @@
 #include "impact.h"
 #include "player.h"
 #include "skill.h"
+#include "particle.h"
 
 //***************
 // グローバル変数
@@ -142,6 +143,36 @@ void UpdateMotion(OBJECTINFO* Motion)
 			KeyDef.fRotX = Motion->aMotionInfo[Motion->motionType].aKeyInfo[Motion->NextKey].aKey[PartsCount].fRotX - Motion->aMotionInfo[Motion->motionType].aKeyInfo[Motion->nKey].aKey[PartsCount].fRotX;
 			KeyDef.fRotY = Motion->aMotionInfo[Motion->motionType].aKeyInfo[Motion->NextKey].aKey[PartsCount].fRotY - Motion->aMotionInfo[Motion->motionType].aKeyInfo[Motion->nKey].aKey[PartsCount].fRotY;
 			KeyDef.fRotZ = Motion->aMotionInfo[Motion->motionType].aKeyInfo[Motion->NextKey].aKey[PartsCount].fRotZ - Motion->aMotionInfo[Motion->motionType].aKeyInfo[Motion->nKey].aKey[PartsCount].fRotZ;
+
+			// 角度の近道
+			if (KeyDef.fRotX >= D3DX_PI)
+			{
+				KeyDef.fRotX -= D3DX_PI * 2.0f;
+			}
+			else if (KeyDef.fRotX <= -D3DX_PI)
+			{
+				KeyDef.fRotX += D3DX_PI * 2.0f;
+			}
+
+			// 角度の近道
+			if (KeyDef.fRotY >= D3DX_PI)
+			{
+				KeyDef.fRotY -= D3DX_PI * 2.0f;
+			}
+			else if (KeyDef.fRotY <= -D3DX_PI)
+			{
+				KeyDef.fRotY += D3DX_PI * 2.0f;
+			}
+
+			// 角度の近道
+			if (KeyDef.fRotZ >= D3DX_PI)
+			{
+				KeyDef.fRotZ -= D3DX_PI * 2.0f;
+			}
+			else if (KeyDef.fRotZ <= -D3DX_PI)
+			{
+				KeyDef.fRotZ += D3DX_PI * 2.0f;
+			}
 
 			// 希望の値
 			KeyDest.fPosX = Motion->aMotionInfo[Motion->motionType].aKeyInfo[Motion->nKey].aKey[PartsCount].fPosX + KeyDef.fPosX * ((float)Motion->nCntMotion / (float)Motion->aMotionInfo[Motion->motionType].aKeyInfo[Motion->nKey].nFrame);
@@ -302,10 +333,40 @@ void CaceOneAction(OBJECTINFO* Motion)
 
 	switch (Motion->motionType)
 	{
-	case MOTIONTYPE_ACTION:
-		SetSkill(Pos,
+	case MOTIONTYPE_MOVE:
+		// エフェクトの設定
+		SetEffect(D3DXVECTOR3(pPlayer->PlayerMotion.aModel[7].mtxWorld._41, pPlayer->PlayerMotion.aModel[7].mtxWorld._42, pPlayer->PlayerMotion.aModel[7].mtxWorld._43),
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			pPlayer->rot);
+			50,
+			0,
+			D3DXVECTOR3(1.0f, 1.0f, 1.0f),
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			EFFECT_SMOKE,
+			0,
+			0.0f,
+			D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		break;
+	case MOTIONTYPE_ACTION:
+		if (pPlayer->Status.nMP >= 50)
+		{
+			SetSkill(Pos,
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+				pPlayer->rot);
+			pPlayer->Status.nMP -= 50;
+		}
+		break;
+	case MOTIONTYPE_LANDING:
+		SetParticle(pPlayer->pos,
+			D3DXVECTOR3(628.0f, 1.0f, 628.0f),
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			PARTICLE_NONE,
+			D3DXVECTOR3(1.0f, 1.0f, 1.0f),
+			100,
+			10,
+			50.0f,
+			50.0f,
+			0.0f,
+			EFFECT_SMOKE);
 		break;
 	default:
 		break;
@@ -318,45 +379,61 @@ void CaceTwoAction(OBJECTINFO* Motion)
 	Pos.x = pPlayer->mtxWand._41;
 	Pos.y = pPlayer->mtxWand._42;
 	Pos.z = pPlayer->mtxWand._43;
-
+	
 	switch (Motion->motionType)
 	{
+	case MOTIONTYPE_MOVE:
+		// エフェクトの設定
+		SetEffect(D3DXVECTOR3(pPlayer->PlayerMotion.aModel[9].mtxWorld._41, pPlayer->PlayerMotion.aModel[9].mtxWorld._42, pPlayer->PlayerMotion.aModel[9].mtxWorld._43),
+			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			50,
+			0,
+			D3DXVECTOR3(1.0f, 1.0f, 1.0f),
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			EFFECT_SMOKE,
+			0,
+			0.0f,
+			D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		break;
 	case MOTIONTYPE_ACTION:
-		// エフェクトの設定
-		SetEffect(Pos,
-			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			50,
-			0,
-			D3DXVECTOR3(5.0f, 0.5f, 0.0f),
-			D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
-			EFFECT_SKILLFLASH,
-			0,
-			0.0f,
-			D3DXVECTOR3(0.0f, pPlayer->rotDest.y, 0.5f));
+		if (pPlayer->Status.nMP >= 50)
+		{
+			// エフェクトの設定
+			SetEffect(Pos,
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+				50,
+				0,
+				D3DXVECTOR3(5.0f, 0.5f, 0.0f),
+				D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
+				EFFECT_SKILLFLASH,
+				0,
+				0.0f,
+				D3DXVECTOR3(0.0f, pPlayer->rotDest.y, 0.5f));
 
-		// エフェクトの設定
-		SetEffect(Pos,
-			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			50,
-			0,
-			D3DXVECTOR3(5.0f, 0.5f, 0.0f),
-			D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
-			EFFECT_SKILLFLASH,
-			0,
-			0.0f,
-			D3DXVECTOR3(0.0f, pPlayer->rotDest.y, -0.5f));
+			// エフェクトの設定
+			SetEffect(Pos,
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+				50,
+				0,
+				D3DXVECTOR3(5.0f, 0.5f, 0.0f),
+				D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
+				EFFECT_SKILLFLASH,
+				0,
+				0.0f,
+				D3DXVECTOR3(0.0f, pPlayer->rotDest.y, -0.5f));
 
-		// エフェクトの設定
-		SetEffect(Pos,
-			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			50,
-			0,
-			D3DXVECTOR3(10.0f, 0.5f, 1.0f),
-			D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
-			EFFECT_SKILLFLASH,
-			0,
-			0.0f,
-			D3DXVECTOR3(0.0f, pPlayer->rotDest.y, 0.0f));
+			// エフェクトの設定
+			SetEffect(Pos,
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+				50,
+				0,
+				D3DXVECTOR3(10.0f, 0.5f, 1.0f),
+				D3DXCOLOR(0.25f, 0.45f, 1.0f, 0.5f),
+				EFFECT_SKILLFLASH,
+				0,
+				0.0f,
+				D3DXVECTOR3(0.0f, pPlayer->rotDest.y, 0.0f));
+		}
 		break;
 	}
 }
@@ -372,7 +449,7 @@ void CaceThreeAction(OBJECTINFO* Motion)
 	{
 	case MOTIONTYPE_ACTION:
 		// エフェクトの設定
-		SetEffect(pPlayer->pos,
+		SetEffect(D3DXVECTOR3(pPlayer->pos.x, pPlayer->pos.y + 1.0f, pPlayer->pos.z),
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 			215,
 			0,
