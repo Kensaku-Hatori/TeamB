@@ -139,6 +139,9 @@
     <ClCompile Include="model.cpp">
       <Filter>H_K\.cpp</Filter>
     </ClCompile>
+    <ClCompile Include="collision.cpp">
+      <Filter>H_K\.cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="wall.h">
@@ -287,6 +290,9 @@
     </ClInclude>
     <ClInclude Include="key.h">
       <Filter>O_R\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="collision.h">
+      <Filter>H_K\.h</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

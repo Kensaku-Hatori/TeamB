@@ -8,7 +8,7 @@
 #define BOSS_H_
 
 #define BOSS_AP (10)
-#define BOSS_HP (100)
+#define BOSS_HP (1000)
 #define BOSS_SPEED (1)
 #define	BOSSATTACK_DIST (50)
 #define BOSSHORMING_DIST (300)
