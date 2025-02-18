@@ -20,6 +20,8 @@
 #include "skill.h"
 #include "collision.h"
 #include "lockon.h"
+#include "model.h"
+#include "collision.h"
 
 //*******************
 // グローバル変数宣言
@@ -142,6 +144,11 @@ void UpdateEnemy(void)
 	{
 		if (g_Enemy[EnemyCount].bUse == true)
 		{
+			OBB *pObb = GetModel();
+			for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++)
+			{
+				if(pObb.bu)
+			}
 			// 行動の更新
 			UpdateAction(EnemyCount);
 
