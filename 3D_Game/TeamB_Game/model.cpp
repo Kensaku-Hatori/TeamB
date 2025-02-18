@@ -168,6 +168,10 @@ void DrawStageModel()
 		}
 	}
 }
+OBB* GetModel()
+{
+	return &g_StageModel[0].ObbModel;
+}
 //********************************
 /// ステージに出すモデルの設定処理
 //********************************
