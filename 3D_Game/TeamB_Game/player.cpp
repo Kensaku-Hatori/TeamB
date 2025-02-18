@@ -47,11 +47,11 @@ void InitPlayer(void)
 
 	
 	if (g_player.bfirst == false)
-	{//最初なら
+	{//ステージ移動しているなら
 		g_player.pos = g_player.NextPosition;
 	}
 	else
-	{//ステージ移動しているなら
+	{//最初なら
 		g_player.bfirst = false;
 		g_player.pos = D3DXVECTOR3(0.0f,0.0f,100.0f);
 		//基礎ステータス
@@ -59,6 +59,7 @@ void InitPlayer(void)
 		g_player.Status.nMP = PLAYER_MP;
 		g_player.Status.fPower = PLAYER_AP;
 		g_player.Status.fSpeed = PLAYER_SPEED;
+		g_player.Skilltype = SKILLTYPE_NONE;
 	}
 
 	g_player.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -138,6 +139,11 @@ void UpdatePlayer(void)
 		//ロックオン状態なら
 		if (g_player.bLockOn == true)
 		{
+			if (pEnemy[g_player.nLockOnEnemy].bUse == false)
+			{
+				g_player.bLockOn = false;
+			}
+
 			pCamera->rot.y = g_player.rot.y + D3DX_PI;
 
 			//プレイヤーの向き
@@ -252,6 +258,9 @@ void UpdatePlayer(void)
 				g_player.bWantLockOn = true;
 			}
 		}
+
+		//使用する魔法の種類を変更
+		SkillChange();
 
 		//地面との判定
 		if (g_player.pos.y <= 0)
@@ -631,6 +640,52 @@ void PlayerMove(void)
 	if (g_player.pos.z >= STAGE_SIZE)
 	{
 		g_player.pos.z = STAGE_SIZE;
+	}
+}
+
+//==========================
+// 使用する魔法の種類変更
+//==========================
+void SkillChange(void)
+{
+	if (KeyboardTrigger(DIK_LEFT) || GetJoypadTrigger(JOYKEY_L1))
+	{
+		switch (g_player.Skilltype)
+		{
+		case SKILLTYPE_NONE:
+			g_player.Skilltype = SKILLTYPE_EXPLOSION;
+			break;
+
+		case SKILLTYPE_HORMING:
+			g_player.Skilltype = SKILLTYPE_NONE;
+			break;
+
+		case SKILLTYPE_EXPLOSION:
+			g_player.Skilltype = SKILLTYPE_HORMING;
+			break;
+		default:
+			break;
+		}
+	}
+
+	else if (KeyboardTrigger(DIK_RIGHT) || GetJoypadTrigger(JOYKEY_R1))
+	{
+		switch (g_player.Skilltype)
+		{
+		case SKILLTYPE_NONE:
+			g_player.Skilltype = SKILLTYPE_HORMING;
+			break;
+
+		case SKILLTYPE_HORMING:
+			g_player.Skilltype = SKILLTYPE_EXPLOSION;
+			break;
+
+		case SKILLTYPE_EXPLOSION:
+			g_player.Skilltype = SKILLTYPE_NONE;
+			break;
+		default:
+			break;
+		}
 	}
 }
 

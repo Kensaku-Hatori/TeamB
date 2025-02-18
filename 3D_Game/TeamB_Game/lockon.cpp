@@ -120,14 +120,6 @@ void UpdateLockon(void)
 		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
-		//pCamera->rot.y = pPlayer->rot.y + D3DX_PI;
-
-		////ƒvƒŒƒCƒ„[‚ÌŒü‚«
-		//float fMathDistance, fMathDistance1;
-		//fMathDistance = g_Lockon.pos.x - pPlayer->pos.x;
-		//fMathDistance1 = g_Lockon.pos.z - pPlayer->pos.z;
-		//pPlayer->rotDest.y = atan2f(fMathDistance, fMathDistance1) + D3DX_PI;
-
 		//‹——£‚É‚æ‚é‰ðœ
 		float Dis = ((pPlayer->pos.x - g_Lockon.pos.x) * (pPlayer->pos.x - g_Lockon.pos.x))
 				  + ((pPlayer->pos.y - g_Lockon.pos.y) * (pPlayer->pos.y - g_Lockon.pos.y))
@@ -137,7 +129,6 @@ void UpdateLockon(void)
 			pPlayer->bLockOn = false;
 		}
 		pPlayer->bWantLockOn = false;
-
 	}
 	else
 	{

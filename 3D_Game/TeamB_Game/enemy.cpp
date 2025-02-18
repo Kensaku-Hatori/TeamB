@@ -161,7 +161,7 @@ void UpdateEnemy(void)
 				CollisionEnemyAction(EnemyCount);
 			}
 
-			//ロックオン
+			// ロックオン
 			if (pPlayer->bWantLockOn == true)
 			{
 				if (IsEnemyInsight(g_Enemy[EnemyCount].Object.Pos, 0) == true)

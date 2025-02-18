@@ -12,6 +12,7 @@
 #include "status.h"
 #include "key.h"
 #include "loadmotion.h"
+#include "skill.h"
 
 #define PLAYER_JUMP (7)			// ジャンプ量
 #define PLAYER_RADIUS (3)			// プレイヤーの半径
@@ -43,6 +44,7 @@ typedef struct
 	bool bfirst;					// 最初かどうか
 	bool bHit;
 	PlayerStatus Status;			// ステータス
+	SKILLTYPE Skilltype;
 	
 	int nNumModel;					// パーツの総数
 	int nNumMotion;					// モーションの総数
@@ -70,6 +72,7 @@ void UninitPlayer(void);
 void UpdatePlayer(void);
 void DrawPlayer(void);
 void PlayerMove(void);
+void SkillChange(void);
 Player* GetPlayer(void);
 void HitPlayer(float Atack);
 void SetMesh(char* pFilePath, int Indx);

@@ -11,6 +11,7 @@
 #include "itemui.h"
 #include "minimap.h"
 #include "lockon.h"
+#include "skillui.h"
 
 //ÉOÉçÅ[ÉoÉãïœêî
 
@@ -34,6 +35,8 @@ void InitUi(void)
 	InitMiniMap();
 	SetMapPlayer(MODE_STAGEONE);
 
+	InitSkillUI();
+
 	InitLockon();
 }
 //===========
@@ -50,6 +53,8 @@ void UninitUi(void)
 	UninitItemUI();
 
 	UninitMiniMap();
+
+	UninitSkillUI();
 
 	UninitLockon();
 }
@@ -68,6 +73,8 @@ void UpdateUi(void)
 
 	UpdateMiniMap();
 
+	UpdateSkillUI();
+
 	UpdateLockon();
 }
 //===========
@@ -84,6 +91,8 @@ void DrawUi(void)
 	DrawItemUI();
 
 	DrawMiniMap();
+
+	DrawSkillUI();
 
 	DrawLockon();
 }
