@@ -412,3 +412,27 @@ Skill* GetSkill()
 {
 	return &g_Skill[0];
 }
+//===============
+// MP‚ğŒ¸‚ç‚·
+//===============
+void SubMP(SKILLTYPE type)
+{
+	Player* pPlayer = GetPlayer();
+
+	switch (type)
+	{
+	case SKILLTYPE_NONE:
+		pPlayer->Status.nMP -= 50;
+		break;
+
+	case SKILLTYPE_HORMING:
+		pPlayer->Status.nMP -= 100;
+		break;
+
+	case SKILLTYPE_EXPLOSION:
+		pPlayer->Status.nMP -= 10;
+		break;
+	default:
+		break;
+	}
+}

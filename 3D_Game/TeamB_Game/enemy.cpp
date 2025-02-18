@@ -59,6 +59,11 @@ void InitEnemy(void)
 		g_Enemy[i].Action = ENEMYACTION_WELL;								// çsìÆÇÃéÌóﬁ
 		g_Enemy[i].Radius = 4.4f;											// îºåa
 
+		g_Enemy[i].bLockOn = false;
+		g_Enemy[i].fSightRange = 200.0f;					// éãäEãóó£
+		g_Enemy[i].fSightAngle = D3DXToRadian(110.0f);	// éãäEÇÃótÇ…
+		g_Enemy[i].fDistance = g_Enemy[i].fSightRange / 2;
+
 		g_fDistance[i] = 0.0f;
 	}
 }
@@ -177,6 +182,8 @@ void UpdateEnemy(void)
 					pPlayer->bLockOn = true;
 				}
 			}
+
+			g_Enemy[EnemyCount].bLockOn = IsPlayerInsight(EnemyCount);
 
 			// äpìxÇÃãﬂìπ
 			if (g_Enemy[EnemyCount].rotDest.y - g_Enemy[EnemyCount].Object.Rot.y >= D3DX_PI)
@@ -476,7 +483,7 @@ void UpdateAction(int nCount)
 	}
 
 	//çUåÇ
-	if (fDistance <= ATTACK_DIST)
+	if (fDistance <= ATTACK_DIST && g_Enemy[nCount].bLockOn == true)
 	{
 		if (g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_ACTION)
 		{
@@ -486,7 +493,7 @@ void UpdateAction(int nCount)
 		}
 	}
 	//í«Ç¢Ç©ÇØÇÈ
-	else if (fDistance <= HOMING_DIST)
+	else if (fDistance <= HOMING_DIST && g_Enemy[nCount].bLockOn == true)
 	{
 		if (g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_ACTION)
 		{
@@ -613,6 +620,7 @@ void CollisionEnemy(void)
 		}
 	}
 }
+
 //===================================
 // ìGÇÃÉAÉNÉVÉáÉìéûÇÃìñÇΩÇËîªíËèàóù
 //===================================
@@ -635,7 +643,7 @@ void CollisionEnemyAction(int nCnt)
 		break;
 	}
 
-	if (collisioncircle(g_Enemy[nCnt].EnemyMotion.aModel[nModel].pos, g_Enemy[nCnt].Radius * 1.5f, pPlayer->pos, PLAYER_RADIUS) == true)
+	if (collisioncircle(g_Enemy[nCnt].EnemyMotion.aModel[nModel].pos, g_Enemy[nCnt].Radius * 1.3f, pPlayer->pos, PLAYER_RADIUS) == true)
 	{
 		HitPlayer(g_Enemy[nCnt].Status.fPower);
 	}
@@ -647,4 +655,46 @@ void CollisionEnemyAction(int nCnt)
 float GetfDistance()
 {
 	return g_fDistance[0];
+}
+
+//=================================
+//	ÉvÉåÉCÉÑÅ[Ç™éãäEÇ…Ç¢ÇÈÇ©Ç«Ç§Ç©
+//=================================
+bool IsPlayerInsight(int Index)
+{
+	Player* pPlayer = GetPlayer();
+	bool bLock = false;
+
+	D3DXVECTOR3 EnemyFront;
+
+	EnemyFront.x = -sinf(g_Enemy[Index].Object.Rot.y);
+	EnemyFront.y = 0.0f;
+	EnemyFront.z = -cosf(g_Enemy[Index].Object.Rot.y);
+
+	D3DXVECTOR3 toPlayer;
+
+	toPlayer.x = pPlayer->pos.x - g_Enemy[Index].Object.Pos.x;
+	toPlayer.y = 0.0f;
+	toPlayer.z = pPlayer->pos.z - g_Enemy[Index].Object.Pos.z;
+
+	D3DXVec3Normalize(&EnemyFront, &EnemyFront);
+
+	D3DXVec3Normalize(&toPlayer, &toPlayer);
+
+	float dotProduct = D3DXVec3Dot(&EnemyFront, &toPlayer);
+
+	if (dotProduct > cosf(g_Enemy[Index].fSightAngle * 0.5f))
+	{
+		float distanceSquared =
+			(pPlayer->pos.x - g_Enemy[Index].Object.Pos.x) * (pPlayer->pos.x - g_Enemy[Index].Object.Pos.x) +
+			(pPlayer->pos.x - g_Enemy[Index].Object.Pos.y) * (pPlayer->pos.x - g_Enemy[Index].Object.Pos.y) +
+			(pPlayer->pos.x - g_Enemy[Index].Object.Pos.z) * (pPlayer->pos.x - g_Enemy[Index].Object.Pos.z);
+
+		if (distanceSquared <= g_Enemy[Index].fSightRange * g_Enemy[Index].fSightRange)
+		{
+			bLock = true;
+		}
+	}
+
+	return bLock;
 }

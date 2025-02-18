@@ -349,7 +349,9 @@ void CaceOneAction(OBJECTINFO* Motion)
 	case MOTIONTYPE_ACTION:
 		if (pPlayer->Status.nMP >= 50)
 		{
-			pPlayer->Status.nMP -= 50;
+			// MP‚ðŒ¸‚ç‚·
+			SubMP(pPlayer->Skilltype);
+
 			switch (pPlayer->Skilltype)
 			{
 			case SKILLTYPE_NONE:
