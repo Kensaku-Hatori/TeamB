@@ -94,6 +94,10 @@ typedef struct
 	float fDistance;
 	float fActionDistance;
 
+	float fSightRange;
+	float fSightAngle;
+	bool bLockOn;
+
 }ENEMY;
 
 //*****************
@@ -113,5 +117,6 @@ void EnemyState(int Indx);									// 敵の状態更新処理
 void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType);		// 敵のバッファやモーション設定処理
 void CollisionEnemy(void);									// 敵の当たり判定処理
 void CollisionEnemyAction(int nCnt);						// 敵のアクション時の当たり判定処理
+bool IsPlayerInsight(int Index);
 
 #endif // !ENEMY_H_

@@ -58,4 +58,5 @@ void SerchHormingEnemy(int Indx);
 void UpdateHormingPosition(int Indx);
 void UpdateHormingAnim(int Indx);
 Skill* GetSkill();
+void SubMP(SKILLTYPE type);
 #endif

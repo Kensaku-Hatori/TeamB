@@ -19,5 +19,6 @@ typedef struct
 bool collisionboxtopoint(D3DXVECTOR3 Pos,BoxCollision BoxInfo);							// “_‚Æ‹éŒ`‚Ì“–‚½‚è”»’è
 bool collisioncircle(D3DXVECTOR3 Pos, float fRadius, D3DXVECTOR3 Pos1, float fRadius1);	// ‹…‚Æ‹…‚Ì“–‚½‚è”»’è
 bool collisionobb(OBB obb,OBB obb1,D3DXVECTOR3 Pos,D3DXVECTOR3 Pos1);					// OBB‚ÆOBB‚Ì“–‚½‚è”»’è
+D3DXVECTOR3 collisionobbfacedot(OBB obb, D3DXVECTOR3 Pos, D3DXVECTOR3 VecMove);
 void PushPosition(D3DXVECTOR3 *Pos,D3DXVECTOR3 VecMove,D3DXVECTOR3 Nor);				// •Çü‚èŠÖ”
 #endif // !COLLISION_H_

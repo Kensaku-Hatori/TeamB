@@ -222,6 +222,171 @@ bool collisionobb(OBB obb, OBB obb1, D3DXVECTOR3 Pos, D3DXVECTOR3 Pos1)
 	}
 	return true;
 }
+D3DXVECTOR3 collisionobbfacedot(OBB obb, D3DXVECTOR3 Pos, D3DXVECTOR3 VecMove)
+{
+	// X軸の面に当たっているか
+	D3DXVECTOR3 IntervalX;
+	D3DXVECTOR3 norX;
+	FLOAT fDotX;
+	D3DXVECTOR3 IntervalX1;
+	D3DXVECTOR3 norX1;
+	D3DXVECTOR3 Math;
+	FLOAT fDotX1;
+
+	// X軸のマイナス方向のベクトル
+	Math = -obb.RotVec[0];
+	// X軸の方向ベクトル(法線)
+	D3DXVec3Normalize(&norX, &obb.RotVec[0]);
+	// X軸のマイナス方向の法線ベクトル
+	D3DXVec3Normalize(&norX1, &Math);
+
+	// プレイヤーぽすからX軸の面の中心ポスを引いた値
+	IntervalX = Pos - obb.CenterPos +
+		(norX * obb.fLength[0]);
+	// プレイヤーのポスからX軸のマイナス方向の中心ポスを引いた値
+	IntervalX1 = Pos - obb.CenterPos +
+		(norX1 * obb.fLength[0]);
+
+	// 内積(マイナスだと当たっている)
+	fDotX = D3DXVec3Dot(&IntervalX, &norX);
+	// 内積(マイナスだと当たっている)
+	fDotX1 = D3DXVec3Dot(&IntervalX1, &norX1);
+
+	// Y軸の面に当たっているか
+	D3DXVECTOR3 IntervalY;
+	D3DXVECTOR3 norY;
+	FLOAT fDotY;
+	D3DXVECTOR3 IntervalY1;
+	D3DXVECTOR3 norY1;
+	D3DXVECTOR3 MathY;
+	FLOAT fDotY1;
+
+	// Y軸のマイナス方向のベクトル
+	MathY = obb.RotVec[1] * -1.0f;
+	// Y軸の方向ベクトル(法線)
+	D3DXVec3Normalize(&norY, &obb.RotVec[1]);
+	// Y軸のマイナス方向のベクトル(法線)
+	D3DXVec3Normalize(&norY1, &MathY);
+
+	// プレイヤーぽすからY軸の面の中心ポスを引いた値
+	IntervalY = Pos - obb.CenterPos +
+		(norY * obb.fLength[1]);
+	// プレイヤーぽすからY軸のマイナス方向の面の中心ポスを引いた値
+	IntervalY1 = Pos - obb.CenterPos +
+		(norY1 * obb.fLength[1]);
+
+	// 内積(マイナスだと当たっている)
+	fDotY = D3DXVec3Dot(&IntervalY, &norY);
+	// 内積(マイナスだと当たっている)
+	fDotY1 = D3DXVec3Dot(&IntervalY1, &norY1);
+
+	// Z軸の面に当たっているか
+	D3DXVECTOR3 IntervalZ;
+	D3DXVECTOR3 norZ;
+	FLOAT fDotZ;
+	D3DXVECTOR3 IntervalZ1;
+	D3DXVECTOR3 norZ1;
+	D3DXVECTOR3 MathZ;
+	FLOAT fDotZ1;
+
+	// Z軸のマイナス方向のベクトル
+	MathZ = -obb.RotVec[2];
+	// Z軸の方向ベクトル(法線)
+	D3DXVec3Normalize(&norZ, &obb.RotVec[2]);
+	// Z軸のマイナスの方向ベクトル(法線)
+	D3DXVec3Normalize(&norZ1, &MathZ);
+
+	// プレイヤーぽすからZ軸の面の中心ポスを引いた値
+	IntervalZ = Pos - obb.CenterPos +
+		(norZ * obb.fLength[2]);
+	// プレイヤーぽすからZ軸のマイナス方向の面の中心ポスを引いた値
+	IntervalZ1 = Pos - obb.CenterPos +
+		(norZ1 * obb.fLength[2]);
+
+	// 内積(マイナスだと当たっている)
+	fDotZ = D3DXVec3Dot(&IntervalZ, &norZ);
+	// 内積(マイナスだと当たっている)
+	fDotZ1 = D3DXVec3Dot(&IntervalZ1, &norZ1);
+
+	if (fDotY >= 0)
+	{
+		if (fDotX < fDotX1 && fDotX < fDotZ && fDotX < fDotZ1)
+		{
+			D3DXVECTOR3 pVec = VecMove;
+			D3DXVECTOR3 nor = norX;
+			D3DXVec3Normalize(&nor, &nor);
+			FLOAT osiete = D3DXVec3Dot(&pVec, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			if (osiete <= 0.0f)
+			{
+				return nor;
+			}
+		}
+		if (fDotX1 < fDotX && fDotX1 < fDotZ && fDotX1 < fDotZ1)
+		{
+			D3DXVECTOR3 pVec = VecMove;
+			D3DXVECTOR3 nor = norX1;
+			D3DXVec3Normalize(&nor, &nor);
+			FLOAT osiete = D3DXVec3Dot(&pVec, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			if (osiete <= 0.0f)
+			{
+				return nor;
+			}
+		}
+		if (fDotZ < fDotZ1 && fDotZ <= fDotX && fDotZ <= fDotX1)
+		{
+			D3DXVECTOR3 pVec = VecMove;
+			D3DXVECTOR3 nor = norZ;
+			D3DXVec3Normalize(&nor, &nor);
+			FLOAT osiete = D3DXVec3Dot(&pVec, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			if (osiete <= 0.0f)
+			{
+				return nor;
+			}
+		}
+		if (fDotZ1 < fDotZ && fDotZ1 < fDotX && fDotZ1 < fDotX1)
+		{
+			D3DXVECTOR3 pVec = VecMove;
+			D3DXVECTOR3 nor = norZ1;
+			D3DXVec3Normalize(&nor, &nor);
+			FLOAT osiete = D3DXVec3Dot(&pVec, &nor);
+			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+			if (osiete <= 0.0f)
+			{
+				return nor;
+			}
+		}
+	}
+	// 下から上
+	if (fDotY <= 1.0f && fDotX >= -2.0f && fDotX1 >= -2.0f && fDotZ >= -2.0f && fDotZ1 >= -2.0f)
+	{
+		D3DXVECTOR3 pVec = VecMove;
+		D3DXVECTOR3 nor = norY1;
+		D3DXVec3Normalize(&nor, &nor);
+		FLOAT osiete = D3DXVec3Dot(&pVec, &nor);
+		D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+		if (osiete >= 0.0f)
+		{
+			return nor;
+		}
+	}
+	// ↑から↓
+	if (fDotY1 <= 1.0f && fDotX >= -2.0f && fDotX1 >= -2.0f && fDotZ >= -2.0f && fDotZ1 >= -2.0f)
+	{
+		D3DXVECTOR3 pVec = VecMove;
+		D3DXVECTOR3 nor = norY;
+		D3DXVec3Normalize(&nor, &nor);
+		FLOAT osiete = D3DXVec3Dot(&pVec, &nor);
+		D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
+		if (osiete >= 0.0f)
+		{
+			return nor;
+		}
+	}
+	return D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+}
 //*************
 // 押し出し関数
 //*************
