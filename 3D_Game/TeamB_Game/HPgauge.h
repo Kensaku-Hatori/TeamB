@@ -36,7 +36,9 @@ typedef struct
 {
 	D3DXCOLOR col;																	// 色
 	HPGAUGETYPE type;																// 種類
-
+	D3DXMATRIX mtxWorld;															// ワールドマトリックス
+	float fWidth;																	// 幅保存
+	float fMaxGauge;																// 最大幅保存
 }POLY;
 
 //HPゲージ構造体
@@ -46,10 +48,8 @@ typedef struct
 	D3DXVECTOR3 pos;																// 位置
 	D3DXVECTOR3 rot;																// 向き
 	LPDIRECT3DVERTEXBUFFER9 pVtxBuff;												// 頂点情報
-	D3DXMATRIX mtxWorld;															// ワールドマトリックス
 	float fNowHP;																	// 現在のHP
 	float fMaxHP;																	// 最大のHP
-	float fWidth;																	// 幅保存
 	bool bUse;																		// 使用しているかどうか
 }HPgauge;
 
@@ -61,5 +61,7 @@ void DrawHPgauge();																	// 描画処理
 int SetHPgauge(D3DXVECTOR3 pos, D3DXVECTOR2 scale, float MaxHP);					// 設定処理
 void SetPositionHPgauge(int Indx,D3DXVECTOR3 pos);									// 位置の設定処理
 void HPgaugeDeff(int Indx,float NowHP);												// ゲージの減少処理
+void RedgaugeDeff(int Indx, float NowHP);											// 赤ゲージの減少処理
+void DeleteGuage(int Indx);															// HPゲージを消す
 
 #endif // !HPGAUGE_H_

@@ -11,10 +11,11 @@
 //グローバル変数宣言
 HPgauge g_HPgauge[MAX_HPGAUGE];
 LPDIRECT3DTEXTURE9 pTextureHPgauge[HPGAUGETYPE_MAX] = {};
+//LPDIRECT3DVERTEXBUFFER9 pVtxBuffHPgauge = {};
 
-//=================
+//====================
 // 初期化処理
-//=================
+//====================
 void InitHPgauge()
 {
 	//デバイスの取得
@@ -55,9 +56,9 @@ void InitHPgauge()
 	}
 }
 
-//=================
+//====================
 //終了処理
-//=================
+//====================
 void UninitHPgauge()
 {
 	for (int nCnt = 0; nCnt < MAX_HPGAUGE; nCnt++)
@@ -81,17 +82,17 @@ void UninitHPgauge()
 	}
 }
 
-//=================
+//====================
 //更新処理
-//=================
+//====================
 void UpdateHPgauge()
 {
 
 }
 
-//=================
+//====================
 //描画処理
-//=================
+//====================
 void DrawHPgauge()
 {
 	//デバイスの取得
@@ -110,40 +111,44 @@ void DrawHPgauge()
 	{
 		if (g_HPgauge[nCnt].bUse == true)
 		{
-			//ワールドマトリックスの初期化
-			D3DXMatrixIdentity(&g_HPgauge[nCnt].mtxWorld);
-
-			D3DXMATRIX mtxView;
-
-			//ビューマトリックス取得
-			pDevice->GetTransform(D3DTS_VIEW, &mtxView);
-
-			//カメラの逆行列を設定
-			g_HPgauge[nCnt].mtxWorld._11 = mtxView._11;
-			g_HPgauge[nCnt].mtxWorld._12 = mtxView._21;
-			g_HPgauge[nCnt].mtxWorld._13 = mtxView._31;
-			g_HPgauge[nCnt].mtxWorld._21 = mtxView._12;
-			g_HPgauge[nCnt].mtxWorld._22 = mtxView._22;
-			g_HPgauge[nCnt].mtxWorld._23 = mtxView._32;
-			g_HPgauge[nCnt].mtxWorld._31 = mtxView._13;
-			g_HPgauge[nCnt].mtxWorld._32 = mtxView._23;
-			g_HPgauge[nCnt].mtxWorld._33 = mtxView._33;
-
-			//位置を反映
-			D3DXMatrixTranslation(&mtxTrans, g_HPgauge[nCnt].pos.x, g_HPgauge[nCnt].pos.y, g_HPgauge[nCnt].pos.z);
-			D3DXMatrixMultiply(&g_HPgauge[nCnt].mtxWorld, &g_HPgauge[nCnt].mtxWorld, &mtxTrans);
-
-			//ワールドマトリックスの設定
-			pDevice->SetTransform(D3DTS_WORLD, &g_HPgauge[nCnt].mtxWorld);
-
-			//頂点バッファをデータストリームに設定
-			pDevice->SetStreamSource(0, g_HPgauge[nCnt].pVtxBuff, 0, sizeof(VERTEX_3D));
-
-			//頂点フォーマットの設定
-			pDevice->SetFVF(FVF_VERTEX_3D);
-
 			for (int nCntPoly = 0; nCntPoly < MAX_POLY; nCntPoly++)
 			{
+				//ワールドマトリックスの初期化
+				D3DXMatrixIdentity(&g_HPgauge[nCnt].poly[nCntPoly].mtxWorld);
+
+				D3DXMATRIX mtxView;
+
+				//ビューマトリックス取得
+				pDevice->GetTransform(D3DTS_VIEW, &mtxView);
+
+				//カメラの逆行列を設定
+				g_HPgauge[nCnt].poly[nCntPoly].mtxWorld._11 = mtxView._11;
+				g_HPgauge[nCnt].poly[nCntPoly].mtxWorld._12 = mtxView._21;
+				g_HPgauge[nCnt].poly[nCntPoly].mtxWorld._13 = mtxView._31;
+				g_HPgauge[nCnt].poly[nCntPoly].mtxWorld._21 = mtxView._12;
+				g_HPgauge[nCnt].poly[nCntPoly].mtxWorld._22 = mtxView._22;
+				g_HPgauge[nCnt].poly[nCntPoly].mtxWorld._23 = mtxView._32;
+				g_HPgauge[nCnt].poly[nCntPoly].mtxWorld._31 = mtxView._13;
+				g_HPgauge[nCnt].poly[nCntPoly].mtxWorld._32 = mtxView._23;
+				g_HPgauge[nCnt].poly[nCntPoly].mtxWorld._33 = mtxView._33;
+
+				// 向きを反映
+				D3DXMatrixRotationYawPitchRoll(&mtxRot, g_HPgauge[nCnt].rot.y, g_HPgauge[nCnt].rot.x, g_HPgauge[nCnt].rot.z);
+				D3DXMatrixMultiply(&g_HPgauge[nCnt].poly[nCntPoly].mtxWorld, &g_HPgauge[nCnt].poly[nCntPoly].mtxWorld, &mtxRot);
+
+				//位置を反映
+				D3DXMatrixTranslation(&mtxTrans, g_HPgauge[nCnt].pos.x, g_HPgauge[nCnt].pos.y, g_HPgauge[nCnt].pos.z);
+				D3DXMatrixMultiply(&g_HPgauge[nCnt].poly[nCntPoly].mtxWorld, &g_HPgauge[nCnt].poly[nCntPoly].mtxWorld, &mtxTrans);
+
+				//ワールドマトリックスの設定
+				pDevice->SetTransform(D3DTS_WORLD, &g_HPgauge[nCnt].poly[nCntPoly].mtxWorld);
+
+				//頂点バッファをデータストリームに設定
+				pDevice->SetStreamSource(0, g_HPgauge[nCnt].pVtxBuff, 0, sizeof(VERTEX_3D));
+
+				//頂点フォーマットの設定
+				pDevice->SetFVF(FVF_VERTEX_3D);
+
 				//テクスチャの設定
 				pDevice->SetTexture(0, pTextureHPgauge[g_HPgauge[nCnt].poly[nCntPoly].type]);
 
@@ -160,9 +165,9 @@ void DrawHPgauge()
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 }
 
-//=================
+//====================
 //設定処理
-//=================
+//====================
 int SetHPgauge(D3DXVECTOR3 pos,D3DXVECTOR2 scale,float MaxHP)
 {
 	//デバイスの取得
@@ -172,17 +177,13 @@ int SetHPgauge(D3DXVECTOR3 pos,D3DXVECTOR2 scale,float MaxHP)
 	VERTEX_3D* pVtx = NULL;
 	int nCnt = 0;
 
-	//中心
-	float center = scale.x * 0.5f;
-
 	for (nCnt = 0; nCnt < MAX_HPGAUGE; nCnt++)
 	{
 		if (g_HPgauge[nCnt].bUse == false)
 		{
 			//各種設定
-			g_HPgauge[nCnt].pos = pos;						// 位置
-			g_HPgauge[nCnt].fMaxHP = MaxHP;					// 最大HP
-			g_HPgauge[nCnt].fWidth = scale.x - center;		// 幅
+			g_HPgauge[nCnt].pos = pos;								// 位置
+			g_HPgauge[nCnt].fMaxHP = MaxHP;							// 最大HP
 
 			//頂点バッファの生成
 			pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 4 * MAX_POLY,
@@ -199,23 +200,24 @@ int SetHPgauge(D3DXVECTOR3 pos,D3DXVECTOR2 scale,float MaxHP)
 			//頂点情報の設定
 			for (int nCntPoly = 0; nCntPoly < MAX_POLY; nCntPoly++)
 			{
-				//種類の設定
-				g_HPgauge[nCnt].poly[nCntPoly].type = (HPGAUGETYPE)nCntPoly;
+				
+				g_HPgauge[nCnt].poly[nCntPoly].fWidth = scale.x;				// 幅
+				g_HPgauge[nCnt].poly[nCntPoly].fMaxGauge = scale.x;				// 幅
 
 				//頂点情報の設定
-				pVtx[0].pos.x = -center;
+				pVtx[0].pos.x = 0.0f;
 				pVtx[0].pos.y = scale.y;
 				pVtx[0].pos.x = 0.0f;
 
-				pVtx[1].pos.x = (scale.x - center);
+				pVtx[1].pos.x = scale.x;
 				pVtx[1].pos.y = scale.y;
 				pVtx[1].pos.x = 0.0f;
 
-				pVtx[2].pos.x = -center;
+				pVtx[2].pos.x = 0.0f;
 				pVtx[2].pos.y = 0.0f;
 				pVtx[2].pos.x = 0.0f;
 
-				pVtx[3].pos.x = (scale.x - center);
+				pVtx[3].pos.x = scale.x;
 				pVtx[3].pos.y = 0.0f;
 				pVtx[3].pos.x = 0.0f;
 
@@ -250,17 +252,17 @@ int SetHPgauge(D3DXVECTOR3 pos,D3DXVECTOR2 scale,float MaxHP)
 	return nCnt;
 }
 
-//=================
+//====================
 //位置の設定処理
-//=================
+//====================
 void SetPositionHPgauge(int Indx,D3DXVECTOR3 pos)
 {
 	g_HPgauge[Indx].pos = pos;
 }
 
-//=================
+//====================
 //ゲージの減少処理
-//=================
+//====================
 void HPgaugeDeff(int Indx, float NowHP)
 {
 	//頂点情報へのポインタ
@@ -269,17 +271,55 @@ void HPgaugeDeff(int Indx, float NowHP)
 	//比率を計算する
 	float ratio = NowHP / g_HPgauge[Indx].fMaxHP;
 
+	g_HPgauge[Indx].poly[0].fWidth = g_HPgauge[Indx].poly[0].fMaxGauge * ratio;
+
 	//頂点バッファをロック
 	g_HPgauge[Indx].pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	pVtx += 4;
-
-	//pVtx[1].pos.x
-	//pVtx[3].pos.x
+	pVtx[1].pos.x = g_HPgauge[Indx].poly[0].fWidth;
+	pVtx[3].pos.x = g_HPgauge[Indx].poly[0].fWidth;
 
 	//頂点バッファをアンロック
 	g_HPgauge[Indx].pVtxBuff->Unlock();
+}
+
+//====================
+//赤ゲージの減少処理
+//====================
+void RedgaugeDeff(int Indx, float NowHP)
+{
+	//頂点情報へのポインタ
+	VERTEX_3D* pVtx = NULL;
+
+	//比率を計算する
+	float ratio = NowHP / g_HPgauge[Indx].fMaxHP;
+
+	//目標の値を計算する
+	float fWidth = g_HPgauge[Indx].poly[1].fMaxGauge * ratio;
+
+	//差分を計算する
+	float fDiff = g_HPgauge[Indx].poly[1].fWidth - fWidth;
+
+	//徐々に減らす
+	g_HPgauge[Indx].poly[1].fWidth -= fDiff * 0.01f;
+
+	//頂点バッファをロック
+	g_HPgauge[Indx].pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	//ポインタを進める
+	pVtx += 4;
 
+	pVtx[1].pos.x = g_HPgauge[Indx].poly[1].fWidth;
+	pVtx[3].pos.x = g_HPgauge[Indx].poly[1].fWidth;
+
+	//頂点バッファをアンロック
+	g_HPgauge[Indx].pVtxBuff->Unlock();
+}
+
+//====================
+//HPゲージを消す
+//====================
+void DeleteGuage(int Indx)
+{
+	g_HPgauge[Indx].bUse = false;
 }
