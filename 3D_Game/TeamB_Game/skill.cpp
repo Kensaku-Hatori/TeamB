@@ -123,10 +123,9 @@ void UpdateSkill(void)
 				if (g_Skill[nCnt].nCounter >= g_Skill[nCnt].nCount && g_Skill[nCnt].bHorming == false)
 				{
 					g_Skill[nCnt].nCounter = 0;
-					g_Skill[nCnt].bHorming = true;
-					g_Skill[nCnt].nLife = 30.0f;
 					SerchHormingEnemy(nCnt);
 					g_Skill[nCnt].rot = pPlayer->rot;
+					g_Skill[nCnt].bHorming = true;
 					if (pPlayer->bLockOn != true)
 					{
 						pEnemy += g_Skill[nCnt].nIndxHorming;
@@ -140,18 +139,39 @@ void UpdateSkill(void)
 						D3DXVECTOR3 fMoveVec = pEnemy->Object.Pos - g_Skill[nCnt].pos;
 						D3DXVec3Normalize(&fMoveVec, &fMoveVec);
 						g_Skill[nCnt].moveDest = fMoveVec * 10.0f;
+						//g_Skill[nCnt].move = fMoveVec;
+					}
+					else
+					{
+						g_Skill[nCnt].moveDest = D3DXVECTOR3(0.0,0.0f,0.0f);
 					}
 				}
 				if (g_Skill[nCnt].bHorming == true && g_Skill[nCnt].bHit == false)
 				{
+					D3DXVECTOR3 fMove;
+					fMove.x = cosf(g_Skill[nCnt].fRotRatio) * sinf(pPlayer->rot.y + D3DX_PI * 0.5f) * 1.0f;
+					fMove.y = sinf(g_Skill[nCnt].fRotRatio) * 1.0f;
+					fMove.z = cosf(g_Skill[nCnt].fRotRatio) * cosf(pPlayer->rot.y + D3DX_PI * 0.5f) * 1.0f;
+					
+					g_Skill[nCnt].move = fMove;
+
 					g_Skill[nCnt].AnimCounter++;
+					if (g_Skill[nCnt].AnimCounter >= 30)
+					{
+						D3DXVECTOR3 moveDiff = g_Skill[nCnt].moveDest - g_Skill[nCnt].move;
+						g_Skill[nCnt].move = moveDiff / g_Skill[nCnt].AnimCounter * 10.0f;
+					}
+					else
+					{
+						g_Skill[nCnt].nLife = 100.0f;
+					}
 					//if(g_Skill[nCnt].AnimCounter >= )
-					g_Skill[nCnt].pos += g_Skill[nCnt].move * 10.0f;
 				}
 				else
 				{
 					UpdateHormingPosition(nCnt);
 				}
+				g_Skill[nCnt].pos += g_Skill[nCnt].move;
 			}
 			// エフェクトの設定
 			SetEffect(g_Skill[nCnt].pos,
@@ -211,8 +231,26 @@ void UpdateSkill(void)
 			{
 				g_Skill[nCnt].bUse = false;
 				DeleteEffect(EFFECT_SKILL, nCnt);
-				SetSkillParticle(EFFECT_SKILL, nCnt, g_Skill[nCnt].StartPos, g_Skill[nCnt].pos, 100);
+				if (g_Skill[nCnt].ntype != SKILLTYPE_HORMING)
+				{
+					SetSkillParticle(EFFECT_SKILL, nCnt, g_Skill[nCnt].StartPos, g_Skill[nCnt].pos, 100);
+				}
+				else
+				{
+					SetParticle(g_Skill[nCnt].pos,
+						D3DXVECTOR3(628.0f, 628.0f, 628.0f),
+						D3DXCOLOR(0.05f, 0.25f, 1.0f, 1.0f),
+						PARTICLE_NONE,
+						D3DXVECTOR3(1.0f, 1.0f, 1.0f),
+						100,
+						300,
+						100.0f,
+						100.0f,
+						0.0f,
+						EFFECT_NONE);
+				}
 				pShadow[g_Skill[nCnt].nIdxShadow].bUse = false;
+				g_Skill[nCnt].AnimCounter = 0;
 			}
 		}
 	}
@@ -314,6 +352,7 @@ void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot, SKILLTYPE ntyp
 				g_Skill[nCnt].Speed = 0.0f;
 				g_Skill[nCnt].fDistance = 0.0f;
 				g_Skill[nCnt].nLife = 300;
+				g_Skill[nCnt].AnimCounter = 0;
 			}
 			g_Skill[nCnt].bHit = false;
 			g_Skill[nCnt].bUse = true;
