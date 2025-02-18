@@ -144,10 +144,31 @@ void UpdateEnemy(void)
 	{
 		if (g_Enemy[EnemyCount].bUse == true)
 		{
-			OBB *pObb = GetModel();
-			for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++)
+			STAGEMODEL*pObb = GetModel();
+			for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++, pObb++)
 			{
-				if(pObb.bu)
+				if (pObb->bUse == true)
+				{
+					OBB EnemyObb;
+					EnemyObb.CenterPos = g_Enemy[EnemyCount].Object.Pos;
+
+					EnemyObb.fLength[0] = 10.0f;
+					EnemyObb.fLength[1] = 20.0f;
+					EnemyObb.fLength[2] = 10.0f;
+
+					EnemyObb.RotVec[0] = D3DXVECTOR3(1.0f,0.0f,0.0f);
+					EnemyObb.RotVec[1] = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+					EnemyObb.RotVec[2] = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+					bool bCollision = collisionobb(EnemyObb, pObb->ObbModel, g_Enemy[EnemyCount].Object.Pos, pObb->pos);
+					if (bCollision == true)
+					{
+						D3DXVECTOR3 VecMove = g_Enemy[EnemyCount].Object.OldPos - g_Enemy[EnemyCount].Object.Pos;
+						D3DXVECTOR3 NorFace = collisionobbfacedot(pObb->ObbModel, D3DXVECTOR3(g_Enemy[EnemyCount].Object.Pos.x,
+							g_Enemy[EnemyCount].Object.Pos.y + 10.0f, 
+							g_Enemy[EnemyCount].Object.Pos.z), VecMove);
+						PushPosition(&g_Enemy[EnemyCount].Object.Pos, VecMove, NorFace);
+					}
+				}
 			}
 			// 行動の更新
 			UpdateAction(EnemyCount);
@@ -202,10 +223,10 @@ void UpdateEnemy(void)
 			}
 			g_Enemy[EnemyCount].statecount--;
 
-			//移動量の更新(減衰)
-			g_Enemy[EnemyCount].move.x = (0.0f - g_Enemy[EnemyCount].move.x) * 0.1f;
-			g_Enemy[EnemyCount].move.y = (0.0f - g_Enemy[EnemyCount].move.y) * 0.1f;
-			g_Enemy[EnemyCount].move.z = (0.0f - g_Enemy[EnemyCount].move.z) * 0.1f;
+			////移動量の更新(減衰)
+			//g_Enemy[EnemyCount].move.x = (0.0f - g_Enemy[EnemyCount].move.x) * 0.1f;
+			//g_Enemy[EnemyCount].move.y = (0.0f - g_Enemy[EnemyCount].move.y) * 0.1f;
+			//g_Enemy[EnemyCount].move.z = (0.0f - g_Enemy[EnemyCount].move.z) * 0.1f;
 
 			//床判定
 			if (g_Enemy[EnemyCount].Object.Pos.y < 0)
@@ -214,6 +235,10 @@ void UpdateEnemy(void)
 			}
 
 			g_Enemy[EnemyCount].Object.Rot.y += (g_Enemy[EnemyCount].rotDest.y - g_Enemy[EnemyCount].Object.Rot.y) * 0.05f;
+
+			g_Enemy[EnemyCount].Object.OldPos = g_Enemy[EnemyCount].Object.Pos;
+			//位置の更新
+			g_Enemy[EnemyCount].Object.Pos += g_Enemy[EnemyCount].move;
 
 			//影の更新
 			SetPositionShadow(g_Enemy[EnemyCount].IndxShadow, g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].bUse);
@@ -483,7 +508,7 @@ void UpdateAction(int nCount)
 	}
 
 	//攻撃
-	if (fDistance <= ATTACK_DIST && g_Enemy[nCount].bLockOn == true)
+	if (fDistance <= ATTACK_DIST)
 	{
 		if (g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_ACTION)
 		{
@@ -493,7 +518,7 @@ void UpdateAction(int nCount)
 		}
 	}
 	//追いかける
-	else if (fDistance <= HOMING_DIST && g_Enemy[nCount].bLockOn == true)
+	else if (fDistance <= HOMING_DIST)
 	{
 		if (g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_ACTION)
 		{
@@ -502,9 +527,6 @@ void UpdateAction(int nCount)
 			//移動量の設定
 			g_Enemy[nCount].move.x = sinf(fAngle) * HOMING_MOVE;
 			g_Enemy[nCount].move.z = cosf(fAngle) * HOMING_MOVE;
-
-			//位置の更新
-			g_Enemy[nCount].Object.Pos += g_Enemy[nCount].move;
 
 			//角度の目標設定
 			g_Enemy[nCount].rotDest.y = fAngle + D3DX_PI;

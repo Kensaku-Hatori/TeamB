@@ -222,7 +222,7 @@ bool collisionobb(OBB obb, OBB obb1, D3DXVECTOR3 Pos, D3DXVECTOR3 Pos1)
 	}
 	return true;
 }
-D3DXVECTOR3 collisionobbfacedot(OBB obb, OBB obb1, D3DXVECTOR3 Pos, D3DXVECTOR3 VecMove)
+D3DXVECTOR3 collisionobbfacedot(OBB obb, D3DXVECTOR3 Pos, D3DXVECTOR3 VecMove)
 {
 	// XŽ²‚Ì–Ê‚É“–‚½‚Á‚Ä‚¢‚é‚©
 	D3DXVECTOR3 IntervalX;
