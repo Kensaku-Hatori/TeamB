@@ -28,6 +28,7 @@
 #include "invisiblewall.h"
 #include "lockon.h"
 #include "boss.h"
+#include "mission.h"
 
 //グローバル変数
 Player g_player;
@@ -128,6 +129,7 @@ void UpdatePlayer(void)
 	Camera *pCamera = GetCamera();				//カメラの情報取得
 	Lockon* pLockon = GetLockOn();
 	ENEMY* pEnemy = GetEnemy();					//敵の情報取得
+	Mission* pMission = GetMission();
 	int* NumEnemy = GetNumEnemy();				//敵の数取得
 
 	if (g_player.bUse == true)
@@ -337,6 +339,10 @@ void UpdatePlayer(void)
 					//矢印の設定処理
 					SetArrow(Destpos, g_player.pos, D3DCOLOR_RGBA(255, 200, 0, 200), 35.0f, 15.0f, 21.0f, true, false);
 				}
+				else
+				{
+					pMission->mission = MISSION_BOSS;
+				}
 
 				//全滅している状態にする
 				g_player.bAbolition = true;
@@ -348,11 +354,13 @@ void UpdatePlayer(void)
 		{
 			MODE mode = GetMode();
 
+
 			//サークルの位置の更新処理
 			SetPositionCircle(g_player.nIndxCircle, g_player.pos, g_player.rot);
 
 			if (mode != MODE_STAGEFOUR)
 			{
+				pMission->mission = MISSION_IDOU;
 				//矢印の位置更新
 				SetPositonArrow(g_player.pos);
 			}

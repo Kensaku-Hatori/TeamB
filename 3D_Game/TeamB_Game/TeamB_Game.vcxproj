@@ -173,6 +173,7 @@
     <ClCompile Include="meshfield.cpp" />
     <ClCompile Include="meshwall.cpp" />
     <ClCompile Include="minimap.cpp" />
+    <ClCompile Include="mission.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="particleEditer.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="meshfield.h" />
     <ClInclude Include="meshwall.h" />
     <ClInclude Include="minimap.h" />
+    <ClInclude Include="mission.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="particle.h" />

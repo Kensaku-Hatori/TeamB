@@ -12,6 +12,7 @@
 #include "minimap.h"
 #include "lockon.h"
 #include "skillui.h"
+#include "mission.h"
 
 //ÉOÉçÅ[ÉoÉãïœêî
 
@@ -37,6 +38,8 @@ void InitUi(void)
 
 	InitSkillUI();
 
+	InitMission();
+
 	InitLockon();
 }
 //===========
@@ -55,6 +58,8 @@ void UninitUi(void)
 	UninitMiniMap();
 
 	UninitSkillUI();
+
+	UninitMission();
 
 	UninitLockon();
 }
@@ -75,6 +80,8 @@ void UpdateUi(void)
 
 	UpdateSkillUI();
 
+	UpdateMission();
+
 	UpdateLockon();
 }
 //===========
@@ -93,6 +100,8 @@ void DrawUi(void)
 	DrawMiniMap();
 
 	DrawSkillUI();
+
+	DrawMission();
 
 	DrawLockon();
 }
