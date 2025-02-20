@@ -15,6 +15,7 @@
 #include "skill.h"
 
 #define PLAYER_RADIUS (3)			// プレイヤーの半径
+#define PLAYER_DOWNTIME (60)		// ダウン時間
 
 #define PLAYER_MP (500)				// MP
 #define PLAYER_HP (float)(1000)		// HP
@@ -45,10 +46,12 @@ typedef struct
 	int nIdxShadow;					// 影のインデックス
 	int nIndxCircle;				// サークルのインデックス
 	int nCntState;
+	int nCntRollingState;
 	bool bUse;						// 使用状況
 	bool bLanding;					// 地面に着地しているかどうか
 	bool bfirst;					// 最初かどうか
 	bool bHit;
+	bool bRolling;
 	PlayerStatus Status;			// ステータス
 	SKILLTYPE Skilltype;
 	PLAYERSTATE state;
@@ -79,6 +82,7 @@ void UninitPlayer(void);
 void UpdatePlayer(void);
 void DrawPlayer(void);
 void PlayerMove(void);
+void PlayerRolling(void);
 void SkillChange(void);
 Player* GetPlayer(void);
 void HitPlayer(float Atack, D3DXVECTOR3 Pos);
