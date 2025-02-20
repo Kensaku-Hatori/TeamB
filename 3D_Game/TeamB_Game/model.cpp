@@ -716,7 +716,6 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 			{
 				pPlayer->pos = pPlayer->pos + test1;
 				pPlayer->bLanding = true;
-				pPlayer->bJump = false;
 			}
 		}
 		else
