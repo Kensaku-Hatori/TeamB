@@ -476,6 +476,7 @@ void DeadEnemy(int Indx)
 		g_Enemy[pPlayer->nLockOnEnemy].fDistance = 0;
 		pPlayer->nLockOnEnemy = 0;
 		pPlayer->bLockOn = false;
+		pPlayer->bWantLockOn = false;
 	}
 }
 
