@@ -399,3 +399,31 @@ void PushPosition(D3DXVECTOR3* Pos, D3DXVECTOR3 VecMove, D3DXVECTOR3 Nor)
 	D3DXVECTOR3 PushMove = Nor * D3DXVec3Dot(&VecMove, &Nor);
 	*Pos += PushMove;
 }
+
+bool CollisionRaytoObb(D3DXVECTOR3 Pos,D3DXVECTOR3 Pos1, OBB Obb)
+{
+	for (int ObbCount = 0; ObbCount < 3; ObbCount++)
+	{
+		D3DXVECTOR3 nor,normag;
+		FLOAT Dot = 0.0f;
+		FLOAT Dot1 = 0.0f;
+		D3DXVECTOR3 Vec, Vecmag;
+		Vec = Pos1 - Pos;
+		Vecmag = Pos - Pos1;
+		nor = Obb.RotVec[ObbCount];
+		normag = -Obb.RotVec[ObbCount];
+		D3DXVec3Normalize(&nor, &nor);
+		D3DXVec3Normalize(&normag, &normag);
+		Dot = D3DXVec3Dot(&nor, &Vec);
+		Dot1 = D3DXVec3Dot(&normag, &Vecmag);
+		if (Dot <= 0)
+		{
+			return true;
+		}
+		if (Dot1 <= 0)
+		{
+			return true;
+		}
+	}
+	return false;
+}

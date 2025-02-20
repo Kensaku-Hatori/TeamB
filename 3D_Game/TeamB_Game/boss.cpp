@@ -515,7 +515,7 @@ void CollisionBoss(void)
 
 		if (g_Boss.fDistance <= RADIUS)
 		{
-			HitPlayer(g_Boss.Status.fPower);
+			HitPlayer(g_Boss.Status.fPower,g_Boss.Object.Pos);
 		}
 	}
 }
@@ -528,6 +528,6 @@ void CollisionBossAction(void)
 
 	if (collisioncircle(g_Boss.BossMotion.aModel[12].pos, g_Boss.Radius * 1.5f, pPlayer->pos, PLAYER_RADIUS) == true)
 	{
-		HitPlayer(g_Boss.Status.fPower);
+		HitPlayer(g_Boss.Status.fPower,g_Boss.Object.Pos);
 	}
 }

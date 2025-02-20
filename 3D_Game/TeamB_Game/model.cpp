@@ -5,6 +5,8 @@
 //********************************
 #include "model.h"
 #include "player.h"
+#include "camera.h"
+#include "collision.h"
 
 // ƒOƒ[ƒoƒ‹•Ï”
 MODELORIGIN g_ModelOrigin[MODELTYPE_MAX];
@@ -102,6 +104,15 @@ void UpdateStageModel()
 		if (g_StageModel[ModelCount].bUse == true)
 		{
 			Player* pPlayer = GetPlayer();
+			Camera* pCamera = GetCamera();
+			//if (CollisionRaytoObb(pCamera->posR, pCamera->posV, g_StageModel[ModelCount].ObbModel))
+			//{
+			//	g_StageModel[ModelCount].pos.y = 100.0f;
+			//}
+			//else
+			//{
+			//	g_StageModel[ModelCount].pos.y = 0.0f;
+			//}
 			D3DXVECTOR3 obb1Center;
 			obb1Center.x = pPlayer->pos.x;
 			obb1Center.y = pPlayer->pos.y + (pPlayer->size.y * 0.5f);

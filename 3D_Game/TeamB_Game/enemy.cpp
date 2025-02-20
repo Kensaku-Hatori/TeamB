@@ -517,6 +517,7 @@ void UpdateAction(int nCount)
 			g_Enemy[nCount].ActionType = ENEMYACTION_ATTACK;
 			SetMotion(MOTIONTYPE_ACTION, &g_Enemy[nCount].EnemyMotion);
 		}
+		g_Enemy[nCount].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	}
 	//’Ç‚¢‚©‚¯‚é
 	else if (fDistance <= HOMING_DIST)
@@ -546,6 +547,7 @@ void UpdateAction(int nCount)
 		{
 			SetMotion(MOTIONTYPE_NEUTRAL, &g_Enemy[nCount].EnemyMotion);
 		}
+		g_Enemy[nCount].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	}
 }
 
@@ -638,7 +640,7 @@ void CollisionEnemy(void)
 
 			if (g_Enemy[nCntEnemy].fDistance <= RADIUS)
 			{
-				HitPlayer(g_Enemy[nCntEnemy].Status.fPower);
+				HitPlayer(g_Enemy[nCntEnemy].Status.fPower,g_Enemy[nCntEnemy].Object.Pos);
 			}
 		}
 	}
@@ -666,9 +668,9 @@ void CollisionEnemyAction(int nCnt)
 		break;
 	}
 
-	if (collisioncircle(g_Enemy[nCnt].EnemyMotion.aModel[nModel].pos, g_Enemy[nCnt].Radius * 1.3f, pPlayer->pos, PLAYER_RADIUS) == true)
+	if (collisioncircle(g_Enemy[nCnt].Object.Pos + g_Enemy[nCnt].EnemyMotion.aModel[nModel].pos, g_Enemy[nCnt].Radius * 1.3f, pPlayer->pos, PLAYER_RADIUS) == true)
 	{
-		HitPlayer(g_Enemy[nCnt].Status.fPower);
+		HitPlayer(g_Enemy[nCnt].Status.fPower,g_Enemy[nCnt].Object.Pos);
 	}
 }
 
