@@ -29,9 +29,9 @@ void InitSkillUI(void)
 	pDevice = GetDevice();
 
 	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\tyoukoku3.png", &g_pTextureSkillUI[0]);		//HP 
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\tyoukoku4.png", &g_pTextureSkillUI[1]);		//MP 
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\tyoukoku5.png", &g_pTextureSkillUI[2]);		//AT 
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\skill00.png", &g_pTextureSkillUI[0]);		//HP 
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\skill01.png", &g_pTextureSkillUI[1]);		//MP 
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\skill02.png", &g_pTextureSkillUI[2]);		//AT 
 
 	g_SkillUIframepos = D3DXVECTOR3(50.0f, 150.0f, 0.0f);
 	g_SkillUIpos = g_SkillUIframepos;
@@ -97,10 +97,10 @@ void InitSkillUI(void)
 		{
 			//アイテム欄
 			//頂点座標の設定
-			pVtx[0].pos = D3DXVECTOR3(g_SkillUIpos.x - SKILLUIFRAM_SIZE, g_SkillUIpos.y - SKILLUIFRAM_SIZE, 0.0f);
-			pVtx[1].pos = D3DXVECTOR3(g_SkillUIpos.x + SKILLUIFRAM_SIZE, g_SkillUIpos.y - SKILLUIFRAM_SIZE, 0.0f);
-			pVtx[2].pos = D3DXVECTOR3(g_SkillUIpos.x - SKILLUIFRAM_SIZE, g_SkillUIpos.y + SKILLUIFRAM_SIZE, 0.0f);
-			pVtx[3].pos = D3DXVECTOR3(g_SkillUIpos.x + SKILLUIFRAM_SIZE, g_SkillUIpos.y + SKILLUIFRAM_SIZE, 0.0f);
+			pVtx[0].pos = D3DXVECTOR3(g_SkillUIpos.x - SKILLUI_SIZE, g_SkillUIpos.y - SKILLUI_SIZE, 0.0f);
+			pVtx[1].pos = D3DXVECTOR3(g_SkillUIpos.x + SKILLUI_SIZE, g_SkillUIpos.y - SKILLUI_SIZE, 0.0f);
+			pVtx[2].pos = D3DXVECTOR3(g_SkillUIpos.x - SKILLUI_SIZE, g_SkillUIpos.y + SKILLUI_SIZE, 0.0f);
+			pVtx[3].pos = D3DXVECTOR3(g_SkillUIpos.x + SKILLUI_SIZE, g_SkillUIpos.y + SKILLUI_SIZE, 0.0f);
 			//rhwの設定
 			pVtx[0].rhw = 1.0f;
 			pVtx[1].rhw = 1.0f;

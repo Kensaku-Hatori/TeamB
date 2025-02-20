@@ -354,7 +354,6 @@ void UpdatePlayer(void)
 		{
 			MODE mode = GetMode();
 
-
 			//サークルの位置の更新処理
 			SetPositionCircle(g_player.nIndxCircle, g_player.pos, g_player.rot);
 
