@@ -12,14 +12,23 @@
 #include "status.h"
 #include "key.h"
 #include "loadmotion.h"
+#include "skill.h"
 
-#define PLAYER_JUMP (7)			// ジャンプ量
 #define PLAYER_RADIUS (3)			// プレイヤーの半径
+#define PLAYER_DOWNTIME (60)		// ダウン時間
 
 #define PLAYER_MP (500)				// MP
 #define PLAYER_HP (float)(1000)		// HP
 #define PLAYER_SPEED (float) (2.0f)	// 速度
 #define PLAYER_AP (100)				// 攻撃力
+
+// プレイヤーの状態
+typedef enum
+{
+	PLAYERSTATE_NORMAL = 0,
+	PLAYERSTATE_KNOCKUP,
+	PLAYERSTATE_MAX
+}PLAYERSTATE;
 
 //プレイヤーの構造体
 typedef struct
@@ -36,12 +45,16 @@ typedef struct
 	OBJECTINFO PlayerMotion;		// パーツ情報とモーション情報
 	int nIdxShadow;					// 影のインデックス
 	int nIndxCircle;				// サークルのインデックス
-	int nJump;						// ジャンプ量
-	bool bJump;						// ジャンプできるかどうか
+	int nCntState;
+	int nCntRollingState;
 	bool bUse;						// 使用状況
 	bool bLanding;					// 地面に着地しているかどうか
 	bool bfirst;					// 最初かどうか
+	bool bHit;
+	bool bRolling;
 	PlayerStatus Status;			// ステータス
+	SKILLTYPE Skilltype;
+	PLAYERSTATE state;
 	
 	int nNumModel;					// パーツの総数
 	int nNumMotion;					// モーションの総数
@@ -69,8 +82,10 @@ void UninitPlayer(void);
 void UpdatePlayer(void);
 void DrawPlayer(void);
 void PlayerMove(void);
+void PlayerRolling(void);
+void SkillChange(void);
 Player* GetPlayer(void);
-void HitPlayer(float Atack);
+void HitPlayer(float Atack, D3DXVECTOR3 Pos);
 void SetMesh(char* pFilePath, int Indx);
 void SetPartsInfo(LoadInfo PartsInfo);
 void PlayerMotion(MOTIONINFO *pMotionInfo);

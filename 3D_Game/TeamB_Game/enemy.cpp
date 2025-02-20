@@ -20,6 +20,8 @@
 #include "skill.h"
 #include "collision.h"
 #include "lockon.h"
+#include "model.h"
+#include "collision.h"
 
 //*******************
 // グローバル変数宣言
@@ -56,6 +58,11 @@ void InitEnemy(void)
 		g_Enemy[i].nActionCounter = 0;										// アクションカウンター
 		g_Enemy[i].Action = ENEMYACTION_WELL;								// 行動の種類
 		g_Enemy[i].Radius = 4.4f;											// 半径
+
+		g_Enemy[i].bLockOn = false;
+		g_Enemy[i].fSightRange = 200.0f;					// 視界距離
+		g_Enemy[i].fSightAngle = D3DXToRadian(110.0f);	// 視界の葉に
+		g_Enemy[i].fDistance = g_Enemy[i].fSightRange / 2;
 
 		g_fDistance[i] = 0.0f;
 	}
@@ -137,6 +144,32 @@ void UpdateEnemy(void)
 	{
 		if (g_Enemy[EnemyCount].bUse == true)
 		{
+			STAGEMODEL*pObb = GetModel();
+			for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++, pObb++)
+			{
+				if (pObb->bUse == true)
+				{
+					OBB EnemyObb;
+					EnemyObb.CenterPos = g_Enemy[EnemyCount].Object.Pos;
+
+					EnemyObb.fLength[0] = 10.0f;
+					EnemyObb.fLength[1] = 20.0f;
+					EnemyObb.fLength[2] = 10.0f;
+
+					EnemyObb.RotVec[0] = D3DXVECTOR3(1.0f,0.0f,0.0f);
+					EnemyObb.RotVec[1] = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+					EnemyObb.RotVec[2] = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+					bool bCollision = collisionobb(EnemyObb, pObb->ObbModel, g_Enemy[EnemyCount].Object.Pos, pObb->pos);
+					if (bCollision == true)
+					{
+						D3DXVECTOR3 VecMove = g_Enemy[EnemyCount].Object.OldPos - g_Enemy[EnemyCount].Object.Pos;
+						D3DXVECTOR3 NorFace = collisionobbfacedot(pObb->ObbModel, D3DXVECTOR3(g_Enemy[EnemyCount].Object.Pos.x,
+							g_Enemy[EnemyCount].Object.Pos.y + 10.0f, 
+							g_Enemy[EnemyCount].Object.Pos.z), VecMove);
+						PushPosition(&g_Enemy[EnemyCount].Object.Pos, VecMove, NorFace);
+					}
+				}
+			}
 			// 行動の更新
 			UpdateAction(EnemyCount);
 
@@ -150,7 +183,7 @@ void UpdateEnemy(void)
 					{
 						pSkill[SkillCount].nLife = 1;
 						pSkill[SkillCount].bHit = true;
-						HitEnemy(pPlayer->Status.fPower, EnemyCount);
+						HitEnemy(pSkill[SkillCount].fPower, EnemyCount);
 					}
 				}
 			}
@@ -161,7 +194,7 @@ void UpdateEnemy(void)
 				CollisionEnemyAction(EnemyCount);
 			}
 
-			//ロックオン
+			// ロックオン
 			if (pPlayer->bWantLockOn == true)
 			{
 				if (IsEnemyInsight(g_Enemy[EnemyCount].Object.Pos, 0) == true)
@@ -170,6 +203,8 @@ void UpdateEnemy(void)
 					pPlayer->bLockOn = true;
 				}
 			}
+
+			g_Enemy[EnemyCount].bLockOn = IsPlayerInsight(EnemyCount);
 
 			// 角度の近道
 			if (g_Enemy[EnemyCount].rotDest.y - g_Enemy[EnemyCount].Object.Rot.y >= D3DX_PI)
@@ -188,10 +223,10 @@ void UpdateEnemy(void)
 			}
 			g_Enemy[EnemyCount].statecount--;
 
-			//移動量の更新(減衰)
-			g_Enemy[EnemyCount].move.x = (0.0f - g_Enemy[EnemyCount].move.x) * 0.1f;
-			g_Enemy[EnemyCount].move.y = (0.0f - g_Enemy[EnemyCount].move.y) * 0.1f;
-			g_Enemy[EnemyCount].move.z = (0.0f - g_Enemy[EnemyCount].move.z) * 0.1f;
+			////移動量の更新(減衰)
+			//g_Enemy[EnemyCount].move.x = (0.0f - g_Enemy[EnemyCount].move.x) * 0.1f;
+			//g_Enemy[EnemyCount].move.y = (0.0f - g_Enemy[EnemyCount].move.y) * 0.1f;
+			//g_Enemy[EnemyCount].move.z = (0.0f - g_Enemy[EnemyCount].move.z) * 0.1f;
 
 			//床判定
 			if (g_Enemy[EnemyCount].Object.Pos.y < 0)
@@ -200,6 +235,10 @@ void UpdateEnemy(void)
 			}
 
 			g_Enemy[EnemyCount].Object.Rot.y += (g_Enemy[EnemyCount].rotDest.y - g_Enemy[EnemyCount].Object.Rot.y) * 0.05f;
+
+			g_Enemy[EnemyCount].Object.OldPos = g_Enemy[EnemyCount].Object.Pos;
+			//位置の更新
+			g_Enemy[EnemyCount].Object.Pos += g_Enemy[EnemyCount].move;
 
 			//影の更新
 			SetPositionShadow(g_Enemy[EnemyCount].IndxShadow, g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].bUse);
@@ -437,6 +476,7 @@ void DeadEnemy(int Indx)
 		g_Enemy[pPlayer->nLockOnEnemy].fDistance = 0;
 		pPlayer->nLockOnEnemy = 0;
 		pPlayer->bLockOn = false;
+		pPlayer->bWantLockOn = false;
 	}
 }
 
@@ -477,6 +517,7 @@ void UpdateAction(int nCount)
 			g_Enemy[nCount].ActionType = ENEMYACTION_ATTACK;
 			SetMotion(MOTIONTYPE_ACTION, &g_Enemy[nCount].EnemyMotion);
 		}
+		g_Enemy[nCount].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	}
 	//追いかける
 	else if (fDistance <= HOMING_DIST)
@@ -488,9 +529,6 @@ void UpdateAction(int nCount)
 			//移動量の設定
 			g_Enemy[nCount].move.x = sinf(fAngle) * HOMING_MOVE;
 			g_Enemy[nCount].move.z = cosf(fAngle) * HOMING_MOVE;
-
-			//位置の更新
-			g_Enemy[nCount].Object.Pos += g_Enemy[nCount].move;
 
 			//角度の目標設定
 			g_Enemy[nCount].rotDest.y = fAngle + D3DX_PI;
@@ -509,6 +547,7 @@ void UpdateAction(int nCount)
 		{
 			SetMotion(MOTIONTYPE_NEUTRAL, &g_Enemy[nCount].EnemyMotion);
 		}
+		g_Enemy[nCount].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	}
 }
 
@@ -601,11 +640,12 @@ void CollisionEnemy(void)
 
 			if (g_Enemy[nCntEnemy].fDistance <= RADIUS)
 			{
-				HitPlayer(g_Enemy[nCntEnemy].Status.fPower);
+				HitPlayer(g_Enemy[nCntEnemy].Status.fPower,g_Enemy[nCntEnemy].Object.Pos);
 			}
 		}
 	}
 }
+
 //===================================
 // 敵のアクション時の当たり判定処理
 //===================================
@@ -628,11 +668,10 @@ void CollisionEnemyAction(int nCnt)
 		break;
 	}
 
-	if (collisioncircle(g_Enemy[nCnt].EnemyMotion.aModel[nModel].pos, g_Enemy[nCnt].Radius * 1.5f, pPlayer->pos, PLAYER_RADIUS) == true)
+	if (collisioncircle(g_Enemy[nCnt].Object.Pos + g_Enemy[nCnt].EnemyMotion.aModel[nModel].pos, g_Enemy[nCnt].Radius * 1.3f, pPlayer->pos, PLAYER_RADIUS) == true)
 	{
-		HitPlayer(g_Enemy[nCnt].Status.fPower);
+		HitPlayer(g_Enemy[nCnt].Status.fPower,g_Enemy[nCnt].Object.Pos);
 	}
-
 }
 
 //========================
@@ -641,4 +680,46 @@ void CollisionEnemyAction(int nCnt)
 float GetfDistance()
 {
 	return g_fDistance[0];
+}
+
+//=================================
+// プレイヤーが視界にいるかどうか
+//=================================
+bool IsPlayerInsight(int Index)
+{
+	Player* pPlayer = GetPlayer();
+	bool bLock = false;
+
+	D3DXVECTOR3 EnemyFront;
+
+	EnemyFront.x = -sinf(g_Enemy[Index].Object.Rot.y);
+	EnemyFront.y = 0.0f;
+	EnemyFront.z = -cosf(g_Enemy[Index].Object.Rot.y);
+
+	D3DXVECTOR3 toPlayer;
+
+	toPlayer.x = pPlayer->pos.x - g_Enemy[Index].Object.Pos.x;
+	toPlayer.y = 0.0f;
+	toPlayer.z = pPlayer->pos.z - g_Enemy[Index].Object.Pos.z;
+
+	D3DXVec3Normalize(&EnemyFront, &EnemyFront);
+
+	D3DXVec3Normalize(&toPlayer, &toPlayer);
+
+	float dotProduct = D3DXVec3Dot(&EnemyFront, &toPlayer);
+
+	if (dotProduct > cosf(g_Enemy[Index].fSightAngle * 0.5f))
+	{
+		float distanceSquared =
+			(pPlayer->pos.x - g_Enemy[Index].Object.Pos.x) * (pPlayer->pos.x - g_Enemy[Index].Object.Pos.x) +
+			(pPlayer->pos.x - g_Enemy[Index].Object.Pos.y) * (pPlayer->pos.x - g_Enemy[Index].Object.Pos.y) +
+			(pPlayer->pos.x - g_Enemy[Index].Object.Pos.z) * (pPlayer->pos.x - g_Enemy[Index].Object.Pos.z);
+
+		if (distanceSquared <= g_Enemy[Index].fSightRange * g_Enemy[Index].fSightRange)
+		{
+			bLock = true;
+		}
+	}
+
+	return bLock;
 }

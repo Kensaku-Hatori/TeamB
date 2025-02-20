@@ -195,9 +195,19 @@ void UpdateEffect(void)
 			pVtx[2].col = g_effect[effectcount].col;
 			pVtx[3].col = g_effect[effectcount].col;
 
-			g_effect[effectcount].Scale.x += g_effect[effectcount].LengthValue;
-			g_effect[effectcount].Scale.y += g_effect[effectcount].LengthValue;
-			g_effect[effectcount].Scale.z += g_effect[effectcount].LengthValue;
+			if (g_effect[effectcount].ntype == EFFECT_EXPROSION && g_effect[effectcount].Scale.x <= 10.0f && g_effect[effectcount].bExprosion == true)
+			{
+				g_effect[effectcount].Scale.x += g_effect[effectcount].LengthValue;
+				g_effect[effectcount].Scale.y += g_effect[effectcount].LengthValue;
+				g_effect[effectcount].Scale.z += g_effect[effectcount].LengthValue;
+			}
+			else if (g_effect[effectcount].ntype == EFFECT_EXPROSION && g_effect[effectcount].Scale.x >= 5.0f)
+			{
+				g_effect[effectcount].bExprosion = false;
+				g_effect[effectcount].Scale.x -= g_effect[effectcount].LengthValue;
+				g_effect[effectcount].Scale.y -= g_effect[effectcount].LengthValue;
+				g_effect[effectcount].Scale.z -= g_effect[effectcount].LengthValue;
+			}
 
 			g_effect[effectcount].nLife--;
 			if (g_effect[effectcount].nLife <= 0 && g_effect[effectcount].ntype != EFFECT_SKILL)
@@ -339,6 +349,12 @@ void SetEffect(D3DXVECTOR3 pos, D3DXVECTOR3 dir, int nLife, float speed,D3DXVECT
 			g_effect[effectcount].Indx = Indx;
 			g_effect[effectcount].gravity = gravity;
 			g_effect[effectcount].LengthValue = 0.0f;
+			g_effect[effectcount].bExprosion = true;
+
+			if (nType == EFFECT_EXPROSION)
+			{
+				g_effect[effectcount].LengthValue = 3.0f;
+			}
 
 			// Še’¸“_‚ÌF‚ÌÝ’è
 			pVtx[0].col = D3DXCOLOR(g_effect[effectcount].col);

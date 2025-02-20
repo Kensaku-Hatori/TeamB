@@ -87,6 +87,7 @@ void InitStageModel();
 void UninitStageModel();
 void UpdateStageModel();
 void DrawStageModel();
+STAGEMODEL* GetModel();
 void SetStageModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot, MODELTYPE nType);
 void SetObbInfo(int Indx);
 void SetStageModelInfo(char *ModelPath[],int nType);

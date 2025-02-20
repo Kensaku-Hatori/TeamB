@@ -19,5 +19,7 @@ typedef struct
 bool collisionboxtopoint(D3DXVECTOR3 Pos,BoxCollision BoxInfo);							// 点と矩形の当たり判定
 bool collisioncircle(D3DXVECTOR3 Pos, float fRadius, D3DXVECTOR3 Pos1, float fRadius1);	// 球と球の当たり判定
 bool collisionobb(OBB obb,OBB obb1,D3DXVECTOR3 Pos,D3DXVECTOR3 Pos1);					// OBBとOBBの当たり判定
+D3DXVECTOR3 collisionobbfacedot(OBB obb, D3DXVECTOR3 Pos, D3DXVECTOR3 VecMove);			// OBBの当たった面の法線をリターンする関数
 void PushPosition(D3DXVECTOR3 *Pos,D3DXVECTOR3 VecMove,D3DXVECTOR3 Nor);				// 壁刷り関数
+bool CollisionRaytoObb(D3DXVECTOR3 Pos,D3DXVECTOR3 Pos1, OBB Obb);									// 線分とOBBの当たり判定
 #endif // !COLLISION_H_

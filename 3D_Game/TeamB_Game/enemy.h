@@ -20,7 +20,7 @@
 
 #define ENEMY_HP (float)(150)			// HP
 #define ENEMY_SPEED (float) (2.0f)		// 速度
-#define ENEMY_AP (float)(100)			// 攻撃力
+#define ENEMY_AP (float)(10)			// 攻撃力
 
 // 行動の距離
 #define ATTACK_DIST (float)(50.0f)		// 攻撃
@@ -94,6 +94,10 @@ typedef struct
 	float fDistance;
 	float fActionDistance;
 
+	float fSightRange;
+	float fSightAngle;
+	bool bLockOn;
+
 }ENEMY;
 
 //*****************
@@ -113,5 +117,6 @@ void EnemyState(int Indx);									// 敵の状態更新処理
 void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType);		// 敵のバッファやモーション設定処理
 void CollisionEnemy(void);									// 敵の当たり判定処理
 void CollisionEnemyAction(int nCnt);						// 敵のアクション時の当たり判定処理
+bool IsPlayerInsight(int Index);
 
 #endif // !ENEMY_H_
