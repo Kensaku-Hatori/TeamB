@@ -74,7 +74,7 @@ void DrawPlayer(void);
 void PlayerMove(void);
 void SkillChange(void);
 Player* GetPlayer(void);
-void HitPlayer(float Atack);
+void HitPlayer(float Atack, D3DXVECTOR3 Pos);
 void SetMesh(char* pFilePath, int Indx);
 void SetPartsInfo(LoadInfo PartsInfo);
 void PlayerMotion(MOTIONINFO *pMotionInfo);

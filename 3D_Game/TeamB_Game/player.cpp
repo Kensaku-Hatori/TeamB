@@ -697,12 +697,16 @@ Player* GetPlayer(void)
 	return &g_player;
 }
 
-//=========================
+//=======================
 // プレイヤーのヒット処理
-//=========================
-void HitPlayer(float Atack)
+//=======================
+void HitPlayer(float Atack,D3DXVECTOR3 Pos)
 {
 	g_player.Status.fHP -= (int)Atack;
+
+	D3DXVECTOR3 Vec = g_player.pos - Pos;
+	D3DXVec3Normalize(&Vec, &Vec);
+	g_player.move = Vec * 10.0f;
 	g_player.bHit = true;
 
 	if (g_player.Status.fHP <= 0.0f && g_player.bUse == true)
