@@ -98,7 +98,7 @@ void UpdateLockon(void)
 	{
 		g_LockonEnemy.pos = pEnemy[pPlayer->nLockOnEnemy].Object.Pos;
 	}
-	else
+	else if(g_LockonEnemy.type == 1)
 	{
 		g_LockonEnemy.pos = pBoss->Object.Pos;
 	}
@@ -124,11 +124,12 @@ void UpdateLockon(void)
 		float Dis = ((pPlayer->pos.x - g_Lockon.pos.x) * (pPlayer->pos.x - g_Lockon.pos.x))
 				  + ((pPlayer->pos.y - g_Lockon.pos.y) * (pPlayer->pos.y - g_Lockon.pos.y))
 				  + ((pPlayer->pos.z - g_Lockon.pos.z) * (pPlayer->pos.z - g_Lockon.pos.z));
+
 		if (Dis >= pPlayer->fSightRange * pPlayer->fSightRange * 2)
 		{
 			pPlayer->bLockOn = false;
+			pPlayer->bWantLockOn = false;
 		}
-		pPlayer->bWantLockOn = false;
 	}
 	else
 	{
@@ -245,7 +246,6 @@ bool IsEnemyInsight(D3DXVECTOR3 Pos, int type)
 			bLock = true;
 		}
 	}
-
 	return bLock;
 }
 

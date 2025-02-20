@@ -143,12 +143,6 @@ void UpdatePlayer(void)
 		//ロックオン状態なら
 		if (g_player.bLockOn == true)
 		{
-			if (pEnemy[g_player.nLockOnEnemy].bUse == false)
-			{
-				g_player.bLockOn = false;
-				g_player.bWantLockOn = false;
-			}
-
 			pCamera->rot.y = g_player.rot.y + D3DX_PI;
 
 			//プレイヤーの向き
