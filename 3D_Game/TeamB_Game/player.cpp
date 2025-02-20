@@ -167,9 +167,23 @@ void UpdatePlayer(void)
 		if (g_player.state == PLAYERSTATE_NORMAL)
 		{
 			//–‚–@”­ŽË
-			if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_B) == true) && g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION)
+			if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_B) == true) && 
+				(g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION) && (g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_EXPLOSION)
+			 && (g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_HORMING))
 			{// MP‚ª‚T‚OˆÈã‚ÌŽž
-				SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion);
+				if (g_player.Skilltype == SKILLTYPE_NONE)
+				{
+					SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion);
+				}
+				else if (g_player.Skilltype == SKILLTYPE_EXPLOSION)
+				{
+					SetMotion(MOTIONTYPE_ACTION_EXPLOSION, &g_player.PlayerMotion);
+				}
+				else if (g_player.Skilltype == SKILLTYPE_HORMING)
+				{
+					SetMotion(MOTIONTYPE_ACTION_HORMING, &g_player.PlayerMotion);
+				}
+
 				//if (g_player.Status.nMP >= 50)
 				//{
 				g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bActionStart = false;
@@ -659,9 +673,9 @@ void PlayerMove(void)
 	}
 	else
 	{//ƒ_ƒEƒ“ó‘Ô
-		if (g_player.PlayerMotion.motionType != MOTIONTYPE_LANDING)
+		if (g_player.PlayerMotion.motionType != MOTIONTYPE_DOWN)
 		{
-			SetMotion(MOTIONTYPE_LANDING, &g_player.PlayerMotion);
+			SetMotion(MOTIONTYPE_DOWN, &g_player.PlayerMotion);
 		}
 		g_player.nCntState++;
 		if (g_player.nCntState >= PLAYER_DOWNTIME)
