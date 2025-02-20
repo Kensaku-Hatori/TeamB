@@ -39,10 +39,11 @@ typedef struct
 	int nLife;					// Žõ–½
 	int nCount, nCounter;
 	int nIndxHorming;
-	int AnimCounter;
+	float AnimCounter;
 	float fDistance;			// ‹——£
 	float Speed;
 	float fRotRatio;
+	float fPower;
 	bool bHit;
 	bool bUse;					// Žg—p‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	bool bHorming;

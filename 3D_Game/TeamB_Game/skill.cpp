@@ -35,6 +35,7 @@ void InitSkill(void)
 		g_Skill[nCnt].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		g_Skill[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		g_Skill[nCnt].nLife = SKILL_LIFE;
+		g_Skill[nCnt].fPower = 0.0f;
 		g_Skill[nCnt].bUse = false;
 	}
 
@@ -163,7 +164,7 @@ void UpdateSkill(void)
 					}
 					else
 					{
-						g_Skill[nCnt].nLife = 100.0f;
+						g_Skill[nCnt].nLife = 100;
 					}
 					//if(g_Skill[nCnt].AnimCounter >= )
 				}
@@ -328,8 +329,10 @@ void DrawSkill(void)
 //===================
 void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot, SKILLTYPE ntype, float fRotRatio)
 {
-	int nCnt;
-	for (nCnt = 0; nCnt < MAX_SKILL; nCnt++)
+	//プレイヤーの情報取得
+	Player* pPlayer = GetPlayer();
+
+	for (int nCnt = 0; nCnt < MAX_SKILL; nCnt++)
 	{
 		if (g_Skill[nCnt].bUse == false)
 		{
@@ -341,7 +344,13 @@ void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot, SKILLTYPE ntyp
 			g_Skill[nCnt].ntype = ntype;
 			g_Skill[nCnt].nLife = SKILL_LIFE;
 
-			if (ntype == SKILLTYPE_HORMING)
+			// 通常魔法
+			if (ntype == SKILLTYPE_NONE)
+			{
+				g_Skill[nCnt].fPower = pPlayer->Status.fPower;
+			}
+			// ホーミング魔法
+			else if (ntype == SKILLTYPE_HORMING)
 			{
 				g_Skill[nCnt].fRotRatio = fRotRatio;
 				g_Skill[nCnt].nCounter = 0;
@@ -353,6 +362,12 @@ void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot, SKILLTYPE ntyp
 				g_Skill[nCnt].fDistance = 0.0f;
 				g_Skill[nCnt].nLife = 300;
 				g_Skill[nCnt].AnimCounter = 0;
+				g_Skill[nCnt].fPower = pPlayer->Status.fPower / 2;
+			}
+			// 爆発魔法
+			else if (ntype == SKILLTYPE_EXPLOSION)
+			{
+				g_Skill[nCnt].fPower = pPlayer->Status.fPower * 1.5f;
 			}
 			g_Skill[nCnt].bHit = false;
 			g_Skill[nCnt].bUse = true;

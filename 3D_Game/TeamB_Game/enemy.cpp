@@ -183,7 +183,7 @@ void UpdateEnemy(void)
 					{
 						pSkill[SkillCount].nLife = 1;
 						pSkill[SkillCount].bHit = true;
-						HitEnemy(pPlayer->Status.fPower, EnemyCount);
+						HitEnemy(pSkill[SkillCount].fPower, EnemyCount);
 					}
 				}
 			}
