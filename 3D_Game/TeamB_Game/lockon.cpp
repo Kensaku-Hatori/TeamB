@@ -94,7 +94,7 @@ void UpdateLockon(void)
 	ENEMY* pEnemy = GetEnemy();
 	BOSS* pBoss = GetBoss();
 
-	bool bUse;
+	bool bUse = true;
 
 	if (g_LockonEnemy.type == 0)
 	{

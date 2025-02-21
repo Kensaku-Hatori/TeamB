@@ -9,9 +9,8 @@
 
 #include"main.h"
 
-#define MISSION_X (75)
-#define MISSION_Y (25)
-
+#define MISSION_X (120)
+#define MISSION_Y (55)
 
 typedef enum
 {

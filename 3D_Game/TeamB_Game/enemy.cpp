@@ -189,9 +189,12 @@ void UpdateEnemy(void)
 			}
 
 			// UŒ‚Žž‚Ì“–‚½‚è”»’è
-			if (g_Enemy[EnemyCount].EnemyMotion.motionType == MOTIONTYPE_ACTION)
+			if (pPlayer->state != PLAYERSTATE_KNOCKUP)
 			{
-				CollisionEnemyAction(EnemyCount);
+				if (g_Enemy[EnemyCount].EnemyMotion.motionType == MOTIONTYPE_ACTION)
+				{
+					CollisionEnemyAction(EnemyCount);
+				}
 			}
 
 			// ƒƒbƒNƒIƒ“
@@ -201,6 +204,7 @@ void UpdateEnemy(void)
 				{
 					EnemyDistanceSort(EnemyCount);
 					pPlayer->bLockOn = true;
+					pPlayer->bWantLockOn = false;
 				}
 				else
 				{

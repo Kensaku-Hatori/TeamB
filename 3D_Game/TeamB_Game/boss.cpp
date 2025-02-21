@@ -343,7 +343,6 @@ void DeadBoss()
 		if (pPlayer->nLockOnEnemy == 0)
 		{
 			pPlayer->bLockOn = false;
-			pCamera->rot.y = 0.0f;			// カメラ戻す
 		}
 	}
 
@@ -381,15 +380,18 @@ void UpdateBossAction()
 	// 攻撃
 	if (fDistance <= BOSSATTACK_DIST)
 	{
-		if (g_Boss.BossMotion.motionType != MOTIONTYPE_ACTION)
-		{// モーションの種類設定
-			g_Boss.ActionType = BOSSACTION_ATTACK;
-			//g_Boss[nCount].BossMotion.motionType = MOTIONTYPE_ACTION;//多分これしか機能していない
-			//g_Boss[nCount].BossMotion.motionTypeBlend = MOTIONTYPE_NEUTRAL;
-			//g_Boss[nCount].BossMotion.nFrameBlend = 10.0f;
-			//g_Boss[nCount].BossMotion.nKey = 0;
-			//g_Boss[nCount].BossMotion.NextKey = 1;
-			SetMotion(MOTIONTYPE_ACTION, &g_Boss.BossMotion);
+		if (pPlayer->state != PLAYERSTATE_KNOCKUP)
+		{
+			if (g_Boss.BossMotion.motionType != MOTIONTYPE_ACTION)
+			{// モーションの種類設定
+				g_Boss.ActionType = BOSSACTION_ATTACK;
+				//g_Boss[nCount].BossMotion.motionType = MOTIONTYPE_ACTION;//多分これしか機能していない
+				//g_Boss[nCount].BossMotion.motionTypeBlend = MOTIONTYPE_NEUTRAL;
+				//g_Boss[nCount].BossMotion.nFrameBlend = 10.0f;
+				//g_Boss[nCount].BossMotion.nKey = 0;
+				//g_Boss[nCount].BossMotion.NextKey = 1;
+				SetMotion(MOTIONTYPE_ACTION, &g_Boss.BossMotion);
+			}
 		}
 	}
 	// 追いかける

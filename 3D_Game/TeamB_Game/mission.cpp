@@ -30,7 +30,7 @@ void InitMission(void)
 
 	g_Mission.mission = MISSION_ZENMETU;
 
-	g_Missionpos = D3DXVECTOR3(1100.0f, 400.0f, 0.0f);
+	g_Missionpos = D3DXVECTOR3(1130.0f, 380.0f, 0.0f);
 
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
