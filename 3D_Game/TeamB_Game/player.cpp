@@ -229,7 +229,7 @@ void UpdatePlayer(void)
 		if (g_player.bRolling == true)
 		{
 			g_player.nCntRollingState++;
-			if (g_player.nCntRollingState >= 120)
+			if (g_player.nCntRollingState >= 30)
 			{
 				g_player.bRolling = false;
 				g_player.nCntRollingState = 0;
@@ -512,6 +512,7 @@ void PlayerMove(void)
 	
 	if (g_player.state == PLAYERSTATE_NORMAL)
 	{
+		//ローリング
 		if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_DOWN)) && g_player.bRolling == false)
 		{
 			Speed = Speed * 10;
@@ -522,17 +523,36 @@ void PlayerMove(void)
 		//左
 		if (GetKeyboardPress(DIK_A) || GetJoypadPress(JOYKEY_LEFT))
 		{
-			if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_L_MOVE)
+			//モーション
+			if (g_player.bRolling == false)
 			{
-				if (g_player.bLockOn == false)
+				if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_L_MOVE)
 				{
-					SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
-				}
-				else if (g_player.bLockOn == true)
-				{
-					SetMotion(MOTIONTYPE_LOCKON_L_MOVE, &g_player.PlayerMotion);
+					if (g_player.bLockOn == false)
+					{
+						SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+					}
+					else if (g_player.bLockOn == true)
+					{
+						SetMotion(MOTIONTYPE_LOCKON_L_MOVE, &g_player.PlayerMotion);
+					}
 				}
 			}
+			else
+			{
+				if (g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE && g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_HIDARI)
+				{
+					if (g_player.bLockOn == false)
+					{
+						SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion);
+					}
+					else if (g_player.bLockOn == true)
+					{
+						SetMotion(MOTIONTYPE_KAIHI_HIDARI, &g_player.PlayerMotion);
+					}
+				}
+			}
+			
 			//前
 			if (GetKeyboardPress(DIK_W) || GetJoypadPress(JOYKEY_DOWN))
 			{
@@ -557,17 +577,36 @@ void PlayerMove(void)
 		//右
 		else if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_RIGET))
 		{
-			if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_R_MOVE)
+			//モーション
+			if (g_player.bRolling == false)
 			{
-				if (g_player.bLockOn == false)
+				if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_R_MOVE)
 				{
-					SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
-				}
-				else if (g_player.bLockOn == true)
-				{
-					SetMotion(MOTIONTYPE_LOCKON_R_MOVE, &g_player.PlayerMotion);
+					if (g_player.bLockOn == false)
+					{
+						SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+					}
+					else if (g_player.bLockOn == true)
+					{
+						SetMotion(MOTIONTYPE_LOCKON_R_MOVE, &g_player.PlayerMotion);
+					}
 				}
 			}
+			else
+			{
+				if (g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE && g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MIGI)
+				{
+					if (g_player.bLockOn == false)
+					{
+						SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion);
+					}
+					else if (g_player.bLockOn == true)
+					{
+						SetMotion(MOTIONTYPE_KAIHI_MIGI, &g_player.PlayerMotion);
+					}
+				}
+			}
+
 			//前
 			if (GetKeyboardPress(DIK_W) || GetJoypadPress(JOYKEY_DOWN))
 			{
@@ -592,17 +631,29 @@ void PlayerMove(void)
 		//前
 		else if (GetKeyboardPress(DIK_W) == true || GetJoypadPress(JOYKEY_DOWN) == true)
 		{
-			if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_F_MOVE)
+			//モーション
+			if (g_player.bRolling == false)
 			{
-				if (g_player.bLockOn == false)
+				if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_F_MOVE)
 				{
-					SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
-				}
-				else if (g_player.bLockOn == true)
-				{
-					SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion);
+					if (g_player.bLockOn == false)
+					{
+						SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+					}
+					else if (g_player.bLockOn == true)
+					{
+						SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion);
+					}
 				}
 			}
+			else
+			{
+				if (g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE)
+				{
+					SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion);
+				}
+			}
+
 
 			//左
 			if (GetKeyboardPress(DIK_A) || GetJoypadPress(JOYKEY_DOWN))
@@ -628,15 +679,33 @@ void PlayerMove(void)
 		//後
 		else if (GetKeyboardPress(DIK_S) || GetJoypadPress(JOYKEY_UP))
 		{
-			if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_F_MOVE)
+			//モーション
+			if (g_player.bRolling == false)
 			{
-				if (g_player.bLockOn == false)
+				if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_F_MOVE)
 				{
-					SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+					if (g_player.bLockOn == false)
+					{
+						SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+					}
+					else if (g_player.bLockOn == true)
+					{
+						SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion);
+					}
 				}
-				else if (g_player.bLockOn == true)
+			}
+			else
+			{
+				if (g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE && g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_USIRO)
 				{
-					SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion);
+					if (g_player.bLockOn == false)
+					{
+						SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion);
+					}
+					else if (g_player.bLockOn == true)
+					{
+						SetMotion(MOTIONTYPE_KAIHI_USIRO, &g_player.PlayerMotion);
+					}
 				}
 			}
 
@@ -664,8 +733,7 @@ void PlayerMove(void)
 		//
 		else
 		{
-			if (g_player.PlayerMotion.motionType == MOTIONTYPE_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_R_MOVE 
-			 || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_L_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_F_MOVE)
+			if (g_player.PlayerMotion.motionType != MOTIONTYPE_NEUTRAL)
 			{
 				SetMotion(MOTIONTYPE_NEUTRAL, &g_player.PlayerMotion);
 			}

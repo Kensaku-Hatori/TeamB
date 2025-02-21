@@ -128,8 +128,8 @@ void UpdateLockon(void)
 		if (Dis >= pPlayer->fSightRange * pPlayer->fSightRange * 2)
 		{
 			pPlayer->bLockOn = false;
-			pPlayer->bWantLockOn = false;
 		}
+		pPlayer->bWantLockOn = false;
 	}
 	else
 	{
