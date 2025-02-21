@@ -29,9 +29,9 @@ void InitSkillUI(void)
 	pDevice = GetDevice();
 
 	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\skill00.png", &g_pTextureSkillUI[0]);		//HP 
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\skill01.png", &g_pTextureSkillUI[1]);		//MP 
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\skill02.png", &g_pTextureSkillUI[2]);		//AT 
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\skill00.png", &g_pTextureSkillUI[0]);		// 通常魔法 
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\skill01.png", &g_pTextureSkillUI[1]);		// 追尾魔法
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\skill02.png", &g_pTextureSkillUI[2]);		// 爆発魔法
 
 	g_SkillUIframepos = D3DXVECTOR3(80.0f, 150.0f, 0.0f);
 	g_SkillUIpos = g_SkillUIframepos;

@@ -94,13 +94,17 @@ void UpdateLockon(void)
 	ENEMY* pEnemy = GetEnemy();
 	BOSS* pBoss = GetBoss();
 
+	bool bUse;
+
 	if (g_LockonEnemy.type == 0)
 	{
 		g_LockonEnemy.pos = pEnemy[pPlayer->nLockOnEnemy].Object.Pos;
+		bUse = pEnemy[pPlayer->nLockOnEnemy].bUse;
 	}
 	else if(g_LockonEnemy.type == 1)
 	{
 		g_LockonEnemy.pos = pBoss->Object.Pos;
+		bUse = pBoss->bUse;
 	}
 
 	VERTEX_3D* pVtx = NULL;
@@ -111,6 +115,12 @@ void UpdateLockon(void)
 
 	if (g_Lockon.bUse == true)
 	{
+		if (bUse == false)
+		{
+			pPlayer->bLockOn = false;
+			pPlayer->bWantLockOn = false;
+		}
+
 		g_Lockon.pos = g_LockonEnemy.pos;
 		g_Lockon.pos.y += 30.0f;
 
@@ -128,8 +138,8 @@ void UpdateLockon(void)
 		if (Dis >= pPlayer->fSightRange * pPlayer->fSightRange * 2)
 		{
 			pPlayer->bLockOn = false;
+			pPlayer->bWantLockOn = false;
 		}
-		pPlayer->bWantLockOn = false;
 	}
 	else
 	{

@@ -216,7 +216,8 @@ void UpdatePlayer(void)
 			{
 				if (g_player.bLockOn == true)
 				{
-					g_player.bLockOn = g_player.bLockOn ? false : true;
+					g_player.bLockOn = false;
+					g_player.bWantLockOn = false;
 				}
 				else if (g_player.bLockOn == false)
 				{
