@@ -196,7 +196,6 @@ void UpdateEnemy(void)
 					CollisionEnemyAction(EnemyCount);
 				}
 			}
-
 			// ƒƒbƒNƒIƒ“
 			if (pPlayer->bWantLockOn == true)
 			{
@@ -204,7 +203,6 @@ void UpdateEnemy(void)
 				{
 					EnemyDistanceSort(EnemyCount);
 					pPlayer->bLockOn = true;
-					pPlayer->bWantLockOn = false;
 				}
 				else
 				{
