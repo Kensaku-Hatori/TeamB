@@ -33,6 +33,21 @@ DWORD g_aSizeAudio[SOUND_LABEL_MAX] = {};					// オーディオデータサイズ
 // サウンドの情報
 SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 {
+	// BGM
+	{"data/BGM/game.wav", -1},
+	{"data/BGM/gameclear.wav", -1},
+	{"data/BGM/gameover.wav", -1},
+	{"data/BGM/ranking.wav", -1},
+	{"data/BGM/title.wav", -1},
+
+	// SE
+	{"data/SE/desicionsound.wav", 0},
+	{"data/SE/magic.wav", 0},
+	{"data/SE/potion.wav", 0},
+	{"data/SE/select.wav", 0},
+	{"data/SE/skeletonrubbing.wav", 0},
+	{"data/SE/slash.wav", 0},
+	{"data/SE/zombierubbing.wav", 0},
 
 };
 

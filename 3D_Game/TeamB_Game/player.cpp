@@ -512,7 +512,6 @@ void PlayerMove(void)
 	
 	if (g_player.state == PLAYERSTATE_NORMAL)
 	{
-		//ÉçÅ[ÉäÉìÉO
 		if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_DOWN)) && g_player.bRolling == false)
 		{
 			Speed = Speed * 10;
@@ -733,7 +732,10 @@ void PlayerMove(void)
 		//
 		else
 		{
-			if (g_player.PlayerMotion.motionType != MOTIONTYPE_NEUTRAL)
+			if (g_player.PlayerMotion.motionType == MOTIONTYPE_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_R_MOVE 
+			 || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_L_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_F_MOVE
+			 || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MAE || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_USIRO
+			 || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MIGI || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_HIDARI)
 			{
 				SetMotion(MOTIONTYPE_NEUTRAL, &g_player.PlayerMotion);
 			}
