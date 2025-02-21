@@ -60,8 +60,8 @@ void InitEnemy(void)
 		g_Enemy[i].Radius = 4.4f;											// ”¼Œa
 
 		g_Enemy[i].bLockOn = false;
-		g_Enemy[i].fSightRange = 200.0f;					// Ž‹ŠE‹——£
-		g_Enemy[i].fSightAngle = D3DXToRadian(110.0f);	// Ž‹ŠE‚Ì—t‚É
+		g_Enemy[i].fSightRange = 200.0f;									// Ž‹ŠE‹——£
+		g_Enemy[i].fSightAngle = D3DXToRadian(110.0f);						// Ž‹ŠE‚Ì—t‚É
 		g_Enemy[i].fDistance = g_Enemy[i].fSightRange / 2;
 
 		g_fDistance[i] = 0.0f;

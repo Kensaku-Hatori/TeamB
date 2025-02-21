@@ -33,7 +33,7 @@ void InitSkillUI(void)
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\skill01.png", &g_pTextureSkillUI[1]);		//MP 
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\skill02.png", &g_pTextureSkillUI[2]);		//AT 
 
-	g_SkillUIframepos = D3DXVECTOR3(50.0f, 150.0f, 0.0f);
+	g_SkillUIframepos = D3DXVECTOR3(80.0f, 150.0f, 0.0f);
 	g_SkillUIpos = g_SkillUIframepos;
 
 	//頂点バッファの生成・頂点情報の設定
@@ -64,10 +64,10 @@ void InitSkillUI(void)
 			pVtx[2].rhw = 1.0f;
 			pVtx[3].rhw = 1.0f;
 			//頂点カラーの設定
-			pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			pVtx[0].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+			pVtx[1].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+			pVtx[2].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+			pVtx[3].col = D3DCOLOR_RGBA(1, 1, 1, 255);
 			//テクスチャ座標の設定
 			pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
 			pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
@@ -170,46 +170,46 @@ void UpdateSkillUI(void)
 		pVtx[2].col = D3DCOLOR_RGBA(255, 0, 0, 255);
 		pVtx[3].col = D3DCOLOR_RGBA(255, 0, 0, 255);
 
-		pVtx[4].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[5].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[6].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[7].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[4].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+		pVtx[5].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+		pVtx[6].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+		pVtx[7].col = D3DCOLOR_RGBA(1, 1, 1, 255);
 
-		pVtx[8].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[9].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[10].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[11].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[8].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+		pVtx[9].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+		pVtx[10].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+		pVtx[11].col = D3DCOLOR_RGBA(1, 1, 1, 255);
 
 		break;
 	case SKILLTYPE_HORMING:
 		//頂点カラーの設定
-		pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[0].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+		pVtx[1].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+		pVtx[2].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+		pVtx[3].col = D3DCOLOR_RGBA(1, 1, 1, 255);
 
 		pVtx[4].col = D3DCOLOR_RGBA(255, 0, 0, 255);
 		pVtx[5].col = D3DCOLOR_RGBA(255, 0, 0, 255);
 		pVtx[6].col = D3DCOLOR_RGBA(255, 0, 0, 255);
 		pVtx[7].col = D3DCOLOR_RGBA(255, 0, 0, 255);
 
-		pVtx[8].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[9].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[10].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[11].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[8].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+		pVtx[9].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+		pVtx[10].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+		pVtx[11].col = D3DCOLOR_RGBA(1, 1, 1, 255);
 
 		break;
 	case SKILLTYPE_EXPLOSION:
 		//頂点カラーの設定
-		pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[0].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+		pVtx[1].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+		pVtx[2].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+		pVtx[3].col = D3DCOLOR_RGBA(1, 1, 1, 255);
 
-		pVtx[4].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[5].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[6].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[7].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[4].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+		pVtx[5].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+		pVtx[6].col = D3DCOLOR_RGBA(1, 1, 1, 255);
+		pVtx[7].col = D3DCOLOR_RGBA(1, 1, 1, 255);
 
 		pVtx[8].col = D3DCOLOR_RGBA(255, 0, 0, 255);
 		pVtx[9].col = D3DCOLOR_RGBA(255, 0, 0, 255);
