@@ -77,6 +77,7 @@ typedef struct
 	OBJECT Object;
 	D3DXVECTOR3 rotDest;
 	D3DXVECTOR3 move;
+	D3DXMATRIX mtxWand;				// ñæ‚Ìƒ}ƒgƒŠƒbƒNƒX
 	int nType;
 	int Action;
 	int nNumKey, nKey, nCounterMotion, nNextKey;
@@ -84,6 +85,7 @@ typedef struct
 	int IndxShadow;
 	int nActionCount,nActionCounter;
 	int statecount;
+	int CollModel;
 	float ShadowRadius;
 	float ModelMinX, ModelMaxX;
 	float Radius;
@@ -118,5 +120,6 @@ void SetEnemyPartsInfo(LoadInfo PartsInfo, int nType);		// “G‚Ìƒoƒbƒtƒ@‚âƒ‚[ƒVƒ
 void CollisionEnemy(void);									// “G‚Ì“–‚½‚è”»’èˆ—
 void CollisionEnemyAction(int nCnt);						// “G‚ÌƒAƒNƒVƒ‡ƒ“‚Ì“–‚½‚è”»’èˆ—
 bool IsPlayerInsight(int Index);
+void EnemyMatrixWand(int Index);
 
 #endif // !ENEMY_H_

@@ -347,6 +347,11 @@ void DrawEnemy(void)
 					// モデル(パーツ)の描画
 					g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].pMesh->DrawSubset(nCntMat);
 				}
+
+				if (EnemyPartsCount == g_Enemy[EnemyCount].CollModel)
+				{
+					//EnemyMatrixWand(EnemyCount);
+				}
 			}
 			pDevice->SetMaterial(&matDef);
 		}
@@ -658,25 +663,17 @@ void CollisionEnemy(void)
 void CollisionEnemyAction(int nCnt)
 {
 	Player* pPlayer = GetPlayer();
-	int nModel = 0; // 当たり判定のあるモデル
 
-	switch (g_Enemy[nCnt].nType)
+	D3DXVECTOR3 sabun = g_Enemy[nCnt].EnemyMotion.aModel[2].pos - g_Enemy[nCnt].EnemyMotion.aModel[3].pos;
+
+	D3DXVECTOR3 sabun1 = sabun / 4;
+
+	for (int n = 0; n < 4; n++)
 	{
-	case 0: // スケルトン
-		nModel = 3;
-		break;
-
-	case 1: // ゾンビ
-		nModel = 1;
-		break;
-
-	default:
-		break;
-	}
-
-	if (collisioncircle(g_Enemy[nCnt].Object.Pos + g_Enemy[nCnt].EnemyMotion.aModel[nModel].pos, g_Enemy[nCnt].Radius * 1.3f, pPlayer->pos, PLAYER_RADIUS) == true)
-	{
-		HitPlayer(g_Enemy[nCnt].Status.fPower,g_Enemy[nCnt].Object.Pos);
+		if (collisioncircle((g_Enemy[nCnt].EnemyMotion.aModel[2].pos + (sabun1 * n)) + sabun1, g_Enemy[nCnt].Radius, pPlayer->pos, PLAYER_RADIUS) == true)
+		{
+			HitPlayer(g_Enemy[nCnt].Status.fPower, g_Enemy[nCnt].Object.Pos);
+		}
 	}
 }
 
@@ -728,4 +725,35 @@ bool IsPlayerInsight(int Index)
 	}
 
 	return bLock;
+}
+
+//
+//
+//
+void EnemyMatrixWand(int Index)
+{
+	LPDIRECT3DDEVICE9 pDevice;
+	//デバイスの取得
+	pDevice = GetDevice();
+
+	D3DXMATRIX mtxRotEnemy, mtxTransEnemy;
+	D3DXMATRIX mtxParent;
+	D3DXMatrixIdentity(&g_Enemy[Index].mtxWand);
+
+	// 向きを反映
+	D3DXMatrixRotationYawPitchRoll(&mtxRotEnemy, g_Enemy[Index].EnemyMotion.aModel[g_Enemy[Index].CollModel].rot.y, g_Enemy[Index].EnemyMotion.aModel[g_Enemy[Index].CollModel].rot.x, g_Enemy[Index].EnemyMotion.aModel[g_Enemy[Index].CollModel].rot.z);
+	D3DXMatrixMultiply(&g_Enemy[Index].mtxWand, &g_Enemy[Index].mtxWand, &mtxRotEnemy);
+
+	// 位置を反映
+	D3DXMatrixTranslation(&mtxTransEnemy, 0.0f, 25.0f, 0.0f);
+	D3DXMatrixMultiply(&g_Enemy[Index].mtxWand, &g_Enemy[Index].mtxWand, &mtxTransEnemy);
+
+	mtxParent = g_Enemy[Index].EnemyMotion.aModel[g_Enemy[Index].CollModel].mtxWorld;
+
+	D3DXMatrixMultiply(&g_Enemy[Index].mtxWand,
+		&g_Enemy[Index].mtxWand,
+		&mtxParent);
+
+	pDevice->SetTransform(D3DTS_WORLD,
+		&g_Enemy[Index].mtxWand);
 }

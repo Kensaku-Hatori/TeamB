@@ -261,7 +261,7 @@ void UpdatePlayer(void)
 		g_player.pos.y += g_player.move.y;
 		g_player.pos.z += g_player.move.z;
 
-		CollisionEnemy();
+		//CollisionEnemy();
 		CollisionBoss();
 
 		//使用する魔法の種類を変更
