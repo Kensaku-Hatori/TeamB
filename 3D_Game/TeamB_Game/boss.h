@@ -96,5 +96,6 @@ void BossState();											// ボスの状態更新処理
 void SetBossPartsInfo(LoadInfo PartsInfo);					// ボスのバッファやモーション設定処理
 void CollisionBoss(void);									// ボスの当たり判定処理
 void CollisionBossAction(void);								// ボスのアクション時の当たり判定処理
+bool DethBoss(void);										// ボスの死亡フラグ取得処理
 
 #endif // !ENEMY_H_

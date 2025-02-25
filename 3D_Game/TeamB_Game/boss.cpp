@@ -533,3 +533,11 @@ void CollisionBossAction(void)
 		HitPlayer(g_Boss.Status.fPower,g_Boss.Object.Pos);
 	}
 }
+
+//===================================
+//ボスの死亡フラグ取得処理
+//===================================
+bool DethBoss(void)
+{
+	return g_Boss.bUse;
+}
