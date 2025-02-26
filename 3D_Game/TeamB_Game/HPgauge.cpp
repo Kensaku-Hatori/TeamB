@@ -10,7 +10,7 @@
 
 //グローバル変数宣言
 HPgauge g_HPgauge[MAX_HPGAUGE];
-LPDIRECT3DTEXTURE9 pTextureHPgauge[HPGAUGETYPE_MAX] = {};
+LPDIRECT3DTEXTURE9 pTextureHPgauge[HPGAUGETYPE_MAX] = { NULL };
 //LPDIRECT3DVERTEXBUFFER9 pVtxBuffHPgauge = {};
 
 //====================
@@ -21,37 +21,29 @@ void InitHPgauge()
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice,
-		HPGAUGETEX[(HPGAUGETYPE)0],
-		&pTextureHPgauge[(HPGAUGETYPE)0]);
-
-	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice,
-		HPGAUGETEX[(HPGAUGETYPE)1],
-		&pTextureHPgauge[(HPGAUGETYPE)1]);
-
-	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice,
-		HPGAUGETEX[(HPGAUGETYPE)2],
-		&pTextureHPgauge[(HPGAUGETYPE)2]);
-
+	for (int nCntTex = 0; nCntTex < MAX_POLY; nCntTex++)
+	{
+		//テクスチャの読み込み
+		D3DXCreateTextureFromFile(pDevice,
+			HPGAUGETEX[nCntTex],
+			&pTextureHPgauge[nCntTex]);
+	}
 
 	for (int nCnt = 0; nCnt < MAX_HPGAUGE; nCnt++)
 	{
 		//構造体の初期化
-		g_HPgauge[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);					//位置
-		g_HPgauge[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);					//向き
-		g_HPgauge[nCnt].fNowHP = 0.0f;											//現在のHP
-		g_HPgauge[nCnt].fMaxHP = 0.0f;											//最大のHP
-		g_HPgauge[nCnt].bUse = false;											//使用していない状態にする
+		g_HPgauge[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);					// 位置
+		g_HPgauge[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);					// 向き
+		g_HPgauge[nCnt].fNowHP = 0.0f;											// 現在のHP
+		g_HPgauge[nCnt].fMaxHP = 0.0f;											// 最大のHP
+		g_HPgauge[nCnt].bUse = false;											// 使用していない状態にする
+																				   
+		g_HPgauge[nCnt].poly[0].col = D3DXCOLOR(1.0f, 0.5f, 0.5f, 1.0f);		// 赤ゲージの色
+		g_HPgauge[nCnt].poly[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);		// ゲージの色
+		g_HPgauge[nCnt].poly[2].col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);		// 枠の色
 
-		g_HPgauge[nCnt].poly[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);		//ゲージの色
-		g_HPgauge[nCnt].poly[1].col = D3DXCOLOR(1.0f, 0.5f, 0.5f, 1.0f);		//赤ゲージの色
-		g_HPgauge[nCnt].poly[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);		//枠の色
-
-		g_HPgauge[nCnt].poly[0].type = HPGAUGETYPE_NORMAL;
-		g_HPgauge[nCnt].poly[1].type = HPGAUGETYPE_RED;
+		g_HPgauge[nCnt].poly[0].type = HPGAUGETYPE_RED;
+		g_HPgauge[nCnt].poly[1].type = HPGAUGETYPE_NORMAL;
 		g_HPgauge[nCnt].poly[2].type = HPGAUGETYPE_NONE;
 	}
 }
@@ -98,14 +90,17 @@ void DrawHPgauge()
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	//計算用マトリックス
-	D3DXMATRIX mtxRot, mtxTrans;
+	////計算用マトリックス
+	//D3DXMATRIX mtxRot, mtxTrans;
 
-	//ライトを無効にする
+	//ライトの無効化
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
-	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
-	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+	//アルファテストを有効化
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+
+	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	for (int nCnt = 0; nCnt < MAX_HPGAUGE; nCnt++)
 	{
@@ -113,10 +108,12 @@ void DrawHPgauge()
 		{
 			for (int nCntPoly = 0; nCntPoly < MAX_POLY; nCntPoly++)
 			{
+				//計算用マトリックス
+				D3DXMATRIX mtxRot, mtxTrans;
+				D3DXMATRIX mtxView;
+
 				//ワールドマトリックスの初期化
 				D3DXMatrixIdentity(&g_HPgauge[nCnt].poly[nCntPoly].mtxWorld);
-
-				D3DXMATRIX mtxView;
 
 				//ビューマトリックス取得
 				pDevice->GetTransform(D3DTS_VIEW, &mtxView);
@@ -158,11 +155,11 @@ void DrawHPgauge()
 		}
 	}
 
-	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
-	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-
-	//ライトを有効に戻す
+	//ライト有効化
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+
+	//アルファテストを無効化
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 }
 
 //====================
@@ -200,26 +197,29 @@ int SetHPgauge(D3DXVECTOR3 pos,D3DXVECTOR2 scale,float MaxHP)
 			//頂点情報の設定
 			for (int nCntPoly = 0; nCntPoly < MAX_POLY; nCntPoly++)
 			{
-				
-				g_HPgauge[nCnt].poly[nCntPoly].fWidth = scale.x;				// 幅
-				g_HPgauge[nCnt].poly[nCntPoly].fMaxGauge = scale.x;				// 幅
+				//真ん中を算出
+				g_HPgauge[nCnt].poly[nCntPoly].center = D3DXVECTOR2((float)scale.x * 0.5f, scale.y * 0.5f);
+
+				//各種設定
+				g_HPgauge[nCnt].poly[nCntPoly].fWidth = (scale.x - g_HPgauge[nCnt].poly[nCntPoly].center.x);			// 右端
+				g_HPgauge[nCnt].poly[nCntPoly].fMaxGauge = scale.x;														// 幅
 
 				//頂点情報の設定
-				pVtx[0].pos.x = 0.0f;
+				pVtx[0].pos.x = -g_HPgauge[nCnt].poly[nCntPoly].center.x;
 				pVtx[0].pos.y = scale.y;
-				pVtx[0].pos.x = 0.0f;
+				pVtx[0].pos.z = 0.0f;
 
-				pVtx[1].pos.x = scale.x;
+				pVtx[1].pos.x = (scale.x - g_HPgauge[nCnt].poly[nCntPoly].center.x);
 				pVtx[1].pos.y = scale.y;
-				pVtx[1].pos.x = 0.0f;
+				pVtx[1].pos.z = 0.0f;
 
-				pVtx[2].pos.x = 0.0f;
+				pVtx[2].pos.x = -g_HPgauge[nCnt].poly[nCntPoly].center.x;
 				pVtx[2].pos.y = 0.0f;
-				pVtx[2].pos.x = 0.0f;
+				pVtx[2].pos.z = 0.0f;
 
-				pVtx[3].pos.x = scale.x;
+				pVtx[3].pos.x = (scale.x - g_HPgauge[nCnt].poly[nCntPoly].center.x);
 				pVtx[3].pos.y = 0.0f;
-				pVtx[3].pos.x = 0.0f;
+				pVtx[3].pos.z = 0.0f;
 
 				//法線ベクトルの設定
 				pVtx[0].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
@@ -245,10 +245,12 @@ int SetHPgauge(D3DXVECTOR3 pos,D3DXVECTOR2 scale,float MaxHP)
 			//頂点バッファをアンロック
 			g_HPgauge[nCnt].pVtxBuff->Unlock();
 
+			//使用している状態にする
 			g_HPgauge[nCnt].bUse = true;
 			break;
 		}
 	}
+	//ゲージのインデクスを返す
 	return nCnt;
 }
 
@@ -268,19 +270,25 @@ void HPgaugeDeff(int Indx, float NowHP)
 	//頂点情報へのポインタ
 	VERTEX_3D* pVtx = NULL;
 
-	//比率を計算する
-	float ratio = NowHP / g_HPgauge[Indx].fMaxHP;
+	if (g_HPgauge[Indx].bUse == true)
+	{
+		//比率を計算する
+		float ratio = NowHP / g_HPgauge[Indx].fMaxHP;
 
-	g_HPgauge[Indx].poly[0].fWidth = g_HPgauge[Indx].poly[0].fMaxGauge * ratio;
+		g_HPgauge[Indx].poly[1].fWidth = (g_HPgauge[Indx].poly[1].fMaxGauge * ratio - g_HPgauge[Indx].poly[1].center.x);
 
-	//頂点バッファをロック
-	g_HPgauge[Indx].pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+		//頂点バッファをロック
+		g_HPgauge[Indx].pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	pVtx[1].pos.x = g_HPgauge[Indx].poly[0].fWidth;
-	pVtx[3].pos.x = g_HPgauge[Indx].poly[0].fWidth;
+		//ポインタを進める
+		pVtx += 4;
 
-	//頂点バッファをアンロック
-	g_HPgauge[Indx].pVtxBuff->Unlock();
+		pVtx[1].pos.x = g_HPgauge[Indx].poly[1].fWidth;
+		pVtx[3].pos.x = g_HPgauge[Indx].poly[1].fWidth;
+
+		//頂点バッファをアンロック
+		g_HPgauge[Indx].pVtxBuff->Unlock();
+	}
 }
 
 //====================
@@ -291,35 +299,36 @@ void RedgaugeDeff(int Indx, float NowHP)
 	//頂点情報へのポインタ
 	VERTEX_3D* pVtx = NULL;
 
-	//比率を計算する
-	float ratio = NowHP / g_HPgauge[Indx].fMaxHP;
+	//使用している状態なら
+	if (g_HPgauge[Indx].bUse == true)
+	{
+		//比率を計算する
+		float ratio = NowHP / g_HPgauge[Indx].fMaxHP;
 
-	//目標の値を計算する
-	float fWidth = g_HPgauge[Indx].poly[1].fMaxGauge * ratio;
+		//目標の値を計算する
+		float fWidth = (g_HPgauge[Indx].poly[0].fMaxGauge * ratio - g_HPgauge[Indx].poly[0].center.x);
 
-	//差分を計算する
-	float fDiff = g_HPgauge[Indx].poly[1].fWidth - fWidth;
+		//差分を計算する
+		float fDiff = g_HPgauge[Indx].poly[0].fWidth - fWidth;
 
-	//徐々に減らす
-	g_HPgauge[Indx].poly[1].fWidth -= fDiff * 0.01f;
+		//徐々に減らす
+		g_HPgauge[Indx].poly[0].fWidth -= fDiff * 0.01f;
 
-	//頂点バッファをロック
-	g_HPgauge[Indx].pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+		//頂点バッファをロック
+		g_HPgauge[Indx].pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	//ポインタを進める
-	pVtx += 4;
+		pVtx[1].pos.x = g_HPgauge[Indx].poly[0].fWidth;
+		pVtx[3].pos.x = g_HPgauge[Indx].poly[0].fWidth;
 
-	pVtx[1].pos.x = g_HPgauge[Indx].poly[1].fWidth;
-	pVtx[3].pos.x = g_HPgauge[Indx].poly[1].fWidth;
-
-	//頂点バッファをアンロック
-	g_HPgauge[Indx].pVtxBuff->Unlock();
+		//頂点バッファをアンロック
+		g_HPgauge[Indx].pVtxBuff->Unlock();
+	}
 }
 
 //====================
 //HPゲージを消す
 //====================
-void DeleteGuage(int Indx)
+void DeleteHPGuage(int Indx)
 {
 	g_HPgauge[Indx].bUse = false;
 }

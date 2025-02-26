@@ -37,6 +37,7 @@
 #include "arrow.h"
 #include "boss.h"
 #include <time.h>
+#include "HPgauge.h"
 
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -66,6 +67,9 @@ void InitGame(void)
 
 	////ブロックの初期化
 	//InitBlock();
+
+	//HPゲージの初期化
+	InitHPgauge();
 
 	//プレイヤーの初期化
 	InitPlayer();
@@ -161,6 +165,9 @@ void UninitGame(void)
 	//衝撃波の終了処理
 	UninitImpact();
 
+	//HOゲージの終了処理
+	UninitHPgauge();
+
 	//プレイヤーの終了処理
 	UninitPlayer();
 
@@ -236,6 +243,9 @@ void UpdateGame(void)
 
 			//衝撃波の更新処理
 			UpdateImpact();
+
+			//HPゲージの更新処理
+			UpdateHPgauge();
 
 			//プレイヤーの更新処理
 			UpdatePlayer();
@@ -419,6 +429,9 @@ void DrawGame(void)
 
 		//敵の描画処理
 		DrawBoss();
+
+		//HPゲージの描画処理
+		DrawHPgauge();
 
 		//矢印の描画処理
 		DrawArrow();

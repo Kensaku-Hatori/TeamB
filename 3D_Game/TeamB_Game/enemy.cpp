@@ -22,6 +22,7 @@
 #include "lockon.h"
 #include "model.h"
 #include "collision.h"
+#include "HPgauge.h"
 
 //*******************
 // グローバル変数宣言
@@ -240,15 +241,22 @@ void UpdateEnemy(void)
 				g_Enemy[EnemyCount].Object.Pos.y = 0;
 			}
 
+			//向きの更新
 			g_Enemy[EnemyCount].Object.Rot.y += (g_Enemy[EnemyCount].rotDest.y - g_Enemy[EnemyCount].Object.Rot.y) * 0.05f;
 
+			//前の位置の保存
 			g_Enemy[EnemyCount].Object.OldPos = g_Enemy[EnemyCount].Object.Pos;
+
 			//位置の更新
 			g_Enemy[EnemyCount].Object.Pos += g_Enemy[EnemyCount].move;
 
 			//影の更新
-			SetPositionShadow(g_Enemy[EnemyCount].IndxShadow, g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].bUse);
-			SetSizeShadow(g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].IndxShadow);
+			SetPositionShadow(g_Enemy[EnemyCount].IndxShadow, g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].bUse);		// 位置
+			SetSizeShadow(g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].IndxShadow);										// サイズの更新
+
+			//HPゲージの更新
+			SetPositionHPgauge(g_Enemy[EnemyCount].IndxGuage, D3DXVECTOR3(g_Enemy[EnemyCount].Object.Pos.x, (float)g_Enemy[EnemyCount].Object.Pos.y + 50.0f, g_Enemy[EnemyCount].Object.Pos.z));
+			RedgaugeDeff(g_Enemy[EnemyCount].IndxGuage, g_Enemy[EnemyCount].Status.fHP);
 
 			//モーションの更新
 			UpdateMotion(&g_Enemy[EnemyCount].EnemyMotion);
@@ -376,6 +384,9 @@ void HitEnemy(float Atack,int Indx)
 	g_Enemy[Indx].Action = ENEMYACTION_WELL;
 	g_Enemy[Indx].state = ENEMYSTATE_KNOCKUP;
 
+	//HPゲージの更新
+	HPgaugeDeff(g_Enemy[Indx].IndxGuage, g_Enemy[Indx].Status.fHP);
+
 	if (Atack >= 10)
 	{// ダメージが最小値以上なら
 		//g_Enemy[Indx].statecount = (int)Atack * 3;
@@ -432,6 +443,9 @@ void SetEnemy(D3DXVECTOR3 pos, int nType,D3DXVECTOR3 rot)
 			g_Enemy[EnemyCount].IndxShadow = SetShadow(g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].Object.Rot,20.0f);
 			g_Enemy[EnemyCount].nActionCount = rand() % 180 + 120;
 
+			//HPゲージの設定処理
+			g_Enemy[EnemyCount].IndxGuage = SetHPgauge(D3DXVECTOR3(g_Enemy[EnemyCount].Object.Pos.x, (float)g_Enemy[EnemyCount].Object.Pos.y + 50.0f, g_Enemy[EnemyCount].Object.Pos.z), D3DXVECTOR2(60.0f, 5.0f), g_Enemy[EnemyCount].Status.fHP);
+
 			break;
 		}
 	}
@@ -459,6 +473,9 @@ void DeadEnemy(int Indx)
 	g_Enemy[Indx].bUse = false;
 	g_nNumEnemy--;
 	SetPositionShadow(g_Enemy[Indx].IndxShadow,g_Enemy[Indx].Object.Pos,g_Enemy[Indx].bUse);
+
+	//HPゲージを消す
+	DeleteHPGuage(g_Enemy[Indx].IndxGuage);
 
 	//アイテムドロップ
 	Drop = rand() % 10;
