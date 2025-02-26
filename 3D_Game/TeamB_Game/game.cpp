@@ -43,6 +43,7 @@
 GAMESTATE g_gamestate = GAMESTATE_NONE;
 int g_nCounterGameState = 0;
 bool g_bPause = false;  //ポーズ中かどうか
+bool bAbo = false;//全滅フラグ
 
 //=============
 // 初期化処理
@@ -140,6 +141,7 @@ void InitGame(void)
 	srand((int)time(0));				//シード値(アイテムrand)
 
 	g_bPause = false;					//ポーズしていない状態へ
+	bAbo = false;						//全滅していない状態へ
 }
 
 //===========
@@ -323,6 +325,19 @@ void UpdateGame(void)
 			//敵の数を取得する
 			int* NumEnemy = GetNumEnemy();
 			Player* pPlayer = GetPlayer();
+
+			if ((*NumEnemy) >= 0)
+			{
+				if (bAbo != true)
+				{
+					//エリア移動場所取得
+					D3DXVECTOR3 pos = GetBottom();
+
+					//サークルを出す
+					SetCircle(pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 150, 150), 8, 0, 200.0f, 40.0f, true, false);
+				}
+				bAbo = true;
+			}
 
 			//全てのwaveが終わったなら
 			if (GetFinish() == true)
