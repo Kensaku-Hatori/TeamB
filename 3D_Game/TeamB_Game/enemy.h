@@ -18,9 +18,9 @@
 #define ENEMY_RADIUS (float)(8.0f)		// 敵の大きさ
 #define ENEMY_RUNSPEED (float)(1.0f)	// 敵の走るスピード
 
-#define ENEMY_HP (float)(150)			// HP
+#define ENEMY_HP (float)(200)			// HP
 #define ENEMY_SPEED (float) (2.0f)		// 速度
-#define ENEMY_AP (float)(10)			// 攻撃力
+#define ENEMY_AP (float)(100)			// 攻撃力
 
 // 行動の距離
 #define ATTACK_DIST (float)(50.0f)		// 攻撃
@@ -33,6 +33,7 @@
 #define HOMING_MOVE (float)(0.2f)		// ホーミング
 #define WELL_MOVE (float)(0.1f)			// 様子見
 
+#define ENEMY_SCORE (100)
 // 敵の状態
 typedef enum
 {

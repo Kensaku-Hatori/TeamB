@@ -29,6 +29,7 @@
 #include "lockon.h"
 #include "boss.h"
 #include "mission.h"
+#include "score.h"
 
 //グローバル変数
 Player g_player;
@@ -61,6 +62,7 @@ void InitPlayer(void)
 		g_player.Status.fPower = PLAYER_AP;
 		g_player.Status.fSpeed = PLAYER_SPEED;
 		g_player.Skilltype = SKILLTYPE_NONE;
+		g_player.nScore = 0;
 	}
 
 	g_player.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -287,7 +289,7 @@ void UpdatePlayer(void)
 		g_player.pos.y += g_player.move.y;
 		g_player.pos.z += g_player.move.z;
 
-		//CollisionEnemy();
+		CollisionEnemy();
 		CollisionBoss();
 
 		//使用する魔法の種類を変更
@@ -415,6 +417,8 @@ void UpdatePlayer(void)
 
 		//モーションの更新処理
 		UpdateMotion(&g_player.PlayerMotion);
+
+		g_player.nScore = GetScore();
 	}
 }
 

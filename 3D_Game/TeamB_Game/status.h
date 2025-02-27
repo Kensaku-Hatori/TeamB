@@ -23,6 +23,7 @@ typedef struct
 	float fHP;
 	float fPower;
 	float fSpeed;
+	int Score;
 }EnemyStatus;
 
 typedef struct
@@ -30,5 +31,6 @@ typedef struct
 	float fHP;
 	float fPower;
 	float fSpeed;
+	int Score;
 }BossStatus;
 #endif // !STATUS_H_

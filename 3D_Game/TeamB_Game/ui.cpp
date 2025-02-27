@@ -13,6 +13,7 @@
 #include "lockon.h"
 #include "skillui.h"
 #include "mission.h"
+#include "player.h"
 
 //ƒOƒ[ƒoƒ‹•Ï”
 
@@ -21,11 +22,13 @@
 //=============
 void InitUi(void)
 {
+	Player* pPlayer = GetPlayer();
+
 	InitTimer();
 	SetTimer(0,0);
-
+	
 	InitScore();
-	SetScore(0);
+	SetScore(pPlayer->nScore);
 
 	InitGauge();
 	SetGauge(GAUGETYPE_HP, D3DXVECTOR3(30.0f, 30.0f, 0.0f), D3DXVECTOR2(300.0f, 20.0f));
