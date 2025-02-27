@@ -55,7 +55,7 @@ typedef enum
 {
 	ENEMYTYPE_SKELETON = 0,
 	ENEMYTYPE_ZOMBIE,
-	ENEMYTyPE_MIDBOSS,
+	ENEMYTYPE_MIDBOSS,
 	ENEMYTYPE_MAX
 }ENEMYTYPE;
 
@@ -78,6 +78,7 @@ typedef struct
 	D3DXVECTOR3 rotDest;
 	D3DXVECTOR3 move;
 	D3DXMATRIX mtxWand;				// 杖先のマトリックス
+	ENEMYTYPE type;
 	int nType;
 	int Action;
 	int nNumKey, nKey, nCounterMotion, nNextKey;

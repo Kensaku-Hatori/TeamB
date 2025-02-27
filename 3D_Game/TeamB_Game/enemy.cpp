@@ -358,7 +358,7 @@ void DrawEnemy(void)
 
 				if (EnemyPartsCount == g_Enemy[EnemyCount].CollModel)
 				{
-					//EnemyMatrixWand(EnemyCount);
+					EnemyMatrixWand(EnemyCount);
 				}
 			}
 			pDevice->SetMaterial(&matDef);
@@ -445,6 +445,22 @@ void SetEnemy(D3DXVECTOR3 pos, int nType,D3DXVECTOR3 rot)
 
 			//HPゲージの設定処理
 			g_Enemy[EnemyCount].IndxGuage = SetHPgauge(D3DXVECTOR3(g_Enemy[EnemyCount].Object.Pos.x, (float)g_Enemy[EnemyCount].Object.Pos.y + 50.0f, g_Enemy[EnemyCount].Object.Pos.z), D3DXVECTOR2(60.0f, 5.0f), g_Enemy[EnemyCount].Status.fHP);
+
+			if (nType == 0)
+			{
+				g_Enemy[EnemyCount].type = ENEMYTYPE_SKELETON;
+				g_Enemy[EnemyCount].CollModel = 3;
+			}
+			else if(nType==1)
+			{
+				g_Enemy[EnemyCount].type = ENEMYTYPE_ZOMBIE;
+				g_Enemy[EnemyCount].CollModel = 1;
+			}
+			else if (nType == 2)
+			{
+				g_Enemy[EnemyCount].type = ENEMYTYPE_MIDBOSS;
+				g_Enemy[EnemyCount].CollModel = 10;
+			}
 
 			break;
 		}
@@ -680,17 +696,32 @@ void CollisionEnemy(void)
 void CollisionEnemyAction(int nCnt)
 {
 	Player* pPlayer = GetPlayer();
+	D3DXVECTOR3 Pos;
+	Pos = D3DXVECTOR3(g_Enemy[nCnt].mtxWand._41, g_Enemy[nCnt].mtxWand._42, g_Enemy[nCnt].mtxWand._43);
 
-	D3DXVECTOR3 sabun = g_Enemy[nCnt].EnemyMotion.aModel[2].pos - g_Enemy[nCnt].EnemyMotion.aModel[3].pos;
+	D3DXVECTOR3 sabun = g_Enemy[nCnt].EnemyMotion.aModel[g_Enemy[nCnt].EnemyMotion.aModel[g_Enemy[nCnt].CollModel].Parent].pos - Pos;
 
 	D3DXVECTOR3 sabun1 = sabun / 4;
 
 	for (int n = 0; n < 4; n++)
 	{
-		if (collisioncircle((g_Enemy[nCnt].EnemyMotion.aModel[2].pos + (sabun1 * n)) + sabun1, g_Enemy[nCnt].Radius, pPlayer->pos, PLAYER_RADIUS) == true)
+		D3DXVECTOR3 CollPos = (Pos + (sabun1 * n)) - sabun1;
+		if (collisioncircle(CollPos, g_Enemy[nCnt].Radius / 2, pPlayer->pos, PLAYER_RADIUS) == true)
 		{
 			HitPlayer(g_Enemy[nCnt].Status.fPower, g_Enemy[nCnt].Object.Pos);
 		}
+
+		// エフェクトの設定
+		SetEffect(D3DXVECTOR3(CollPos.x, CollPos.y, CollPos.z),
+			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			50,
+			0,
+			D3DXVECTOR3(g_Enemy[nCnt].Radius / 2, g_Enemy[nCnt].Radius / 2, g_Enemy[nCnt].Radius / 2),
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			EFFECT_SKILL,
+			0,
+			0.0f,
+			D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	}
 }
 
@@ -744,9 +775,9 @@ bool IsPlayerInsight(int Index)
 	return bLock;
 }
 
-//
-//
-//
+//===============
+// マトリックス
+//===============
 void EnemyMatrixWand(int Index)
 {
 	LPDIRECT3DDEVICE9 pDevice;
@@ -762,7 +793,20 @@ void EnemyMatrixWand(int Index)
 	D3DXMatrixMultiply(&g_Enemy[Index].mtxWand, &g_Enemy[Index].mtxWand, &mtxRotEnemy);
 
 	// 位置を反映
-	D3DXMatrixTranslation(&mtxTransEnemy, 0.0f, 25.0f, 0.0f);
+	D3DXVECTOR3 pos;
+	if (g_Enemy[Index].type == ENEMYTYPE_SKELETON)
+	{
+		pos = D3DXVECTOR3(-10.0f, 0.0f, 0.0f);
+	}
+	else if (g_Enemy[Index].type == ENEMYTYPE_ZOMBIE)
+	{
+		pos = D3DXVECTOR3(0.0f, 5.0f, 0.0f);
+	}
+	else if (g_Enemy[Index].type == ENEMYTYPE_MIDBOSS)
+	{
+		pos = D3DXVECTOR3(0.0f, 0.0f, -20.0f);
+	}
+	D3DXMatrixTranslation(&mtxTransEnemy, pos.x, pos.y, pos.z);
 	D3DXMatrixMultiply(&g_Enemy[Index].mtxWand, &g_Enemy[Index].mtxWand, &mtxTransEnemy);
 
 	mtxParent = g_Enemy[Index].EnemyMotion.aModel[g_Enemy[Index].CollModel].mtxWorld;
@@ -773,4 +817,16 @@ void EnemyMatrixWand(int Index)
 
 	pDevice->SetTransform(D3DTS_WORLD,
 		&g_Enemy[Index].mtxWand);
+
+	// エフェクトの設定
+	SetEffect(D3DXVECTOR3(g_Enemy[Index].mtxWand._41, g_Enemy[Index].mtxWand._42, g_Enemy[Index].mtxWand._43),
+		D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+		50,
+		0,
+		D3DXVECTOR3(g_Enemy[Index].Radius / 2, g_Enemy[Index].Radius / 2, g_Enemy[Index].Radius / 2),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		EFFECT_SKILL,
+		0,
+		0.0f,
+		D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 }
