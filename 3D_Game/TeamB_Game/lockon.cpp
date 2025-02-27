@@ -114,6 +114,7 @@ void UpdateLockon(void)
 
 	if (g_Lockon.bUse == true)
 	{
+		pPlayer->bWantLockOn = false;
 		if (bUse == false)
 		{
 			pPlayer->bLockOn = false;

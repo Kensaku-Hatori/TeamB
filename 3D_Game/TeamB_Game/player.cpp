@@ -240,11 +240,10 @@ void UpdatePlayer(void)
 			//ÉçÉbÉNÉIÉì
 			if ((KeyboardTrigger(DIK_R) == true || GetJoypadTrigger(JOYKEY_R1) == true))
 			{
-				g_player.bWantLockOn = g_player.bWantLockOn ? false : true;
-
 				if (g_player.bLockOn == true)
 				{
 					g_player.bLockOn = false;
+					g_player.bWantLockOn = false;
 				}
 				else if (g_player.bLockOn == false)
 				{

@@ -431,9 +431,6 @@ void DrawGame(void)
 	//ステージの描画処理
 	DrawStageModel();
 
-	//エフェクトの描画処理
-	DrawEffect();
-
 	//アイテムの描画処理
 	DrawItemBillboard();
 
@@ -464,6 +461,9 @@ void DrawGame(void)
 		//衝撃波の描画処理
 		DrawImpact();
 	}
+
+	//エフェクトの描画処理
+	DrawEffect();
 
 	//ポーズしているなら
 	if (g_bPause == true)
