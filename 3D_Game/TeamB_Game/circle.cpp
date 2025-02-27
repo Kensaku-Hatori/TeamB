@@ -75,7 +75,7 @@ void UpdateCircle()
 					for (int nCntX = 0; nCntX <= g_Circle[nCnt].nDiviX; nCntX++)
 					{
 						//頂点カラーの設定
-						pVtx[indx].col = D3DXCOLOR(g_Circle[nCnt].col.r, g_Circle[nCnt].col.g, g_Circle[nCnt].col.b, (g_Circle[nCnt].col.a / (g_Circle[nCnt].nDiviY)) * (nCntY));
+						//pVtx[indx].col = D3DXCOLOR(g_Circle[nCnt].col.r, g_Circle[nCnt].col.g, g_Circle[nCnt].col.b, (g_Circle[nCnt].col.a / (g_Circle[nCnt].nDiviY)) * (nCntY));
 
 						//インデックスを進める
 						indx++;
@@ -100,6 +100,7 @@ void DrawCircle()
 	// 計算用マトリックス
 	D3DXMATRIX mtxRot, mtxTrans, mtxSize;
 
+	//ライトを切る
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	//カリングを切る
@@ -111,9 +112,9 @@ void DrawCircle()
 	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	// 加算合成を設定する
-	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	//pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	//pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	//pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
 	for (int nCnt = 0; nCnt < MAX_CIRCLE; nCnt++)
 	{
@@ -156,6 +157,7 @@ void DrawCircle()
 	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
+	//ライトをつける
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 	// アルファテストを元に戻す
