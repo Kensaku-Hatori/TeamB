@@ -39,7 +39,7 @@ void InitItemUI(void)
 	pDevice = GetDevice();
 
 	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\UIfram.jpg", &g_pTextureItemUIframe);	//枠
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\UIfram00.jpg", &g_pTextureItemUIframe);	//枠
 	
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\itemUI2.png", &g_pTextureItemUI[0]);		//HP 
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\itemUI1.png", &g_pTextureItemUI[1]);		//MP 
