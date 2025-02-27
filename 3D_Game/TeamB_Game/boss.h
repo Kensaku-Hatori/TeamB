@@ -10,9 +10,12 @@
 #define BOSS_AP (10)
 #define BOSS_HP (1000)
 #define BOSS_SPEED (1)
-#define	BOSSATTACK_DIST (50)
+#define	BOSSATTACK_DIST (10)
 #define BOSSHORMING_DIST (300)
 #define BOSSHORMING_MOVE (float)(-2.0f)
+#define MAX_BOSSACTIONRANK (2)
+#define BOSSACTION_JUSTIS (70)
+#define MOVEEND_FLAME (180)
 
 #include "main.h"
 #include "key.h"
@@ -41,8 +44,9 @@ typedef struct
 {
 	BOSSACTION Action;
 	float primary[BOSSACTION_MAX];
+	int ActionEnd[BOSSACTION_MAX],ActionEndCounter;
 	int routine, routinecount;
-	bool fFinishAction;
+	bool bFinishAction;
 }BossAi;
 
 // 敵のバッファ・モーション格納
@@ -97,5 +101,6 @@ void SetBossPartsInfo(LoadInfo PartsInfo);					// ボスのバッファやモーション設定
 void CollisionBoss(void);									// ボスの当たり判定処理
 void CollisionBossAction(void);								// ボスのアクション時の当たり判定処理
 bool DethBoss(void);										// ボスの死亡フラグ取得処理
-
+void Routine(void);
+void EndAction(void);
 #endif // !ENEMY_H_

@@ -90,7 +90,6 @@ typedef struct
 	int nFrameBlend;						// ブレンドフレーム
 	int nCntBlend;							// ブレンドフレームカウント
 	int nCntMotionBlend;					// ブレンドモーションのカウンター
-
 }OBJECTINFO;
 
 #endif // !KEY_H_

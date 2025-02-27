@@ -49,6 +49,9 @@ void InitBoss(void)
 	g_Boss.nActionCounter = 0;										// アクションカウンター
 	g_Boss.Action = BOSSACTION_WELL;								// 行動の種類
 	g_Boss.Radius = 4.4f;											// 半径
+	g_Boss.BossAi.primary[0] = 34.0f;
+	g_Boss.BossAi.primary[1] = 33.0f;
+	g_Boss.BossAi.primary[2] = 33.0f;
 }
 //*************
 // ボスの終了処理
@@ -92,9 +95,43 @@ void UpdateBoss(void)
 
 	if (g_Boss.bUse == true)
 	{
-		// 行動の更新
-		UpdateBossAction();
+		Routine();
+		EndAction();
+		if (g_Boss.BossAi.bFinishAction == true)
+		{
+			// 行動の更新
+			UpdateBossAction();
+		}
 
+		if (g_Boss.BossMotion.motionType == MOTIONTYPE_MOVE)
+		{
+			g_Boss.BossAi.ActionEndCounter++;
+			// 敵とプレイヤーの距離計算
+			D3DXVECTOR3 vec = pPlayer->pos - g_Boss.Object.Pos;
+			float fDistance = (vec.x) * (vec.x) + (vec.z) * (vec.z);
+			float fAngle = 0.0f;
+
+			fDistance = (float)sqrt(fDistance);				// 敵とプレイヤーの距離
+
+			// 角度の取得
+			fAngle = (float)atan2(vec.x, vec.z);
+
+			// 目標の移動方向（角度）の補正
+			if (fAngle > D3DX_PI)
+			{
+				fAngle -= D3DX_PI * 2.0f;
+			}
+			else if (fAngle < -D3DX_PI)
+			{
+				fAngle += D3DX_PI * 2.0f;
+			}
+			// 移動量の設定
+			g_Boss.move.x = sinf(fAngle) * BOSSHORMING_MOVE;
+			g_Boss.move.z = cosf(fAngle) * BOSSHORMING_MOVE;
+
+			// 角度の目標設定
+			g_Boss.rotDest.y = fAngle + D3DX_PI;
+		}
 		// 魔法との当たり判定
 		for (int SkillCount = 0; SkillCount < MAX_SKILL; SkillCount++)
 		{
@@ -377,42 +414,58 @@ void UpdateBossAction()
 		fAngle += D3DX_PI * 2.0f;
 	}
 
+	int primaryAction[BOSSACTION_MAX];
+	int primaryAction1[BOSSACTION_MAX];
+	for (int CopyCount = 0; CopyCount < BOSSACTION_MAX; CopyCount++)
+	{
+		primaryAction1[CopyCount] = CopyCount;
+		primaryAction[CopyCount] = g_Boss.BossAi.primary[CopyCount];
+	}
+	for (int RankCount = 0; RankCount < BOSSACTION_MAX; RankCount++)
+	{
+		for (int SortCount = RankCount; SortCount < BOSSACTION_MAX; SortCount++)
+		{
+			if (primaryAction[RankCount] < primaryAction[SortCount])
+			{
+				int BackUp = primaryAction[RankCount];
+				primaryAction[RankCount] = primaryAction[SortCount];
+				primaryAction[SortCount] = BackUp;
+				BackUp = primaryAction1[SortCount];
+				primaryAction1[SortCount] = primaryAction1[RankCount];
+				primaryAction1[RankCount] = BackUp;
+			}
+		}
+	}
+	int Ratio = rand() % 100 + 1;
+	if (Ratio <= BOSSACTION_JUSTIS)
+	{
+		g_Boss.ActionType = (BOSSACTION)primaryAction1[0];
+	}
+	else
+	{
+		g_Boss.ActionType = (BOSSACTION)primaryAction1[1];
+	}
 	// 攻撃
-	if (fDistance <= BOSSATTACK_DIST)
+	if (g_Boss.ActionType == BOSSACTION_ATTACK)
 	{
 		if (pPlayer->state != PLAYERSTATE_KNOCKUP)
 		{
 			if (g_Boss.BossMotion.motionType != MOTIONTYPE_ACTION)
 			{// モーションの種類設定
-				g_Boss.ActionType = BOSSACTION_ATTACK;
-				//g_Boss[nCount].BossMotion.motionType = MOTIONTYPE_ACTION;//多分これしか機能していない
-				//g_Boss[nCount].BossMotion.motionTypeBlend = MOTIONTYPE_NEUTRAL;
-				//g_Boss[nCount].BossMotion.nFrameBlend = 10.0f;
-				//g_Boss[nCount].BossMotion.nKey = 0;
-				//g_Boss[nCount].BossMotion.NextKey = 1;
+				g_Boss.move.x = 0.0f;
+				g_Boss.move.z = 0.0f;
 				SetMotion(MOTIONTYPE_ACTION, &g_Boss.BossMotion);
 			}
 		}
 	}
 	// 追いかける
-	else if (fDistance <= BOSSHORMING_DIST)
+	else if (g_Boss.ActionType == BOSSACTION_RUN)
 	{
 		if (g_Boss.BossMotion.motionType != MOTIONTYPE_ACTION)
 		{//モーションの種類設定
-			g_Boss.ActionType = BOSSACTION_RUN;
-			//g_Boss[nCount].BossMotion.motionType = MOTIONTYPE_MOVE;//多分これしか機能していない
-			//g_Boss[nCount].BossMotion.motionTypeBlend = MOTIONTYPE_NEUTRAL;
-			//g_Boss[nCount].BossMotion.nFrameBlend = 10.0f;
-
-			// 移動量の設定
-			g_Boss.move.x = sinf(fAngle) * BOSSHORMING_MOVE;
-			g_Boss.move.z = cosf(fAngle) * BOSSHORMING_MOVE;
-
-			// 角度の目標設定
-			g_Boss.rotDest.y = fAngle + D3DX_PI;
-
 			if (g_Boss.BossMotion.motionType != MOTIONTYPE_MOVE)
 			{
+				g_Boss.BossAi.ActionEnd[g_Boss.BossMotion.motionType] = MOVEEND_FLAME;
 				SetMotion(MOTIONTYPE_MOVE, &g_Boss.BossMotion);
 			}
 		}
@@ -420,14 +473,14 @@ void UpdateBossAction()
 	// 様子見
 	else
 	{
-		g_Boss.ActionType = BOSSACTION_WELL;
-		//g_Boss[nCount].BossMotion.motionType = MOTIONTYPE_NEUTRAL;
-		//g_Boss[nCount].pMotion = MOTIONTYPE_NEUTRAL;
 		if (g_Boss.BossMotion.motionType != MOTIONTYPE_NEUTRAL && g_Boss.BossMotion.motionType != MOTIONTYPE_ACTION)
 		{
+			g_Boss.move.x = 0.0f;
+			g_Boss.move.z = 0.0f;
 			SetMotion(MOTIONTYPE_NEUTRAL, &g_Boss.BossMotion);
 		}
 	}
+	g_Boss.BossAi.bFinishAction = false;
 }
 
 //*****************
@@ -540,4 +593,70 @@ void CollisionBossAction(void)
 bool DethBoss(void)
 {
 	return g_Boss.bUse;
+}
+//*************************
+// ボスの行動優先順位を更新
+//*************************
+void Routine(void)
+{
+	Player* pPlayer = GetPlayer();
+
+	if (g_Boss.bUse == true)
+	{
+		//敵との距離
+		g_Boss.fDistance = sqrtf(((g_Boss.Object.Pos.x - pPlayer->pos.x) * (g_Boss.Object.Pos.x - pPlayer->pos.x))
+			+ ((g_Boss.Object.Pos.y - pPlayer->pos.y) * (g_Boss.Object.Pos.y - pPlayer->pos.y))
+			+ ((g_Boss.Object.Pos.z - pPlayer->pos.z) * (g_Boss.Object.Pos.z - pPlayer->pos.z)));
+
+		float RADIUS = ((PLAYER_RADIUS / 2) + BOSSHORMING_DIST) * ((PLAYER_RADIUS / 2) + BOSSHORMING_DIST);
+
+		if (g_Boss.fDistance <= RADIUS)
+		{
+			g_Boss.BossAi.primary[BOSSACTION_WELL] = 20.0f;
+			g_Boss.BossAi.primary[BOSSACTION_RUN] = 50.0f;
+			g_Boss.BossAi.primary[BOSSACTION_ATTACK] = 30.0f;
+			if (pPlayer->bRolling == true)
+			{
+				g_Boss.BossAi.primary[BOSSACTION_WELL] = 0.0f;
+				g_Boss.BossAi.primary[BOSSACTION_RUN] = 30.0f;
+				g_Boss.BossAi.primary[BOSSACTION_ATTACK] = 70.0f;
+			}
+			if (pPlayer->PlayerMotion.motionType == MOTIONTYPE_ACTION
+				|| pPlayer->PlayerMotion.motionType == MOTIONTYPE_ACTION_EXPLOSION
+				|| pPlayer->PlayerMotion.motionType == MOTIONTYPE_ACTION_HORMING)
+			{
+				g_Boss.BossAi.primary[BOSSACTION_WELL] = 0.0f;
+				g_Boss.BossAi.primary[BOSSACTION_RUN] = 60.0f;
+				g_Boss.BossAi.primary[BOSSACTION_ATTACK] = 40.0f;
+			}
+		}
+	}
+}
+void EndAction(void)
+{
+	Player* pPlayer = GetPlayer();
+	if (g_Boss.BossMotion.motionType == MOTIONTYPE_ACTION
+		&& g_Boss.BossMotion.bFinish == true)
+	{
+		g_Boss.BossAi.bFinishAction = true;
+	}
+	else if (g_Boss.BossMotion.motionType == MOTIONTYPE_MOVE)
+	{
+		//敵との距離
+		g_Boss.fDistance = sqrtf(((g_Boss.Object.Pos.x - pPlayer->pos.x) * (g_Boss.Object.Pos.x - pPlayer->pos.x))
+			+ ((g_Boss.Object.Pos.y - pPlayer->pos.y) * (g_Boss.Object.Pos.y - pPlayer->pos.y))
+			+ ((g_Boss.Object.Pos.z - pPlayer->pos.z) * (g_Boss.Object.Pos.z - pPlayer->pos.z)));
+
+		float RADIUS = ((PLAYER_RADIUS / 2) + BOSSATTACK_DIST) * ((PLAYER_RADIUS / 2) + BOSSATTACK_DIST);
+
+		if (g_Boss.fDistance <= RADIUS || g_Boss.BossAi.ActionEnd[0] < g_Boss.BossAi.ActionEndCounter)
+		{
+			g_Boss.BossAi.ActionEndCounter = 0;
+			g_Boss.BossAi.bFinishAction = true;
+		}
+	}
+	else if (g_Boss.BossMotion.motionType == MOTIONTYPE_NEUTRAL)
+	{
+		g_Boss.BossAi.bFinishAction = true;
+	}
 }
