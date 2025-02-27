@@ -325,16 +325,20 @@ void UpdateGame(void)
 			//敵の数を取得する
 			int* NumEnemy = GetNumEnemy();
 			Player* pPlayer = GetPlayer();
+			MODE mode = GetMode();
 
 			if ((*NumEnemy) >= 0)
 			{
 				if (bAbo != true)
 				{
-					//エリア移動場所取得
-					D3DXVECTOR3 pos = GetBottom();
+					if (mode != MODE_STAGEFOUR)
+					{
+						//エリア移動場所取得
+						D3DXVECTOR3 pos = GetBottom();
 
-					//サークルを出す
-					SetCircle(pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 150, 150), 8, 0, 200.0f, 40.0f, true, false);
+						//サークルを出す
+						SetCircle(pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 150, 150), 8, 0, 200.0f, 40.0f, true, false);
+					}
 				}
 				bAbo = true;
 			}
