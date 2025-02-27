@@ -445,9 +445,6 @@ void SetEnemy(D3DXVECTOR3 pos, int nType, D3DXVECTOR3 rot)
 			g_Enemy[EnemyCount].IndxShadow = SetShadow(g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].Object.Rot,20.0f);
 			g_Enemy[EnemyCount].nActionCount = rand() % 180 + 120;
 
-			//HPゲージの設定処理
-			g_Enemy[EnemyCount].IndxGuage = SetHPgauge(D3DXVECTOR3(g_Enemy[EnemyCount].Object.Pos.x, (float)g_Enemy[EnemyCount].Object.Pos.y + 50.0f, g_Enemy[EnemyCount].Object.Pos.z), D3DXVECTOR2(60.0f, 5.0f), g_Enemy[EnemyCount].Status.fHP);
-
 			if (nType == 0)
 			{
 				g_Enemy[EnemyCount].type = ENEMYTYPE_SKELETON;
@@ -475,6 +472,9 @@ void SetEnemy(D3DXVECTOR3 pos, int nType, D3DXVECTOR3 rot)
 				g_Enemy[EnemyCount].Status.fHP = ENEMY_HP * 2;				// HP
 				g_Enemy[EnemyCount].Status.Score = ENEMY_SCORE * 2;			// スコア
 			}
+
+			//HPゲージの設定処理
+			g_Enemy[EnemyCount].IndxGuage = SetHPgauge(D3DXVECTOR3(g_Enemy[EnemyCount].Object.Pos.x, (float)g_Enemy[EnemyCount].Object.Pos.y + 50.0f, g_Enemy[EnemyCount].Object.Pos.z), D3DXVECTOR2(60.0f, 5.0f), g_Enemy[EnemyCount].Status.fHP);
 
 			break;
 		}

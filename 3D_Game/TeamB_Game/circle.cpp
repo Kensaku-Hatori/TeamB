@@ -55,7 +55,38 @@ void UninitCircle()
 //=========================
 void UpdateCircle()
 {
+	//頂点情報へのポインタ
+	VERTEX_3D* pVtx = NULL;
 
+	for (int nCnt = 0; nCnt < MAX_CIRCLE; nCnt++)
+	{
+		if (g_Circle[nCnt].bUse == true)
+		{
+
+			//頂点バッファをロックし、頂点情報へのポインタを取得
+			g_Circle[nCnt].pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+			if (g_Circle[nCnt].bAnime == true)
+			{
+				int indx = 0;		//頂点インデックス
+
+				for (int nCntY = 0; nCntY <= g_Circle[nCnt].nDiviY; nCntY++)
+				{
+					for (int nCntX = 0; nCntX <= g_Circle[nCnt].nDiviX; nCntX++)
+					{
+						//頂点カラーの設定
+						pVtx[indx].col = D3DXCOLOR(g_Circle[nCnt].col.r, g_Circle[nCnt].col.g, g_Circle[nCnt].col.b, (g_Circle[nCnt].col.a / (g_Circle[nCnt].nDiviY)) * (nCntY));
+
+						//インデックスを進める
+						indx++;
+					}
+				}
+			}
+
+			//頂点バッファをアンロック　
+			g_Circle[nCnt].pVtxBuff->Unlock();
+		}
+	}
 }
 
 //=========================
@@ -73,6 +104,16 @@ void DrawCircle()
 
 	//カリングを切る
 	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
+	// ALPHAテストの設定
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
+	// 加算合成を設定する
+	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
 	for (int nCnt = 0; nCnt < MAX_CIRCLE; nCnt++)
 	{
@@ -110,7 +151,15 @@ void DrawCircle()
 		}
 	}
 
+	//加算合成を切る
+	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+
+	// アルファテストを元に戻す
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
 	//カリングをつける
 	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
@@ -178,7 +227,7 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 					pVtx[indx].pos = D3DXVECTOR3(g_Circle[nCnt].fRadius * sinf(fAngle), fHeight, g_Circle[nCnt].fRadius * cosf(fAngle));
 
 					//中心へのベクトル
-					D3DXVECTOR3 vec = pVtx[indx].pos - g_Circle[nCnt].pos;
+					D3DXVECTOR3 vec = g_Circle[nCnt].pos - pVtx[indx].pos;
 
 					//ベクトルの正規化,各頂点の法線の設定
 					D3DXVec3Normalize(&pVtx[indx].nor, &vec);
@@ -189,7 +238,7 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 					//グラデーション有なら
 					if (g_Circle[nCnt].bGradation == true)
 					{
-						pVtx[indx].col = D3DXCOLOR(g_Circle[nCnt].col.r, g_Circle[nCnt].col.g, g_Circle[nCnt].col.b, (g_Circle[nCnt].col.a / (g_Circle[nCnt].nDiviY + 1)) * (nCntY + 1));
+						pVtx[indx].col = D3DXCOLOR(g_Circle[nCnt].col.r, g_Circle[nCnt].col.g, g_Circle[nCnt].col.b, (g_Circle[nCnt].col.a / (g_Circle[nCnt].nDiviY)) * (nCntY));
 					}
 
 					//テクスチャ座標の設定
