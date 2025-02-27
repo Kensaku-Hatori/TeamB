@@ -281,6 +281,9 @@ void UpdatePlayer(void)
 			g_player.move.y -= GRAVITY; //重力加算	
 		}
 
+		CollisionEnemy();
+		CollisionBoss();
+
 		//前回の位置を保存
 		g_player.posOld = g_player.pos;
 
@@ -288,9 +291,6 @@ void UpdatePlayer(void)
 		g_player.pos.x += g_player.move.x;
 		g_player.pos.y += g_player.move.y;
 		g_player.pos.z += g_player.move.z;
-
-		CollisionEnemy();
-		CollisionBoss();
 
 		//使用する魔法の種類を変更
 		SkillChange();
@@ -885,7 +885,7 @@ void HitPlayer(float Atack,D3DXVECTOR3 Pos)
 
 		D3DXVECTOR3 Vec = g_player.pos - Pos;
 		D3DXVec3Normalize(&Vec, &Vec);
-		g_player.move = Vec * 10.0f;
+		g_player.move = Vec * 15.0f;
 		g_player.bHit = true;
 		g_player.state = PLAYERSTATE_KNOCKUP;
 
