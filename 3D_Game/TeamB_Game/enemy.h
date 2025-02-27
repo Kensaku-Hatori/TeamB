@@ -92,7 +92,7 @@ typedef struct
 	bool bUse;
 	bool bMotion;
 	bool bHit;
-	int IndxGuage[3];
+	int IndxGuage;
 	float fDistance;
 	float fActionDistance;
 

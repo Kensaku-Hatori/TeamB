@@ -37,11 +37,13 @@
 #include "arrow.h"
 #include "boss.h"
 #include <time.h>
+#include "HPgauge.h"
 
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
 int g_nCounterGameState = 0;
 bool g_bPause = false;  //ポーズ中かどうか
+bool bAbo = false;//全滅フラグ
 
 //=============
 // 初期化処理
@@ -66,6 +68,9 @@ void InitGame(void)
 
 	////ブロックの初期化
 	//InitBlock();
+
+	//HPゲージの初期化
+	InitHPgauge();
 
 	//プレイヤーの初期化
 	InitPlayer();
@@ -136,6 +141,7 @@ void InitGame(void)
 	srand((int)time(0));				//シード値(アイテムrand)
 
 	g_bPause = false;					//ポーズしていない状態へ
+	bAbo = false;						//全滅していない状態へ
 }
 
 //===========
@@ -160,6 +166,9 @@ void UninitGame(void)
 
 	//衝撃波の終了処理
 	UninitImpact();
+
+	//HOゲージの終了処理
+	UninitHPgauge();
 
 	//プレイヤーの終了処理
 	UninitPlayer();
@@ -237,6 +246,9 @@ void UpdateGame(void)
 			//衝撃波の更新処理
 			UpdateImpact();
 
+			//HPゲージの更新処理
+			UpdateHPgauge();
+
 			//プレイヤーの更新処理
 			UpdatePlayer();
 
@@ -313,6 +325,19 @@ void UpdateGame(void)
 			//敵の数を取得する
 			int* NumEnemy = GetNumEnemy();
 			Player* pPlayer = GetPlayer();
+
+			if ((*NumEnemy) >= 0)
+			{
+				if (bAbo != true)
+				{
+					//エリア移動場所取得
+					D3DXVECTOR3 pos = GetBottom();
+
+					//サークルを出す
+					SetCircle(pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 150, 150), 8, 0, 200.0f, 40.0f, true, false);
+				}
+				bAbo = true;
+			}
 
 			//全てのwaveが終わったなら
 			if (GetFinish() == true)
@@ -419,6 +444,9 @@ void DrawGame(void)
 
 		//敵の描画処理
 		DrawBoss();
+
+		//HPゲージの描画処理
+		DrawHPgauge();
 
 		//矢印の描画処理
 		DrawArrow();

@@ -9,9 +9,10 @@
 #define HPGAUGE_H_
 
 #include "main.h"
+#include "enemy.h"
 
 //マクロ定義
-#define MAX_HPGAUGE (32)															// ゲージの最大の数
+#define MAX_HPGAUGE ( MAX_ENEMY )													// ゲージの最大の数
 #define MAX_POLY (3)																// １個のゲージに使うポリゴン数
 
 //タイプ
@@ -35,6 +36,7 @@ static const char* HPGAUGETEX[HPGAUGETYPE_MAX] =
 typedef struct
 {
 	D3DXCOLOR col;																	// 色
+	D3DXVECTOR2 center;																// 中央
 	HPGAUGETYPE type;																// 種類
 	D3DXMATRIX mtxWorld;															// ワールドマトリックス
 	float fWidth;																	// 幅保存
@@ -62,6 +64,6 @@ int SetHPgauge(D3DXVECTOR3 pos, D3DXVECTOR2 scale, float MaxHP);					// 設定処理
 void SetPositionHPgauge(int Indx,D3DXVECTOR3 pos);									// 位置の設定処理
 void HPgaugeDeff(int Indx,float NowHP);												// ゲージの減少処理
 void RedgaugeDeff(int Indx, float NowHP);											// 赤ゲージの減少処理
-void DeleteGuage(int Indx);															// HPゲージを消す
+void DeleteHPGuage(int Indx);															// HPゲージを消す
 
 #endif // !HPGAUGE_H_
