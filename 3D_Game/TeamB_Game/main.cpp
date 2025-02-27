@@ -17,6 +17,7 @@
 #include "player.h"
 #include "impact.h"
 #include "invisiblewall.h"
+#include "boss.h"
 
 //グローバル変数宣言
 LPDIRECT3D9 g_pD3D = NULL;
@@ -434,6 +435,7 @@ void Draw(void)
 			DrawCameraInfo();
 			DrawPlayerInfo();
 			DrawTestInfo();
+			DrawBossInfo();
 		}
 
 #endif // DEBUG
@@ -667,6 +669,29 @@ void DrawTestInfo()
 
 	// 文字列に代入
 	sprintf(&aStr[0], "内積結果:%3.2f,%3.2f",test.x,test.y);
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+}
+void DrawBossInfo()
+{
+	BOSS* pBoss = GetBoss();
+	D3DXVECTOR2 test = Gettest();
+	RECT rect = { 0,420,SCREEN_WIDTH,SCREEN_HEIGHT };
+	char aStr[256];
+
+	// 文字列に代入
+	sprintf(&aStr[0], "ボスの優先度:%3.2f,%3.2f,%3.2f", pBoss->BossAi.primary[0], 
+		pBoss->BossAi.primary[1],
+		pBoss->BossAi.primary[2]);
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+
+	rect = { 0,440,SCREEN_WIDTH,SCREEN_HEIGHT };
+
+	// 文字列に代入
+	sprintf(&aStr[0], "ボスの行動パターン:%d", pBoss->ActionType);
 
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));

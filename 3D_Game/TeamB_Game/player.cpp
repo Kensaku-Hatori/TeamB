@@ -167,9 +167,10 @@ void UpdatePlayer(void)
 		if (g_player.state == PLAYERSTATE_NORMAL)
 		{
 			//–‚–@”­ŽË
-			if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_B) == true) && 
-				(g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION) && (g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_EXPLOSION)
-			 && (g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_HORMING))
+			if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_B) == true) 
+				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION
+				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_EXPLOSION
+				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_HORMING)
 			{// MP‚ª‚T‚OˆÈã‚ÌŽž
 				if (g_player.Skilltype == SKILLTYPE_NONE)
 				{
@@ -177,11 +178,11 @@ void UpdatePlayer(void)
 				}
 				else if (g_player.Skilltype == SKILLTYPE_EXPLOSION)
 				{
-					SetMotion(MOTIONTYPE_ACTION_EXPLOSION, &g_player.PlayerMotion);
+					SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion);
 				}
 				else if (g_player.Skilltype == SKILLTYPE_HORMING)
 				{
-					SetMotion(MOTIONTYPE_ACTION_HORMING, &g_player.PlayerMotion);
+					SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion);
 				}
 
 				//if (g_player.Status.nMP >= 50)
