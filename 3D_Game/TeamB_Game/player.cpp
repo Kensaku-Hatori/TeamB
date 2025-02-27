@@ -134,7 +134,9 @@ void UpdatePlayer(void)
 
 	if (g_player.bUse == true)
 	{
-		if (g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION)
+		if (   g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION
+			&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_EXPLOSION
+			&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_HORMING)
 		{
 			//ÉvÉåÉCÉÑÅ[à⁄ìÆ
 			PlayerMove();
