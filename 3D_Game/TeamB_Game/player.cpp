@@ -559,7 +559,7 @@ void PlayerMove(void)
 	
 	if (g_player.state == PLAYERSTATE_NORMAL)
 	{
-		if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_DOWN)) && g_player.bRolling == false)
+		if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && g_player.bRolling == false)
 		{
 			Speed = Speed * 10;
 			g_player.bRolling = true;
@@ -621,7 +621,7 @@ void PlayerMove(void)
 			}
 		}
 		//âE
-		else if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_RIGET))
+		else if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_RIGHT))
 		{
 			//ÉÇÅ[ÉVÉáÉì
 			if (g_player.bRolling == false)
@@ -834,7 +834,7 @@ void PlayerRolling(void)
 //==========================
 void SkillChange(int zDelta)
 {
-	if (KeyboardTrigger(DIK_LEFT) || GetJoypadTrigger(JOYKEY_L1) ||
+	if (KeyboardTrigger(DIK_LEFT) || GetJoypadTrigger(JOYKEY_LEFT) ||
 		zDelta < 0)
 	{
 		switch (g_player.Skilltype)
@@ -854,8 +854,7 @@ void SkillChange(int zDelta)
 			break;
 		}
 	}
-
-	else if (KeyboardTrigger(DIK_RIGHT) || GetJoypadTrigger(JOYKEY_R1) ||
+	else if (KeyboardTrigger(DIK_RIGHT) || GetJoypadTrigger(JOYKEY_RIGHT) ||
 		zDelta > 0)
 	{
 		switch (g_player.Skilltype)

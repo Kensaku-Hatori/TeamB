@@ -67,7 +67,7 @@ void UpdateTitle(void)
 
 	UpdateLight();
 
-	UpdateTitleInfo();
+	UpdateTitleInfo(0);
 
 	g_nTimeTitle++;
 	if (g_nTimeTitle >= MAX_TITLE)

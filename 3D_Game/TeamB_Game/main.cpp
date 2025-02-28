@@ -19,6 +19,7 @@
 #include "invisiblewall.h"
 #include "boss.h"
 #include "mouse.h"
+#include "titleinfo.h"
 
 //グローバル変数宣言
 LPDIRECT3D9 g_pD3D = NULL;
@@ -185,6 +186,10 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		//SetMouseWheel(zDelta);
 		//使用する魔法の種類を変更
 		SkillChange(zDelta);
+		if (g_mode == MODE_TITLE)
+		{
+			UpdateTitleInfo(zDelta);
+		}
 	}
 		break;
 	default:
