@@ -504,11 +504,12 @@ void DeadEnemy(int Indx)
 	DeleteHPGuage(g_Enemy[Indx].IndxGuage);
 
 	//アイテムドロップ
-	Drop = rand() % 3;
+	Drop = rand() % 2;
 	Itemtype = rand() % NUM_ITEMTYPE;
 
 	if (Drop == 1)
 	{
+	
 		//アイテムの設定
 		SetItem(g_Enemy[Indx].Object.Pos, (ITEMTYPE)Itemtype);
 	}
@@ -720,7 +721,7 @@ void CollisionEnemyAction(int nCnt)
 
 	for (int n = 0; n < 4; n++)
 	{
-		D3DXVECTOR3 sabun1 = Pos1 - sabun * division * n;
+		D3DXVECTOR3 sabun1 = Pos1 - sabun * division * (FLOAT)n;
 		D3DXVECTOR3 CollPos = sabun1 - sabun;
 
 		if (collisioncircle(CollPos, radius, pPlayer->pos, PLAYER_RADIUS) == true)

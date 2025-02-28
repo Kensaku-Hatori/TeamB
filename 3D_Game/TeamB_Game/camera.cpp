@@ -7,6 +7,7 @@
 #include "camera.h"
 #include "input.h"
 #include "player.h"
+#include "mouse.h"
 //グローバル変数
 Camera g_camera;
 
@@ -43,6 +44,10 @@ void UpdateCamera(void)
 	MODE pMode;
 	pMode = GetMode();
 	
+	if (pMode != MODE_TITLE && pMode != MODE_RESULT)
+	{
+		UpdateCameratoMousePos();
+	}
 	g_camera.posRDest.x = pPlayer->pos.x + sinf(pPlayer->rot.x) * (pPlayer->pos.x - g_camera.posR.x);
 	g_camera.posRDest.y = pPlayer->pos.y;
 	g_camera.posRDest.z = pPlayer->pos.z + cosf(pPlayer->rot.z) * (pPlayer->pos.z - g_camera.posR.z);
@@ -139,6 +144,40 @@ void UpdateCamera(void)
 		//}
 	}
 }
+void UpdateCameratoMousePos(void)
+{
+	static POINT SetMousePos = { (LONG)SCREEN_WIDTH / (LONG)2.0f,(LONG)SCREEN_HEIGHT / (LONG)2.0f };
+	POINT MousePos;
+	GetCursorPos(&MousePos);
+	D3DXVECTOR2 DiffMouse = D3DXVECTOR2((FLOAT)MousePos.x - (FLOAT)SetMousePos.x,
+		(FLOAT)MousePos.y - (FLOAT)SetMousePos.y);
+
+	const FLOAT MouseSensitivity = 0.0008f;
+	DiffMouse *= MouseSensitivity;
+	g_camera.rot.x += DiffMouse.y;
+	g_camera.rot.y += DiffMouse.x;
+
+	// 角度の近道
+	if (g_camera.rot.y >= D3DX_PI)
+	{
+		g_camera.rot.y -= D3DX_PI * 2.0f;
+	}
+	else if (g_camera.rot.y <= -D3DX_PI)
+	{
+		g_camera.rot.y += D3DX_PI * 2.0f;
+	}
+
+	// 角度の近道
+	if (g_camera.rot.x >= D3DX_PI)
+	{
+		g_camera.rot.x -= D3DX_PI * 2.0f;
+	}
+	else if (g_camera.rot.x <= -D3DX_PI)
+	{
+		g_camera.rot.x += D3DX_PI * 2.0f;
+	}
+	SetCursorPos((int)SetMousePos.x, (int)SetMousePos.y);
+}
 //================
 // カメラの設定
 //================
@@ -179,4 +218,8 @@ void SetCamera(void)
 Camera * GetCamera(void)
 {
 	return &g_camera;
+}
+void SetMouseWheel(int zDelta)
+{
+	g_camera.fDistance += zDelta * CAMERA_DISTANCESPEED;
 }
