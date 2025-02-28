@@ -89,7 +89,6 @@ void UninitLockon(void)
 //=====================
 void UpdateLockon(void)
 {
-	Camera* pCamera = GetCamera();				//ƒJƒƒ‰‚Ìî•ñŽæ“¾
 	Player* pPlayer = GetPlayer();
 	ENEMY* pEnemy = GetEnemy();
 	BOSS* pBoss = GetBoss();
@@ -115,10 +114,10 @@ void UpdateLockon(void)
 
 	if (g_Lockon.bUse == true)
 	{
+		pPlayer->bWantLockOn = false;
 		if (bUse == false)
 		{
 			pPlayer->bLockOn = false;
-			pPlayer->bWantLockOn = false;
 		}
 
 		g_Lockon.pos = g_LockonEnemy.pos;
@@ -138,7 +137,6 @@ void UpdateLockon(void)
 		if (Dis >= pPlayer->fSightRange * pPlayer->fSightRange * 2)
 		{
 			pPlayer->bLockOn = false;
-			pPlayer->bWantLockOn = false;
 		}
 	}
 	else
@@ -256,6 +254,7 @@ bool IsEnemyInsight(D3DXVECTOR3 Pos, int type)
 			bLock = true;
 		}
 	}
+
 	return bLock;
 }
 

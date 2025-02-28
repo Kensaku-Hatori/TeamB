@@ -23,6 +23,7 @@
 #include "model.h"
 #include "collision.h"
 #include "HPgauge.h"
+#include "score.h"
 
 //*******************
 // グローバル変数宣言
@@ -197,6 +198,7 @@ void UpdateEnemy(void)
 					CollisionEnemyAction(EnemyCount);
 				}
 			}
+
 			// ロックオン
 			if (pPlayer->bWantLockOn == true)
 			{
@@ -204,10 +206,6 @@ void UpdateEnemy(void)
 				{
 					EnemyDistanceSort(EnemyCount);
 					pPlayer->bLockOn = true;
-				}
-				else
-				{
-					pPlayer->bWantLockOn = false;
 				}
 			}
 
@@ -406,7 +404,7 @@ void HitEnemy(float Atack,int Indx)
 //*************
 // 敵の設定処理
 //*************
-void SetEnemy(D3DXVECTOR3 pos, int nType,D3DXVECTOR3 rot)
+void SetEnemy(D3DXVECTOR3 pos, int nType, D3DXVECTOR3 rot)
 {
 	MODE nMode = GetMode();
 
@@ -443,24 +441,36 @@ void SetEnemy(D3DXVECTOR3 pos, int nType,D3DXVECTOR3 rot)
 			g_Enemy[EnemyCount].IndxShadow = SetShadow(g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].Object.Rot,20.0f);
 			g_Enemy[EnemyCount].nActionCount = rand() % 180 + 120;
 
-			//HPゲージの設定処理
-			g_Enemy[EnemyCount].IndxGuage = SetHPgauge(D3DXVECTOR3(g_Enemy[EnemyCount].Object.Pos.x, (float)g_Enemy[EnemyCount].Object.Pos.y + 50.0f, g_Enemy[EnemyCount].Object.Pos.z), D3DXVECTOR2(60.0f, 5.0f), g_Enemy[EnemyCount].Status.fHP);
-
 			if (nType == 0)
 			{
 				g_Enemy[EnemyCount].type = ENEMYTYPE_SKELETON;
 				g_Enemy[EnemyCount].CollModel = 3;
+				g_Enemy[EnemyCount].Status.fPower = ENEMY_AP;				// 攻撃力
+				g_Enemy[EnemyCount].Status.fSpeed = ENEMY_SPEED;			// スピード
+				g_Enemy[EnemyCount].Status.fHP = ENEMY_HP;					// HP
+				g_Enemy[EnemyCount].Status.Score = ENEMY_SCORE;				// スコア
 			}
-			else if(nType==1)
+			else if(nType == 1)
 			{
 				g_Enemy[EnemyCount].type = ENEMYTYPE_ZOMBIE;
 				g_Enemy[EnemyCount].CollModel = 1;
+				g_Enemy[EnemyCount].Status.fPower = ENEMY_AP;				// 攻撃力
+				g_Enemy[EnemyCount].Status.fSpeed = ENEMY_SPEED;			// スピード
+				g_Enemy[EnemyCount].Status.fHP = ENEMY_HP;					// HP
+				g_Enemy[EnemyCount].Status.Score = ENEMY_SCORE;				// スコア
 			}
 			else if (nType == 2)
 			{
 				g_Enemy[EnemyCount].type = ENEMYTYPE_MIDBOSS;
 				g_Enemy[EnemyCount].CollModel = 10;
+				g_Enemy[EnemyCount].Status.fPower = ENEMY_AP * 1.5;			// 攻撃力
+				g_Enemy[EnemyCount].Status.fSpeed = ENEMY_SPEED;			// スピード
+				g_Enemy[EnemyCount].Status.fHP = ENEMY_HP * 2;				// HP
+				g_Enemy[EnemyCount].Status.Score = ENEMY_SCORE * 2;			// スコア
 			}
+
+			//HPゲージの設定処理
+			g_Enemy[EnemyCount].IndxGuage = SetHPgauge(D3DXVECTOR3(g_Enemy[EnemyCount].Object.Pos.x, (float)g_Enemy[EnemyCount].Object.Pos.y + 50.0f, g_Enemy[EnemyCount].Object.Pos.z), D3DXVECTOR2(60.0f, 5.0f), g_Enemy[EnemyCount].Status.fHP);
 
 			break;
 		}
@@ -494,10 +504,10 @@ void DeadEnemy(int Indx)
 	DeleteHPGuage(g_Enemy[Indx].IndxGuage);
 
 	//アイテムドロップ
-	Drop = rand() % 10;
+	Drop = rand() % 3;
 	Itemtype = rand() % NUM_ITEMTYPE;
 
-	if (Drop <= 2)
+	if (Drop == 1)
 	{
 		//アイテムの設定
 		SetItem(g_Enemy[Indx].Object.Pos, (ITEMTYPE)Itemtype);
@@ -520,8 +530,9 @@ void DeadEnemy(int Indx)
 		g_Enemy[pPlayer->nLockOnEnemy].fDistance = 0;
 		pPlayer->nLockOnEnemy = 0;
 		pPlayer->bLockOn = false;
-		pPlayer->bWantLockOn = false;
 	}
+
+	AddScore(g_Enemy[Indx].Status.Score);
 }
 
 //***************
@@ -696,32 +707,40 @@ void CollisionEnemy(void)
 void CollisionEnemyAction(int nCnt)
 {
 	Player* pPlayer = GetPlayer();
-	D3DXVECTOR3 Pos;
-	Pos = D3DXVECTOR3(g_Enemy[nCnt].mtxWand._41, g_Enemy[nCnt].mtxWand._42, g_Enemy[nCnt].mtxWand._43);
 
-	D3DXVECTOR3 sabun = g_Enemy[nCnt].EnemyMotion.aModel[g_Enemy[nCnt].EnemyMotion.aModel[g_Enemy[nCnt].CollModel].Parent].pos - Pos;
+	float radius = g_Enemy[nCnt].Radius / 2; // 半径
+	float division = 0.25;	// 分割数
+	// 親モデル
+	int Parent = g_Enemy[nCnt].EnemyMotion.aModel[g_Enemy[nCnt].CollModel].Parent;
 
-	D3DXVECTOR3 sabun1 = sabun / 4;
+	D3DXVECTOR3 Pos = D3DXVECTOR3(g_Enemy[nCnt].mtxWand._41, g_Enemy[nCnt].mtxWand._42, g_Enemy[nCnt].mtxWand._43);
+	D3DXVECTOR3 Pos1 = D3DXVECTOR3(g_Enemy[nCnt].EnemyMotion.aModel[Parent].mtxWorld._41, g_Enemy[nCnt].EnemyMotion.aModel[Parent].mtxWorld._42, g_Enemy[nCnt].EnemyMotion.aModel[Parent].mtxWorld._43);
+
+	D3DXVECTOR3 sabun = Pos1 - Pos;
 
 	for (int n = 0; n < 4; n++)
 	{
-		D3DXVECTOR3 CollPos = (Pos + (sabun1 * n)) - sabun1;
-		if (collisioncircle(CollPos, g_Enemy[nCnt].Radius / 2, pPlayer->pos, PLAYER_RADIUS) == true)
+		D3DXVECTOR3 sabun1 = Pos1 - sabun * division * n;
+		D3DXVECTOR3 CollPos = sabun1 - sabun;
+
+		if (collisioncircle(CollPos, radius, pPlayer->pos, PLAYER_RADIUS) == true)
 		{
 			HitPlayer(g_Enemy[nCnt].Status.fPower, g_Enemy[nCnt].Object.Pos);
+			break;
 		}
-
+#ifdef _DEBUG
 		// エフェクトの設定
 		SetEffect(D3DXVECTOR3(CollPos.x, CollPos.y, CollPos.z),
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			50,
+			10,
 			0,
-			D3DXVECTOR3(g_Enemy[nCnt].Radius / 2, g_Enemy[nCnt].Radius / 2, g_Enemy[nCnt].Radius / 2),
+			D3DXVECTOR3(radius, radius, radius),
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 			EFFECT_SKILL,
 			0,
 			0.0f,
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+#endif
 	}
 }
 
@@ -818,15 +837,15 @@ void EnemyMatrixWand(int Index)
 	pDevice->SetTransform(D3DTS_WORLD,
 		&g_Enemy[Index].mtxWand);
 
-	// エフェクトの設定
-	SetEffect(D3DXVECTOR3(g_Enemy[Index].mtxWand._41, g_Enemy[Index].mtxWand._42, g_Enemy[Index].mtxWand._43),
-		D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-		50,
-		0,
-		D3DXVECTOR3(g_Enemy[Index].Radius / 2, g_Enemy[Index].Radius / 2, g_Enemy[Index].Radius / 2),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-		EFFECT_SKILL,
-		0,
-		0.0f,
-		D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	//// エフェクトの設定
+	//SetEffect(D3DXVECTOR3(g_Enemy[Index].mtxWand._41, g_Enemy[Index].mtxWand._42, g_Enemy[Index].mtxWand._43),
+	//	D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+	//	50,
+	//	0,
+	//	D3DXVECTOR3(g_Enemy[Index].Radius / 2, g_Enemy[Index].Radius / 2, g_Enemy[Index].Radius / 2),
+	//	D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+	//	EFFECT_SKILL,
+	//	0,
+	//	0.0f,
+	//	D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 }

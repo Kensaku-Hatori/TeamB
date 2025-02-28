@@ -47,6 +47,7 @@ typedef struct
 	int nIndxCircle;				// サークルのインデックス
 	int nCntState;
 	int nCntRollingState;
+	int nScore;
 	bool bUse;						// 使用状況
 	bool bLanding;					// 地面に着地しているかどうか
 	bool bfirst;					// 最初かどうか

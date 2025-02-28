@@ -29,6 +29,7 @@
 #include "lockon.h"
 #include "boss.h"
 #include "mission.h"
+#include "score.h"
 
 //グローバル変数
 Player g_player;
@@ -50,6 +51,7 @@ void InitPlayer(void)
 	if (g_player.bfirst == false)
 	{//ステージ移動しているなら
 		g_player.pos = g_player.NextPosition;
+		g_player.Status.nMP += PLAYER_MP / 2;
 	}
 	else
 	{//最初なら
@@ -61,6 +63,7 @@ void InitPlayer(void)
 		g_player.Status.fPower = PLAYER_AP;
 		g_player.Status.fSpeed = PLAYER_SPEED;
 		g_player.Skilltype = SKILLTYPE_NONE;
+		g_player.nScore = 0;
 	}
 
 	g_player.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -134,7 +137,9 @@ void UpdatePlayer(void)
 
 	if (g_player.bUse == true)
 	{
-		if (g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION)
+		if (   g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION
+			&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_EXPLOSION
+			&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_HORMING)
 		{
 			//プレイヤー移動
 			PlayerMove();
@@ -241,7 +246,6 @@ void UpdatePlayer(void)
 				if (g_player.bLockOn == true)
 				{
 					g_player.bLockOn = false;
-					g_player.bWantLockOn = false;
 				}
 				else if (g_player.bLockOn == false)
 				{
@@ -277,6 +281,9 @@ void UpdatePlayer(void)
 			g_player.move.y -= GRAVITY; //重力加算	
 		}
 
+		CollisionEnemy();
+		CollisionBoss();
+
 		//前回の位置を保存
 		g_player.posOld = g_player.pos;
 
@@ -284,9 +291,6 @@ void UpdatePlayer(void)
 		g_player.pos.x += g_player.move.x;
 		g_player.pos.y += g_player.move.y;
 		g_player.pos.z += g_player.move.z;
-
-		//CollisionEnemy();
-		CollisionBoss();
 
 		//使用する魔法の種類を変更
 		SkillChange();
@@ -413,6 +417,8 @@ void UpdatePlayer(void)
 
 		//モーションの更新処理
 		UpdateMotion(&g_player.PlayerMotion);
+
+		g_player.nScore = GetScore();
 	}
 }
 
@@ -873,20 +879,24 @@ Player* GetPlayer(void)
 //=======================
 void HitPlayer(float Atack,D3DXVECTOR3 Pos)
 {
-	if (g_player.bRolling == false)
+	if (g_player.state != PLAYERSTATE_KNOCKUP)
 	{
-		g_player.Status.fHP -= (int)Atack;
+		if (g_player.bRolling == false)
+		{
+			g_player.Status.fHP -= (int)Atack;
+			float move = 5.0f + (Atack / 10);
 
-		D3DXVECTOR3 Vec = g_player.pos - Pos;
-		D3DXVec3Normalize(&Vec, &Vec);
-		g_player.move = Vec * 10.0f;
-		g_player.bHit = true;
-		g_player.state = PLAYERSTATE_KNOCKUP;
+			D3DXVECTOR3 Vec = g_player.pos - Pos;
+			D3DXVec3Normalize(&Vec, &Vec);
+			g_player.move = Vec * move;
+			g_player.bHit = true;
+			g_player.state = PLAYERSTATE_KNOCKUP;
 
-		if (g_player.Status.fHP <= 0.0f && g_player.bUse == true)
-		{// 使われていて体力が０以下なら
-			g_player.bUse = false;
-			SetGameState(GAMESTATE_GAMEOVER);
+			if (g_player.Status.fHP <= 0.0f && g_player.bUse == true)
+			{// 使われていて体力が０以下なら
+				g_player.bUse = false;
+				SetGameState(GAMESTATE_GAMEOVER);
+			}
 		}
 	}
 }

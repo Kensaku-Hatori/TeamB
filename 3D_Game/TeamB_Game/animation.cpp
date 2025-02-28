@@ -360,35 +360,45 @@ void CaceOneAction(OBJECTINFO* Motion)
 		}
 		break;
 	case MOTIONTYPE_ACTION_HORMING:
-		for (int nCount = 0; nCount < 5; nCount++)
+		if (pPlayer->Status.nMP >= 100)
 		{
-			D3DXVECTOR3 fDistance;
-			float fRatio = 0.29f + D3DX_PI / 5 * nCount;
-			fDistance.x = cosf(fRatio) * sinf(pPlayer->rot.y + D3DX_PI * 0.5f) * 50.0f;
-			fDistance.y = sinf(fRatio) * 50.0f;
-			fDistance.z = cosf(fRatio) * cosf(pPlayer->rot.y + D3DX_PI * 0.5f) * 50.0f;
+			for (int nCount = 0; nCount < 5; nCount++)
+			{
+				D3DXVECTOR3 fDistance;
+				float fRatio = 0.29f + D3DX_PI / 5 * nCount;
+				fDistance.x = cosf(fRatio) * sinf(pPlayer->rot.y + D3DX_PI * 0.5f) * 50.0f;
+				fDistance.y = sinf(fRatio) * 50.0f;
+				fDistance.z = cosf(fRatio) * cosf(pPlayer->rot.y + D3DX_PI * 0.5f) * 50.0f;
 
-			SetSkill(D3DXVECTOR3(pPlayer->PlayerMotion.aModel[1].mtxWorld._41,
-				pPlayer->PlayerMotion.aModel[1].mtxWorld._42,
-				pPlayer->PlayerMotion.aModel[1].mtxWorld._43) + fDistance,
-				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-				pPlayer->rot,
-				SKILLTYPE_HORMING,
-				fRatio);
+				SetSkill(D3DXVECTOR3(pPlayer->PlayerMotion.aModel[1].mtxWorld._41,
+					pPlayer->PlayerMotion.aModel[1].mtxWorld._42,
+					pPlayer->PlayerMotion.aModel[1].mtxWorld._43) + fDistance,
+					D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+					pPlayer->rot,
+					SKILLTYPE_HORMING,
+					fRatio);
+			}
+			// MP‚ðŒ¸‚ç‚·
+			SubMP(pPlayer->Skilltype);
 		}
 		break;
 	case MOTIONTYPE_ACTION_EXPLOSION:
-		SetParticle(Pos,
-			D3DXVECTOR3(628.0f, 1.0f, 628.0f),
-			D3DXCOLOR(1.0f, 0.65f, 0.0f, 1.0f),
-			PARTICLE_NONE,
-			D3DXVECTOR3(2.0f, 2.0f, 2.0f),
-			100,
-			3,
-			1.0f,
-			1.0f,
-			0.0f,
-			EFFECT_EXPROSION);
+		if (pPlayer->Status.nMP >= 10)
+		{
+			SetParticle(Pos,
+				D3DXVECTOR3(628.0f, 1.0f, 628.0f),
+				D3DXCOLOR(1.0f, 0.65f, 0.0f, 1.0f),
+				PARTICLE_NONE,
+				D3DXVECTOR3(2.0f, 2.0f, 2.0f),
+				100,
+				3,
+				1.0f,
+				1.0f,
+				0.0f,
+				EFFECT_EXPROSION);
+			// MP‚ðŒ¸‚ç‚·
+			SubMP(pPlayer->Skilltype);
+		}
 		break;
 	case MOTIONTYPE_LANDING:
 		SetParticle(pPlayer->pos,

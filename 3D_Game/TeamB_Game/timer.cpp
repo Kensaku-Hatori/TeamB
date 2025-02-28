@@ -210,6 +210,9 @@ void UpdateTimer(void)
 		AddTimerMinutes(1);
 		AddTimer(-60);
 	}
+
+
+
 }
 //===========
 //•`‰æˆ—
