@@ -17,13 +17,22 @@ void InitCircle()
 {
 	for (int nCnt = 0; nCnt < MAX_CIRCLE; nCnt++)
 	{
-		g_Circle[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		g_Circle[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		g_Circle[nCnt].pVtxBuff = { NULL };
-		g_Circle[nCnt].IndxBuff = { NULL };
-		g_Circle[nCnt].fRadius = 0.0f;
-		g_Circle[nCnt].bAnime = false;
-		g_Circle[nCnt].bUse = false;
+		//各種初期化
+		g_Circle[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);					// 位置
+		g_Circle[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);					// 向き
+		g_Circle[nCnt].AddCol = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);			// 色の変化量
+		g_Circle[nCnt].pVtxBuff = { NULL };									// 頂点バッファ
+		g_Circle[nCnt].IndxBuff = { NULL };									// インデックスバッファ
+		g_Circle[nCnt].nDiviX = 0;											// Xの分割数
+		g_Circle[nCnt].nDiviY = 0;											// Yの分割数
+		g_Circle[nCnt].nMaxVtx = 0;											// 頂点数
+		g_Circle[nCnt].nPolyNum = 0;										// ポリゴン数
+		g_Circle[nCnt].nCntFrame = 0;										// フレームカウンター
+		g_Circle[nCnt].fHeight = 0.0f;										// 高さ
+		g_Circle[nCnt].fRadius = 0.0f;										// 半径
+		g_Circle[nCnt].bGradation = false;									// グラデーションするかどうか
+		g_Circle[nCnt].bAnime = false;										// 動きをつけるかどうか
+		g_Circle[nCnt].bUse = false;										// 使用しているかどうか
 	}
 }
 
@@ -60,31 +69,52 @@ void UpdateCircle()
 
 	for (int nCnt = 0; nCnt < MAX_CIRCLE; nCnt++)
 	{
+		int  i = 0;
 		if (g_Circle[nCnt].bUse == true)
 		{
-
-			//頂点バッファをロックし、頂点情報へのポインタを取得
-			g_Circle[nCnt].pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
-
-			if (g_Circle[nCnt].bAnime == true)
+			if (g_Circle[nCnt].bAnime == true && g_Circle[nCnt].frame >= 0)
 			{
-				int indx = 0;		//頂点インデックス
+				int indx = 0;										//頂点インデックス
+
+				//フレームカウント
+				g_Circle[nCnt].nCntFrame++;
+
+				if (g_Circle[nCnt].nCntFrame >= g_Circle[nCnt].frame * 0.5f)
+				{
+					if (g_Circle[nCnt].Anime.bHalf == false)
+					{
+						g_Circle[nCnt].AddCol.a *= -1.0f;
+						g_Circle[nCnt].Anime.bHalf = true;
+					}
+				}
+
+				//頂点バッファをロックし、頂点情報へのポインタを取得
+				g_Circle[nCnt].pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 				for (int nCntY = 0; nCntY <= g_Circle[nCnt].nDiviY; nCntY++)
 				{
 					for (int nCntX = 0; nCntX <= g_Circle[nCnt].nDiviX; nCntX++)
 					{
 						//頂点カラーの設定
-						//pVtx[indx].col = D3DXCOLOR(g_Circle[nCnt].col.r, g_Circle[nCnt].col.g, g_Circle[nCnt].col.b, (g_Circle[nCnt].col.a / (g_Circle[nCnt].nDiviY)) * (nCntY));
+						pVtx[indx].col = D3DXCOLOR((FLOAT)g_Circle[nCnt].col.r + (g_Circle[nCnt].AddCol.r * (g_Circle[nCnt].nCntFrame * 2.0f)),
+							(FLOAT)g_Circle[nCnt].col.g + (g_Circle[nCnt].AddCol.g * (g_Circle[nCnt].nCntFrame * 2.0f)),
+							(FLOAT)g_Circle[nCnt].col.b + (g_Circle[nCnt].AddCol.b * (g_Circle[nCnt].nCntFrame * 2.0f)),
+							(FLOAT)g_Circle[nCnt].col.a + (g_Circle[nCnt].AddCol.a * (g_Circle[nCnt].nCntFrame * 2.0f)));
 
 						//インデックスを進める
 						indx++;
 					}
 				}
+
+				if (g_Circle[nCnt].nCntFrame >= g_Circle[nCnt].frame)
+				{
+					g_Circle[nCnt].bUse = false;
+				}
+
+				//頂点バッファをアンロック　
+				g_Circle[nCnt].pVtxBuff->Unlock();
 			}
 
-			//頂点バッファをアンロック　
-			g_Circle[nCnt].pVtxBuff->Unlock();
 		}
 	}
 }
@@ -112,9 +142,9 @@ void DrawCircle()
 	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	// 加算合成を設定する
-	//pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-	//pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	//pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
 	for (int nCnt = 0; nCnt < MAX_CIRCLE; nCnt++)
 	{
@@ -196,6 +226,36 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 			g_Circle[nCnt].fRadius = fRadius;
 			g_Circle[nCnt].bGradation = bGradation;																						//グラデーションの有無
 			g_Circle[nCnt].bAnime = bAnime;																								//動きの有無
+
+			//アニメーションがtrueなら
+			if (g_Circle[nCnt].bAnime == true)
+			{
+				D3DXCOLOR Col = (col);																									//計算結果保存用
+
+				//D3DCOLOR_RGBA対策
+				if (col.r > 1.0f)
+				{
+					Col.r = (FLOAT)col.r / 255.0f;
+				}
+				if (col.g > 1.0f)
+				{		
+					Col.g = (FLOAT)col.g / 255.0f;
+				}
+				if (col.b > 1.0f)
+				{
+					Col.b = (FLOAT)col.b / 255.0f;
+				}
+				if (col.a > 1.0f)
+				{
+					Col.a = (FLOAT)col.a / 255.0f;
+				}
+
+				//色の変化量を設定
+				g_Circle[nCnt].AddCol.r = (1.0f - Col.r);
+				g_Circle[nCnt].AddCol.g = (1.0f - Col.g);
+				g_Circle[nCnt].AddCol.b = (1.0f - Col.b);
+				g_Circle[nCnt].AddCol.a = (1.0f - Col.a);
+			}
 
 			g_Circle[nCnt].nMaxVtx = (g_Circle[nCnt].nDiviX + 1) * (g_Circle[nCnt].nDiviY + 1);											//頂点数
 			g_Circle[nCnt].nPolyNum = (2 * g_Circle[nCnt].nDiviX * g_Circle[nCnt].nDiviY + (g_Circle[nCnt].nDiviY - 1) * 4);			//ポリゴン数
@@ -305,4 +365,32 @@ void  SetPositionCircle(int indx, D3DXVECTOR3  pos, D3DXVECTOR3 rot)
 {
 	g_Circle[indx].pos = pos;
 	g_Circle[indx].rot = rot;
+}
+
+//=========================
+//サークルアニメーションの種類設定処理
+//=========================
+void SetAnime(int indx, ANIMETYPE type, int frame)
+{
+	if (g_Circle[indx].bUse == true && g_Circle[indx].bAnime == true)
+	{
+		g_Circle[indx].type = type;
+		g_Circle[indx].frame = frame;
+
+		float a = 1.0f / g_Circle[indx].frame;
+
+		//色の変化量の設定
+		g_Circle[indx].AddCol.r = g_Circle[indx].AddCol.r * a;
+		g_Circle[indx].AddCol.g = g_Circle[indx].AddCol.g * a;
+		g_Circle[indx].AddCol.b = g_Circle[indx].AddCol.b * a;
+		g_Circle[indx].AddCol.a = g_Circle[indx].AddCol.a * a;
+	}
+}
+
+//=========================
+//サークルを消す処理
+//=========================
+void DeleteCircle(int indx)
+{
+	g_Circle[indx].bUse = false;
 }
