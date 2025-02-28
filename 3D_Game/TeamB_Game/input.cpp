@@ -180,6 +180,9 @@ bool GetJoypadTrigger(JOYKEY key)
 {
 	return(g_joyKeyStateTrigger.Gamepad.wButtons & (0x01 << key)) ? true : false;
 }
+//===================================
+//ジョイパッドのトリガー情報を取得
+//===================================
 bool GetJoyStick()
 {
 	bool joykey = false;

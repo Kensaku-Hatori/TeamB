@@ -7,6 +7,7 @@
 #ifndef _CAMERA_H_
 #define _CAMERA_H_
 
+#define CAMERA_DISTANCESPEED (float)(0.1f)
 #include "main.h"
 
 typedef struct
@@ -28,7 +29,8 @@ typedef struct
 void InitCamera(void);
 void UninitCamera(void);
 void UpdateCamera(void);
+void UpdateCameratoMousePos(void);
 void SetCamera(void);
 Camera * GetCamera(void);
-
+void SetMouseWheel(int zDelta);
 #endif

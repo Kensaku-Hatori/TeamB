@@ -175,6 +175,7 @@
     <ClCompile Include="minimap.cpp" />
     <ClCompile Include="mission.cpp" />
     <ClCompile Include="model.cpp" />
+    <ClCompile Include="mouse.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="particleEditer.cpp" />
     <ClCompile Include="pause.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="minimap.h" />
     <ClInclude Include="mission.h" />
     <ClInclude Include="model.h" />
+    <ClInclude Include="mouse.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="particleEditer.h" />

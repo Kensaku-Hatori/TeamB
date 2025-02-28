@@ -30,6 +30,7 @@
 #include "boss.h"
 #include "mission.h"
 #include "score.h"
+#include "mouse.h"
 
 //グローバル変数
 Player g_player;
@@ -172,7 +173,7 @@ void UpdatePlayer(void)
 		if (g_player.state == PLAYERSTATE_NORMAL)
 		{
 			//魔法発射
-			if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_B) == true) 
+			if ((KeyboardTrigger(DIK_RETURN) || OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true) 
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_EXPLOSION
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_HORMING)
@@ -241,7 +242,9 @@ void UpdatePlayer(void)
 			}
 
 			//ロックオン
-			if ((KeyboardTrigger(DIK_R) == true || GetJoypadTrigger(JOYKEY_R1) == true))
+			if ((KeyboardTrigger(DIK_R) == true || 
+				GetJoypadTrigger(JOYKEY_R1) == true) ||
+				OnMouseDown(1))
 			{
 				if (g_player.bLockOn == true)
 				{
@@ -291,9 +294,6 @@ void UpdatePlayer(void)
 		g_player.pos.x += g_player.move.x;
 		g_player.pos.y += g_player.move.y;
 		g_player.pos.z += g_player.move.z;
-
-		//使用する魔法の種類を変更
-		SkillChange();
 
 		//地面との判定
 		if (g_player.pos.y <= 0)
@@ -823,9 +823,10 @@ void PlayerRolling(void)
 //==========================
 // 使用する魔法の種類変更
 //==========================
-void SkillChange(void)
+void SkillChange(int zDelta)
 {
-	if (KeyboardTrigger(DIK_LEFT) || GetJoypadTrigger(JOYKEY_L1))
+	if (KeyboardTrigger(DIK_LEFT) || GetJoypadTrigger(JOYKEY_L1) ||
+		zDelta < 0)
 	{
 		switch (g_player.Skilltype)
 		{
@@ -845,7 +846,8 @@ void SkillChange(void)
 		}
 	}
 
-	else if (KeyboardTrigger(DIK_RIGHT) || GetJoypadTrigger(JOYKEY_R1))
+	else if (KeyboardTrigger(DIK_RIGHT) || GetJoypadTrigger(JOYKEY_R1) ||
+		zDelta > 0)
 	{
 		switch (g_player.Skilltype)
 		{
