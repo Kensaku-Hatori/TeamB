@@ -18,6 +18,7 @@
 #include "impact.h"
 #include "invisiblewall.h"
 #include "boss.h"
+#include "mouse.h"
 
 //グローバル変数宣言
 LPDIRECT3D9 g_pD3D = NULL;
@@ -178,6 +179,14 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 
+	case WM_MOUSEWHEEL:
+	{
+		int zDelta = GET_WHEEL_DELTA_WPARAM(wParam);
+		//SetMouseWheel(zDelta);
+		//使用する魔法の種類を変更
+		SkillChange(zDelta);
+	}
+		break;
 	default:
 		break;
 	}
@@ -278,6 +287,11 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 		return E_FAIL;
 	}
 
+	if (FAILED(InitMouse(hInstance, hWnd)))
+	{
+		return E_FAIL;
+	}
+
 	// デバック表示用フォントの生成
 	D3DXCreateFont(g_pD3DDevice, 18, 0, 0, 0,
 		FALSE, SHIFTJIS_CHARSET,
@@ -307,6 +321,8 @@ void Uninit(void)
 
 	UninitKeyboard();
 
+	UninitMouse();
+
 	//
 	UninitFade();
 
@@ -333,6 +349,7 @@ void Update(void)
 	//----------------------------
 	//各種オブジェクトの更新処理
 	//----------------------------
+	UpdateMouse();
 	UpdateKeyboard();
 
 	switch (g_mode)

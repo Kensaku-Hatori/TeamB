@@ -38,6 +38,7 @@
 #include "boss.h"
 #include <time.h>
 #include "HPgauge.h"
+#include "mouse.h"
 
 //ƒOƒ[ƒoƒ‹•Ï”
 GAMESTATE g_gamestate = GAMESTATE_NONE;

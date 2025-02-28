@@ -721,7 +721,7 @@ void CollisionEnemyAction(int nCnt)
 
 	for (int n = 0; n < 4; n++)
 	{
-		D3DXVECTOR3 sabun1 = Pos1 - sabun * division * n;
+		D3DXVECTOR3 sabun1 = Pos1 - sabun * division * (FLOAT)n;
 		D3DXVECTOR3 CollPos = sabun1 - sabun;
 
 		if (collisioncircle(CollPos, radius, pPlayer->pos, PLAYER_RADIUS) == true)

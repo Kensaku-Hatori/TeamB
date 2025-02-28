@@ -428,7 +428,7 @@ void UpdateBossAction()
 		fAngle += D3DX_PI * 2.0f;
 	}
 
-	int primaryAction[BOSSACTION_MAX];
+	FLOAT primaryAction[BOSSACTION_MAX];
 	int primaryAction1[BOSSACTION_MAX];
 	for (int CopyCount = 0; CopyCount < BOSSACTION_MAX; CopyCount++)
 	{
@@ -441,9 +441,9 @@ void UpdateBossAction()
 		{
 			if (primaryAction[RankCount] < primaryAction[SortCount])
 			{
-				int BackUp = primaryAction[RankCount];
+				int BackUp = (int)primaryAction[RankCount];
 				primaryAction[RankCount] = primaryAction[SortCount];
-				primaryAction[SortCount] = BackUp;
+				primaryAction[SortCount] = (FLOAT)BackUp;
 				BackUp = primaryAction1[SortCount];
 				primaryAction1[SortCount] = primaryAction1[RankCount];
 				primaryAction1[RankCount] = BackUp;
@@ -597,7 +597,7 @@ void CollisionBossAction(void)
 	Player* pPlayer = GetPlayer();
 
 	float radius = g_Boss.Radius; // ”¼Œa
-	float division = 0.05;	// •ªŠ„”
+	float division = 0.05f;	// •ªŠ„”
 	// eƒ‚ƒfƒ‹
 	int Parent = g_Boss.BossMotion.aModel[g_Boss.CollModel].Parent;
 
@@ -608,7 +608,7 @@ void CollisionBossAction(void)
 
 	for (int n = 0; n < 20; n++)
 	{
-		D3DXVECTOR3 sabun1 = Pos1 - sabun * division * n;
+		D3DXVECTOR3 sabun1 = Pos1 - sabun * division * (float)n;
 		D3DXVECTOR3 CollPos = sabun1 - sabun;
 
 		if (collisioncircle(CollPos, radius, pPlayer->pos, PLAYER_RADIUS) == true)

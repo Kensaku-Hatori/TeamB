@@ -84,12 +84,11 @@ void UpdatePlayer(void);
 void DrawPlayer(void);
 void PlayerMove(void);
 void PlayerRolling(void);
-void SkillChange(void);
+void SkillChange(int zDelta);
 Player* GetPlayer(void);
 void HitPlayer(float Atack, D3DXVECTOR3 Pos);
 void SetMesh(char* pFilePath, int Indx);
 void SetPartsInfo(LoadInfo PartsInfo);
 void PlayerMotion(MOTIONINFO *pMotionInfo);
 void MatrixWand(void);
-
 #endif
