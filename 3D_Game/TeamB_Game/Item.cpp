@@ -8,6 +8,7 @@
 #include"Item.h"
 #include "player.h"
 #include "itemui.h"
+#include "score.h"
 
 //ƒOƒ|ƒoƒ‹•Ï”éŒ¾
 Item g_Item[MAX_ITEM];
@@ -344,7 +345,7 @@ void ItemAbility(int nIndexItem)
 
 	case ITEMTYPE_SPEED:
 
-		pPlayer->Status.fSpeed += 0.5f;
+		pPlayer->Status.fPower += 30.0f;
 
 		break;
 
@@ -352,4 +353,6 @@ void ItemAbility(int nIndexItem)
 		break;
 	}
 	AddItemUI(g_Item[nIndexItem].type);
+
+	AddScore(100);
 }

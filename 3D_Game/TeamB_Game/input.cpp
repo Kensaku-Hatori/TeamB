@@ -180,7 +180,10 @@ bool GetJoypadTrigger(JOYKEY key)
 {
 	return(g_joyKeyStateTrigger.Gamepad.wButtons & (0x01 << key)) ? true : false;
 }
-bool GetJoyStick()
+//===================================
+//ジョイパッドのトリガー情報を取得
+//===================================
+bool GetJoyStickL()
 {
 	bool joykey = false;
 
@@ -188,6 +191,22 @@ bool GetJoyStick()
 		|| g_joyKeyState.Gamepad.sThumbLX <= -100 
 		|| g_joyKeyState.Gamepad.sThumbLY >= 100 
 		|| g_joyKeyState.Gamepad.sThumbLY <= -100)
+	{
+		joykey = true;
+	}
+	return joykey;
+}
+//===================================
+//ジョイパッドのトリガー情報を取得
+//===================================
+bool GetJoyStickR()
+{
+	bool joykey = false;
+
+	if (g_joyKeyState.Gamepad.sThumbRX >= 100
+		|| g_joyKeyState.Gamepad.sThumbRX <= -100
+		|| g_joyKeyState.Gamepad.sThumbRY >= 100
+		|| g_joyKeyState.Gamepad.sThumbRY <= -100)
 	{
 		joykey = true;
 	}

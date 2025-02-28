@@ -160,7 +160,7 @@ void UpdateSkill(void)
 					if (g_Skill[nCnt].AnimCounter >= 30)
 					{
 						D3DXVECTOR3 moveDiff = g_Skill[nCnt].moveDest - g_Skill[nCnt].move;
-						g_Skill[nCnt].move = moveDiff / g_Skill[nCnt].AnimCounter * 10.0f;
+						g_Skill[nCnt].move = moveDiff / g_Skill[nCnt].AnimCounter * 20.0f;
 					}
 					else
 					{

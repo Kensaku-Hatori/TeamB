@@ -15,7 +15,7 @@ typedef enum
 	JOYKEY_UP = 0,
 	JOYKEY_DOWN,
 	JOYKEY_LEFT,
-	JOYKEY_RIGET,
+	JOYKEY_RIGHT,
 	JOYKEY_START,
 	JOYKEY_BACK,
 	JOYKEY_L3,
@@ -45,7 +45,8 @@ void UninitJoypad(void);
 void UpdateJoypad(void);
 bool GetJoypadPress(JOYKEY key);
 bool GetJoypadTrigger(JOYKEY key);
-bool GetJoyStick();
+bool GetJoyStickL();
+bool GetJoyStickR();
 XINPUT_STATE* GetJoyStickAngle(void);
 
 #endif

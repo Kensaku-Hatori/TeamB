@@ -30,6 +30,7 @@
 #include "boss.h"
 #include "mission.h"
 #include "score.h"
+#include "mouse.h"
 
 //グローバル変数
 Player g_player;
@@ -51,6 +52,7 @@ void InitPlayer(void)
 	if (g_player.bfirst == false)
 	{//ステージ移動しているなら
 		g_player.pos = g_player.NextPosition;
+		g_player.Status.nMP += PLAYER_MP / 3;
 	}
 	else
 	{//最初なら
@@ -142,6 +144,7 @@ void UpdatePlayer(void)
 		{
 			//プレイヤー移動
 			PlayerMove();
+			PlayerMoveJoyPad();
 		}
 
 		//ロックオン状態なら
@@ -171,7 +174,7 @@ void UpdatePlayer(void)
 		if (g_player.state == PLAYERSTATE_NORMAL)
 		{
 			//魔法発射
-			if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_B) == true) 
+			if ((KeyboardTrigger(DIK_RETURN) || OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true) 
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_EXPLOSION
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_HORMING)
@@ -240,12 +243,13 @@ void UpdatePlayer(void)
 			}
 
 			//ロックオン
-			if ((KeyboardTrigger(DIK_R) == true || GetJoypadTrigger(JOYKEY_R1) == true))
+			if ((KeyboardTrigger(DIK_R) == true || 
+				GetJoypadTrigger(JOYKEY_R1) == true) ||
+				OnMouseDown(1))
 			{
 				if (g_player.bLockOn == true)
 				{
 					g_player.bLockOn = false;
-					g_player.bWantLockOn = false;
 				}
 				else if (g_player.bLockOn == false)
 				{
@@ -276,6 +280,15 @@ void UpdatePlayer(void)
 			g_nCntHealMP = 0;
 		}
 
+		if (g_player.Status.nMP >= PLAYER_MP)
+		{
+			g_player.Status.nMP = PLAYER_MP;
+		}
+		else if (g_player.Status.fHP >= PLAYER_HP)
+		{
+			g_player.Status.fHP = PLAYER_HP;
+		}
+
 		if (g_player.bLanding == false)
 		{
 			g_player.move.y -= GRAVITY; //重力加算	
@@ -291,9 +304,6 @@ void UpdatePlayer(void)
 		g_player.pos.x += g_player.move.x;
 		g_player.pos.y += g_player.move.y;
 		g_player.pos.z += g_player.move.z;
-
-		//使用する魔法の種類を変更
-		SkillChange();
 
 		//地面との判定
 		if (g_player.pos.y <= 0)
@@ -550,7 +560,7 @@ void PlayerMove(void)
 	
 	if (g_player.state == PLAYERSTATE_NORMAL)
 	{
-		if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_DOWN)) && g_player.bRolling == false)
+		if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && g_player.bRolling == false)
 		{
 			Speed = Speed * 10;
 			g_player.bRolling = true;
@@ -612,7 +622,7 @@ void PlayerMove(void)
 			}
 		}
 		//右
-		else if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_RIGET))
+		else if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_RIGHT))
 		{
 			//モーション
 			if (g_player.bRolling == false)
@@ -811,7 +821,29 @@ void PlayerMove(void)
 		g_player.pos.z = STAGE_SIZE;
 	}
 }
+void PlayerMoveJoyPad(void)
+{
+	Camera* pCamera = GetCamera();
+	XINPUT_STATE* pStick = GetJoyStickAngle();
+	if (GetJoyStickL() == true)
+	{
+		float fStickAngleX = (float)pStick->Gamepad.sThumbLX * pStick->Gamepad.sThumbLX;
+		float fStickAngleY = (float)pStick->Gamepad.sThumbLY * pStick->Gamepad.sThumbLY;
 
+		float DeadZone = 10920.0f;
+		float fMag = sqrtf(fStickAngleX + fStickAngleY);
+
+		if (fMag > DeadZone)
+		{
+			float X = (pStick->Gamepad.sThumbLX / fMag);
+			float Y = (pStick->Gamepad.sThumbLY / fMag);
+			float fAngle = atan2f(pStick->Gamepad.sThumbLX, pStick->Gamepad.sThumbLY);
+			g_player.move.x = sinf(pCamera->rot.y + fAngle);
+			g_player.move.z = cosf(pCamera->rot.y + fAngle);
+			g_player.rotDest.y = pCamera->rot.y + fAngle + D3DX_PI;
+		}
+	}
+}
 //===============
 // ローリング
 //===============
@@ -823,9 +855,10 @@ void PlayerRolling(void)
 //==========================
 // 使用する魔法の種類変更
 //==========================
-void SkillChange(void)
+void SkillChange(int zDelta)
 {
-	if (KeyboardTrigger(DIK_LEFT) || GetJoypadTrigger(JOYKEY_L1))
+	if (KeyboardTrigger(DIK_LEFT) || GetJoypadTrigger(JOYKEY_LEFT) ||
+		zDelta < 0)
 	{
 		switch (g_player.Skilltype)
 		{
@@ -844,8 +877,8 @@ void SkillChange(void)
 			break;
 		}
 	}
-
-	else if (KeyboardTrigger(DIK_RIGHT) || GetJoypadTrigger(JOYKEY_R1))
+	else if (KeyboardTrigger(DIK_RIGHT) || GetJoypadTrigger(JOYKEY_RIGHT) ||
+		zDelta > 0)
 	{
 		switch (g_player.Skilltype)
 		{
@@ -879,20 +912,24 @@ Player* GetPlayer(void)
 //=======================
 void HitPlayer(float Atack,D3DXVECTOR3 Pos)
 {
-	if (g_player.bRolling == false)
+	if (g_player.state != PLAYERSTATE_KNOCKUP)
 	{
-		g_player.Status.fHP -= (int)Atack;
+		if (g_player.bRolling == false)
+		{
+			g_player.Status.fHP -= (int)Atack;
+			float move = 5.0f + (Atack / 10);
 
-		D3DXVECTOR3 Vec = g_player.pos - Pos;
-		D3DXVec3Normalize(&Vec, &Vec);
-		g_player.move = Vec * 15.0f;
-		g_player.bHit = true;
-		g_player.state = PLAYERSTATE_KNOCKUP;
+			D3DXVECTOR3 Vec = g_player.pos - Pos;
+			D3DXVec3Normalize(&Vec, &Vec);
+			g_player.move = Vec * move;
+			g_player.bHit = true;
+			g_player.state = PLAYERSTATE_KNOCKUP;
 
-		if (g_player.Status.fHP <= 0.0f && g_player.bUse == true)
-		{// 使われていて体力が０以下なら
-			g_player.bUse = false;
-			SetGameState(GAMESTATE_GAMEOVER);
+			if (g_player.Status.fHP <= 0.0f && g_player.bUse == true)
+			{// 使われていて体力が０以下なら
+				g_player.bUse = false;
+				SetGameState(GAMESTATE_GAMEOVER);
+			}
 		}
 	}
 }

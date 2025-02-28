@@ -148,6 +148,9 @@
     <ClCompile Include="mission.cpp">
       <Filter>K_A\.cpp</Filter>
     </ClCompile>
+    <ClCompile Include="mouse.cpp">
+      <Filter>H_K\.cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="wall.h">
@@ -305,6 +308,9 @@
     </ClInclude>
     <ClInclude Include="mission.h">
       <Filter>K_A\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="mouse.h">
+      <Filter>H_K\.h</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
