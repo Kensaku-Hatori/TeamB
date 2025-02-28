@@ -7,7 +7,7 @@
 #ifndef BOSS_H_
 #define BOSS_H_
 
-#define BOSS_AP (100)
+#define BOSS_AP (200)
 #define BOSS_HP (1000)
 #define BOSS_SPEED (1)
 #define	BOSSATTACK_DIST (10)
@@ -16,6 +16,7 @@
 #define MAX_BOSSACTIONRANK (2)
 #define BOSSACTION_JUSTIS (70)
 #define MOVEEND_FLAME (180)
+#define BOSS_SCORE (500)
 
 #include "main.h"
 #include "key.h"

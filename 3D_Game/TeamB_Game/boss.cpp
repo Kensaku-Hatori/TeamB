@@ -21,6 +21,7 @@
 #include "lockon.h"
 #include "resultinfo.h"
 #include "fade.h"
+#include "score.h"
 
 //*******************
 // グローバル変数宣言
@@ -37,6 +38,7 @@ void InitBoss(void)
 	g_Boss.Status.fPower = BOSS_AP;									// 攻撃力
 	g_Boss.Status.fSpeed = BOSS_SPEED;								// スピード
 	g_Boss.Status.fHP = BOSS_HP;									// HP
+	g_Boss.Status.Score = BOSS_SCORE;								// スコア
 	g_Boss.BossMotion.motionType = MOTIONTYPE_NEUTRAL;				// モーションの種類
 	g_Boss.BossMotion.nKey = 0;										// モーションのキー
 	g_Boss.BossMotion.NextKey = 1;									// モーションの次のキー
@@ -393,6 +395,7 @@ void DeadBoss()
 			pPlayer->bLockOn = false;
 		}
 	}
+	AddScore(g_Boss.Status.Score);
 
 	SetFade(MODE_RESULT);
 	SetResult(RESULT_CLEAR);

@@ -463,7 +463,7 @@ void SetEnemy(D3DXVECTOR3 pos, int nType, D3DXVECTOR3 rot)
 			{
 				g_Enemy[EnemyCount].type = ENEMYTYPE_MIDBOSS;
 				g_Enemy[EnemyCount].CollModel = 10;
-				g_Enemy[EnemyCount].Status.fPower = ENEMY_AP * 2;			// 攻撃力
+				g_Enemy[EnemyCount].Status.fPower = ENEMY_AP * 1.5;			// 攻撃力
 				g_Enemy[EnemyCount].Status.fSpeed = ENEMY_SPEED;			// スピード
 				g_Enemy[EnemyCount].Status.fHP = ENEMY_HP * 2;				// HP
 				g_Enemy[EnemyCount].Status.Score = ENEMY_SCORE * 2;			// スコア
@@ -504,10 +504,10 @@ void DeadEnemy(int Indx)
 	DeleteHPGuage(g_Enemy[Indx].IndxGuage);
 
 	//アイテムドロップ
-	Drop = rand() % 10;
+	Drop = rand() % 3;
 	Itemtype = rand() % NUM_ITEMTYPE;
 
-	if (Drop <= 2)
+	if (Drop == 1)
 	{
 		//アイテムの設定
 		SetItem(g_Enemy[Indx].Object.Pos, (ITEMTYPE)Itemtype);
