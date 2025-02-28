@@ -207,10 +207,6 @@ void UpdateEnemy(void)
 					EnemyDistanceSort(EnemyCount);
 					pPlayer->bLockOn = true;
 				}
-				else
-				{
-					pPlayer->bWantLockOn = false;
-				}
 			}
 
 			g_Enemy[EnemyCount].bLockOn = IsPlayerInsight(EnemyCount);
@@ -730,8 +726,9 @@ void CollisionEnemyAction(int nCnt)
 		if (collisioncircle(CollPos, radius, pPlayer->pos, PLAYER_RADIUS) == true)
 		{
 			HitPlayer(g_Enemy[nCnt].Status.fPower, g_Enemy[nCnt].Object.Pos);
+			break;
 		}
-
+#ifdef _DEBUG
 		// エフェクトの設定
 		SetEffect(D3DXVECTOR3(CollPos.x, CollPos.y, CollPos.z),
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
@@ -743,6 +740,7 @@ void CollisionEnemyAction(int nCnt)
 			0,
 			0.0f,
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+#endif
 	}
 }
 

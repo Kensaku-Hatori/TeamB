@@ -52,6 +52,7 @@ void InitBoss(void)
 	g_Boss.BossAi.primary[0] = 34.0f;
 	g_Boss.BossAi.primary[1] = 33.0f;
 	g_Boss.BossAi.primary[2] = 33.0f;
+	g_Boss.CollModel = 12;
 }
 //*************
 // ボスの終了処理
@@ -147,9 +148,13 @@ void UpdateBoss(void)
 			}
 		}
 
-		if (g_Boss.BossMotion.motionType == MOTIONTYPE_ACTION)
+		// 攻撃時の当たり判定
+		if (pPlayer->state != PLAYERSTATE_KNOCKUP)
 		{
-			CollisionBossAction();
+			if (g_Boss.BossMotion.motionType == MOTIONTYPE_ACTION)
+			{
+				CollisionBossAction();
+			}
 		}
 
 		//ロックオン
@@ -292,6 +297,12 @@ void DrawBoss(void)
 				// モデル(パーツ)の描画
 				g_Boss.BossMotion.aModel[EnemyPartsCount].pMesh->DrawSubset(nCntMat);
 			}
+
+			if (EnemyPartsCount == g_Boss.CollModel)
+			{
+				BossMatrixWand();
+			}
+
 		}
 		pDevice->SetMaterial(&matDef);
 	}
@@ -574,6 +585,7 @@ void CollisionBoss(void)
 		}
 	}
 }
+
 //===================================
 // 敵のアクション時の当たり判定処理
 //===================================
@@ -581,10 +593,86 @@ void CollisionBossAction(void)
 {
 	Player* pPlayer = GetPlayer();
 
-	if (collisioncircle(g_Boss.BossMotion.aModel[12].pos, g_Boss.Radius * 1.5f, pPlayer->pos, PLAYER_RADIUS) == true)
+	float radius = g_Boss.Radius; // 半径
+	float division = 0.05;	// 分割数
+	// 親モデル
+	int Parent = g_Boss.BossMotion.aModel[g_Boss.CollModel].Parent;
+
+	D3DXVECTOR3 Pos = D3DXVECTOR3(g_Boss.mtxWand._41, g_Boss.mtxWand._42, g_Boss.mtxWand._43);
+	D3DXVECTOR3 Pos1 = D3DXVECTOR3(g_Boss.BossMotion.aModel[Parent].mtxWorld._41, g_Boss.BossMotion.aModel[Parent].mtxWorld._42, g_Boss.BossMotion.aModel[Parent].mtxWorld._43);
+
+	D3DXVECTOR3 sabun = Pos1 - Pos;
+
+	for (int n = 0; n < 20; n++)
 	{
-		HitPlayer(g_Boss.Status.fPower,g_Boss.Object.Pos);
+		D3DXVECTOR3 sabun1 = Pos1 - sabun * division * n;
+		D3DXVECTOR3 CollPos = sabun1 - sabun;
+
+		if (collisioncircle(CollPos, radius, pPlayer->pos, PLAYER_RADIUS) == true)
+		{
+			HitPlayer(g_Boss.Status.fPower, g_Boss.Object.Pos);
+			break;
+		}
+
+#ifdef _DEBUG
+		// エフェクトの設定
+		SetEffect(D3DXVECTOR3(CollPos.x, CollPos.y, CollPos.z),
+			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			10,
+			0,
+			D3DXVECTOR3(radius, radius, radius),
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			EFFECT_SKILL,
+			0,
+			0.0f,
+			D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+#endif
 	}
+}
+
+//===============
+// マトリックス
+//===============
+void BossMatrixWand(void)
+{
+	LPDIRECT3DDEVICE9 pDevice;
+	//デバイスの取得
+	pDevice = GetDevice();
+
+	D3DXMATRIX mtxRotEnemy, mtxTransEnemy;
+	D3DXMATRIX mtxParent;
+	D3DXMatrixIdentity(&g_Boss.mtxWand);
+
+	// 向きを反映
+	D3DXMatrixRotationYawPitchRoll(&mtxRotEnemy, g_Boss.BossMotion.aModel[g_Boss.CollModel].rot.y, g_Boss.BossMotion.aModel[g_Boss.CollModel].rot.x, g_Boss.BossMotion.aModel[g_Boss.CollModel].rot.z);
+	D3DXMatrixMultiply(&g_Boss.mtxWand, &g_Boss.mtxWand, &mtxRotEnemy);
+
+	// 位置を反映
+	D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 80.0f, 0.0f);
+
+	D3DXMatrixTranslation(&mtxTransEnemy, pos.x, pos.y, pos.z);
+	D3DXMatrixMultiply(&g_Boss.mtxWand, &g_Boss.mtxWand, &mtxTransEnemy);
+
+	mtxParent = g_Boss.BossMotion.aModel[g_Boss.CollModel].mtxWorld;
+
+	D3DXMatrixMultiply(&g_Boss.mtxWand,
+		&g_Boss.mtxWand,
+		&mtxParent);
+
+	pDevice->SetTransform(D3DTS_WORLD,
+		&g_Boss.mtxWand);
+
+	//// エフェクトの設定
+	//SetEffect(D3DXVECTOR3(g_Boss.mtxWand._41, g_Boss.mtxWand._42, g_Boss.mtxWand._43),
+	//	D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+	//	50,
+	//	0,
+	//	D3DXVECTOR3(g_Boss.Radius / 2, g_Boss.Radius / 2, g_Boss.Radius / 2),
+	//	D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+	//	EFFECT_SKILL,
+	//	0,
+	//	0.0f,
+	//	D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 }
 
 //===================================
@@ -594,6 +682,7 @@ bool DethBoss(void)
 {
 	return g_Boss.bUse;
 }
+
 //*************************
 // ボスの行動優先順位を更新
 //*************************
@@ -632,6 +721,7 @@ void Routine(void)
 		}
 	}
 }
+
 void EndAction(void)
 {
 	Player* pPlayer = GetPlayer();

@@ -245,7 +245,6 @@ void UpdatePlayer(void)
 				if (g_player.bLockOn == true)
 				{
 					g_player.bLockOn = false;
-					g_player.bWantLockOn = false;
 				}
 				else if (g_player.bLockOn == false)
 				{
@@ -882,10 +881,11 @@ void HitPlayer(float Atack,D3DXVECTOR3 Pos)
 	if (g_player.bRolling == false)
 	{
 		g_player.Status.fHP -= (int)Atack;
+		float move = 5.0f + (Atack / 10);
 
 		D3DXVECTOR3 Vec = g_player.pos - Pos;
 		D3DXVec3Normalize(&Vec, &Vec);
-		g_player.move = Vec * 15.0f;
+		g_player.move = Vec * move;
 		g_player.bHit = true;
 		g_player.state = PLAYERSTATE_KNOCKUP;
 

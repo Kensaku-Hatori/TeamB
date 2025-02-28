@@ -254,6 +254,7 @@ bool IsEnemyInsight(D3DXVECTOR3 Pos, int type)
 			bLock = true;
 		}
 	}
+
 	return bLock;
 }
 
