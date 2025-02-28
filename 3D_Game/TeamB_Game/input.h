@@ -45,7 +45,8 @@ void UninitJoypad(void);
 void UpdateJoypad(void);
 bool GetJoypadPress(JOYKEY key);
 bool GetJoypadTrigger(JOYKEY key);
-bool GetJoyStick();
+bool GetJoyStickL();
+bool GetJoyStickR();
 XINPUT_STATE* GetJoyStickAngle(void);
 
 #endif

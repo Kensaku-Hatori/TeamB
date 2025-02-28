@@ -292,6 +292,11 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 		return E_FAIL;
 	}
 
+	if (FAILED(InitJoypad()))
+	{
+		return E_FAIL;
+	}
+
 	// デバック表示用フォントの生成
 	D3DXCreateFont(g_pD3DDevice, 18, 0, 0, 0,
 		FALSE, SHIFTJIS_CHARSET,
@@ -323,6 +328,8 @@ void Uninit(void)
 
 	UninitMouse();
 
+	UninitJoypad();
+
 	//
 	UninitFade();
 
@@ -351,6 +358,7 @@ void Update(void)
 	//----------------------------
 	UpdateMouse();
 	UpdateKeyboard();
+	UpdateJoypad();
 
 	switch (g_mode)
 	{

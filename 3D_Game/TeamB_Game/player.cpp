@@ -144,6 +144,7 @@ void UpdatePlayer(void)
 		{
 			//プレイヤー移動
 			PlayerMove();
+			PlayerMoveJoyPad();
 		}
 
 		//ロックオン状態なら
@@ -820,7 +821,29 @@ void PlayerMove(void)
 		g_player.pos.z = STAGE_SIZE;
 	}
 }
+void PlayerMoveJoyPad(void)
+{
+	Camera* pCamera = GetCamera();
+	XINPUT_STATE* pStick = GetJoyStickAngle();
+	if (GetJoyStickL() == true)
+	{
+		float fStickAngleX = (float)pStick->Gamepad.sThumbLX * pStick->Gamepad.sThumbLX;
+		float fStickAngleY = (float)pStick->Gamepad.sThumbLY * pStick->Gamepad.sThumbLY;
 
+		float DeadZone = 10920.0f;
+		float fMag = sqrtf(fStickAngleX + fStickAngleY);
+
+		if (fMag > DeadZone)
+		{
+			float X = (pStick->Gamepad.sThumbLX / fMag);
+			float Y = (pStick->Gamepad.sThumbLY / fMag);
+			float fAngle = atan2f(pStick->Gamepad.sThumbLX, pStick->Gamepad.sThumbLY);
+			g_player.move.x = sinf(pCamera->rot.y + fAngle);
+			g_player.move.z = cosf(pCamera->rot.y + fAngle);
+			g_player.rotDest.y = pCamera->rot.y + fAngle + D3DX_PI;
+		}
+	}
+}
 //===============
 // ローリング
 //===============
