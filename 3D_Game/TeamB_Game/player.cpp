@@ -51,6 +51,7 @@ void InitPlayer(void)
 	if (g_player.bfirst == false)
 	{//ステージ移動しているなら
 		g_player.pos = g_player.NextPosition;
+		g_player.Status.nMP += PLAYER_MP / 2;
 	}
 	else
 	{//最初なら
@@ -245,7 +246,6 @@ void UpdatePlayer(void)
 				if (g_player.bLockOn == true)
 				{
 					g_player.bLockOn = false;
-					g_player.bWantLockOn = false;
 				}
 				else if (g_player.bLockOn == false)
 				{
@@ -879,20 +879,24 @@ Player* GetPlayer(void)
 //=======================
 void HitPlayer(float Atack,D3DXVECTOR3 Pos)
 {
-	if (g_player.bRolling == false)
+	if (g_player.state != PLAYERSTATE_KNOCKUP)
 	{
-		g_player.Status.fHP -= (int)Atack;
+		if (g_player.bRolling == false)
+		{
+			g_player.Status.fHP -= (int)Atack;
+			float move = 5.0f + (Atack / 10);
 
-		D3DXVECTOR3 Vec = g_player.pos - Pos;
-		D3DXVec3Normalize(&Vec, &Vec);
-		g_player.move = Vec * 15.0f;
-		g_player.bHit = true;
-		g_player.state = PLAYERSTATE_KNOCKUP;
+			D3DXVECTOR3 Vec = g_player.pos - Pos;
+			D3DXVec3Normalize(&Vec, &Vec);
+			g_player.move = Vec * move;
+			g_player.bHit = true;
+			g_player.state = PLAYERSTATE_KNOCKUP;
 
-		if (g_player.Status.fHP <= 0.0f && g_player.bUse == true)
-		{// 使われていて体力が０以下なら
-			g_player.bUse = false;
-			SetGameState(GAMESTATE_GAMEOVER);
+			if (g_player.Status.fHP <= 0.0f && g_player.bUse == true)
+			{// 使われていて体力が０以下なら
+				g_player.bUse = false;
+				SetGameState(GAMESTATE_GAMEOVER);
+			}
 		}
 	}
 }

@@ -327,8 +327,8 @@ void UpdateGame(void)
 			Player* pPlayer = GetPlayer();
 			MODE mode = GetMode();
 
-			//if ((*NumEnemy) >= 0)
-			//{
+			if ((*NumEnemy) >= 0)
+			{
 				if (bAbo != true)
 				{
 					if (mode != MODE_STAGEFOUR)
@@ -337,11 +337,11 @@ void UpdateGame(void)
 						D3DXVECTOR3 pos = GetBottom();
 
 						//サークルを出す
-						SetCircle(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 150, 150), 8, 0, 200.0f, 300.0f, true, false);
+						SetCircle(pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 150, 150), 8, 0, 200.0f, 300.0f, true, false);
 					}
 				}
 				bAbo = true;
-			//}
+			}
 
 			//全てのwaveが終わったなら
 			if (GetFinish() == true)

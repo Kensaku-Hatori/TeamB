@@ -207,10 +207,6 @@ void UpdateEnemy(void)
 					EnemyDistanceSort(EnemyCount);
 					pPlayer->bLockOn = true;
 				}
-				else
-				{
-					pPlayer->bWantLockOn = false;
-				}
 			}
 
 			g_Enemy[EnemyCount].bLockOn = IsPlayerInsight(EnemyCount);
@@ -467,7 +463,7 @@ void SetEnemy(D3DXVECTOR3 pos, int nType, D3DXVECTOR3 rot)
 			{
 				g_Enemy[EnemyCount].type = ENEMYTYPE_MIDBOSS;
 				g_Enemy[EnemyCount].CollModel = 10;
-				g_Enemy[EnemyCount].Status.fPower = ENEMY_AP * 2;			// 攻撃力
+				g_Enemy[EnemyCount].Status.fPower = ENEMY_AP * 1.5;			// 攻撃力
 				g_Enemy[EnemyCount].Status.fSpeed = ENEMY_SPEED;			// スピード
 				g_Enemy[EnemyCount].Status.fHP = ENEMY_HP * 2;				// HP
 				g_Enemy[EnemyCount].Status.Score = ENEMY_SCORE * 2;			// スコア
@@ -508,10 +504,10 @@ void DeadEnemy(int Indx)
 	DeleteHPGuage(g_Enemy[Indx].IndxGuage);
 
 	//アイテムドロップ
-	Drop = rand() % 10;
+	Drop = rand() % 3;
 	Itemtype = rand() % NUM_ITEMTYPE;
 
-	if (Drop <= 2)
+	if (Drop == 1)
 	{
 		//アイテムの設定
 		SetItem(g_Enemy[Indx].Object.Pos, (ITEMTYPE)Itemtype);
@@ -730,8 +726,9 @@ void CollisionEnemyAction(int nCnt)
 		if (collisioncircle(CollPos, radius, pPlayer->pos, PLAYER_RADIUS) == true)
 		{
 			HitPlayer(g_Enemy[nCnt].Status.fPower, g_Enemy[nCnt].Object.Pos);
+			break;
 		}
-
+#ifdef _DEBUG
 		// エフェクトの設定
 		SetEffect(D3DXVECTOR3(CollPos.x, CollPos.y, CollPos.z),
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
@@ -743,6 +740,7 @@ void CollisionEnemyAction(int nCnt)
 			0,
 			0.0f,
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+#endif
 	}
 }
 

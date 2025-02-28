@@ -14,7 +14,7 @@
 #define MAX_ITEM (5)									//最大アイテム数
 #define NUM_ITEMTYPE (3)								//アイテムの種類の数
 #define ITEM_RADIUS (10.0f)								//アイテム(ビルボード)の半径
-#define ITEM_TIME_DEL (240)								//アイテムが消えるまでのフレーム
+#define ITEM_TIME_DEL (600)								//アイテムが消えるまでのフレーム
 
 //テクスチャ
 static const char* ITEM_TEXTURE[NUM_ITEMTYPE] =

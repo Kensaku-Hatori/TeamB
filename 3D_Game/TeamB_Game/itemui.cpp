@@ -45,7 +45,7 @@ void InitItemUI(void)
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\itemUI1.png", &g_pTextureItemUI[1]);		//MP 
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\itemUI3.png", &g_pTextureItemUI[2]);		//AT 
 
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number002.png", &g_pTextureItemUINo);		//No 
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number002.png", &g_pTextureItemUINo);	//No 
 
 	g_ItemUIframepos = D3DXVECTOR3(975.0f, 470.0f, 0.0f);
 	g_ItemUIpos = D3DXVECTOR3(990.0f, 490.0f, 0.0f);

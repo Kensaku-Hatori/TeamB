@@ -7,7 +7,7 @@
 #ifndef BOSS_H_
 #define BOSS_H_
 
-#define BOSS_AP (10)
+#define BOSS_AP (200)
 #define BOSS_HP (1000)
 #define BOSS_SPEED (1)
 #define	BOSSATTACK_DIST (10)
@@ -16,6 +16,7 @@
 #define MAX_BOSSACTIONRANK (2)
 #define BOSSACTION_JUSTIS (70)
 #define MOVEEND_FLAME (180)
+#define BOSS_SCORE (500)
 
 #include "main.h"
 #include "key.h"
@@ -68,12 +69,14 @@ typedef struct
 	D3DXVECTOR3 rotDest;
 	D3DXVECTOR3 move;
 	BossAi BossAi;
+	D3DXMATRIX mtxWand;				// 杖先のマトリックス
 	int Action;
 	int nNumKey, nKey, nCounterMotion, nNextKey;
 	int nNumModel;
 	int IndxShadow;
 	int nActionCount, nActionCounter;
 	int statecount;
+	int CollModel;
 	float ShadowRadius;
 	float ModelMinX, ModelMaxX;
 	float Radius;
@@ -100,6 +103,7 @@ void BossState();											// ボスの状態更新処理
 void SetBossPartsInfo(LoadInfo PartsInfo);					// ボスのバッファやモーション設定処理
 void CollisionBoss(void);									// ボスの当たり判定処理
 void CollisionBossAction(void);								// ボスのアクション時の当たり判定処理
+void BossMatrixWand(void);
 bool DethBoss(void);										// ボスの死亡フラグ取得処理
 void Routine(void);
 void EndAction(void);
