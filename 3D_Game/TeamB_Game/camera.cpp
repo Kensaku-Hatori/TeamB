@@ -44,7 +44,10 @@ void UpdateCamera(void)
 	MODE pMode;
 	pMode = GetMode();
 	
-	UpdateCameratoMousePos();
+	if (pMode != MODE_TITLE && pMode != MODE_RESULT)
+	{
+		UpdateCameratoMousePos();
+	}
 	g_camera.posRDest.x = pPlayer->pos.x + sinf(pPlayer->rot.x) * (pPlayer->pos.x - g_camera.posR.x);
 	g_camera.posRDest.y = pPlayer->pos.y;
 	g_camera.posRDest.z = pPlayer->pos.z + cosf(pPlayer->rot.z) * (pPlayer->pos.z - g_camera.posR.z);
