@@ -345,7 +345,7 @@ void ItemAbility(int nIndexItem)
 
 	case ITEMTYPE_SPEED:
 
-		pPlayer->Status.fSpeed += 0.5f;
+		pPlayer->Status.fPower += 30.0f;
 
 		break;
 

@@ -51,7 +51,7 @@ void InitPlayer(void)
 	if (g_player.bfirst == false)
 	{//ステージ移動しているなら
 		g_player.pos = g_player.NextPosition;
-		g_player.Status.nMP += PLAYER_MP / 2;
+		g_player.Status.nMP += PLAYER_MP / 3;
 	}
 	else
 	{//最初なら
@@ -274,6 +274,15 @@ void UpdatePlayer(void)
 		{
 			g_player.Status.nMP += 10;
 			g_nCntHealMP = 0;
+		}
+
+		if (g_player.Status.nMP >= PLAYER_MP)
+		{
+			g_player.Status.nMP = PLAYER_MP;
+		}
+		else if (g_player.Status.fHP >= PLAYER_HP)
+		{
+			g_player.Status.fHP = PLAYER_HP;
 		}
 
 		if (g_player.bLanding == false)

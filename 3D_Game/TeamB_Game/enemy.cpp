@@ -504,11 +504,12 @@ void DeadEnemy(int Indx)
 	DeleteHPGuage(g_Enemy[Indx].IndxGuage);
 
 	//アイテムドロップ
-	Drop = rand() % 3;
+	Drop = rand() % 2;
 	Itemtype = rand() % NUM_ITEMTYPE;
 
 	if (Drop == 1)
 	{
+	
 		//アイテムの設定
 		SetItem(g_Enemy[Indx].Object.Pos, (ITEMTYPE)Itemtype);
 	}
