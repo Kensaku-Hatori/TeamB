@@ -651,7 +651,7 @@ void BossMatrixWand(void)
 	D3DXMatrixMultiply(&g_Boss.mtxWand, &g_Boss.mtxWand, &mtxRotEnemy);
 
 	// ˆÊ’u‚ð”½‰f
-	D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 80.0f, 0.0f);
+	D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 60.0f, 0.0f);
 
 	D3DXMatrixTranslation(&mtxTransEnemy, pos.x, pos.y, pos.z);
 	D3DXMatrixMultiply(&g_Boss.mtxWand, &g_Boss.mtxWand, &mtxTransEnemy);
