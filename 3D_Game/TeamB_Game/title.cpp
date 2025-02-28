@@ -76,7 +76,6 @@ void UpdateTitle(void)
 		SetFade(MODE_RANK);
 		g_nTimeTitle = 0;
 	}
-
 }
 //===========
 //•`‰æˆ—
