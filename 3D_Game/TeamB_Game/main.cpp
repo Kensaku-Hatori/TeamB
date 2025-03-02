@@ -690,11 +690,26 @@ void DrawPlayerInfo()
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 
+	rect = { 0,400,SCREEN_WIDTH,SCREEN_HEIGHT };
+
+	// 文字列に代入
+	sprintf(&aStr[0], "プレイヤーの次のキー:%d", pPlayer->PlayerMotion.NextKey);
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+
+	rect = { 0,420,SCREEN_WIDTH,SCREEN_HEIGHT };
+
+	// 文字列に代入
+	sprintf(&aStr[0], "プレイヤーの今のキー:%d", pPlayer->PlayerMotion.nKey);
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 }
 void DrawTestInfo()
 {
 	D3DXVECTOR2 test = Gettest();
-	RECT rect = { 0,400,SCREEN_WIDTH,SCREEN_HEIGHT };
+	RECT rect = { 0,440,SCREEN_WIDTH,SCREEN_HEIGHT };
 	char aStr[256];
 
 	// 文字列に代入
@@ -707,7 +722,7 @@ void DrawBossInfo()
 {
 	BOSS* pBoss = GetBoss();
 	D3DXVECTOR2 test = Gettest();
-	RECT rect = { 0,420,SCREEN_WIDTH,SCREEN_HEIGHT };
+	RECT rect = { 0,460,SCREEN_WIDTH,SCREEN_HEIGHT };
 	char aStr[256];
 
 	// 文字列に代入
@@ -718,7 +733,7 @@ void DrawBossInfo()
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 
-	rect = { 0,440,SCREEN_WIDTH,SCREEN_HEIGHT };
+	rect = { 0,480,SCREEN_WIDTH,SCREEN_HEIGHT };
 
 	// 文字列に代入
 	sprintf(&aStr[0], "ボスの行動パターン:%d", pBoss->ActionType);
