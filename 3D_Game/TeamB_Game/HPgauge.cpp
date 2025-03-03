@@ -180,6 +180,7 @@ int SetHPgauge(D3DXVECTOR3 pos,D3DXVECTOR2 scale,float MaxHP)
 		{
 			//各種設定
 			g_HPgauge[nCnt].pos = pos;								// 位置
+
 			g_HPgauge[nCnt].fMaxHP = MaxHP;							// 最大HP
 
 			//頂点バッファの生成
