@@ -151,6 +151,9 @@
     <ClCompile Include="mouse.cpp">
       <Filter>H_K\.cpp</Filter>
     </ClCompile>
+    <ClCompile Include="bossgauge.cpp">
+      <Filter>K_A\.cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="wall.h">
@@ -311,6 +314,9 @@
     </ClInclude>
     <ClInclude Include="mouse.h">
       <Filter>H_K\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="bossgauge.h">
+      <Filter>K_A\.h</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

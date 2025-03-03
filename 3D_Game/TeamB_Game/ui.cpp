@@ -14,6 +14,7 @@
 #include "skillui.h"
 #include "mission.h"
 #include "player.h"
+#include "bossgauge.h"
 
 //ÉOÉçÅ[ÉoÉãïœêî
 
@@ -43,6 +44,8 @@ void InitUi(void)
 
 	InitMission();
 
+	InitBossGauge();
+
 	InitLockon();
 }
 //===========
@@ -64,6 +67,8 @@ void UninitUi(void)
 
 	UninitMission();
 
+	UninitBossGauge();
+
 	UninitLockon();
 }
 //===========
@@ -71,6 +76,8 @@ void UninitUi(void)
 //===========
 void UpdateUi(void)
 {
+	MODE nMode = GetMode();
+
 	UpdateTimer();
 
 	UpdateScore();
@@ -85,6 +92,11 @@ void UpdateUi(void)
 
 	UpdateMission();
 
+	if (nMode == MODE_STAGEFOUR)
+	{
+		UpdateBossGauge();
+	}
+
 	UpdateLockon();
 }
 //===========
@@ -92,6 +104,8 @@ void UpdateUi(void)
 //===========
 void DrawUi(void)
 {
+	MODE nMode = GetMode();
+
 	DrawTimer();
 
 	DrawScore();
@@ -105,6 +119,11 @@ void DrawUi(void)
 	DrawSkillUI();
 
 	DrawMission();
+
+	if (nMode == MODE_STAGEFOUR)
+	{
+		DrawBossGauge();
+	}
 
 	DrawLockon();
 }
