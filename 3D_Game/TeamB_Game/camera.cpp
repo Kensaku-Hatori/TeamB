@@ -73,74 +73,8 @@ void UpdateCamera(void)
 		UpdateCameratoMousePos();
 		UpdateCameratoJoyPadPos();
 
-		//Ž‹“_‚Ìù‰ñ
-		if (GetKeyboardPress(DIK_E) == true)
-		{
-			g_camera.rot.y += 0.05f;
-			// Šp“x‚Ì‹ß“¹
-			if (g_camera.rot.y >= D3DX_PI)
-			{
-				g_camera.rot.y -= D3DX_PI * 2.0f;
-			}
-			else if (g_camera.rot.y <= -D3DX_PI)
-			{
-				g_camera.rot.y += D3DX_PI * 2.0f;
-			}
-
-		}
-		if (GetKeyboardPress(DIK_Q) == true)
-		{
-			g_camera.rot.y -= 0.05f;
-			// Šp“x‚Ì‹ß“¹
-			if (g_camera.rot.y >= D3DX_PI)
-			{
-				g_camera.rot.y -= D3DX_PI * 2.0f;
-			}
-			else if (g_camera.rot.y <= -D3DX_PI)
-			{
-				g_camera.rot.y += D3DX_PI * 2.0f;
-			}
-
-		}
-
-		//Ž‹“_‚Ìã‰º
-		if (GetKeyboardPress(DIK_UP) == true)
-		{//ã
-			if (g_camera.posV.y <= 500)
-			{
-				g_camera.posV.y += 5;
-			}
-		}
-		if (GetKeyboardPress(DIK_DOWN) == true)
-		{//‰º
-			if (g_camera.posV.y >= -500)
-			{
-				g_camera.posV.y -= 5;
-			}
-		}
-
-
 		g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
 		g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
-
-		//’Ž‹“_‚Ìã‰º
-		//if (GetKeyboardPress(DIK_R) == true)
-		//{//ã
-		//	g_camera.rot.x += 0.05f;
-		//	//Šp“x‚Ì³‹K‰»
-		//	if (g_camera.rot.x > D3DX_PI)
-		//	{
-		//		g_camera.rot.x = -D3DX_PI;
-		//	}
-		//	if (g_camera.rot.x < -D3DX_PI)
-		//	{
-		//		g_camera.rot.x = D3DX_PI;
-		//	}
-
-		//	g_camera.posV.y -= sinf(g_camera.rot.x - D3DX_PI) * 1;
-
-		//	g_camera.posR.y = g_camera.posV.y + sinf(g_camera.rot.x) * g_camera.fDistance;
-		//}
 	}
 }
 void UpdateCameratoMousePos(void)
