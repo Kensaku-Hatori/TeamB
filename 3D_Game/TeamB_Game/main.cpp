@@ -495,6 +495,7 @@ void SetMode(MODE mode)
 	{
 	case MODE_TITLE:
 		UninitTitle();
+		StopSound(SOUND_LABEL_TITLE);
 		break;
 	case MODE_STAGEONE:
 		UninitGame();
@@ -525,6 +526,7 @@ void SetMode(MODE mode)
 	{
 	case MODE_TITLE:
 		InitTitle();
+		PlaySound(SOUND_LABEL_TITLE);
 		break;
 	case MODE_STAGEONE:
 		InitGame();

@@ -220,20 +220,26 @@ void UpdatePause(int zDelta)
 
 	if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true || OnMouseDown(0) == true) && g_fade == FADE_NONE)
 		{
-			StopSound();
 			//メニューに合わせてモードの切り替え
 			if (g_pauseMenu == PAUSE_MENU_CONTNUE)
 			{	//Contnueにいる場合
 				SetEnablePause(false);
+				SetGameState(GAMESTATE_NORMAL);
 			}
 			else if (g_pauseMenu == PAUSE_MENU_RETRY)
 			{	//RETRYにいる場合
 				SetFade(MODE_STAGEONE);
 				pPlayer->bfirst = true;
+
+				StopSound();
+				PlaySound(SOUND_LABEL_GAME);
 			}
 			else if (g_pauseMenu == PAUSE_MENU_QUIT)
 			{	//QUITにいる場合
 				SetFade(MODE_TITLE);
+
+				StopSound();
+				PlaySound(SOUND_LABEL_TITLE);
 			}
 		}
 }

@@ -122,7 +122,6 @@ void InitTitleInfo(void)
 
 	//頂点バッファをアンロック
 	g_pVtxBufftitleinfoLogo->Unlock();
-
 }
 //==========
 //終了処理
@@ -264,16 +263,22 @@ void UpdateTitleInfo(int zDelta)
 		}
 		else
 		{//ロゴがおり切ったとき
+			StopSound();
+
 			//メニューに合わせてモードの切り替え
 			if (g_titleinfoMenu == TITLE_START)
 			{	//STARTにいる場合
 				SetFade(MODE_STAGEONE);
 				pPlayer->bfirst = true;
+
+				PlaySound(SOUND_LABEL_GAME);
 			}
 			else if (g_titleinfoMenu == TITLE_RANK)
 			{	//RANKにいる場合
 				SetFade(MODE_RANK);
 				SetRankMode(RANKMODE_SELECT);
+
+				PlaySound(SOUND_LABEL_RANKING);
 			}
 			else if (g_titleinfoMenu == TITLE_FIN)
 			{	//FINにいる場合
