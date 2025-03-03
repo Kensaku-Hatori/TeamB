@@ -618,17 +618,7 @@ void CollisionBossAction(void)
 		}
 
 #ifdef _DEBUG
-		// エフェクトの設定
-		SetEffect(D3DXVECTOR3(CollPos.x, CollPos.y, CollPos.z),
-			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			10,
-			0,
-			D3DXVECTOR3(radius, radius, radius),
-			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-			EFFECT_SKILL,
-			0,
-			0.0f,
-			D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
 #endif
 	}
 }
@@ -664,18 +654,6 @@ void BossMatrixWand(void)
 
 	pDevice->SetTransform(D3DTS_WORLD,
 		&g_Boss.mtxWand);
-
-	//// エフェクトの設定
-	//SetEffect(D3DXVECTOR3(g_Boss.mtxWand._41, g_Boss.mtxWand._42, g_Boss.mtxWand._43),
-	//	D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-	//	50,
-	//	0,
-	//	D3DXVECTOR3(g_Boss.Radius / 2, g_Boss.Radius / 2, g_Boss.Radius / 2),
-	//	D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-	//	EFFECT_SKILL,
-	//	0,
-	//	0.0f,
-	//	D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 }
 
 //===================================

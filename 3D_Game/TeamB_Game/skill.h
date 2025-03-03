@@ -13,7 +13,7 @@
 #define SKILL_LIFE (30)
 #define SKILL_SIZE (float)(2.5)
 #define INTERVAL_IMPACT (30)
-#define DISTANCE_HORMING (100)
+#define DISTANCE_HORMING (200)
 #define INTERVAL_HORMING (100)
 #define HORMING_SPEEDANIM (100)
 

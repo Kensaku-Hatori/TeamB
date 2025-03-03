@@ -197,7 +197,7 @@ void SetBiillboard(D3DXVECTOR3 pos, int nWidth, int nHeigh, int textype, D3DXVEC
 			g_Billboard[nCnt].pVtxBuffBiillboard->Unlock();
 
 			//‰e‚Ìİ’è
-			if (g_Billboard[nCnt].bShadow)
+			if (g_Billboard[nCnt].bShadow == true)
 			{
 				//‰e‚Ìİ’è
 				g_Billboard[nCnt].nIndexShadow = SetShadow(D3DXVECTOR3((g_Billboard[nCnt].nWidth - g_Billboard[nCnt].origin.x) * 0.5f, 0.1f, g_Billboard[nCnt].pos.z),
