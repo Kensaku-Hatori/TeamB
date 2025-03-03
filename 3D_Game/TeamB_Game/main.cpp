@@ -20,6 +20,7 @@
 #include "boss.h"
 #include "mouse.h"
 #include "titleinfo.h"
+#include "pause.h"
 
 //グローバル変数宣言
 LPDIRECT3D9 g_pD3D = NULL;
@@ -182,6 +183,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	case WM_MOUSEWHEEL:
 	{
+		GAMESTATE state = GetGameSatate();
 		int zDelta = GET_WHEEL_DELTA_WPARAM(wParam);
 		//SetMouseWheel(zDelta);
 		//使用する魔法の種類を変更
@@ -189,6 +191,10 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		if (g_mode == MODE_TITLE)
 		{
 			UpdateTitleInfo(zDelta);
+		}
+		if(state == GAMESTATE_PAUSE)
+		{
+			UpdatePause(zDelta);
 		}
 	}
 		break;

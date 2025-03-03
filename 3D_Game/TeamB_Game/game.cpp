@@ -228,10 +228,13 @@ void UpdateGame(void)
 		if (g_bPause == true)
 		{//ポーズ中
 			//ポーズの更新処理
-			UpdatePause();
+			g_gamestate = GAMESTATE_PAUSE;
+			UpdatePause(0);
 		}
 		else if (g_bPause == false)
 		{
+			g_gamestate = GAMESTATE_NORMAL;
+
 			//メッシュフィールドの更新処理
 			UpdateMeshfield();
 
