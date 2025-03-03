@@ -9,7 +9,7 @@ SCRIPT			# この行は絶対消さないこと！
 #------------------------------------------------------------------------------
 # テクスチャ数
 #------------------------------------------------------------------------------
-NUM_TEXTURE = 11
+NUM_TEXTURE = 16
 
 #------------------------------------------------------------------------------
 # テクスチャファイル名
@@ -25,6 +25,11 @@ TEXTURE_FILENAME = data/TEXTURE/deadtree01.png		# [7]木テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/deadtree02.png		# [8]木テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/deadtree03.png		# [9]木テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/grass001.png		# [10]草テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/tutorial001.jpg		# [11]移動チュートリアルテクスチャ
+TEXTURE_FILENAME = data/TEXTURE/tutorial003.jpg		# [12]アイテムチュートリアルテクスチャ
+TEXTURE_FILENAME = data/TEXTURE/tutorial004.jpg		# [13]回避チュートリアルテクスチャ
+TEXTURE_FILENAME = data/TEXTURE/tutorial005.jpg		# [14]ロックオンチュートリアルテクスチャ
+TEXTURE_FILENAME = data/TEXTURE/tutorial006.jpg		# [15]魔法チュートリアルテクスチャ
 
 #------------------------------------------------------------------------------
 # モデル数
@@ -841,6 +846,61 @@ BILLBOARDSET
 	POS = -175 0 -455
 	SIZE = 100 100
 	ORIGIN = 50 0
+	SHADOW = 0
+END_BILLBOARDSET
+
+#-----------------------------------
+# チュートリアル移動
+#-----------------------------------
+BILLBOARDSET
+	TEXTYPE = 11
+	POS = 50 50 400
+	SIZE = 50 50
+	ORIGIN = 25 0
+	SHADOW = 0
+END_BILLBOARDSET
+
+#-----------------------------------
+# チュートリアルアイテム
+#-----------------------------------
+BILLBOARDSET
+	TEXTYPE = 12
+	POS = -50 50 300
+	SIZE = 50 50
+	ORIGIN = 25 0
+	SHADOW = 0
+END_BILLBOARDSET
+
+#-----------------------------------
+# チュートリアル回避
+#-----------------------------------
+BILLBOARDSET
+	TEXTYPE = 13
+	POS = 50 50 200
+	SIZE = 50 50
+	ORIGIN = 25 0
+	SHADOW = 0
+END_BILLBOARDSET
+
+#-----------------------------------
+# チュートリアルロックオン
+#-----------------------------------
+BILLBOARDSET
+	TEXTYPE = 14
+	POS = -50 50 100
+	SIZE = 50 50
+	ORIGIN = 25 0
+	SHADOW = 0
+END_BILLBOARDSET
+
+#-----------------------------------
+# チュートリアル魔法
+#-----------------------------------
+BILLBOARDSET
+	TEXTYPE = 15
+	POS = 50 50 0
+	SIZE = 50 50
+	ORIGIN = 25 0
 	SHADOW = 0
 END_BILLBOARDSET
 

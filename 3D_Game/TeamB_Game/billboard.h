@@ -9,7 +9,7 @@
 
 #include "main.h"
 
-#define MAX_BILLBOARD (10)								//ビルボードの数
+#define MAX_BILLBOARD (64)								//ビルボードの数
 
 //ビルボードの構造体
 typedef struct
