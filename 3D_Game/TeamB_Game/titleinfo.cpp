@@ -12,6 +12,7 @@
 //#include "tutorial.h"
 #include "sound.h"
 #include "player.h"
+#include "mouse.h"
 
 #define MAX_TEXTURE (3)
 //グローバル変数
@@ -121,7 +122,6 @@ void InitTitleInfo(void)
 
 	//頂点バッファをアンロック
 	g_pVtxBufftitleinfoLogo->Unlock();
-
 }
 //==========
 //終了処理
@@ -156,7 +156,7 @@ void UninitTitleInfo(void)
 //==========
 //更新処理
 //==========
-void UpdateTitleInfo(void)
+void UpdateTitleInfo(int zDelta)
 {
 	FADE g_fade;
 	g_fade = GetFade();
@@ -169,29 +169,29 @@ void UpdateTitleInfo(void)
 
 	//メニューの選択(上下)
 	//STARTにいる場合
-	if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_titleinfoMenu==TITLE_START)
+	if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true || zDelta > 0) && g_titleinfoMenu==TITLE_START)
 	{
 		g_titleinfoMenu = TITLE_FIN;
 	}
-	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_titleinfoMenu == TITLE_START)
+	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true || zDelta < 0) && g_titleinfoMenu == TITLE_START)
 	{
 		g_titleinfoMenu = TITLE_RANK;
 	}
 	//RANKにいる場合
-	else if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_titleinfoMenu == TITLE_RANK)
+	else if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true || zDelta > 0) && g_titleinfoMenu == TITLE_RANK)
 	{
 		g_titleinfoMenu = TITLE_START;
 	}
-	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_titleinfoMenu == TITLE_RANK)
+	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true || zDelta < 0) && g_titleinfoMenu == TITLE_RANK)
 	{
 		g_titleinfoMenu = TITLE_FIN;
 	}
 	//FINにいる場合
-	else if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_titleinfoMenu == TITLE_FIN)
+	else if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true || zDelta > 0) && g_titleinfoMenu == TITLE_FIN)
 	{
 		g_titleinfoMenu = TITLE_RANK;
 	}
-	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_titleinfoMenu == TITLE_FIN)
+	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true || zDelta < 0) && g_titleinfoMenu == TITLE_FIN)
 	{
 		g_titleinfoMenu = TITLE_START;
 	}
@@ -255,7 +255,7 @@ void UpdateTitleInfo(void)
 	g_pVtxBufftitleinfo->Unlock();
 
 
-	if ((KeyboardTrigger(DIK_RETURN) == true|| GetJoypadTrigger(JOYKEY_A) == true) && g_fade == FADE_NONE)
+	if ((KeyboardTrigger(DIK_RETURN) == true|| GetJoypadTrigger(JOYKEY_A) == true || OnMouseDown(0) == true) && g_fade == FADE_NONE)
 	{//ENTERが押された
 		if (g_Logopos.y < LOGO_END_Y)
 		{//ロゴが下りてきている時
@@ -263,16 +263,22 @@ void UpdateTitleInfo(void)
 		}
 		else
 		{//ロゴがおり切ったとき
+			StopSound();
+
 			//メニューに合わせてモードの切り替え
 			if (g_titleinfoMenu == TITLE_START)
 			{	//STARTにいる場合
 				SetFade(MODE_STAGEONE);
 				pPlayer->bfirst = true;
+
+				PlaySound(SOUND_LABEL_GAME);
 			}
 			else if (g_titleinfoMenu == TITLE_RANK)
 			{	//RANKにいる場合
 				SetFade(MODE_RANK);
 				SetRankMode(RANKMODE_SELECT);
+
+				PlaySound(SOUND_LABEL_RANKING);
 			}
 			else if (g_titleinfoMenu == TITLE_FIN)
 			{	//FINにいる場合

@@ -29,7 +29,7 @@ typedef enum
 //プロトタイプ宣言
 void InitTitleInfo(void);
 void UninitTitleInfo(void);
-void UpdateTitleInfo(void);
+void UpdateTitleInfo(int zDelta);
 void DrawTitleInfo(void);
 
 #endif

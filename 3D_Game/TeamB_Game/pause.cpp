@@ -10,6 +10,7 @@
 #include "fade.h"
 #include "sound.h"
 #include "player.h"
+#include "mouse.h"
 
 #define MAX_TEXTURE (4)
 //グローバル変数
@@ -120,7 +121,7 @@ void UninitPause(void)
 //==========
 //更新処理
 //==========
-void UpdatePause(void)
+void UpdatePause(int zDelta)
 {
 	FADE g_fade;
 	g_fade = GetFade();
@@ -133,29 +134,29 @@ void UpdatePause(void)
 		
 	//メニューの選択(上下)
 	//Contnueにいる場合
-	if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_pauseMenu == PAUSE_MENU_CONTNUE)
+	if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true || zDelta > 0) && g_pauseMenu == PAUSE_MENU_CONTNUE)
 		{
 			g_pauseMenu = PAUSE_MENU_QUIT;
 		}
-	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_pauseMenu == PAUSE_MENU_CONTNUE)
+	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true || zDelta < 0) && g_pauseMenu == PAUSE_MENU_CONTNUE)
 		{
 			g_pauseMenu = PAUSE_MENU_RETRY;
 		}
 	//RETRYにいる場合
-	else if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_pauseMenu == PAUSE_MENU_RETRY)
+	else if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true || zDelta > 0) && g_pauseMenu == PAUSE_MENU_RETRY)
 		{
 			g_pauseMenu = PAUSE_MENU_CONTNUE;
 		}
-	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_pauseMenu == PAUSE_MENU_RETRY)
+	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true || zDelta < 0) && g_pauseMenu == PAUSE_MENU_RETRY)
 		{
 			g_pauseMenu = PAUSE_MENU_QUIT;
 		}
 	//QUITにいる場合
-	else if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true) && g_pauseMenu == PAUSE_MENU_QUIT)
+	else if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true || zDelta > 0) && g_pauseMenu == PAUSE_MENU_QUIT)
 		{
 			g_pauseMenu = PAUSE_MENU_RETRY;
 		}
-	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true) && g_pauseMenu == PAUSE_MENU_QUIT)
+	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true || zDelta < 0) && g_pauseMenu == PAUSE_MENU_QUIT)
 		{
 			g_pauseMenu = PAUSE_MENU_CONTNUE;
 		}
@@ -217,22 +218,28 @@ void UpdatePause(void)
 	//頂点バッファをアンロック
 	g_pVtxBuffPause->Unlock();
 
-	if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true) && g_fade == FADE_NONE)
+	if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true || OnMouseDown(0) == true) && g_fade == FADE_NONE)
 		{
-			StopSound();
 			//メニューに合わせてモードの切り替え
 			if (g_pauseMenu == PAUSE_MENU_CONTNUE)
 			{	//Contnueにいる場合
 				SetEnablePause(false);
+				SetGameState(GAMESTATE_NORMAL);
 			}
 			else if (g_pauseMenu == PAUSE_MENU_RETRY)
 			{	//RETRYにいる場合
 				SetFade(MODE_STAGEONE);
 				pPlayer->bfirst = true;
+
+				StopSound();
+				PlaySound(SOUND_LABEL_GAME);
 			}
 			else if (g_pauseMenu == PAUSE_MENU_QUIT)
 			{	//QUITにいる場合
 				SetFade(MODE_TITLE);
+
+				StopSound();
+				PlaySound(SOUND_LABEL_TITLE);
 			}
 		}
 }

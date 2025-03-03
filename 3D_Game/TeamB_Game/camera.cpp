@@ -44,10 +44,6 @@ void UpdateCamera(void)
 	MODE pMode;
 	pMode = GetMode();
 	
-	if (pMode != MODE_TITLE && pMode != MODE_RESULT)
-	{
-		UpdateCameratoMousePos();
-	}
 	g_camera.posRDest.x = pPlayer->pos.x + sinf(pPlayer->rot.x) * (pPlayer->pos.x - g_camera.posR.x);
 	g_camera.posRDest.y = pPlayer->pos.y;
 	g_camera.posRDest.z = pPlayer->pos.z + cosf(pPlayer->rot.z) * (pPlayer->pos.z - g_camera.posR.z);
@@ -74,6 +70,9 @@ void UpdateCamera(void)
 	//‚»‚êˆÈŠO
 	else
 	{
+		UpdateCameratoMousePos();
+		UpdateCameratoJoyPadPos();
+
 		//‹“_‚Ìù‰ñ
 		if (GetKeyboardPress(DIK_E) == true)
 		{
@@ -177,6 +176,30 @@ void UpdateCameratoMousePos(void)
 		g_camera.rot.x += D3DX_PI * 2.0f;
 	}
 	SetCursorPos((int)SetMousePos.x, (int)SetMousePos.y);
+}
+void UpdateCameratoJoyPadPos(void)
+{
+	XINPUT_STATE* pStick = GetJoyStickAngle();
+	if (GetJoyStickR() == true)
+	{
+		float fStickAngleX = (float)pStick->Gamepad.sThumbRX * pStick->Gamepad.sThumbRX;
+		float fStickAngleY = (float)pStick->Gamepad.sThumbRY * pStick->Gamepad.sThumbRY;
+
+		float DeadZone = 10920.0f;
+		float fMag = sqrtf(fStickAngleX + fStickAngleY);
+
+		if (fMag > DeadZone)
+		{
+			if (pStick->Gamepad.sThumbRX < -DeadZone)
+			{
+				g_camera.rot.y += 0.03f;
+			}
+			else if (pStick->Gamepad.sThumbRX > DeadZone)
+			{
+				g_camera.rot.y -= 0.03f;
+			}
+		}
+	}
 }
 //================
 // ƒJƒƒ‰‚Ìİ’è

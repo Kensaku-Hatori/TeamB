@@ -11,6 +11,7 @@
 #include "ranking.h"
 #include "score.h"
 #include "sound.h"
+#include "mouse.h"
 
 //グローバル変数宣言
 LPDIRECT3DTEXTURE9 g_pTextureResultInfo[RESULT_MAX] = {};
@@ -98,13 +99,16 @@ void UpdateResultInfo(void)
 	FADE g_fade;
 	g_fade = GetFade();
 
-	if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true) && g_fade == FADE_NONE)
+	if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true || OnMouseDown(0) == true) && g_fade == FADE_NONE)
 	{//決定キーが押された
 		//ランキングの設定
 		SetFade(MODE_RANK);
 
 		SetRankMode(RANKMODE_RESULT);
 		SetRanking(GetScore());
+
+		StopSound();
+		PlaySound(SOUND_LABEL_RANKING);
 	}
 }
 //==========

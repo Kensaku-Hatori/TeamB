@@ -19,7 +19,7 @@
 #include "meshfield.h"
 #include "fade.h"
 #include "pause.h"
-//#include "sound.h"
+#include "sound.h"
 #include "particle.h"
 #include "skill.h"
 #include "ui.h"
@@ -228,7 +228,8 @@ void UpdateGame(void)
 		if (g_bPause == true)
 		{//ポーズ中
 			//ポーズの更新処理
-			UpdatePause();
+			g_gamestate = GAMESTATE_PAUSE;
+			UpdatePause(0);
 		}
 		else if (g_bPause == false)
 		{
@@ -366,6 +367,9 @@ void UpdateGame(void)
 					//モードをリザルトにする
 					SetFade(MODE_RESULT);
 					SetResult(RESULT_CLEAR);
+
+					StopSound();
+					PlaySound(SOUND_LABEL_GAMECLEAR);
 				}
 				break;
 
@@ -378,6 +382,9 @@ void UpdateGame(void)
 					//モードをリザルトにする
 					SetFade(MODE_RESULT);
 					SetResult(RESULT_GAMEOVER);
+
+					StopSound();
+					PlaySound(SOUND_LABEL_GAMEOVER);
 				}
 				break;
 

@@ -83,6 +83,7 @@ void UninitPlayer(void);
 void UpdatePlayer(void);
 void DrawPlayer(void);
 void PlayerMove(void);
+void PlayerMoveJoyPad(void);
 void PlayerRolling(void);
 void SkillChange(int zDelta);
 Player* GetPlayer(void);

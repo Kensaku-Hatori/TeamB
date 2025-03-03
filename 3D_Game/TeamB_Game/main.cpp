@@ -19,6 +19,8 @@
 #include "invisiblewall.h"
 #include "boss.h"
 #include "mouse.h"
+#include "titleinfo.h"
+#include "pause.h"
 
 //グローバル変数宣言
 LPDIRECT3D9 g_pD3D = NULL;
@@ -181,10 +183,19 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	case WM_MOUSEWHEEL:
 	{
+		GAMESTATE state = GetGameSatate();
 		int zDelta = GET_WHEEL_DELTA_WPARAM(wParam);
 		//SetMouseWheel(zDelta);
 		//使用する魔法の種類を変更
 		SkillChange(zDelta);
+		if (g_mode == MODE_TITLE)
+		{
+			UpdateTitleInfo(zDelta);
+		}
+		if(state == GAMESTATE_PAUSE)
+		{
+			UpdatePause(zDelta);
+		}
 	}
 		break;
 	default:
@@ -292,6 +303,11 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 		return E_FAIL;
 	}
 
+	if (FAILED(InitJoypad()))
+	{
+		return E_FAIL;
+	}
+
 	// デバック表示用フォントの生成
 	D3DXCreateFont(g_pD3DDevice, 18, 0, 0, 0,
 		FALSE, SHIFTJIS_CHARSET,
@@ -323,6 +339,8 @@ void Uninit(void)
 
 	UninitMouse();
 
+	UninitJoypad();
+
 	//
 	UninitFade();
 
@@ -351,6 +369,7 @@ void Update(void)
 	//----------------------------
 	UpdateMouse();
 	UpdateKeyboard();
+	UpdateJoypad();
 
 	switch (g_mode)
 	{
@@ -476,6 +495,7 @@ void SetMode(MODE mode)
 	{
 	case MODE_TITLE:
 		UninitTitle();
+		StopSound(SOUND_LABEL_TITLE);
 		break;
 	case MODE_STAGEONE:
 		UninitGame();
@@ -506,6 +526,7 @@ void SetMode(MODE mode)
 	{
 	case MODE_TITLE:
 		InitTitle();
+		PlaySound(SOUND_LABEL_TITLE);
 		break;
 	case MODE_STAGEONE:
 		InitGame();
@@ -677,11 +698,26 @@ void DrawPlayerInfo()
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 
+	rect = { 0,400,SCREEN_WIDTH,SCREEN_HEIGHT };
+
+	// 文字列に代入
+	sprintf(&aStr[0], "プレイヤーの次のキー:%d", pPlayer->PlayerMotion.NextKey);
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+
+	rect = { 0,420,SCREEN_WIDTH,SCREEN_HEIGHT };
+
+	// 文字列に代入
+	sprintf(&aStr[0], "プレイヤーの今のキー:%d", pPlayer->PlayerMotion.nKey);
+
+	// テキスト表示
+	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 }
 void DrawTestInfo()
 {
 	D3DXVECTOR2 test = Gettest();
-	RECT rect = { 0,400,SCREEN_WIDTH,SCREEN_HEIGHT };
+	RECT rect = { 0,440,SCREEN_WIDTH,SCREEN_HEIGHT };
 	char aStr[256];
 
 	// 文字列に代入
@@ -694,7 +730,7 @@ void DrawBossInfo()
 {
 	BOSS* pBoss = GetBoss();
 	D3DXVECTOR2 test = Gettest();
-	RECT rect = { 0,420,SCREEN_WIDTH,SCREEN_HEIGHT };
+	RECT rect = { 0,460,SCREEN_WIDTH,SCREEN_HEIGHT };
 	char aStr[256];
 
 	// 文字列に代入
@@ -705,7 +741,7 @@ void DrawBossInfo()
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 
-	rect = { 0,440,SCREEN_WIDTH,SCREEN_HEIGHT };
+	rect = { 0,480,SCREEN_WIDTH,SCREEN_HEIGHT };
 
 	// 文字列に代入
 	sprintf(&aStr[0], "ボスの行動パターン:%d", pBoss->ActionType);

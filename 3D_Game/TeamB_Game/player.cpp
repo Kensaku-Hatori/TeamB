@@ -144,6 +144,7 @@ void UpdatePlayer(void)
 		{
 			//プレイヤー移動
 			PlayerMove();
+			PlayerMoveJoyPad();
 		}
 
 		//ロックオン状態なら
@@ -175,7 +176,6 @@ void UpdatePlayer(void)
 			//魔法発射
 			if ((KeyboardTrigger(DIK_RETURN) || OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true) 
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_EXPLOSION
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_HORMING)
 			{// MPが５０以上の時
 				if (g_player.Skilltype == SKILLTYPE_NONE)
@@ -203,24 +203,6 @@ void UpdatePlayer(void)
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nStartFrame = 1;
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nEndFrame = 2;
 				}
-				else if (g_player.Skilltype == SKILLTYPE_EXPLOSION)
-				{
-					SetMotion(MOTIONTYPE_ACTION_EXPLOSION, &g_player.PlayerMotion);
-
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bActionStart = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bFirst = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartKey = 1;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndKey = 1;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartFrame = 19;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndFrame = 20;
-
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].bActionStart = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].bFirst = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartKey = 1;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndKey = 1;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartFrame = 19;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndFrame = 20;
-				}
 				else if (g_player.Skilltype == SKILLTYPE_HORMING)
 				{
 					SetMotion(MOTIONTYPE_ACTION_HORMING, &g_player.PlayerMotion);
@@ -240,7 +222,29 @@ void UpdatePlayer(void)
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nEndFrame = 2;
 				}
 			}
+			//魔法発射
+			else if ((GetKeyboardPress(DIK_RETURN) || OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true)
+				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_EXPLOSION)
+			{// MPが５０以上の時
+				if (g_player.Skilltype == SKILLTYPE_EXPLOSION)
+				{
+					SetMotion(MOTIONTYPE_ACTION_EXPLOSION, &g_player.PlayerMotion);
 
+					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bActionStart = false;
+					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bFirst = false;
+					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartKey = 1;
+					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndKey = 1;
+					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartFrame = 18;
+					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndFrame = 19;
+
+					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].bActionStart = false;
+					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].bFirst = false;
+					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartKey = 1;
+					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndKey = 1;
+					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartFrame = 18;
+					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndFrame = 19;
+				}
+			}
 			//ロックオン
 			if ((KeyboardTrigger(DIK_R) == true || 
 				GetJoypadTrigger(JOYKEY_R1) == true) ||
@@ -416,6 +420,8 @@ void UpdatePlayer(void)
 				//矢印の位置更新
 				SetPositonArrow(g_player.pos);
 			}
+
+			g_player.Status.fSpeed = PLAYER_SPEED * 2.0f;
 		}
 
 		//影の大きさの更新処理
@@ -559,7 +565,7 @@ void PlayerMove(void)
 	
 	if (g_player.state == PLAYERSTATE_NORMAL)
 	{
-		if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_DOWN)) && g_player.bRolling == false)
+		if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && g_player.bRolling == false)
 		{
 			Speed = Speed * 10;
 			g_player.bRolling = true;
@@ -621,7 +627,7 @@ void PlayerMove(void)
 			}
 		}
 		//右
-		else if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_RIGET))
+		else if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_RIGHT))
 		{
 			//モーション
 			if (g_player.bRolling == false)
@@ -820,7 +826,29 @@ void PlayerMove(void)
 		g_player.pos.z = STAGE_SIZE;
 	}
 }
+void PlayerMoveJoyPad(void)
+{
+	Camera* pCamera = GetCamera();
+	XINPUT_STATE* pStick = GetJoyStickAngle();
+	if (GetJoyStickL() == true)
+	{
+		float fStickAngleX = (float)pStick->Gamepad.sThumbLX * pStick->Gamepad.sThumbLX;
+		float fStickAngleY = (float)pStick->Gamepad.sThumbLY * pStick->Gamepad.sThumbLY;
 
+		float DeadZone = 10920.0f;
+		float fMag = sqrtf(fStickAngleX + fStickAngleY);
+
+		if (fMag > DeadZone)
+		{
+			float X = (pStick->Gamepad.sThumbLX / fMag);
+			float Y = (pStick->Gamepad.sThumbLY / fMag);
+			float fAngle = atan2f(pStick->Gamepad.sThumbLX, pStick->Gamepad.sThumbLY);
+			g_player.move.x = sinf(pCamera->rot.y + fAngle);
+			g_player.move.z = cosf(pCamera->rot.y + fAngle);
+			g_player.rotDest.y = pCamera->rot.y + fAngle + D3DX_PI;
+		}
+	}
+}
 //===============
 // ローリング
 //===============
@@ -834,7 +862,7 @@ void PlayerRolling(void)
 //==========================
 void SkillChange(int zDelta)
 {
-	if (KeyboardTrigger(DIK_LEFT) || GetJoypadTrigger(JOYKEY_L1) ||
+	if (KeyboardTrigger(DIK_LEFT) || GetJoypadTrigger(JOYKEY_LEFT) ||
 		zDelta < 0)
 	{
 		switch (g_player.Skilltype)
@@ -854,8 +882,7 @@ void SkillChange(int zDelta)
 			break;
 		}
 	}
-
-	else if (KeyboardTrigger(DIK_RIGHT) || GetJoypadTrigger(JOYKEY_R1) ||
+	else if (KeyboardTrigger(DIK_RIGHT) || GetJoypadTrigger(JOYKEY_RIGHT) ||
 		zDelta > 0)
 	{
 		switch (g_player.Skilltype)

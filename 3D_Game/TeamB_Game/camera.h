@@ -30,6 +30,7 @@ void InitCamera(void);
 void UninitCamera(void);
 void UpdateCamera(void);
 void UpdateCameratoMousePos(void);
+void UpdateCameratoJoyPadPos(void);
 void SetCamera(void);
 Camera * GetCamera(void);
 void SetMouseWheel(int zDelta);
