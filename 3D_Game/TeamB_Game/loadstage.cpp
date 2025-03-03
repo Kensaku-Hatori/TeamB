@@ -10,6 +10,7 @@
 #include "meshwall.h"
 #include "camera.h"
 #include "light.h"
+#include "billboard.h"
 
 // ÉOÉçÅ[ÉoÉãïœêî
 char FilePathPoly[MAX_FILEPATH][256] = { {} };
@@ -752,6 +753,7 @@ void LoadBillBoardInfo(FILE* pFile)
 			}
 			else if (strcmp(&cData1[0], "END_BILLBOARDSET") == 0)
 			{
+				SetBiillboard(Pos, Size.x, Size.y, nType, D3DXVECTOR2(Origin.x, Origin.y), bShadow);
 				break;
 			}
 		}
