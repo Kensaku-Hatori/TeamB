@@ -10,6 +10,7 @@
 #include "fade.h"
 #include "game.h"
 #include "sound.h"
+#include "mouse.h"
 //ランキングスコア構造体
 typedef struct
 {
@@ -325,7 +326,7 @@ void UpdateRanking(void)
 			pVtx += 4;
 		}
 	}
-	if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true) && g_fade == FADE_NONE)
+	if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true || OnMouseDown(0) == true) && g_fade == FADE_NONE)
 	{
 		if (g_RankMode == RANKMODE_RESULT || g_RankMode == RANKMODE_SELECT)
 		{//リザルト・選択からきた

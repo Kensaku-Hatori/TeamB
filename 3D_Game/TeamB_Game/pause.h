@@ -23,6 +23,6 @@ typedef enum
 //プロトタイプ宣言
 void InitPause(void);
 void UninitPause(void);
-void UpdatePause(void);
+void UpdatePause(int zDelta);
 void DrawPause(void);
 #endif
