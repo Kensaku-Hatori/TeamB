@@ -8,6 +8,7 @@
 #include "itemui.h"
 #include "player.h"
 #include "input.h"
+#include "sound.h"
 
 //ƒOƒ[ƒoƒ‹•Ï”
 //˜g
@@ -439,6 +440,8 @@ void UseItem(ITEMTYPE type)
 	{
 		if (g_nCntItemHP >= 1)
 		{
+			PlaySound(SOUND_LABEL_POTION);
+
 			pPlayer->Status.fHP += ITEMABILITY_HP;
 			if (pPlayer->Status.fHP >= PLAYER_HP)
 			{
@@ -457,6 +460,8 @@ void UseItem(ITEMTYPE type)
 	{
 		if (g_nCntItemMP >= 1)
 		{
+			PlaySound(SOUND_LABEL_POTION);
+
 			pPlayer->Status.nMP += ITEMABILITY_MP;
 			if (pPlayer->Status.nMP >= PLAYER_MP)
 			{
