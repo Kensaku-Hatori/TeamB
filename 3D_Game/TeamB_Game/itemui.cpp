@@ -219,7 +219,6 @@ void UninitItemUI(void)
 		g_pVtxBuffItemUI = NULL;
 		g_pVtxBuffItemUINo->Release();
 		g_pVtxBuffItemUINo = NULL;
-
 	}
 }
 //==========

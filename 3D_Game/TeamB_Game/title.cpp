@@ -38,6 +38,8 @@ void InitTitle(void)
 	LoadModelViewer(MODE_STAGEONE);
 
 	InitTitleInfo();
+
+	PlaySound(SOUND_LABEL_TITLE);
 }
 //==========
 //èIóπèàóù
