@@ -53,9 +53,10 @@ typedef struct
 void InitSkill(void);
 void UninitSkill(void);
 void UpdateSkill(void);
+void UpdateHorming(int Indx);
 void DrawSkill(void);
 void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move,D3DXVECTOR3 rot, SKILLTYPE ntype,float fRotRatio);
-void SerchHormingEnemy(int Indx);
+bool SerchHormingEnemy(int Indx,D3DXVECTOR3 Pos);
 void UpdateHormingPosition(int Indx);
 void UpdateHormingAnim(int Indx);
 Skill* GetSkill();

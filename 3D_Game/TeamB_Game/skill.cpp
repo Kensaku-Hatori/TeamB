@@ -119,60 +119,8 @@ void UpdateSkill(void)
 		{
 			if (g_Skill[nCnt].ntype == SKILLTYPE_HORMING)
 			{
-				ENEMY* pEnemy = GetEnemy();
 				g_Skill[nCnt].nCounter++;
-				if (g_Skill[nCnt].nCounter >= g_Skill[nCnt].nCount && g_Skill[nCnt].bHorming == false)
-				{
-					g_Skill[nCnt].nCounter = 0;
-					SerchHormingEnemy(nCnt);
-					g_Skill[nCnt].rot = pPlayer->rot;
-					g_Skill[nCnt].bHorming = true;
-					if (pPlayer->bLockOn != true)
-					{
-						pEnemy += g_Skill[nCnt].nIndxHorming;
-					}
-					else
-					{
-						pEnemy += pPlayer->nLockOnEnemy;
-					}
-					if (pEnemy->bUse == true)
-					{
-						D3DXVECTOR3 fMoveVec = pEnemy->Object.Pos - g_Skill[nCnt].pos;
-						D3DXVec3Normalize(&fMoveVec, &fMoveVec);
-						g_Skill[nCnt].moveDest = fMoveVec * 10.0f;
-						//g_Skill[nCnt].move = fMoveVec;
-					}
-					else
-					{
-						g_Skill[nCnt].moveDest = D3DXVECTOR3(0.0,0.0f,0.0f);
-					}
-				}
-				if (g_Skill[nCnt].bHorming == true && g_Skill[nCnt].bHit == false)
-				{
-					D3DXVECTOR3 fMove;
-					fMove.x = cosf(g_Skill[nCnt].fRotRatio) * sinf(pPlayer->rot.y + D3DX_PI * 0.5f) * 1.0f;
-					fMove.y = sinf(g_Skill[nCnt].fRotRatio) * 1.0f;
-					fMove.z = cosf(g_Skill[nCnt].fRotRatio) * cosf(pPlayer->rot.y + D3DX_PI * 0.5f) * 1.0f;
-					
-					g_Skill[nCnt].move = fMove;
-
-					g_Skill[nCnt].AnimCounter++;
-					if (g_Skill[nCnt].AnimCounter >= 30)
-					{
-						D3DXVECTOR3 moveDiff = g_Skill[nCnt].moveDest - g_Skill[nCnt].move;
-						g_Skill[nCnt].move = moveDiff / g_Skill[nCnt].AnimCounter * 20.0f;
-					}
-					else
-					{
-						g_Skill[nCnt].nLife = 100;
-					}
-					//if(g_Skill[nCnt].AnimCounter >= )
-				}
-				else
-				{
-					UpdateHormingPosition(nCnt);
-				}
-				g_Skill[nCnt].pos += g_Skill[nCnt].move;
+				UpdateHorming(nCnt);
 			}
 			// エフェクトの設定
 			SetEffect(g_Skill[nCnt].pos,
@@ -256,7 +204,86 @@ void UpdateSkill(void)
 		}
 	}
 }
+void UpdateHorming(int Indx)
+{
+	//プレイヤーの情報取得
+	Player* pPlayer = GetPlayer();
+	ENEMY* pEnemy = GetEnemy();
+	BOSS* pBoss = GetBoss();
+	if (g_Skill[Indx].nCounter >= g_Skill[Indx].nCount && g_Skill[Indx].bHorming == false)
+	{
+		g_Skill[Indx].nCounter = 0;
+		for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++,pEnemy++)
+		{
+			if (pEnemy->bUse == true)
+			{
+				if (SerchHormingEnemy(Indx, pEnemy->Object.Pos) == true)
+				{
+					g_Skill[Indx].nIndxHorming = EnemyCount;
+					g_Skill[Indx].rot = pPlayer->rot;
+					g_Skill[Indx].bHorming = true;
+					if (pPlayer->bLockOn != true)
+					{
+						pEnemy += g_Skill[Indx].nIndxHorming;
+					}
+					else
+					{
+						pEnemy += pPlayer->nLockOnEnemy;
+					}
+					if (pEnemy->bUse == true)
+					{
+						D3DXVECTOR3 fMoveVec = pEnemy->Object.Pos - g_Skill[Indx].pos;
+						D3DXVec3Normalize(&fMoveVec, &fMoveVec);
+						g_Skill[Indx].moveDest = fMoveVec * 10.0f;
+						//g_Skill[nCnt].move = fMoveVec;
+					}
+					else
+					{
+						g_Skill[Indx].moveDest = D3DXVECTOR3(0.0, 0.0f, 0.0f);
+					}
+					break;
+				}
+			}
+		}
+		if (pBoss->bUse == true)
+		{
+			if (SerchHormingEnemy(Indx, pBoss->Object.Pos) == true)
+			{
+				g_Skill[Indx].rot = pPlayer->rot;
+				g_Skill[Indx].bHorming = true;
+				D3DXVECTOR3 fMoveVec = pBoss->Object.Pos - g_Skill[Indx].pos;
+				D3DXVec3Normalize(&fMoveVec, &fMoveVec);
+				g_Skill[Indx].moveDest = fMoveVec * 10.0f;
+			}
+		}
+	}
+	if (g_Skill[Indx].bHorming == true && g_Skill[Indx].bHit == false)
+	{
+		D3DXVECTOR3 fMove;
+		fMove.x = cosf(g_Skill[Indx].fRotRatio) * sinf(pPlayer->rot.y + D3DX_PI * 0.5f) * 1.0f;
+		fMove.y = sinf(g_Skill[Indx].fRotRatio) * 1.0f;
+		fMove.z = cosf(g_Skill[Indx].fRotRatio) * cosf(pPlayer->rot.y + D3DX_PI * 0.5f) * 1.0f;
 
+		g_Skill[Indx].move = fMove;
+
+		g_Skill[Indx].AnimCounter++;
+		if (g_Skill[Indx].AnimCounter >= 30)
+		{
+			D3DXVECTOR3 moveDiff = g_Skill[Indx].moveDest - g_Skill[Indx].move;
+			g_Skill[Indx].move = moveDiff / g_Skill[Indx].AnimCounter * 20.0f;
+		}
+		else
+		{
+			g_Skill[Indx].nLife = 100;
+		}
+		//if(g_Skill[nCnt].AnimCounter >= )
+	}
+	else
+	{
+		UpdateHormingPosition(Indx);
+	}
+	g_Skill[Indx].pos += g_Skill[Indx].move;
+}
 //=======================
 // 弾の描画処理
 //=======================
@@ -378,27 +405,20 @@ void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot, SKILLTYPE ntyp
 //***************************************
 // ホーミング範囲に敵がいるか検索する関数
 //***************************************
-void SerchHormingEnemy(int Indx)
+bool SerchHormingEnemy(int Indx, D3DXVECTOR3 Pos)
 {
-	ENEMY* pEnemy = GetEnemy();
 	Player* pPLayer = GetPlayer();
-	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++, pEnemy++)
+	D3DXVECTOR3 fDistance = pPLayer->pos - Pos;
+	if (sqrtf((fDistance.x * fDistance.x) + (fDistance.y + fDistance.y) + (fDistance.z * fDistance.z)) <= DISTANCE_HORMING)
 	{
-		if (pEnemy->bUse == true)
+		if (g_Skill[Indx].fDistance <= sqrtf((fDistance.x * fDistance.x) + (fDistance.y + fDistance.y) + (fDistance.z * fDistance.z)))
 		{
-			D3DXVECTOR3 fDistance = pPLayer->pos - pEnemy->Object.Pos;
-			if (sqrtf((fDistance.x * fDistance.x) + (fDistance.y + fDistance.y) + (fDistance.z * fDistance.z)) <= DISTANCE_HORMING)
-			{
-				if (g_Skill[Indx].fDistance <= sqrtf((fDistance.x * fDistance.x) + (fDistance.y + fDistance.y) + (fDistance.z * fDistance.z)))
-				{
-					g_Skill[Indx].fDistance = sqrtf((fDistance.x * fDistance.x) + (fDistance.y + fDistance.y) + (fDistance.z * fDistance.z));
-				}
-				g_Skill[Indx].nIndxHorming = EnemyCount;
-				g_Skill[Indx].nCount = INTERVAL_HORMING;
-				break;
-			}
+			g_Skill[Indx].fDistance = sqrtf((fDistance.x * fDistance.x) + (fDistance.y + fDistance.y) + (fDistance.z * fDistance.z));
 		}
+		return true;
+		g_Skill[Indx].nCount = INTERVAL_HORMING;
 	}
+	return false;
 }
 //***********************************
 // ホーミングの球の位置を更新する関数
