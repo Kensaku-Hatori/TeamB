@@ -16,6 +16,11 @@
 #define ITEM_RADIUS (10.0f)								//アイテム(ビルボード)の半径
 #define ITEM_TIME_DEL (600)								//アイテムが消えるまでのフレーム
 
+#define ITEMABILITY_HP (float)(200.0f)
+#define ITEMABILITY_MP (100)
+#define ITEMABILITY_AP (float)(30.0f)
+
+
 //テクスチャ
 static const char* ITEM_TEXTURE[NUM_ITEMTYPE] =
 {
