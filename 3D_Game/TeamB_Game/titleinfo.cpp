@@ -122,7 +122,6 @@ void InitTitleInfo(void)
 
 	//頂点バッファをアンロック
 	g_pVtxBufftitleinfoLogo->Unlock();
-
 }
 //==========
 //終了処理
@@ -169,32 +168,43 @@ void UpdateTitleInfo(int zDelta)
 	g_pVtxBufftitleinfo->Lock(0, 0, (void**)&pVtx, 0);
 
 	//メニューの選択(上下)
-	//STARTにいる場合
-	if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true || zDelta > 0) && g_titleinfoMenu==TITLE_START)
+	if (KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true || zDelta > 0)
 	{
-		g_titleinfoMenu = TITLE_FIN;
+		PlaySound(SOUND_LABEL_SELECT);
+
+		switch (g_titleinfoMenu)
+		{
+		case TITLE_START:
+			g_titleinfoMenu = TITLE_FIN;
+			break;
+		case TITLE_RANK:
+			g_titleinfoMenu = TITLE_START;
+			break;
+		case TITLE_FIN:
+			g_titleinfoMenu = TITLE_RANK;
+			break;
+		default:
+			break;
+		}
 	}
-	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true || zDelta < 0) && g_titleinfoMenu == TITLE_START)
+	else if (KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true || zDelta < 0)
 	{
-		g_titleinfoMenu = TITLE_RANK;
-	}
-	//RANKにいる場合
-	else if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true || zDelta > 0) && g_titleinfoMenu == TITLE_RANK)
-	{
-		g_titleinfoMenu = TITLE_START;
-	}
-	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true || zDelta < 0) && g_titleinfoMenu == TITLE_RANK)
-	{
-		g_titleinfoMenu = TITLE_FIN;
-	}
-	//FINにいる場合
-	else if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true || zDelta > 0) && g_titleinfoMenu == TITLE_FIN)
-	{
-		g_titleinfoMenu = TITLE_RANK;
-	}
-	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true || zDelta < 0) && g_titleinfoMenu == TITLE_FIN)
-	{
-		g_titleinfoMenu = TITLE_START;
+		PlaySound(SOUND_LABEL_SELECT);
+
+		switch (g_titleinfoMenu)
+		{
+		case TITLE_START:
+			g_titleinfoMenu = TITLE_RANK;
+			break;
+		case TITLE_RANK:
+			g_titleinfoMenu = TITLE_FIN;
+			break;
+		case TITLE_FIN:
+			g_titleinfoMenu = TITLE_START;
+			break;
+		default:
+			break;
+		}
 	}
 
 	//頂点カラーの設定(明るく)
@@ -264,16 +274,22 @@ void UpdateTitleInfo(int zDelta)
 		}
 		else
 		{//ロゴがおり切ったとき
+			StopSound();
+			PlaySound(SOUND_LABEL_DESICION);
 			//メニューに合わせてモードの切り替え
 			if (g_titleinfoMenu == TITLE_START)
 			{	//STARTにいる場合
 				SetFade(MODE_STAGEONE);
 				pPlayer->bfirst = true;
+
+				PlaySound(SOUND_LABEL_GAME);
 			}
 			else if (g_titleinfoMenu == TITLE_RANK)
 			{	//RANKにいる場合
 				SetFade(MODE_RANK);
 				SetRankMode(RANKMODE_SELECT);
+
+				PlaySound(SOUND_LABEL_RANKING);
 			}
 			else if (g_titleinfoMenu == TITLE_FIN)
 			{	//FINにいる場合

@@ -253,7 +253,12 @@ void UpdateEnemy(void)
 			SetSizeShadow(g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].IndxShadow);										// サイズの更新
 
 			//HPゲージの更新
-			SetPositionHPgauge(g_Enemy[EnemyCount].IndxGuage, D3DXVECTOR3(g_Enemy[EnemyCount].Object.Pos.x, (float)g_Enemy[EnemyCount].Object.Pos.y + 50.0f, g_Enemy[EnemyCount].Object.Pos.z));
+			float Y = 50.0f;
+			if (g_Enemy[EnemyCount].type == ENEMYTYPE_MIDBOSS)
+			{
+				Y = 70.0f;
+			}
+			SetPositionHPgauge(g_Enemy[EnemyCount].IndxGuage, D3DXVECTOR3(g_Enemy[EnemyCount].Object.Pos.x, (float)g_Enemy[EnemyCount].Object.Pos.y + Y, g_Enemy[EnemyCount].Object.Pos.z));
 			RedgaugeDeff(g_Enemy[EnemyCount].IndxGuage, g_Enemy[EnemyCount].Status.fHP);
 
 			//モーションの更新
@@ -509,7 +514,6 @@ void DeadEnemy(int Indx)
 
 	if (Drop == 1)
 	{
-	
 		//アイテムの設定
 		SetItem(g_Enemy[Indx].Object.Pos, (ITEMTYPE)Itemtype);
 	}

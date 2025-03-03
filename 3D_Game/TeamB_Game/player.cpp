@@ -52,7 +52,8 @@ void InitPlayer(void)
 	if (g_player.bfirst == false)
 	{//ステージ移動しているなら
 		g_player.pos = g_player.NextPosition;
-		g_player.Status.nMP += PLAYER_MP / 3;
+		//g_player.Status.nMP += PLAYER_MP / 3;
+		g_player.Status.fSpeed = PLAYER_SPEED;
 	}
 	else
 	{//最初なら
@@ -277,7 +278,7 @@ void UpdatePlayer(void)
 		{//MPが減っていたら
 			g_nCntHealMP++;
 		}
-		if (g_nCntHealMP >= 180)
+		if (g_nCntHealMP >= 60)
 		{
 			g_player.Status.nMP += 10;
 			g_nCntHealMP = 0;
@@ -421,7 +422,7 @@ void UpdatePlayer(void)
 				SetPositonArrow(g_player.pos);
 			}
 
-			g_player.Status.fSpeed = PLAYER_SPEED * 2.0f;
+			g_player.Status.fSpeed = PLAYER_SPEED * 1.5f;
 		}
 
 		//影の大きさの更新処理

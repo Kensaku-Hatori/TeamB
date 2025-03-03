@@ -22,6 +22,7 @@
 #include "resultinfo.h"
 #include "fade.h"
 #include "score.h"
+#include "game.h"
 
 //*******************
 // ƒOƒ[ƒoƒ‹•Ï”éŒ¾
@@ -397,8 +398,7 @@ void DeadBoss()
 	}
 	AddScore(g_Boss.Status.Score);
 
-	SetFade(MODE_RESULT);
-	SetResult(RESULT_CLEAR);
+	SetGameState(GAMESTATE_CLEAR);
 }
 
 //***************

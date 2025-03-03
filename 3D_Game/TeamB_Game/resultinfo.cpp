@@ -106,6 +106,9 @@ void UpdateResultInfo(void)
 
 		SetRankMode(RANKMODE_RESULT);
 		SetRanking(GetScore());
+
+		StopSound();
+		PlaySound(SOUND_LABEL_RANKING);
 	}
 }
 //==========

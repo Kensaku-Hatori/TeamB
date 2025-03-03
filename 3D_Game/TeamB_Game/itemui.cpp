@@ -14,7 +14,7 @@ LPDIRECT3DTEXTURE9 g_pTextureItemUIframe = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffItemUIframe = NULL;
 
 //アイテム名
-LPDIRECT3DTEXTURE9 g_pTextureItemUI[NUM_ITEMTYPE] = {};
+LPDIRECT3DTEXTURE9 g_pTextureItemUI[MAX_ITEMUI] = {};
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffItemUI = NULL;
 
 //数字
@@ -34,6 +34,8 @@ int g_nCntItemSpeed;
 //=============
 void InitItemUI(void)
 {
+	Player* pPlayer = GetPlayer();
+
 	LPDIRECT3DDEVICE9 pDevice;
 	//デバイスの取得
 	pDevice = GetDevice();
@@ -43,17 +45,19 @@ void InitItemUI(void)
 	
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\itemUI2.png", &g_pTextureItemUI[0]);		//HP 
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\itemUI1.png", &g_pTextureItemUI[1]);		//MP 
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\itemUI3.png", &g_pTextureItemUI[2]);		//AT 
 
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number002.png", &g_pTextureItemUINo);	//No 
 
-	g_ItemUIframepos = D3DXVECTOR3(975.0f, 470.0f, 0.0f);
-	g_ItemUIpos = D3DXVECTOR3(990.0f, 490.0f, 0.0f);
-	g_ItemUINopos = D3DXVECTOR3(ITEMUI_X + 990.0f, 490.0f, 0.0f);
+	g_ItemUIframepos = D3DXVECTOR3(985.0f, 470.0f, 0.0f);
+	g_ItemUIpos = D3DXVECTOR3(1000.0f, 490.0f, 0.0f);
+	g_ItemUINopos = D3DXVECTOR3(ITEMUI_X + 1000.0f, 490.0f, 0.0f);
 
-	g_nCntItemHP = 0;
-	g_nCntItemMP = 0;
-	g_nCntItemSpeed = 0;
+	if(pPlayer->bfirst == true)
+	{
+		g_nCntItemHP = 0;
+		g_nCntItemMP = 0;
+		g_nCntItemSpeed = 0;
+	}
 
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
@@ -98,7 +102,7 @@ void InitItemUI(void)
 	//アイテム
 	{
 		//頂点バッファの生成
-		pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * NUM_ITEMTYPE,
+		pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_ITEMUI,
 			D3DUSAGE_WRITEONLY,
 			FVF_VERTEX_2D,
 			D3DPOOL_MANAGED,
@@ -107,7 +111,7 @@ void InitItemUI(void)
 		//頂点バッファをロックし、頂点情報へのポインタを取得
 		g_pVtxBuffItemUI->Lock(0, 0, (void**)&pVtx, 0);
 
-		for (int nCnt = 0; nCnt < NUM_ITEMTYPE; nCnt++)
+		for (int nCnt = 0; nCnt < MAX_ITEMUI; nCnt++)
 		{
 			//アイテム欄
 			//頂点座標の設定
@@ -141,7 +145,7 @@ void InitItemUI(void)
 	//数字
 	{
 		//頂点バッファの生成
-		pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * NUM_ITEMTYPE * MAX_ITEMGET,
+		pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_ITEMUI * MAX_ITEMGET,
 			D3DUSAGE_WRITEONLY,
 			FVF_VERTEX_2D,
 			D3DPOOL_MANAGED,
@@ -150,7 +154,7 @@ void InitItemUI(void)
 		//頂点バッファをロックし、頂点情報へのポインタを取得
 		g_pVtxBuffItemUINo->Lock(0, 0, (void**)&pVtx, 0);
 
-		for (int nCnt = 0; nCnt < NUM_ITEMTYPE * MAX_ITEMGET; nCnt++)
+		for (int nCnt = 0; nCnt < MAX_ITEMUI * MAX_ITEMGET; nCnt++)
 		{
 			//頂点座標の設定
 			pVtx[0].pos = D3DXVECTOR3(g_ItemUINopos.x, g_ItemUINopos.y, 0.0f);
@@ -180,7 +184,7 @@ void InitItemUI(void)
 			if (nCnt == MAX_ITEMGET - 1 || nCnt == MAX_ITEMGET * 2 - 1 || nCnt == MAX_ITEMGET * 3 - 1)
 			{
 				g_ItemUINopos.y += ITEMUI_Y + 20.0f;
-				g_ItemUINopos.x = ITEMUI_X + 990.0f;
+				g_ItemUINopos.x = ITEMUI_X + 1000.0f;
 			}
 		}
 		//頂点バッファをアンロック
@@ -201,7 +205,7 @@ void UninitItemUI(void)
 		g_pTextureItemUINo = NULL;
 
 	}
-	for (int nCnt = 0; nCnt < NUM_ITEMTYPE; nCnt++)
+	for (int nCnt = 0; nCnt < MAX_ITEMUI; nCnt++)
 	{
 		if (g_pTextureItemUI[nCnt] != NULL)
 		{
@@ -219,7 +223,6 @@ void UninitItemUI(void)
 		g_pVtxBuffItemUI = NULL;
 		g_pVtxBuffItemUINo->Release();
 		g_pVtxBuffItemUINo = NULL;
-
 	}
 }
 //==========
@@ -255,7 +258,7 @@ void DrawItemUI(void)
 	{
 		//頂点バッファをデータストリームに設定
 		pDevice->SetStreamSource(0, g_pVtxBuffItemUI, 0, sizeof(VERTEX_2D));
-		for (int nCnt = 0; nCnt < NUM_ITEMTYPE; nCnt++)
+		for (int nCnt = 0; nCnt < MAX_ITEMUI; nCnt++)
 		{
 			//テクスチャの設定
 			pDevice->SetTexture(0, g_pTextureItemUI[nCnt]);
@@ -268,7 +271,7 @@ void DrawItemUI(void)
 	{
 		//頂点バッファをデータストリームに設定
 		pDevice->SetStreamSource(0, g_pVtxBuffItemUINo, 0, sizeof(VERTEX_2D));
-		for (int nCnt = 0; nCnt < NUM_ITEMTYPE * MAX_ITEMGET; nCnt++)
+		for (int nCnt = 0; nCnt < MAX_ITEMUI * MAX_ITEMGET; nCnt++)
 		{
 			//テクスチャの設定
 			pDevice->SetTexture(0, g_pTextureItemUINo);
@@ -283,7 +286,15 @@ void DrawItemUI(void)
 //=================
 void SetItemUI(void)
 {
+	//頂点バッファの生成・頂点情報の設定
+	VERTEX_2D* pVtx;
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	g_pVtxBuffItemUINo->Lock(0, 0, (void**)&pVtx, 0);
 
+
+
+	//頂点バッファをアンロック
+	g_pVtxBuffItemUINo->Unlock();
 }
 //==================
 // アイテム数加算
