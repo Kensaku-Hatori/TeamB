@@ -57,7 +57,7 @@ void InitPlayer(void)
 	else
 	{//最初なら
 		g_player.bfirst = false;
-		g_player.pos = D3DXVECTOR3(0.0f,0.0f,100.0f);
+		g_player.pos = D3DXVECTOR3(350.0f,0.0f,950.0f);
 		//基礎ステータス
 		g_player.Status.fHP = PLAYER_HP;
 		g_player.Status.nMP = PLAYER_MP;

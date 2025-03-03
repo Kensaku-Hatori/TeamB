@@ -39,6 +39,7 @@
 #include <time.h>
 #include "HPgauge.h"
 #include "mouse.h"
+#include "billboard.h"
 
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -120,6 +121,8 @@ void InitGame(void)
 
 	//ステージの初期化
 	InitStageModel();
+
+	InitBiillboard();
 
 	//モーションの初期化
 	InitMotion();
@@ -211,6 +214,8 @@ void UninitGame(void)
 
 	//ステージの終了処理
 	UninitStageModel();
+
+	UninitBiillboard();
 }
 
 //===========
@@ -431,6 +436,8 @@ void DrawGame(void)
 
 	//メッシュ壁の描画処理
 	DrawMeshWall();
+
+	DrawBiillboard();
 
 	//ステージの描画処理
 	DrawStageModel();

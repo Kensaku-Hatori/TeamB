@@ -222,5 +222,4 @@ void SetBillTexture(int Indx)
 	{
 		g_Billboard[Indx].pTextureBiillboard = pTexture;
 	}
-
 }
