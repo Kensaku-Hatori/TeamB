@@ -27,8 +27,8 @@ void InitItemUI(void);
 void UninitItemUI(void);
 void UpdateItemUI(void);
 void DrawItemUI(void);
-void SetItemUI(void);
+void SetItemUI(ITEMTYPE type);
 void AddItemUI(ITEMTYPE type);
-
+void UseItem(ITEMTYPE type);
 
 #endif

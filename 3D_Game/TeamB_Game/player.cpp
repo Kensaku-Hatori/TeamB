@@ -31,6 +31,7 @@
 #include "mission.h"
 #include "score.h"
 #include "mouse.h"
+#include "itemui.h"
 
 //グローバル変数
 Player g_player;
@@ -65,6 +66,7 @@ void InitPlayer(void)
 		g_player.Status.fPower = PLAYER_AP;
 		g_player.Status.fSpeed = PLAYER_SPEED;
 		g_player.Skilltype = SKILLTYPE_NONE;
+		g_player.ItemType = ITEMTYPE_HP;
 		g_player.nScore = 0;
 	}
 
@@ -247,8 +249,7 @@ void UpdatePlayer(void)
 				}
 			}
 			//ロックオン
-			if ((KeyboardTrigger(DIK_R) == true || 
-				GetJoypadTrigger(JOYKEY_R1) == true) ||
+			if ((GetJoypadTrigger(JOYKEY_R1) == true) ||
 				OnMouseDown(1))
 			{
 				if (g_player.bLockOn == true)
@@ -260,6 +261,10 @@ void UpdatePlayer(void)
 					g_player.bWantLockOn = true;
 				}
 			}
+		}
+		if (KeyboardTrigger(DIK_R) || GetJoypadTrigger(JOYKEY_X))
+		{
+			UseItem(g_player.ItemType);
 		}
 
 		//ローリング

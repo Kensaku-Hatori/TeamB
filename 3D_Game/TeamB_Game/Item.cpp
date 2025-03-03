@@ -320,39 +320,20 @@ void ItemAbility(int nIndexItem)
 	switch (g_Item[nIndexItem].type)
 	{
 	case ITEMTYPE_HP:
-
-		pPlayer->Status.fHP += 200.0f;
-
-		//HP§ŒÀ
-		if (pPlayer->Status.fHP >= PLAYER_HP)
-		{
-			pPlayer->Status.fHP = PLAYER_HP;
-		}
-
+		AddItemUI(g_Item[nIndexItem].type);
 		break;
 
 	case ITEMTYPE_MP:
-
-		pPlayer->Status.nMP += 100;
-
-		//MP§ŒÀ
-		if (pPlayer->Status.nMP >= PLAYER_MP)
-		{
-			pPlayer->Status.nMP = PLAYER_MP;
-		}
-
+		AddItemUI(g_Item[nIndexItem].type);
 		break;
 
 	case ITEMTYPE_SPEED:
-
 		pPlayer->Status.fPower += 30.0f;
-
 		break;
 
 	default:
 		break;
 	}
-	AddItemUI(g_Item[nIndexItem].type);
 
 	AddScore(100);
 }

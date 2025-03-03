@@ -13,6 +13,7 @@
 #include "key.h"
 #include "loadmotion.h"
 #include "skill.h"
+#include "Item.h"
 
 #define PLAYER_RADIUS (3)			// プレイヤーの半径
 #define PLAYER_DOWNTIME (60)		// ダウン時間
@@ -56,7 +57,8 @@ typedef struct
 	PlayerStatus Status;			// ステータス
 	SKILLTYPE Skilltype;
 	PLAYERSTATE state;
-	
+	ITEMTYPE ItemType;
+
 	int nNumModel;					// パーツの総数
 	int nNumMotion;					// モーションの総数
 	MOTIONTYPE motionType;			// モーションの種類
