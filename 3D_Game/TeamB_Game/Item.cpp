@@ -9,6 +9,7 @@
 #include "player.h"
 #include "itemui.h"
 #include "score.h"
+#include "sound.h"
 
 //ƒOƒ|ƒoƒ‹•Ï”éŒ¾
 Item g_Item[MAX_ITEM];
@@ -328,6 +329,7 @@ void ItemAbility(int nIndexItem)
 		break;
 
 	case ITEMTYPE_SPEED:
+		PlaySound(SOUND_LABEL_POTION);
 		pPlayer->Status.fPower += 30.0f;
 		break;
 

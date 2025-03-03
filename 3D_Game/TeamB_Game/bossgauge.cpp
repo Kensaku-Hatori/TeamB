@@ -168,7 +168,6 @@ void UninitBossGauge(void)
 		g_pTextureBossGaugeBack = NULL;
 		g_pTextureBossName->Release();
 		g_pTextureBossName = NULL;
-
 	}
 
 	//頂点バッファの破棄
@@ -180,7 +179,6 @@ void UninitBossGauge(void)
 		g_pVtxBuffBossGaugeBack = NULL;
 		g_pVtxBuffBossName->Release();
 		g_pVtxBuffBossName = NULL;
-
 	}
 }
 //==========
@@ -268,50 +266,3 @@ void DrawBossGauge(void)
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 
 }
-//==================
-// ゲージの設定
-//==================
-//void SetBossGauge(BossGaugeTYPE type, D3DXVECTOR3 pos, D3DXVECTOR2 size)
-//{
-//	//頂点バッファの生成・頂点情報の設定
-//	VERTEX_2D* pVtx;
-//	//頂点バッファをロックし、頂点情報へのポインタを取得
-//	g_pVtxBuffBossGaugeBack->Lock(0, 0, (void**)&pVtx, 0);
-//
-//	for (int nCnt = 0; nCnt < BossGaugeTYPE_MAX; nCnt++)
-//	{
-//		if (g_BossGauge[nCnt].bUse == false)
-//		{
-//			g_BossGauge[nCnt].type = type;
-//			g_BossGauge = pos;
-//
-//			if (g_BossGauge[nCnt].type == BossGaugeTYPE_HP)
-//			{
-//				g_BossGauge[nCnt].size = D3DXVECTOR2(size.x + PLAYER_HP / 10, size.y);
-//			}
-//			else if (g_BossGauge[nCnt].type == BossGaugeTYPE_MP)
-//			{
-//				g_BossGauge[nCnt].size = D3DXVECTOR2(size.x + PLAYER_MP / 10, size.y);
-//			}
-//
-//			g_BossGauge[nCnt].bUse = true;
-//
-//
-//			//頂点座標の設定
-//			pVtx[0].pos = D3DXVECTOR3(g_BossGauge.x, g_BossGauge.y - BOSSGAUGE_FRAME_Y, 0.0f);
-//			pVtx[1].pos = D3DXVECTOR3(g_BossGauge.x + BOSSGAUGE_FRAME_X, g_BossGauge.y - BOSSGAUGE_FRAME_Y, 0.0f);
-//			pVtx[2].pos = D3DXVECTOR3(g_BossGauge.x, g_BossGauge.y + BOSSGAUGE_FRAME_Y, 0.0f);
-//			pVtx[3].pos = D3DXVECTOR3(g_BossGauge.x + BOSSGAUGE_FRAME_X, g_BossGauge.y + BOSSGAUGE_FRAME_Y, 0.0f);
-//
-//			//サイズ調整
-//			g_BossGauge.x += 45.f;
-//			BOSSGAUGE_FRAME_Y -= 5.0f;
-//
-//			break;
-//		}
-//		pVtx += 4;
-//	}
-//
-//	//頂点バッファをアンロック
-//	g_pVtxBuffBossGaugeBack->Unlock();
-//}

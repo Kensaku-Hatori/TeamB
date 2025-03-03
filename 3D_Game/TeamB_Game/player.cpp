@@ -262,6 +262,8 @@ void UpdatePlayer(void)
 				}
 			}
 		}
+
+		//ƒAƒCƒeƒ€‰ñ•œ
 		if (KeyboardTrigger(DIK_R) || GetJoypadTrigger(JOYKEY_X))
 		{
 			UseItem(g_player.ItemType);
