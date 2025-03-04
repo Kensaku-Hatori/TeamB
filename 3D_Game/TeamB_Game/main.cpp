@@ -21,6 +21,8 @@
 #include "mouse.h"
 #include "titleinfo.h"
 #include "pause.h"
+#include <crtdbg.h>
+#include <stdio.h>
 
 //グローバル変数宣言
 LPDIRECT3D9 g_pD3D = NULL;
@@ -34,6 +36,9 @@ bool bDispFont = true;
 //=============
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hInstancePrev, _In_ LPSTR ipCmdLine, _In_ int nCmdShow)
 {
+	// メモリリーク検知用のフラグ
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF);
+
 	WNDCLASSEX wcex =
 	{
 		sizeof(WNDCLASSEX),

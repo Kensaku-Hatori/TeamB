@@ -104,6 +104,8 @@ void SetBossPartsInfo(LoadInfo PartsInfo);					// ボスのバッファやモーション設定
 void CollisionBoss(void);									// ボスの当たり判定処理
 void CollisionBossAction(void);								// ボスのアクション時の当たり判定処理
 void BossMatrixWand(void);
+float Distance(D3DXVECTOR3 Pos, D3DXVECTOR3 Pos1);
+void HormingPlayerMove(float Speed);
 bool DethBoss(void);										// ボスの死亡フラグ取得処理
 void Routine(void);
 void EndAction(void);

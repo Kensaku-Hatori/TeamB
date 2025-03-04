@@ -109,32 +109,19 @@ void UpdateBoss(void)
 
 		if (g_Boss.BossMotion.motionType == MOTIONTYPE_MOVE)
 		{
-			g_Boss.BossAi.ActionEndCounter++;
-			// 敵とプレイヤーの距離計算
-			D3DXVECTOR3 vec = pPlayer->pos - g_Boss.Object.Pos;
-			float fDistance = (vec.x) * (vec.x) + (vec.z) * (vec.z);
-			float fAngle = 0.0f;
-
-			fDistance = (float)sqrt(fDistance);				// 敵とプレイヤーの距離
-
-			// 角度の取得
-			fAngle = (float)atan2(vec.x, vec.z);
-
-			// 目標の移動方向（角度）の補正
-			if (fAngle > D3DX_PI)
+			HormingPlayerMove(BOSSHORMING_MOVE);
+		}
+		else if (g_Boss.BossMotion.motionType == MOTIONTYPE_LOCKON_F_MOVE)
+		{
+			HormingPlayerMove(BOSSHORMING_MOVE * 10.0f);
+			float DistancePlayer = Distance(g_Boss.Object.Pos, pPlayer->pos);
+			if (DistancePlayer < 100.0f)
 			{
-				fAngle -= D3DX_PI * 2.0f;
+				if (g_Boss.BossMotion.motionType != MOTIONTYPE_DOWN)
+				{// モーションの種類設定
+					SetMotion(MOTIONTYPE_DOWN, &g_Boss.BossMotion);
+				}
 			}
-			else if (fAngle < -D3DX_PI)
-			{
-				fAngle += D3DX_PI * 2.0f;
-			}
-			// 移動量の設定
-			g_Boss.move.x = sinf(fAngle) * BOSSHORMING_MOVE;
-			g_Boss.move.z = cosf(fAngle) * BOSSHORMING_MOVE;
-
-			// 角度の目標設定
-			g_Boss.rotDest.y = fAngle + D3DX_PI;
 		}
 		// 魔法との当たり判定
 		for (int SkillCount = 0; SkillCount < MAX_SKILL; SkillCount++)
@@ -154,7 +141,7 @@ void UpdateBoss(void)
 		// 攻撃時の当たり判定
 		if (pPlayer->state != PLAYERSTATE_KNOCKUP)
 		{
-			if (g_Boss.BossMotion.motionType == MOTIONTYPE_ACTION)
+			if (g_Boss.BossMotion.motionType == MOTIONTYPE_ACTION || g_Boss.BossMotion.motionType == MOTIONTYPE_DOWN)
 			{
 				CollisionBossAction();
 			}
@@ -403,6 +390,36 @@ void DeadBoss()
 	SetGameState(GAMESTATE_CLEAR);
 }
 
+void HormingPlayerMove(float Speed)
+{
+	Player* pPlayer = GetPlayer();
+	g_Boss.BossAi.ActionEndCounter++;
+	// 敵とプレイヤーの距離計算
+	D3DXVECTOR3 vec = pPlayer->pos - g_Boss.Object.Pos;
+	float fDistance = (vec.x) * (vec.x) + (vec.z) * (vec.z);
+	float fAngle = 0.0f;
+
+	fDistance = (float)sqrt(fDistance);				// 敵とプレイヤーの距離
+
+	// 角度の取得
+	fAngle = (float)atan2(vec.x, vec.z);
+
+	// 目標の移動方向（角度）の補正
+	if (fAngle > D3DX_PI)
+	{
+		fAngle -= D3DX_PI * 2.0f;
+	}
+	else if (fAngle < -D3DX_PI)
+	{
+		fAngle += D3DX_PI * 2.0f;
+	}
+	// 移動量の設定
+	g_Boss.move.x = sinf(fAngle) * Speed;
+	g_Boss.move.z = cosf(fAngle) * Speed;
+
+	// 角度の目標設定
+	g_Boss.rotDest.y = fAngle + D3DX_PI;
+}
 //***************
 // ボスの行動を更新
 //***************
@@ -466,11 +483,22 @@ void UpdateBossAction()
 	{
 		if (pPlayer->state != PLAYERSTATE_KNOCKUP)
 		{
-			if (g_Boss.BossMotion.motionType != MOTIONTYPE_ACTION)
-			{// モーションの種類設定
-				g_Boss.move.x = 0.0f;
-				g_Boss.move.z = 0.0f;
-				SetMotion(MOTIONTYPE_ACTION, &g_Boss.BossMotion);
+			float DistancePlayer = Distance(g_Boss.Object.Pos, pPlayer->pos);
+			if (DistancePlayer > 100.0f)
+			{
+				if (g_Boss.BossMotion.motionType != MOTIONTYPE_LOCKON_F_MOVE)
+				{// モーションの種類設定
+					SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_Boss.BossMotion);
+				}
+			}
+			else if (DistancePlayer < 100.0f)
+			{
+				if (g_Boss.BossMotion.motionType != MOTIONTYPE_ACTION)
+				{// モーションの種類設定
+					g_Boss.move.x = 0.0f;
+					g_Boss.move.z = 0.0f;
+					SetMotion(MOTIONTYPE_ACTION, &g_Boss.BossMotion);
+				}
 			}
 		}
 	}
@@ -658,6 +686,13 @@ void BossMatrixWand(void)
 		&g_Boss.mtxWand);
 }
 
+float Distance(D3DXVECTOR3 Pos, D3DXVECTOR3 Pos1)
+{
+	FLOAT Length;
+	D3DXVECTOR3 Distance = Pos - Pos1;
+	Length = D3DXVec3Length(&Distance);
+	return Length;
+}
 //===================================
 //ボスの死亡フラグ取得処理
 //===================================

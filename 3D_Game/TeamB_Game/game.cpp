@@ -15,7 +15,6 @@
 #include "player.h"
 #include "shadow.h"
 #include "meshwall.h"
-//#include "meshcylinder.h"
 #include "meshfield.h"
 #include "fade.h"
 #include "pause.h"
@@ -68,9 +67,6 @@ void InitGame(void)
 	//衝撃波の初期化
 	InitImpact();
 
-	////ブロックの初期化
-	//InitBlock();
-
 	//HPゲージの初期化
 	InitHPgauge();
 
@@ -91,15 +87,6 @@ void InitGame(void)
 
 	//パーティクルの初期化
 	InitParticle();
-
-	////爆発の初期化
-	//InitExplosion();
-
-	//メッシュシリンダーの初期化
-	//InitMeshCylinder();
-
-	////壁の初期化
-	//InitWall();
 
 	//メッシュ壁の初期化
 	InitMeshWall();
@@ -156,9 +143,6 @@ void UninitGame(void)
 	//ポーズの終了処理
 	UninitPause();
 
-	//メッシュフィールドの終了処理
-	UninitMeshfield();
-
 	//サークルの終了処理
 	UninitCircle();
 
@@ -189,14 +173,6 @@ void UninitGame(void)
 	//エフェクトの終了処理
 	UninitEffect();
 
-	//UninitBlock();
-
-	//UninitExplosion();
-
-	//UninitMeshCylinder();
-
-	//UninitWall();
-
 	//メッシュ壁の終了処理
 	UninitMeshWall();
 
@@ -216,6 +192,9 @@ void UninitGame(void)
 	UninitStageModel();
 
 	UninitBiillboard();
+
+	//メッシュフィールドの終了処理
+	UninitMeshfield();
 }
 
 //===========
@@ -420,23 +399,8 @@ void DrawGame(void)
 	//影の描画処理
 	DrawShadow();
 
-	////ブロックの描画処理
-	//DrawBlock();
-
-	////敵の描画処理
-	//DrawEnemy();
-
-	//爆発の描画処理
-	//DrawExplosion();
-
 	//魔法の描画処理
 	DrawSkill();
-
-	//メッシュシリンダーの描画処理
-	//DrawMeshCylinder();
-
-	////壁の描画処理
-	//DrawWall();
 
 	//メッシュ壁の描画処理
 	DrawMeshWall();
