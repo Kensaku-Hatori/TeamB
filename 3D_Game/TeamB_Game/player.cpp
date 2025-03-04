@@ -226,7 +226,7 @@ void UpdatePlayer(void)
 				}
 			}
 			//ñÇñ@î≠éÀ
-			else if ((GetKeyboardPress(DIK_RETURN) || OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true)
+			else if ((GetKeyboardPress(DIK_RETURN) || OnMousePress(0) == true || GetJoypadTrigger(JOYKEY_B) == true)
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_EXPLOSION)
 			{// MPÇ™ÇTÇOà»è„ÇÃéû
 				if (g_player.Skilltype == SKILLTYPE_EXPLOSION)

@@ -65,6 +65,11 @@ void UpdateMouse(void)
 	g_MouseState.lX = p.x;
 	g_MouseState.lY = p.y;
 }
+// クリックしている間
+bool OnMousePress(int button_type)
+{
+	return(g_MouseState.rgbButtons[button_type] & (0x80)) ? true : false;
+}
 // クリックした瞬間の判定
 bool OnMouseDown(int button_type)
 {
@@ -75,6 +80,22 @@ bool OnMouseDown(int button_type)
 	}
 
 	return false;
+}
+// クリックを離した瞬間
+bool OnMouseUp(int button_type)
+{
+	if (g_MouseOldState.rgbButtons[button_type] & (0x80) &&
+		!(g_MouseState.rgbButtons[button_type] & (0x80)))
+	{
+		return true;
+	}
+
+	return false;
+}
+// 移動量の取得
+D3DXVECTOR2 GetMouseVelocityOld(void)
+{
+	return D3DXVECTOR2((float)g_MouseOldState.lX, (float)g_MouseOldState.lY);
 }
 // 移動量の取得
 D3DXVECTOR2 GetMouseVelocity(void)

@@ -6,6 +6,9 @@
 HRESULT InitMouse(HINSTANCE hInstance, HWND hWnd);
 void UninitMouse(void);
 void UpdateMouse(void);
+bool OnMousePress(int button_type);
 bool OnMouseDown(int button_type);
+bool OnMouseUp(int button_type);
+D3DXVECTOR2 GetMouseVelocityOld(void);
 D3DXVECTOR2 GetMouseVelocity(void);
 #endif // !_MOUSE_H_
