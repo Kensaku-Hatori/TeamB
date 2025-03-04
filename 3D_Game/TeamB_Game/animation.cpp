@@ -15,6 +15,7 @@
 #include "player.h"
 #include "skill.h"
 #include "particle.h"
+#include "circle.h"
 
 //***************
 // グローバル変数
@@ -505,6 +506,9 @@ void CaceThreeAction(OBJECTINFO* Motion)
 	Pos.y = pPlayer->mtxWand._42;
 	Pos.z = pPlayer->mtxWand._43;
 
+	//サークルのインデックス
+	int circleIndx = 0;
+
 	switch (Motion->motionType)
 	{
 	case MOTIONTYPE_ACTION:
@@ -519,6 +523,23 @@ void CaceThreeAction(OBJECTINFO* Motion)
 			0,
 			0.0f,
 			D3DXVECTOR3(-D3DX_PI * 0.5f, pPlayer->rotDest.y, 0.0f));
+
+		//サークルの設定
+		circleIndx = SetCircle(D3DXVECTOR3(pPlayer->pos.x, pPlayer->pos.y + 1.0f, pPlayer->pos.z),
+			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			D3DXCOLOR(0.05f, 1.0f, 1.0f, 1.0f),
+			20,
+			0,
+			10.0f,
+			36.0f,
+			false,
+			true);
+
+		//サークルのアニメーションの設定
+		SetAnime(circleIndx,
+			ANIMETYPE_0,
+			60);
+
 		break;
 	case MOTIONTYPE_ACTION_HORMING:
 		// エフェクトの設定
@@ -532,6 +553,23 @@ void CaceThreeAction(OBJECTINFO* Motion)
 			0,
 			0.0f,
 			D3DXVECTOR3(-D3DX_PI * 0.5f, pPlayer->rotDest.y, 0.0f));
+
+		//サークルの設定
+		circleIndx = SetCircle(D3DXVECTOR3(pPlayer->pos.x, pPlayer->pos.y + 1.0f, pPlayer->pos.z),
+			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			D3DXCOLOR(0.05f, 1.0f, 1.0f, 1.0f),
+			20,
+			0,
+			10.0f,
+			36.0f,
+			false,
+			true);
+
+		//サークルのアニメーションの設定
+		SetAnime(circleIndx,
+			ANIMETYPE_0,
+			60);
+
 		break;
 	}
 }

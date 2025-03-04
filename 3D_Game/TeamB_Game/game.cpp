@@ -323,7 +323,7 @@ void UpdateGame(void)
 						D3DXVECTOR3 pos = GetBottom();
 
 						//サークルを出す
-						SetCircle(pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 150, 150), 8, 0, 200.0f, 300.0f, true, false);
+						SetCircle(pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 150, 150), 8, 0, 200.0f, 100.0f, true, false);
 					}
 				}
 				bAbo = true;

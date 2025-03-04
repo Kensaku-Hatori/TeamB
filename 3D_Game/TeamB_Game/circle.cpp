@@ -79,15 +79,6 @@ void UpdateCircle()
 				//フレームカウント
 				g_Circle[nCnt].nCntFrame++;
 
-				if (g_Circle[nCnt].nCntFrame >= g_Circle[nCnt].frame * 0.5f)
-				{
-					if (g_Circle[nCnt].Anime.bHalf == false)
-					{
-						g_Circle[nCnt].AddCol.a *= -1.0f;
-						g_Circle[nCnt].Anime.bHalf = true;
-					}
-				}
-
 				//頂点バッファをロックし、頂点情報へのポインタを取得
 				g_Circle[nCnt].pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
@@ -96,18 +87,20 @@ void UpdateCircle()
 					for (int nCntX = 0; nCntX <= g_Circle[nCnt].nDiviX; nCntX++)
 					{
 						//頂点カラーの設定
-						pVtx[indx].col = D3DXCOLOR((FLOAT)g_Circle[nCnt].col.r + (g_Circle[nCnt].AddCol.r * (g_Circle[nCnt].nCntFrame * 2.0f)),
-							(FLOAT)g_Circle[nCnt].col.g + (g_Circle[nCnt].AddCol.g * (g_Circle[nCnt].nCntFrame * 2.0f)),
-							(FLOAT)g_Circle[nCnt].col.b + (g_Circle[nCnt].AddCol.b * (g_Circle[nCnt].nCntFrame * 2.0f)),
-							(FLOAT)g_Circle[nCnt].col.a + (g_Circle[nCnt].AddCol.a * (g_Circle[nCnt].nCntFrame * 2.0f)));
+						pVtx[indx].col = D3DXCOLOR((FLOAT)g_Circle[nCnt].col.r + (g_Circle[nCnt].AddCol.r * (g_Circle[nCnt].nCntFrame)),
+							(FLOAT)g_Circle[nCnt].col.g + (g_Circle[nCnt].AddCol.g * (g_Circle[nCnt].nCntFrame)),
+							(FLOAT)g_Circle[nCnt].col.b + (g_Circle[nCnt].AddCol.b * (g_Circle[nCnt].nCntFrame)),
+							(FLOAT)g_Circle[nCnt].col.a + (g_Circle[nCnt].AddCol.a * (g_Circle[nCnt].nCntFrame)));
 
 						//インデックスを進める
 						indx++;
 					}
 				}
 
+				//フレーム超えたら
 				if (g_Circle[nCnt].nCntFrame >= g_Circle[nCnt].frame)
 				{
+					//g_Circle[nCnt].nCntFrame = 0;
 					g_Circle[nCnt].bUse = false;
 				}
 
@@ -222,6 +215,7 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 			g_Circle[nCnt].col = col;
 			g_Circle[nCnt].nDiviX = DiviX;
 			g_Circle[nCnt].nDiviY = DiviY + 1;
+			g_Circle[nCnt].nCntFrame = 0;
 			g_Circle[nCnt].fHeight = fHeight;
 			g_Circle[nCnt].fRadius = fRadius;
 			g_Circle[nCnt].bGradation = bGradation;																						//グラデーションの有無
@@ -376,7 +370,9 @@ void SetAnime(int indx, ANIMETYPE type, int frame)
 	{
 		g_Circle[indx].type = type;
 		g_Circle[indx].frame = frame;
-
+		g_Circle[indx].Anime.bHalf = false;
+		g_Circle[indx].nCntFrame = 0;
+	
 		float a = 1.0f / g_Circle[indx].frame;
 
 		//色の変化量の設定
@@ -384,7 +380,30 @@ void SetAnime(int indx, ANIMETYPE type, int frame)
 		g_Circle[indx].AddCol.g = g_Circle[indx].AddCol.g * a;
 		g_Circle[indx].AddCol.b = g_Circle[indx].AddCol.b * a;
 		g_Circle[indx].AddCol.a = g_Circle[indx].AddCol.a * a;
+
+	//	switch (g_Circle[indx].type)
+	//	{
+	//	case ANIMETYPE_0:
+
+	//		g_Circle[indx].frame = g_Circle[indx].frame * (4 / 3);
+
+	//		break;
+
+	//	default:
+
+	//		break;
+	//	}
 	}
+}
+
+//=========================
+//サークルのアルファ値をを減らす処理
+//=========================
+void DefAlpha(int indx,int frame)
+{
+	//頂点情報へのポインタ
+	VERTEX_3D* pVtx = NULL;
+
 }
 
 //=========================
