@@ -59,6 +59,7 @@ void DrawCircle();
 int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int DiviY, float fHeight, float fRadius, bool bGradation, bool bAnime);
 void SetPositionCircle(int indx, D3DXVECTOR3  pos, D3DXVECTOR3 rot);
 void SetAnime(int indx, ANIMETYPE type, int frame);
+void DefAlpha(int indx, int frame);
 void DeleteCircle(int indx);
 
 #endif // !CIRCLE_H_
