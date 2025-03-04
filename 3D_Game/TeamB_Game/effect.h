@@ -81,4 +81,5 @@ void SetEffect(D3DXVECTOR3 pos,
 	D3DXVECTOR3 Rot);		// エフェクトの設定処理
 void DeleteEffect(EFFECTTYPE nType, int Indx);	// エフェクトを削除する処理
 void SetSkillParticle(EFFECTTYPE nType, int Indx,D3DXVECTOR3 StartPos, D3DXVECTOR3 EndPos,int Limit);	//
+void CollisionEffect(int Indx);
 #endif // !BILLBOARD_H_

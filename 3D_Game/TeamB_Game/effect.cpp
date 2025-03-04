@@ -12,6 +12,9 @@
 #include "effect.h"
 #include "particle.h"
 #include "player.h"
+#include "enemy.h"
+#include "boss.h"
+#include "collision.h"
 
 
 //***************
@@ -139,6 +142,10 @@ void UpdateEffect(void)
 	{
 		if (g_effect[effectcount].bUse == true)
 		{
+			if(g_effect[effectcount].ntype == EFFECT_EXPROSION)
+			{
+				CollisionEffect(effectcount);
+			}
 			if (g_effect[effectcount].ntype != EFFECT_MAGICCIRCLE)
 			{
 				g_effect[effectcount].col -= g_effect[effectcount].colordiff;
@@ -402,6 +409,9 @@ void DeleteEffect(EFFECTTYPE nType, int Indx)
 	}
 }
 
+//***************
+// スキルの残り香
+//***************
 void SetSkillParticle(EFFECTTYPE nType, int Indx, D3DXVECTOR3 StartPos, D3DXVECTOR3 EndPos, int Limit)
 {
 	for (int EffectCount = 0; EffectCount < Limit; EffectCount++)
@@ -432,4 +442,30 @@ void SetSkillParticle(EFFECTTYPE nType, int Indx, D3DXVECTOR3 StartPos, D3DXVECT
 		100.0f,
 		0.0f,
 		EFFECT_NONE);
+}
+
+//***********************
+// エフェクトの当たり判定
+//***********************
+void CollisionEffect(int Indx)
+{
+	ENEMY* pEnemy = GetEnemy();
+	BOSS* pBoss = GetBoss();
+	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++,pEnemy++)
+	{
+		if (pEnemy->bUse == true && pEnemy->bHit == false)
+		{
+			if (collisioncircle(g_effect[Indx].Object.Pos, g_effect[Indx].Scale.x * 0.5f, pEnemy->Object.Pos, ENEMY_RADIUS * 0.5f) == true)
+			{
+				HitEnemy(10.0f, EnemyCount);
+			}
+		}
+	}
+	if (pBoss->bUse == true && pBoss->bHit == false)
+	{
+		if (collisioncircle(g_effect[Indx].Object.Pos, g_effect[Indx].Scale.x * 0.5f, pBoss->Object.Pos, pBoss->Radius * 0.5f) == true)
+		{
+			HitBoss(10.0f);
+		}
+	}
 }

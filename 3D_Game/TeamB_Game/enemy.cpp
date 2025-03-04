@@ -224,6 +224,7 @@ void UpdateEnemy(void)
 			if (g_Enemy[EnemyCount].statecount <= 0)
 			{
 				g_Enemy[EnemyCount].state = ENEMYSTATE_NORMAL;
+				g_Enemy[EnemyCount].bHit = false;
 				g_Enemy[EnemyCount].statecount = 0;
 			}
 			g_Enemy[EnemyCount].statecount--;
@@ -386,6 +387,7 @@ void HitEnemy(float Atack,int Indx)
 
 	g_Enemy[Indx].Action = ENEMYACTION_WELL;
 	g_Enemy[Indx].state = ENEMYSTATE_KNOCKUP;
+	g_Enemy[Indx].bHit = true;
 
 	//HPゲージの更新
 	HPgaugeDeff(g_Enemy[Indx].IndxGuage, g_Enemy[Indx].Status.fHP);

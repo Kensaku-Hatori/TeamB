@@ -182,6 +182,7 @@ void UpdateBoss(void)
 		if (g_Boss.statecount <= 0)
 		{
 			g_Boss.state = BOSSSTATE_NORMAL;
+			g_Boss.bHit = false;
 			g_Boss.statecount = 0;
 		}
 		g_Boss.statecount--;
@@ -330,6 +331,7 @@ void HitBoss(float Atack)
 
 	g_Boss.Action = BOSSACTION_WELL;
 	g_Boss.state = BOSSSTATE_KNOCKUP;
+	g_Boss.bHit = true;
 
 	if (Atack >= 10)
 	{// ダメージが最小値以上なら
