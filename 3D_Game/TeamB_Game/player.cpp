@@ -327,7 +327,7 @@ void UpdatePlayer(void)
 		g_player.move.x = 0.0f;
 		g_player.move.z = 0.0f;
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 		//ˆÊ’u‚ð‚O‚É
 		if (KeyboardTrigger(DIK_0) == true)
 		{
@@ -378,7 +378,7 @@ void UpdatePlayer(void)
 			SetItem(D3DXVECTOR3(-100.0f, 0.0f, -100.0f), ITEMTYPE_SPEED);
 		}
 
-//#endif
+#endif
 
 		//“G‚ð‘S‚Ä“|‚µ‚Ä‚¢‚é‚È‚ç
 		if (*(NumEnemy) <= 0)

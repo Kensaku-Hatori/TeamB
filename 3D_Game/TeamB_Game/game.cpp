@@ -407,9 +407,6 @@ void DrawGame(void)
 
 	DrawBiillboard();
 
-	//ステージの描画処理
-	DrawStageModel();
-
 	//アイテムの描画処理
 	DrawItemBillboard();
 
@@ -418,6 +415,9 @@ void DrawGame(void)
 	{
 		//プレイヤーの描画処理
 		DrawPlayer();
+
+		//ステージの描画処理
+		DrawStageModel();
 
 		//敵の描画処理
 		DrawEnemy();

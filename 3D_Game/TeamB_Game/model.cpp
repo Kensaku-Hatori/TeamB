@@ -20,6 +20,7 @@ void InitStageModel()
 	for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++)
 	{
 		g_StageModel[ModelCount].bUse = false;
+		g_StageModel[ModelCount].bHitRayCamera = false;
 		g_StageModel[ModelCount].btest = true;
 		g_StageModel[ModelCount].nType = MODELTYPE_ZERO;
 		g_StageModel[ModelCount].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -105,6 +106,9 @@ void UpdateStageModel()
 		{
 			Player* pPlayer = GetPlayer();
 			Camera* pCamera = GetCamera();
+			D3DXVECTOR3 LocalRayPos,LocalRayDirection;
+			LocalRayPos = pCamera->posV;
+			LocalRayDirection = pCamera->posR - pCamera->posV;
 			//if (CollisionRaytoObb(pCamera->posR, pCamera->posV, g_StageModel[ModelCount].ObbModel))
 			//{
 			//	g_StageModel[ModelCount].pos.y = 100.0f;
@@ -119,6 +123,14 @@ void UpdateStageModel()
 			obb1Center.z = pPlayer->pos.z;
 			SetObbInfo(ModelCount);
 			CollOBBs(g_StageModel[ModelCount].ObbModel, obb1Center, ModelCount);
+			if (CollisionRaytoObb(LocalRayPos, LocalRayDirection, g_StageModel[ModelCount].ObbModel) == true)
+			{
+				g_StageModel[ModelCount].bHitRayCamera = true;
+			}
+			else
+			{
+				g_StageModel[ModelCount].bHitRayCamera = false;
+			}
 		}
 	}
 }
@@ -168,8 +180,19 @@ void DrawStageModel()
 
 			for (int ModelMatCount = 0; ModelMatCount < (int)g_StageModel[ModelCount].ModelBuff.dwNumMat; ModelMatCount++)
 			{
-				//マテリアルの設定
-				pDevice->SetMaterial(&pMat[ModelMatCount].MatD3D);
+				if (g_StageModel[ModelCount].bHitRayCamera == true)
+				{
+					D3DXMATERIAL CameraRayHit;
+					CameraRayHit = pMat[ModelMatCount];
+					CameraRayHit.MatD3D.Diffuse.a = 0.5f;
+					//マテリアルの設定
+					pDevice->SetMaterial(&CameraRayHit.MatD3D);
+				}
+				else
+				{
+					//マテリアルの設定
+					pDevice->SetMaterial(&pMat[ModelMatCount].MatD3D);
+				}
 				//テクスチャの設定
 				pDevice->SetTexture(0, g_StageModel[ModelCount].ModelBuff.pTexture[ModelMatCount]);
 				//モデルの描画

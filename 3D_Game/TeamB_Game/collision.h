@@ -21,5 +21,5 @@ bool collisioncircle(D3DXVECTOR3 Pos, float fRadius, D3DXVECTOR3 Pos1, float fRa
 bool collisionobb(OBB obb,OBB obb1,D3DXVECTOR3 Pos,D3DXVECTOR3 Pos1);					// OBB‚ÆOBB‚Ì“–‚½‚è”»’è
 D3DXVECTOR3 collisionobbfacedot(OBB obb, D3DXVECTOR3 Pos, D3DXVECTOR3 VecMove);			// OBB‚Ì“–‚½‚Á‚½–Ê‚Ì–@ü‚ğƒŠƒ^[ƒ“‚·‚éŠÖ”
 void PushPosition(D3DXVECTOR3 *Pos,D3DXVECTOR3 VecMove,D3DXVECTOR3 Nor);				// •Çü‚èŠÖ”
-bool CollisionRaytoObb(D3DXVECTOR3 Pos,D3DXVECTOR3 Pos1, OBB Obb);									// ü•ª‚ÆOBB‚Ì“–‚½‚è”»’è
+bool CollisionRaytoObb(D3DXVECTOR3& rayOrigin, D3DXVECTOR3& rayDirection, OBB Obb);		// ‚ê‚¢‚Æ‚¨BB
 #endif // !COLLISION_H_
