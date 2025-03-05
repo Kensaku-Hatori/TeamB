@@ -78,7 +78,7 @@ void UpdateCamera(void)
 		}
 		else
 		{
-			SetCursorPos(640.0f, 360.0f);
+			SetCursorPos(640, 360);
 		}
 
 		g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
