@@ -33,8 +33,8 @@ void InitTimer(void)
 	pDevice = GetDevice();
 
 	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number001.png", &g_pTextureTimer); //秒
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\timerkyouki.png", &g_pTextureColon); //コロン
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number200.png", &g_pTextureTimer); //秒
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\timerhyouki.png", &g_pTextureColon); //コロン
 
 
 	//頂点バッファの生成・頂点情報の設定

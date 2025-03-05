@@ -465,7 +465,7 @@ void CollisionEffect(int Indx)
 	{
 		if (collisioncircle(g_effect[Indx].Object.Pos, g_effect[Indx].Scale.x * 0.5f, pBoss->Object.Pos, pBoss->Radius * 0.5f) == true)
 		{
-			HitBoss(10.0f);
+			//HitBoss(10.0f);
 		}
 	}
 }

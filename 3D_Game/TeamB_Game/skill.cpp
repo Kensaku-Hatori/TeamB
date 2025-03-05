@@ -14,6 +14,7 @@
 #include "enemy.h"
 #include "impact.h"
 #include "boss.h"
+#include "sound.h"
 #include "collision.h"
 
 //ƒOƒ[ƒoƒ‹•Ï”éŒ¾
@@ -294,6 +295,10 @@ void UpdateHorming(int Indx)
 		{
 			D3DXVECTOR3 moveDiff = g_Skill[Indx].moveDest - g_Skill[Indx].move;
 			g_Skill[Indx].move = moveDiff / g_Skill[Indx].AnimCounter * 20.0f;
+		}
+		else if (g_Skill[Indx].AnimCounter >= 20)
+		{
+			PlaySound(SOUND_LABEL_MAGIC);
 		}
 		else
 		{

@@ -20,7 +20,7 @@ typedef struct
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureBack = NULL;
 LPDIRECT3DTEXTURE9 g_pTextureRank[MAX_RANKING] = {};
-LPDIRECT3DTEXTURE9 g_pTextureRankScore = NULL;
+LPDIRECT3DTEXTURE9 g_pTextureRankScore[4] = {};
 
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffRank = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffRankScore = NULL;
@@ -54,7 +54,10 @@ void InitRanking(void)
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking4.png", &g_pTextureRank[3]);     //順位
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ranking5.png", &g_pTextureRank[4]);     //順位
 
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number001.png", &g_pTextureRankScore);	 //スコア
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number200.png", &g_pTextureRankScore[0]);	//スコア
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number002.png", &g_pTextureRankScore[1]);	//スコア
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number200.png", &g_pTextureRankScore[2]);	//スコア
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\UInumber.png", &g_pTextureRankScore[3]);		//スコア
 
 	for (int nCnt = 0; nCnt < MAX_RANKING; nCnt++)
 	{
@@ -214,12 +217,10 @@ void InitRanking(void)
 //==========
 void UninitRanking(void)
 {
-	if (g_pTextureBack != NULL && g_pTextureRankScore != NULL)
+	if (g_pTextureBack != NULL)
 	{
 		g_pTextureBack->Release();
 		g_pTextureBack = NULL;
-		g_pTextureRankScore->Release();
-		g_pTextureRankScore = NULL;
 	}
 	for (int nCnt = 0; nCnt < MAX_RANKING; nCnt++)
 	{
@@ -229,6 +230,15 @@ void UninitRanking(void)
 			g_pTextureRank[nCnt] = NULL;
 		}
 	}
+	for (int nCnt = 0; nCnt < 4; nCnt++)
+	{
+		if (g_pTextureRankScore[nCnt] != NULL)
+		{
+			g_pTextureRankScore[nCnt]->Release();
+			g_pTextureRankScore[nCnt] = NULL;
+		}
+	}
+
 	if (g_pVtxBuffRank != NULL && g_pVtxBuffRankBack != NULL && g_pVtxBuffRankScore != NULL)
 	{
 		g_pVtxBuffRank->Release();
@@ -391,7 +401,23 @@ void DrawRanking(void)
 	for (int nCnt = 0; nCnt < MAX_RANKING * MAX_SCORE; nCnt++)
 	{
 		//テクスチャの設定
-		pDevice->SetTexture(0, g_pTextureRankScore);
+		if (nCnt < MAX_SCORE)
+		{
+			pDevice->SetTexture(0, g_pTextureRankScore[0]);
+		}
+		else if (nCnt < MAX_SCORE * 2)
+		{
+			pDevice->SetTexture(0, g_pTextureRankScore[1]);
+		}
+		else if (nCnt < MAX_SCORE * 3)
+		{
+			pDevice->SetTexture(0, g_pTextureRankScore[2]);
+		}
+		else
+		{
+			pDevice->SetTexture(0, g_pTextureRankScore[3]);
+		}
+
 		//プレイヤーの描画
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
 	}

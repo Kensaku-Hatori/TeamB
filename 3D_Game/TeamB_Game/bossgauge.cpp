@@ -94,9 +94,9 @@ void InitBossGauge(void)
 
 		//頂点座標の設定
 		pVtx[0].pos = D3DXVECTOR3(g_BossGauge.x, g_BossGauge.y - g_BossGaugeSize.y, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(g_BossGauge.x + g_BossGaugeSize.x, g_BossGauge.y - g_BossGaugeSize.y, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(g_BossGauge.x + g_BossGaugeSize.x , g_BossGauge.y - g_BossGaugeSize.y, 0.0f);
 		pVtx[2].pos = D3DXVECTOR3(g_BossGauge.x, g_BossGauge.y + g_BossGaugeSize.y, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(g_BossGauge.x + g_BossGaugeSize.x, g_BossGauge.y + g_BossGaugeSize.y, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(g_BossGauge.x + g_BossGaugeSize.x , g_BossGauge.y + g_BossGaugeSize.y, 0.0f);
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;
@@ -248,14 +248,14 @@ void DrawBossGauge(void)
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 
 
-	////枠
-	////頂点バッファをデータストリームに設定
-	//pDevice->SetStreamSource(0, g_pVtxBuffBossGaugeBack, 0, sizeof(VERTEX_2D));
-	//
-	////テクスチャの設定
-	//pDevice->SetTexture(0, g_pTextureBossGaugeBack);
-	////プレイヤーの描画
-	//pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+	//枠
+	//頂点バッファをデータストリームに設定
+	pDevice->SetStreamSource(0, g_pVtxBuffBossGaugeBack, 0, sizeof(VERTEX_2D));
+	
+	//テクスチャの設定
+	pDevice->SetTexture(0, g_pTextureBossGaugeBack);
+	//プレイヤーの描画
+	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	//名前
 	//頂点バッファをデータストリームに設定
