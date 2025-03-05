@@ -11,6 +11,7 @@
 
 #define MAX_SCORE (6)
 #define SCOREDATA (100000)
+#define SCORE_SIZE (20)
 
 //プロトタイプ宣言
 void InitScore(void);

@@ -583,7 +583,7 @@ void PlayerMove(void)
 	float Speed;
 	if (g_player.bLockOn == true)
 	{
-		Speed = g_player.Status.fSpeed / 3;
+		Speed = g_player.Status.fSpeed / 2;
 	}
 	else
 	{
@@ -818,6 +818,7 @@ void PlayerMove(void)
 				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MIGI || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_HIDARI)
 			{
 				SetMotion(MOTIONTYPE_NEUTRAL, &g_player.PlayerMotion);
+				g_player.state = PLAYERSTATE_NORMAL;
 			}
 		}
 	}
