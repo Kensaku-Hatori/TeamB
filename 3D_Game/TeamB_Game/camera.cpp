@@ -67,7 +67,7 @@ void UpdateCamera(void)
 	{//カメラの自動回転
 		pPlayer->pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//プレイヤーの位置を０に
 		//回転
-		g_camera.rot.y += 0.01f;
+		g_camera.rotDest.y += 0.01f;
 	}
 	//それ以外
 	else
