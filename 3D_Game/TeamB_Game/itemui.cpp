@@ -51,9 +51,9 @@ void InitItemUI(void)
 
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number002.png", &g_pTextureItemUINo);	//No 
 
-	g_ItemUIframepos = D3DXVECTOR3(985.0f, 470.0f, 0.0f);
-	g_ItemUIpos = D3DXVECTOR3(1000.0f, 490.0f, 0.0f);
-	g_ItemUINopos = D3DXVECTOR3(ITEMUI_X + 1000.0f, 490.0f, 0.0f);
+	g_ItemUIframepos = D3DXVECTOR3(985.0f, 550.0f, 0.0f);
+	g_ItemUIpos = D3DXVECTOR3(1000.0f, 570.0f, 0.0f);
+	g_ItemUINopos = D3DXVECTOR3(ITEMUI_X + 1000.0f, 570.0f, 0.0f);
 
 
 	//頂点バッファの生成・頂点情報の設定

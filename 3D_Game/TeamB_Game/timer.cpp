@@ -40,7 +40,7 @@ void InitTimer(void)
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
 
-	g_posTimer = D3DXVECTOR3(1000.0f, 210.0f, 0.0f);
+	g_posTimer = D3DXVECTOR3(SCREEN_WIDTH / 2 - 100.0f, 0.0f, 0.0f);
 
 	//分タイマー
 	g_nMinutes = 0;
@@ -60,8 +60,8 @@ void InitTimer(void)
 		//頂点座標の設定
 		pVtx[0].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y - 0.0f, 0.0f);
 		pVtx[1].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y - 0.0f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y + 100.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y + 100.0f, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y + 50.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y + 50.0f, 0.0f);
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;
@@ -99,8 +99,8 @@ void InitTimer(void)
 	//頂点座標の設定
 	pVtx[0].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y - 0.0f, 0.0f);
 	pVtx[1].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y - 0.0f, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y + 100.0f, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y + 100.0f, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y + 50.0f, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y + 50.0f, 0.0f);
 	//rhwの設定
 	pVtx[0].rhw = 1.0f;
 	pVtx[1].rhw = 1.0f;
@@ -141,8 +141,8 @@ void InitTimer(void)
 		//頂点座標の設定
 		pVtx[0].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y - 0.0f, 0.0f);
 		pVtx[1].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y - 0.0f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y + 100.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y + 100.0f, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y + 50.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y + 50.0f, 0.0f);
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;

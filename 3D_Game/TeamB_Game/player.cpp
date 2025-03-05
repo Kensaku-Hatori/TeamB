@@ -249,14 +249,14 @@ void UpdatePlayer(void)
 			//	if (g_player.Skilltype == SKILLTYPE_EXPLOSION)
 			//	{
 			//		SetMotion(MOTIONTYPE_ACTION_EXPLOSION, &g_player.PlayerMotion);
-
+			//
 			//		g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bActionStart = false;
 			//		g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bFirst = false;
 			//		g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartKey = 0;
 			//		g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndKey = 0;
 			//		g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartFrame = 15;
 			//		g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndFrame = 16;
-
+			//
 			//		g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].bActionStart = false;
 			//		g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].bFirst = false;
 			//		g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartKey = 0;
@@ -445,7 +445,7 @@ void UpdatePlayer(void)
 			{
 				pMission->mission = MISSION_IDOU;
 				//ñÓàÛÇÃà íuçXêV
-				SetPositonArrow(g_player.pos);
+				SetPositonArrow(g_player.nIdxArrow, g_player.pos);
 
 				g_player.Status.fSpeed = PLAYER_SPEED * 1.5f;
 			}
@@ -583,7 +583,7 @@ void PlayerMove(void)
 	float Speed;
 	if (g_player.bLockOn == true)
 	{
-		Speed = g_player.Status.fSpeed / 3;
+		Speed = g_player.Status.fSpeed / 2;
 	}
 	else
 	{
@@ -592,7 +592,7 @@ void PlayerMove(void)
 	
 	if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && g_player.bRolling == false)
 	{
-		Speed = Speed * 20;
+		Speed = g_player.Status.fSpeed * 20;
 		g_player.bRolling = true;
 		g_player.state = PLAYERSTATE_ROLL;
 	}
@@ -818,6 +818,7 @@ void PlayerMove(void)
 				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MIGI || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_HIDARI)
 			{
 				SetMotion(MOTIONTYPE_NEUTRAL, &g_player.PlayerMotion);
+				g_player.state = PLAYERSTATE_NORMAL;
 			}
 		}
 	}

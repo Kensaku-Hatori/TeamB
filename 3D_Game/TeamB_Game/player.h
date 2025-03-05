@@ -20,8 +20,8 @@
 
 #define PLAYER_MP (500)				// MP
 #define PLAYER_HP (float)(1000)		// HP
-#define PLAYER_SPEED (float) (2.5f)	// 速度
-#define PLAYER_AP (50)				// 攻撃力
+#define PLAYER_SPEED (float) (2.0f)	// 速度
+#define PLAYER_AP (100)				// 攻撃力
 
 // プレイヤーの状態
 typedef enum
@@ -47,6 +47,7 @@ typedef struct
 	D3DXMATRIX mtxWand;				// 杖先のマトリックス
 	OBJECTINFO PlayerMotion;		// パーツ情報とモーション情報
 	int nIdxShadow;					// 影のインデックス
+	int nIdxArrow;
 	int nIndxCircle;				// サークルのインデックス
 	int nCntState;
 	int nCntRollingState;

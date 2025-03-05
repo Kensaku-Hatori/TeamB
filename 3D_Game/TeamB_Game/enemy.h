@@ -30,7 +30,7 @@
 #define ATTACK_FREAM (180)				// 攻撃a
 
 //移動量
-#define HOMING_MOVE (float)(1.0f)		// ホーミング
+#define HOMING_MOVE (float)(0.8f)		// ホーミング
 #define WELL_MOVE (float)(0.2f)			// 様子見
 
 #define ENEMY_SCORE (100)
@@ -85,6 +85,7 @@ typedef struct
 	int nNumKey, nKey, nCounterMotion, nNextKey;
 	int nNumModel;
 	int IndxShadow;
+	int IndxArrow;
 	int nActionCount,nActionCounter;
 	int statecount;
 	int CollModel;
