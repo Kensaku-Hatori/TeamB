@@ -70,6 +70,25 @@ void UpdateCamera(void)
 	//‚»‚êˆÈŠO
 	else
 	{
+#ifdef _DEBUG
+
+		//‹“_‚Ìã‰º
+		if (GetKeyboardPress(DIK_UP) == true)
+		{//ã
+			if (g_camera.posV.y <= 500)
+			{
+				g_camera.posV.y += 5;
+			}
+		}
+		if (GetKeyboardPress(DIK_DOWN) == true)
+		{//‰º
+			if (g_camera.posV.y >= -500)
+			{
+				g_camera.posV.y -= 5;
+			}
+		}
+#endif
+
 		Player* pPlayer = GetPlayer();
 		if (pPlayer->bLockOn == false)
 		{

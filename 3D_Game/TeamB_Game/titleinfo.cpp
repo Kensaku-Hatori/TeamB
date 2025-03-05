@@ -282,7 +282,7 @@ void UpdateTitleInfo(int zDelta)
 				SetFade(MODE_STAGEONE);
 				pPlayer->bfirst = true;
 
-			//	PlaySound(SOUND_LABEL_GAME);
+				PlaySound(SOUND_LABEL_GAME);
 			}
 			else if (g_titleinfoMenu == TITLE_RANK)
 			{	//RANKÇ…Ç¢ÇÈèÍçá
