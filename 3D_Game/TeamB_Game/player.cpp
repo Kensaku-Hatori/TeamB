@@ -430,7 +430,6 @@ void UpdatePlayer(void)
 
 				g_player.Status.fSpeed = PLAYER_SPEED * 1.5f;
 			}
-
 		}
 
 		//‰e‚Ì‘å‚«‚³‚ÌXVˆ—
