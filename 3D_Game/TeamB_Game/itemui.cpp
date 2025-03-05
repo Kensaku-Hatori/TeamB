@@ -9,6 +9,7 @@
 #include "player.h"
 #include "input.h"
 #include "sound.h"
+#include "game.h"
 
 //グローバル変数
 //枠
@@ -36,6 +37,7 @@ int g_nCntItemMP;
 void InitItemUI(void)
 {
 	Player* pPlayer = GetPlayer();
+	MODE mode = GetMode();
 
 	LPDIRECT3DDEVICE9 pDevice;
 	//デバイスの取得
@@ -186,7 +188,9 @@ void InitItemUI(void)
 		g_pVtxBuffItemUINo->Unlock();
 	}
 
-	if (pPlayer->bfirst == true)
+
+
+	if (pPlayer->bfirst == true || mode == MODE_STAGEONE)
 	{
 		g_nCntItemHP = 0;
 		g_nCntItemMP = 0;

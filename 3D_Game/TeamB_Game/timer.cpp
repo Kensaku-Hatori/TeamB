@@ -196,23 +196,23 @@ void UninitTimer(void)
 //==========
 void UpdateTimer(void)
 {
-	GAMESTATE gamestate = GetGameSatate();
+	MODE mode = GetMode();
 
-	g_nSeconds++;
-	//一秒経過
-	if (g_nSeconds >= 60)
+	if (mode != MODE_STAGEONE)
 	{
-		AddTimer(1);
-		g_nSeconds = 0;
+		g_nSeconds++;
+		//一秒経過
+		if (g_nSeconds >= 60)
+		{
+			AddTimer(1);
+			g_nSeconds = 0;
+		}
+		if (g_nTimer >= 60)
+		{
+			AddTimerMinutes(1);
+			AddTimer(-60);
+		}
 	}
-	if (g_nTimer >= 60)
-	{
-		AddTimerMinutes(1);
-		AddTimer(-60);
-	}
-
-
-
 }
 //===========
 //描画処理
@@ -222,43 +222,48 @@ void DrawTimer(void)
 	LPDIRECT3DDEVICE9 pDevice;
 	//デバイスの取得
 	pDevice = GetDevice();
+	MODE mode = GetMode();
 
-	//頂点フォーマットの設定
-	pDevice->SetFVF(FVF_VERTEX_2D);
-
-	
-	//分
-	//頂点バッファをデータストリームに設定
-	pDevice->SetStreamSource(0, g_pVtxBuffTimerMinutes, 0, sizeof(VERTEX_2D));
-	int nCnt;
-	for (nCnt = 0; nCnt < MAX_TIMER; nCnt++)
+	if (mode != MODE_STAGEONE)
 	{
+
+		//頂点フォーマットの設定
+		pDevice->SetFVF(FVF_VERTEX_2D);
+
+
+		//分
+		//頂点バッファをデータストリームに設定
+		pDevice->SetStreamSource(0, g_pVtxBuffTimerMinutes, 0, sizeof(VERTEX_2D));
+		int nCnt;
+		for (nCnt = 0; nCnt < MAX_TIMER; nCnt++)
+		{
+			//テクスチャの設定
+			pDevice->SetTexture(0, g_pTextureTimer);
+			//プレイヤーの描画
+			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
+		}
+
+
+		//コロン
+		//頂点バッファをデータストリームに設定
+		pDevice->SetStreamSource(0, g_pVtxBuffColon, 0, sizeof(VERTEX_2D));
 		//テクスチャの設定
-		pDevice->SetTexture(0, g_pTextureTimer);
+		pDevice->SetTexture(0, g_pTextureColon);
 		//プレイヤーの描画
-		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
-	}
+		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 
 
-	//コロン
-	//頂点バッファをデータストリームに設定
-	pDevice->SetStreamSource(0, g_pVtxBuffColon, 0, sizeof(VERTEX_2D));
-	//テクスチャの設定
-	pDevice->SetTexture(0, g_pTextureColon);
-	//プレイヤーの描画
-	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+		//秒
+		//頂点バッファをデータストリームに設定
+		pDevice->SetStreamSource(0, g_pVtxBuffTimer, 0, sizeof(VERTEX_2D));
 
-
-	//秒
-	//頂点バッファをデータストリームに設定
-	pDevice->SetStreamSource(0, g_pVtxBuffTimer, 0, sizeof(VERTEX_2D));
-	
-	for (nCnt = 0; nCnt < MAX_TIMER; nCnt++)
-	{
-		//テクスチャの設定
-		pDevice->SetTexture(0, g_pTextureTimer);
-		//プレイヤーの描画
-		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
+		for (nCnt = 0; nCnt < MAX_TIMER; nCnt++)
+		{
+			//テクスチャの設定
+			pDevice->SetTexture(0, g_pTextureTimer);
+			//プレイヤーの描画
+			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
+		}
 	}
 }
 //=================

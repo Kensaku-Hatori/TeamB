@@ -575,7 +575,7 @@ void PlayerMove(void)
 	{
 		if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && g_player.bRolling == false)
 		{
-			Speed = Speed * 10;
+			Speed = Speed * 20;
 			g_player.bRolling = true;
 		}
 

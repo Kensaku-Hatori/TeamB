@@ -70,6 +70,25 @@ void UpdateCamera(void)
 	//ÇªÇÍà»äO
 	else
 	{
+#ifdef _DEBUG
+
+		//éãì_ÇÃè„â∫
+		if (GetKeyboardPress(DIK_UP) == true)
+		{//è„
+			if (g_camera.posV.y <= 500)
+			{
+				g_camera.posV.y += 5;
+			}
+		}
+		if (GetKeyboardPress(DIK_DOWN) == true)
+		{//â∫
+			if (g_camera.posV.y >= -500)
+			{
+				g_camera.posV.y -= 5;
+			}
+		}
+#endif
+
 		UpdateCameratoMousePos();
 		UpdateCameratoJoyPadPos();
 
