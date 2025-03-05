@@ -24,6 +24,7 @@
 #include "collision.h"
 #include "HPgauge.h"
 #include "score.h"
+#include "sound.h"
 
 //*******************
 // ƒOƒ[ƒoƒ‹•Ï”éŒ¾
@@ -733,6 +734,20 @@ void CollisionEnemyAction(int nCnt)
 		if (collisioncircle(CollPos, radius, pPlayer->pos, PLAYER_RADIUS) == true)
 		{
 			HitPlayer(g_Enemy[nCnt].Status.fPower, g_Enemy[nCnt].Object.Pos);
+
+			if (g_Enemy[nCnt].type == ENEMYTYPE_SKELETON)
+			{
+				PlaySound(SOUND_LABEL_SKELETON);
+			}
+			else if (g_Enemy[nCnt].type == ENEMYTYPE_ZOMBIE)
+			{
+				PlaySound(SOUND_LABEL_ZOMBI);
+			}
+			else if (g_Enemy[nCnt].type == ENEMYTYPE_MIDBOSS)
+			{
+				PlaySound(SOUND_LABEL_SLASH);
+			}
+
 			break;
 		}
 #ifdef _DEBUG
