@@ -12,6 +12,7 @@
 
 //マクロ定義
 #define MAX_ITEM (5)									//最大アイテム数
+
 #define NUM_ITEMTYPE (3)								//アイテムの種類の数
 #define ITEM_RADIUS (10.0f)								//アイテム(ビルボード)の半径
 #define ITEM_TIME_DEL (600)								//アイテムが消えるまでのフレーム
@@ -26,6 +27,7 @@ static const char* ITEM_TEXTURE[NUM_ITEMTYPE] =
 {
 	"data\\TEXTURE\\item2.png",							//ヒールポーション
 	"data\\TEXTURE\\item1.png",							//マナポーション
+
 	"data\\TEXTURE\\item3.png"							//パワーアップポーション
 };
 

@@ -338,6 +338,7 @@ void CaceOneAction(OBJECTINFO* Motion)
 					pPlayer->rot,
 					SKILLTYPE_NONE,
 					0.0f);
+			pPlayer->state = PLAYERSTATE_NORMAL;
 			PlaySound(SOUND_LABEL_MAGIC);
 		}
 		break;
@@ -360,6 +361,7 @@ void CaceOneAction(OBJECTINFO* Motion)
 					SKILLTYPE_HORMING,
 					fRatio);
 			}
+			pPlayer->state = PLAYERSTATE_NORMAL;
 			// MP‚ðŒ¸‚ç‚·
 			SubMP(pPlayer->Skilltype);
 		}
@@ -378,6 +380,8 @@ void CaceOneAction(OBJECTINFO* Motion)
 				1.0f,
 				0.0f,
 				EFFECT_EXPROSION);
+			pPlayer->state = PLAYERSTATE_NORMAL;
+
 			// MP‚ðŒ¸‚ç‚·
 			SubMP(pPlayer->Skilltype);
 		}

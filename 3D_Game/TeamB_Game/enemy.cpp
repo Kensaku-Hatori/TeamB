@@ -454,7 +454,7 @@ void SetEnemy(D3DXVECTOR3 pos, int nType, D3DXVECTOR3 rot)
 				g_Enemy[EnemyCount].type = ENEMYTYPE_SKELETON;
 				g_Enemy[EnemyCount].CollModel = 3;
 				g_Enemy[EnemyCount].Status.fPower = ENEMY_AP;				// 攻撃力
-				g_Enemy[EnemyCount].Status.fSpeed = ENEMY_SPEED;			// スピード
+				g_Enemy[EnemyCount].Status.fSpeed = HOMING_MOVE;			// スピード
 				g_Enemy[EnemyCount].Status.fHP = ENEMY_HP;					// HP
 				g_Enemy[EnemyCount].Status.Score = ENEMY_SCORE;				// スコア
 			}
@@ -463,7 +463,7 @@ void SetEnemy(D3DXVECTOR3 pos, int nType, D3DXVECTOR3 rot)
 				g_Enemy[EnemyCount].type = ENEMYTYPE_ZOMBIE;
 				g_Enemy[EnemyCount].CollModel = 1;
 				g_Enemy[EnemyCount].Status.fPower = ENEMY_AP;				// 攻撃力
-				g_Enemy[EnemyCount].Status.fSpeed = ENEMY_SPEED;			// スピード
+				g_Enemy[EnemyCount].Status.fSpeed = HOMING_MOVE * 0.25f;	// スピード
 				g_Enemy[EnemyCount].Status.fHP = ENEMY_HP;					// HP
 				g_Enemy[EnemyCount].Status.Score = ENEMY_SCORE;				// スコア
 			}
@@ -472,7 +472,7 @@ void SetEnemy(D3DXVECTOR3 pos, int nType, D3DXVECTOR3 rot)
 				g_Enemy[EnemyCount].type = ENEMYTYPE_MIDBOSS;
 				g_Enemy[EnemyCount].CollModel = 10;
 				g_Enemy[EnemyCount].Status.fPower = ENEMY_AP * 1.5;			// 攻撃力
-				g_Enemy[EnemyCount].Status.fSpeed = ENEMY_SPEED;			// スピード
+				g_Enemy[EnemyCount].Status.fSpeed = HOMING_MOVE * 0.5f;			// スピード
 				g_Enemy[EnemyCount].Status.fHP = ENEMY_HP * 2;				// HP
 				g_Enemy[EnemyCount].Status.Score = ENEMY_SCORE * 2;			// スコア
 			}
@@ -589,6 +589,7 @@ void UpdateAction(int nCount)
 		{
 			//モーションの種類設定
 			g_Enemy[nCount].ActionType = ENEMYACTION_RUN;
+
 			//移動量の設定
 			g_Enemy[nCount].move.x = sinf(fAngle) * HOMING_MOVE;
 			g_Enemy[nCount].move.z = cosf(fAngle) * HOMING_MOVE;

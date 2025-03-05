@@ -427,7 +427,7 @@ void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot, SKILLTYPE ntyp
 			// ”š”­–‚–@
 			else if (ntype == SKILLTYPE_EXPLOSION)
 			{
-				g_Skill[nCnt].fPower = pPlayer->Status.fPower * 1.25f;
+				g_Skill[nCnt].fPower = pPlayer->Status.fPower * 1.5f;
 			}
 			g_Skill[nCnt].bHit = false;
 			g_Skill[nCnt].bUse = true;
@@ -499,7 +499,7 @@ void SubMP(SKILLTYPE type)
 		break;
 
 	case SKILLTYPE_EXPLOSION:
-		pPlayer->Status.nMP -= 10;
+		pPlayer->Status.nMP -= 25;
 		break;
 	default:
 		break;
