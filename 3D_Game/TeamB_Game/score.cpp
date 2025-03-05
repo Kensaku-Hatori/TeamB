@@ -42,10 +42,10 @@ void InitScore(void)
 	for (nCnt = 0; nCnt < MAX_SCORE; nCnt++)
 	{
 		//’¸“_À•W‚ÌÝ’è
-		pVtx[0].pos = D3DXVECTOR3(g_posScore.x + (50 * nData), g_posScore.y + 0.0f, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(g_posScore.x + (50 * (nData + 1)), g_posScore.y + 0.0f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(g_posScore.x + (50 * nData), g_posScore.y + 100.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(g_posScore.x + (50 * (nData + 1)), g_posScore.y + 100.0f, 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(g_posScore.x + (25 * nData), g_posScore.y + 0.0f, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(g_posScore.x + (25 * (nData + 1)), g_posScore.y + 0.0f, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(g_posScore.x + (25 * nData), g_posScore.y + 50.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(g_posScore.x + (25 * (nData + 1)), g_posScore.y + 50.0f, 0.0f);
 		//rhw‚ÌÝ’è
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;

@@ -173,8 +173,12 @@ void UpdateEnemy(void)
 					}
 				}
 			}
-			// 行動の更新
-			UpdateAction(EnemyCount);
+
+			if (g_Enemy[EnemyCount].state != ENEMYSTATE_KNOCKUP)
+			{
+				// 行動の更新
+				UpdateAction(EnemyCount);
+			}
 
 			// 魔法との当たり判定
 			for (int SkillCount = 0; SkillCount < MAX_SKILL; SkillCount++)
@@ -384,11 +388,22 @@ ENEMY* GetEnemy()
 //***************
 void HitEnemy(float Atack,int Indx)
 {
+	Player* pPlayer = GetPlayer();
+
 	g_Enemy[Indx].Status.fHP -= (int)Atack;
 
 	g_Enemy[Indx].Action = ENEMYACTION_WELL;
 	g_Enemy[Indx].state = ENEMYSTATE_KNOCKUP;
 	g_Enemy[Indx].bHit = true;
+
+	if (pPlayer->Skilltype == SKILLTYPE_EXPLOSION)
+	{
+		float move = 1.5f;
+
+		D3DXVECTOR3 Vec = g_Enemy[Indx].Object.Pos - pPlayer->pos;
+		D3DXVec3Normalize(&Vec, &Vec);
+		g_Enemy[Indx].move = Vec * move;
+	}
 
 	//HPゲージの更新
 	HPgaugeDeff(g_Enemy[Indx].IndxGuage, g_Enemy[Indx].Status.fHP);
