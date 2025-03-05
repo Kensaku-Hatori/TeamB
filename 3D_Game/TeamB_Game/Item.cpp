@@ -330,7 +330,7 @@ void ItemAbility(int nIndexItem)
 
 	case ITEMTYPE_SPEED:
 		PlaySound(SOUND_LABEL_POTION);
-		pPlayer->Status.fPower += 30.0f;
+		pPlayer->Status.fPower += 40.0f;
 		break;
 
 	default:
