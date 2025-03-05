@@ -89,8 +89,16 @@ void UpdateCamera(void)
 		}
 #endif
 
-		UpdateCameratoMousePos();
-		UpdateCameratoJoyPadPos();
+		Player* pPlayer = GetPlayer();
+		if (pPlayer->bLockOn == false)
+		{
+			UpdateCameratoMousePos();
+			UpdateCameratoJoyPadPos();
+		}
+		else
+		{
+			SetCursorPos(640.0f, 360.0f);
+		}
 
 		g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
 		g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
