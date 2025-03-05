@@ -44,6 +44,8 @@ void UpdateCamera(void)
 	MODE pMode;
 	pMode = GetMode();
 	
+	g_camera.rot += (g_camera.rotDest - g_camera.rot) * 0.3f;
+
 	g_camera.posRDest.x = pPlayer->pos.x + sinf(pPlayer->rot.x) * (pPlayer->pos.x - g_camera.posR.x);
 	g_camera.posRDest.y = pPlayer->pos.y;
 	g_camera.posRDest.z = pPlayer->pos.z + cosf(pPlayer->rot.z) * (pPlayer->pos.z - g_camera.posR.z);
@@ -114,27 +116,27 @@ void UpdateCameratoMousePos(void)
 
 	const FLOAT MouseSensitivity = 0.0008f;
 	DiffMouse *= MouseSensitivity;
-	g_camera.rot.x += DiffMouse.y;
-	g_camera.rot.y += DiffMouse.x;
+	g_camera.rotDest.x += DiffMouse.y;
+	g_camera.rotDest.y += DiffMouse.x;
 
 	// Šp“x‚Ì‹ß“¹
-	if (g_camera.rot.y >= D3DX_PI)
+	if ((g_camera.rotDest.y - g_camera.rot.y) >= D3DX_PI)
 	{
-		g_camera.rot.y -= D3DX_PI * 2.0f;
+		g_camera.rotDest.y -= D3DX_PI * 2.0f;
 	}
-	else if (g_camera.rot.y <= -D3DX_PI)
+	else if ((g_camera.rotDest.y - g_camera.rot.y) <= -D3DX_PI)
 	{
-		g_camera.rot.y += D3DX_PI * 2.0f;
+		g_camera.rotDest.y += D3DX_PI * 2.0f;
 	}
 
 	// Šp“x‚Ì‹ß“¹
-	if (g_camera.rot.x >= D3DX_PI)
+	if ((g_camera.rotDest.x - g_camera.rot.x) >= D3DX_PI)
 	{
-		g_camera.rot.x -= D3DX_PI * 2.0f;
+		g_camera.rotDest.x -= D3DX_PI * 2.0f;
 	}
-	else if (g_camera.rot.x <= -D3DX_PI)
+	else if ((g_camera.rotDest.x - g_camera.rot.x) <= -D3DX_PI)
 	{
-		g_camera.rot.x += D3DX_PI * 2.0f;
+		g_camera.rotDest.x += D3DX_PI * 2.0f;
 	}
 	SetCursorPos((int)SetMousePos.x, (int)SetMousePos.y);
 }
