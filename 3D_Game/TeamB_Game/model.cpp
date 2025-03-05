@@ -108,15 +108,7 @@ void UpdateStageModel()
 			Camera* pCamera = GetCamera();
 			D3DXVECTOR3 LocalRayPos,LocalRayDirection;
 			LocalRayPos = pCamera->posV;
-			LocalRayDirection = pCamera->posR - pCamera->posV;
-			//if (CollisionRaytoObb(pCamera->posR, pCamera->posV, g_StageModel[ModelCount].ObbModel))
-			//{
-			//	g_StageModel[ModelCount].pos.y = 100.0f;
-			//}
-			//else
-			//{
-			//	g_StageModel[ModelCount].pos.y = 0.0f;
-			//}
+			LocalRayDirection = D3DXVECTOR3(pCamera->posR.x, pCamera->posR.y, pCamera->posR.z) - pCamera->posV;
 			D3DXVECTOR3 obb1Center;
 			obb1Center.x = pPlayer->pos.x;
 			obb1Center.y = pPlayer->pos.y + (pPlayer->size.y * 0.5f);
@@ -253,7 +245,6 @@ void SetObbInfo(int Indx)
 
 	if (g_StageModel[Indx].btest == true)
 	{
-		g_StageModel[Indx].btest = false;
 		for (int nCnt = 0; nCnt < nNumVtx; nCnt++)
 		{
 			//’¸“_À•W‚Ì‘ã“ü

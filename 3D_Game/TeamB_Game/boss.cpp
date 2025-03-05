@@ -107,7 +107,32 @@ void UpdateBoss(void)
 			// 行動の更新
 			UpdateBossAction();
 		}
+		STAGEMODEL* pObb = GetModel();
+		for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++, pObb++)
+		{
+			if (pObb->bUse == true)
+			{
+				OBB BossObb;
+				BossObb.CenterPos = g_Boss.Object.Pos;
 
+				BossObb.fLength[0] = 10.0f;
+				BossObb.fLength[1] = 20.0f;
+				BossObb.fLength[2] = 10.0f;
+
+				BossObb.RotVec[0] = D3DXVECTOR3(1.0f, 0.0f, 0.0f);
+				BossObb.RotVec[1] = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+				BossObb.RotVec[2] = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+				bool bCollision = collisionobb(BossObb, pObb->ObbModel, g_Boss.Object.Pos, pObb->pos);
+				if (bCollision == true)
+				{
+					D3DXVECTOR3 VecMove = g_Boss.Object.OldPos - g_Boss.Object.Pos;
+					D3DXVECTOR3 NorFace = collisionobbfacedot(pObb->ObbModel, D3DXVECTOR3(g_Boss.Object.Pos.x,
+						g_Boss.Object.Pos.y + 10.0f,
+						g_Boss.Object.Pos.z), VecMove);
+					PushPosition(&g_Boss.Object.Pos, VecMove, NorFace);
+				}
+			}
+		}
 		if (g_Boss.BossMotion.motionType == MOTIONTYPE_MOVE)
 		{
 			HormingPlayerMove(BOSSHORMING_MOVE);
@@ -175,6 +200,7 @@ void UpdateBoss(void)
 		}
 		g_Boss.statecount--;
 
+		g_Boss.Object.OldPos = g_Boss.Object.Pos;
 		// 移動量の更新(減衰)
 		g_Boss.move.x = (0.0f - g_Boss.move.x) * 0.1f;
 		g_Boss.move.y = (0.0f - g_Boss.move.y) * 0.1f;
