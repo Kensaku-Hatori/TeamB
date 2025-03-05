@@ -423,6 +423,8 @@ void Update(void)
 	}
 
 #endif 
+	// マウスカーソルの非表示
+	ShowCursor(FALSE);
 }
 
 //==========
