@@ -23,6 +23,7 @@
 #include "fade.h"
 #include "score.h"
 #include "game.h"
+#include "sound.h"
 
 //*******************
 // ƒOƒ[ƒoƒ‹•Ï”éŒ¾
@@ -670,6 +671,8 @@ void CollisionBossAction(void)
 		if (collisioncircle(CollPos, radius, pPlayer->pos, PLAYER_RADIUS) == true)
 		{
 			HitPlayer(g_Boss.Status.fPower, g_Boss.Object.Pos);
+			PlaySound(SOUND_LABEL_SLASH);
+
 			break;
 		}
 
