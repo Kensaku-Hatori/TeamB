@@ -334,8 +334,9 @@ void UpdateGame(void)
 			Player* pPlayer = GetPlayer();
 			MODE mode = GetMode();
 
-			if ((*NumEnemy) >= 0)
+			if (*NumEnemy <= 0)
 			{
+				int i = (int)*NumEnemy;
 				if (bAbo != true)
 				{
 					if (mode != MODE_STAGEFOUR)
