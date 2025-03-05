@@ -93,10 +93,10 @@ void InitBossGauge(void)
 		g_pVtxBuffBossGaugeBack->Lock(0, 0, (void**)&pVtx, 0);
 
 		//í∏ì_ç¿ïWÇÃê›íË
-		pVtx[0].pos = D3DXVECTOR3(g_BossGauge.x + 10.0f, g_BossGauge.y - g_BossGaugeSize.y, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(g_BossGauge.x + g_BossGaugeSize.x - 15.0f, g_BossGauge.y - g_BossGaugeSize.y, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(g_BossGauge.x + 10.0f, g_BossGauge.y + g_BossGaugeSize.y, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(g_BossGauge.x + g_BossGaugeSize.x - 15.0f, g_BossGauge.y + g_BossGaugeSize.y, 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(g_BossGauge.x, g_BossGauge.y - g_BossGaugeSize.y, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(g_BossGauge.x + g_BossGaugeSize.x , g_BossGauge.y - g_BossGaugeSize.y, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(g_BossGauge.x, g_BossGauge.y + g_BossGaugeSize.y, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(g_BossGauge.x + g_BossGaugeSize.x , g_BossGauge.y + g_BossGaugeSize.y, 0.0f);
 		//rhwÇÃê›íË
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;

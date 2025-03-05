@@ -159,7 +159,7 @@ void UpdateBoss(void)
 				{
 					pSkill[SkillCount].nLife = 1;
 					pSkill[SkillCount].bHit = true;
-					HitBoss(pPlayer->Status.fPower);
+					HitBoss(pSkill[SkillCount].fPower);
 				}
 			}
 		}
