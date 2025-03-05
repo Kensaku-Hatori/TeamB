@@ -81,6 +81,7 @@ typedef struct
 	OBB ObbModel;
 	bool bUse;
 	bool btest;
+	bool bHitRayCamera;
 }STAGEMODEL;
 
 void InitStageModel();

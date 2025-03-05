@@ -5,6 +5,7 @@
 //
 //*************************************
 #include "collision.h"
+#include <algorithm>
 
 //*********************
 // 点と矩形の当たり判定
@@ -399,31 +400,105 @@ void PushPosition(D3DXVECTOR3* Pos, D3DXVECTOR3 VecMove, D3DXVECTOR3 Nor)
 	D3DXVECTOR3 PushMove = Nor * D3DXVec3Dot(&VecMove, &Nor);
 	*Pos += PushMove;
 }
-
-bool CollisionRaytoObb(D3DXVECTOR3 Pos,D3DXVECTOR3 Pos1, OBB Obb)
+//**********************
+// レイとOBBの当たり判定
+//**********************
+bool CollisionRaytoObb(D3DXVECTOR3& rayOrigin, D3DXVECTOR3& rayDirection, OBB Obb)
 {
-	for (int ObbCount = 0; ObbCount < 3; ObbCount++)
+	// OBBの中心位置と回転をローカル座標系に変換
+	D3DXVECTOR3 LocalRayOrigin, LocalRayDir;
+	D3DXMATRIX InvMtxWorld;
+	D3DXMatrixInverse(&InvMtxWorld, nullptr, &Obb.CenterMtx);
+
+	LocalRayOrigin = rayOrigin;
+	LocalRayDir = rayDirection;
+	FLOAT tMin = -FLT_MAX;
+	FLOAT tMax = FLT_MAX;
+	BOOL bHit = false;
+
+	for (int i = 0; i < 3; ++i)
 	{
-		D3DXVECTOR3 nor,normag;
-		FLOAT Dot = 0.0f;
-		FLOAT Dot1 = 0.0f;
-		D3DXVECTOR3 Vec, Vecmag;
-		Vec = Pos1 - Pos;
-		Vecmag = Pos - Pos1;
-		nor = Obb.RotVec[ObbCount];
-		normag = -Obb.RotVec[ObbCount];
-		D3DXVec3Normalize(&nor, &nor);
-		D3DXVec3Normalize(&normag, &normag);
-		Dot = D3DXVec3Dot(&nor, &Vec);
-		Dot1 = D3DXVec3Dot(&normag, &Vecmag);
-		if (Dot <= 0)
+		// OBBのローカル座標系の軸ベクトル（回転軸）
+		D3DXVECTOR3 axis = Obb.RotVec[i]; // これがワールド空間のベクトルだと仮定
+
+
+		// レイのオリジンからOBBの中心までのベクトル（ローカル空間）
+		D3DXVECTOR3 test = LocalRayOrigin - Obb.CenterPos; // OBBの中心位置もローカル空間に変換済みであることを前提
+
+
+		// レイと軸ベクトルとの内積
+		FLOAT e = D3DXVec3Dot(&axis, &test);
+		FLOAT f = D3DXVec3Dot(&axis, &LocalRayDir);
+
+		if (fabs(f) > 0.001f)
 		{
-			return true;
+			// t1, t2の計算（交差点）
+			FLOAT t1 = (e + Obb.fLength[i] * 1.0f) / f;
+			FLOAT t2 = (e - Obb.fLength[i] * 1.0f) / f;
+
+			if (t1 > t2)
+			{
+				std::swap(t1, t2);
+			}
+
+			if (t1 > tMin)
+			{
+				tMin = t1;
+			}
+			if (t2 < tMax)
+			{
+				tMax = t2;
+			}
+
+			if (tMin > tMax)
+			{
+				return false;
+			}
 		}
-		if (Dot1 <= 0)
+		else
 		{
-			return true;
+			if (-e - Obb.fLength[i] * 1.0f > 0.0f || -e + Obb.fLength[i] * 1.0f < 0.0f)
+			{
+				return false;
+			}
 		}
 	}
-	return false;
+	return true;
+}
+//*********************
+// レイと球の当たり判定
+//*********************
+bool CollisionRaytoSphere(D3DXVECTOR3& rayOrigin, D3DXVECTOR3& rayDirection, D3DXVECTOR3 Pos, FLOAT Length, D3DXMATRIX mtxWorld)
+{
+	D3DXVECTOR3 RayPos = Pos - rayOrigin;
+	D3DXVECTOR3 RayDirection;
+
+	D3DXVec3TransformCoord(&RayPos, &RayPos, &mtxWorld);
+	D3DXVec3TransformNormal(&RayDirection, &rayDirection, &mtxWorld);
+
+	float A = RayDirection.x * RayDirection.x + RayDirection.y * RayDirection.y + RayDirection.z * RayDirection.z;
+	float B = RayDirection.x * RayPos.x + RayDirection.y * RayPos.y + RayDirection.z * RayPos.z;
+	float C = RayPos.x * RayPos.x + RayPos.y * RayPos.y + RayPos.z * RayPos.z - Length * Length;
+
+	if (A == 0.0f)
+	{
+		return false; // レイの長さが0
+	}
+
+	float s = B * B - A * C;
+	if (s < 0.0f)
+	{
+		return false; // 衝突していない
+	}
+
+	s = sqrtf(s);
+	float a1 = (B - s) / A;
+	float a2 = (B + s) / A;
+
+	if (a1 < 0.0f || a2 < 0.0f)
+	{
+		return false; // レイの反対で衝突
+	}
+
+	return true;
 }

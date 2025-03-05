@@ -24,7 +24,6 @@ void InitBiillboard(void)
 	{
 		g_Billboard[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		g_Billboard[nCnt].origin = D3DXVECTOR2(0.0f, 0.0f);
-		g_Billboard[nCnt].pTextureBiillboard = { NULL };
 		g_Billboard[nCnt].textype = 0;
 		g_Billboard[nCnt].nWidth = 0;
 		g_Billboard[nCnt].nHeight = 0;
@@ -40,13 +39,6 @@ void UninitBiillboard(void)
 {
 	for (int nCnt = 0; nCnt < MAX_BILLBOARD; nCnt++)
 	{
-		//テクスチャの破棄
-		if (g_Billboard[nCnt].pTextureBiillboard != NULL)
-		{
-			g_Billboard[nCnt].pTextureBiillboard->Release();
-			g_Billboard[nCnt].pTextureBiillboard = NULL;
-		}
-
 		//頂点バッファの破棄
 		if (g_Billboard[nCnt].pVtxBuffBiillboard != NULL)
 		{
@@ -116,8 +108,11 @@ void DrawBiillboard(void)
 			//頂点フォーマットの設定
 			pDevice->SetFVF(FVF_VERTEX_3D);
 
+			//テクスチャのポインタを取得
+			LPDIRECT3DTEXTURE9 pTexture = GetTexture2(g_Billboard[nCnt].textype);
+
 			//テクスチャの設定
-			pDevice->SetTexture(0, g_Billboard[nCnt].pTextureBiillboard);
+			pDevice->SetTexture(0, pTexture);
 
 			//ポリゴンを描画
 			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
@@ -139,9 +134,6 @@ void SetBiillboard(D3DXVECTOR3 pos, int nWidth, int nHeigh, int textype, D3DXVEC
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	//頂点情報へのポインタ
-	VERTEX_3D* pVtx = NULL;
-
 	for (int nCnt = 0; nCnt < MAX_BILLBOARD; nCnt++)
 	{
 		if (g_Billboard[nCnt].bUse == false)
@@ -155,9 +147,6 @@ void SetBiillboard(D3DXVECTOR3 pos, int nWidth, int nHeigh, int textype, D3DXVEC
 			g_Billboard[nCnt].bShadow = bShadow;	//影をつけるかどうか
 			g_Billboard[nCnt].bUse = true;			//使用している状態にする
 
-			//テクスチャの設定
-			SetBillTexture(nCnt);
-
 			//頂点バッファの生成
 			pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 4,
 				D3DUSAGE_WRITEONLY,
@@ -166,6 +155,8 @@ void SetBiillboard(D3DXVECTOR3 pos, int nWidth, int nHeigh, int textype, D3DXVEC
 				&g_Billboard[nCnt].pVtxBuffBiillboard,
 				NULL);
 
+			//頂点情報へのポインタ
+			VERTEX_3D* pVtx = NULL;
 			//頂点バッファをロックし、頂点情報へのポインタを取得
 			g_Billboard[nCnt].pVtxBuffBiillboard->Lock(0, 0, (void**)&pVtx, 0);
 
@@ -207,19 +198,5 @@ void SetBiillboard(D3DXVECTOR3 pos, int nWidth, int nHeigh, int textype, D3DXVEC
 
 			break;
 		}
-	}
-}
-
-//===================
-// メッシュ壁のテクスチャ設定
-//===================
-void SetBillTexture(int Indx)
-{
-	//テクスチャのポインタを取得
-	LPDIRECT3DTEXTURE9 pTexture = GetTexture2(g_Billboard[Indx].textype);
-
-	if (pTexture != NULL)
-	{
-		g_Billboard[Indx].pTextureBiillboard = pTexture;
 	}
 }

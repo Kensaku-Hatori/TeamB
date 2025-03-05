@@ -16,6 +16,7 @@
 #include "skill.h"
 #include "particle.h"
 #include "circle.h"
+#include "sound.h"
 
 //***************
 // ƒOƒ[ƒoƒ‹•Ï”
@@ -337,6 +338,7 @@ void CaceOneAction(OBJECTINFO* Motion)
 					pPlayer->rot,
 					SKILLTYPE_NONE,
 					0.0f);
+			PlaySound(SOUND_LABEL_MAGIC);
 		}
 		break;
 	case MOTIONTYPE_ACTION_HORMING:

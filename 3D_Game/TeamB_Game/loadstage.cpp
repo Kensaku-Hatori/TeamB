@@ -99,7 +99,7 @@ void LoadStart(FILE* pFile)
 	char cData1[128] = {};
 	char *cData2[32] = {};
 	int nData = 0;
-	char* FilePath[32] = {};
+	char* FilePath[256] = {};
 	NTYPE nType = {};
 	int ModelPathCount = 0;
 	int PolygonePathCount = 0;
@@ -753,7 +753,7 @@ void LoadBillBoardInfo(FILE* pFile)
 			}
 			else if (strcmp(&cData1[0], "END_BILLBOARDSET") == 0)
 			{
-				SetBiillboard(Pos, Size.x, Size.y, nType, D3DXVECTOR2(Origin.x, Origin.y), bShadow);
+				SetBiillboard(Pos, (int)Size.x, (int)Size.y, nType, D3DXVECTOR2(Origin.x, Origin.y), bShadow);
 				break;
 			}
 		}
