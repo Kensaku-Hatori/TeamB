@@ -12,7 +12,7 @@
 
 //マクロ定義
 #define MAX_ITEM (5)									//最大アイテム数
-#define NUM_ITEMTYPE (2)								//アイテムの種類の数
+#define NUM_ITEMTYPE (3)								//アイテムの種類の数
 #define ITEM_RADIUS (10.0f)								//アイテム(ビルボード)の半径
 #define ITEM_TIME_DEL (600)								//アイテムが消えるまでのフレーム
 
@@ -34,7 +34,7 @@ typedef enum
 {
 	ITEMTYPE_HP = 0,									//ヒールポーション
 	ITEMTYPE_MP,										//マナポーション
-	ITEMTYPE_SPEED,										//スピードアップポーション
+	ITEMTYPE_POWER,										//スピードアップポーション
 	ITEMTYPE_MAX
 }ITEMTYPE;
 

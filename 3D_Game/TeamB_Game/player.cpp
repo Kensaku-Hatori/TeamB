@@ -394,7 +394,7 @@ void UpdatePlayer(void)
 		{
 			SetItem(D3DXVECTOR3(0.0f, 0.0f, -100.0f), ITEMTYPE_HP);
 			SetItem(D3DXVECTOR3(100.0f, 0.0f, -100.0f), ITEMTYPE_MP);
-			SetItem(D3DXVECTOR3(-100.0f, 0.0f, -100.0f), ITEMTYPE_SPEED);
+			SetItem(D3DXVECTOR3(-100.0f, 0.0f, -100.0f), ITEMTYPE_POWER);
 		}
 
 #endif
