@@ -148,13 +148,12 @@ void UpdatePlayer(void)
 		//ロックオン状態なら
 		if (g_player.bLockOn == true)
 		{
-			pCamera->rot.y = g_player.rot.y + D3DX_PI;
-
 			//プレイヤーの向き
 			float fMathDistance, fMathDistance1;
 			fMathDistance = pLockon->pos.x - g_player.pos.x;
 			fMathDistance1 = pLockon->pos.z - g_player.pos.z;
 			g_player.rotDest.y = atan2f(fMathDistance, fMathDistance1) + D3DX_PI;
+			pCamera->rotDest.y = g_player.rotDest.y + D3DX_PI;
 		}
 
 		// 角度の近道
