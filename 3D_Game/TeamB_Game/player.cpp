@@ -427,9 +427,10 @@ void UpdatePlayer(void)
 				pMission->mission = MISSION_IDOU;
 				//矢印の位置更新
 				SetPositonArrow(g_player.pos);
+
+				g_player.Status.fSpeed = PLAYER_SPEED * 1.5f;
 			}
 
-			g_player.Status.fSpeed = PLAYER_SPEED * 1.5f;
 		}
 
 		//影の大きさの更新処理
