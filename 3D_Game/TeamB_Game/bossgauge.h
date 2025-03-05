@@ -14,8 +14,8 @@
 #define BOSSGAUGE_FRAME_X (float)(BOSS_HP / BOSSGAUGE_DIVISION)
 #define BOSSGAUGE_FRAME_Y (50)
 
-#define BOSSNAME_X (50)
-#define BOSSNAME_Y (20)
+#define BOSSNAME_X (100)
+#define BOSSNAME_Y (40)
 
 //プロトタイプ宣言
 void InitBossGauge(void);
