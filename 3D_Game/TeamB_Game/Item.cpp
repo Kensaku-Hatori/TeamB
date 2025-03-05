@@ -328,7 +328,7 @@ void ItemAbility(int nIndexItem)
 		AddItemUI(g_Item[nIndexItem].type);
 		break;
 
-	case ITEMTYPE_SPEED:
+	case ITEMTYPE_POWER:
 		PlaySound(SOUND_LABEL_POTION);
 		pPlayer->Status.fPower += 30.0f;
 		break;
