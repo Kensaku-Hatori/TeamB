@@ -47,6 +47,7 @@ typedef struct
 	D3DXMATRIX mtxWand;				// 杖先のマトリックス
 	OBJECTINFO PlayerMotion;		// パーツ情報とモーション情報
 	int nIdxShadow;					// 影のインデックス
+	int nIdxArrow;
 	int nIndxCircle;				// サークルのインデックス
 	int nCntState;
 	int nCntRollingState;

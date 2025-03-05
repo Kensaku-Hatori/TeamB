@@ -25,6 +25,7 @@
 #include "HPgauge.h"
 #include "score.h"
 #include "sound.h"
+#include "arrow.h"
 
 //*******************
 // ƒOƒ[ƒoƒ‹•Ï”éŒ¾
@@ -429,6 +430,7 @@ void HitEnemy(float Atack,int Indx)
 //*************
 void SetEnemy(D3DXVECTOR3 pos, int nType, D3DXVECTOR3 rot)
 {
+	Player* pPlayer = GetPlayer();
 	MODE nMode = GetMode();
 
 	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++)
