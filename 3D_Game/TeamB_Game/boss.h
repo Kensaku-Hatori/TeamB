@@ -94,15 +94,24 @@ void InitBoss(void);										// ボスの初期化処理
 void UninitBoss(void);										// ボスの終了処理
 void UpdateBoss(void);										// ボスの更新処理
 void DrawBoss(void);										// ボスの描画処理
+void NormalizeBossRot(void);
 BOSS* GetBoss();											// ボスの取得処理
+
 void HitBoss(float Atack);									// ボスのヒット処理
 void DeadBoss();											// ボスの死亡処理
+
 void SetBoss(D3DXVECTOR3 pos, D3DXVECTOR3 rot);				// ボスの設定処理
+
 void UpdateBossAction();									// ボスの行動パターン更新処理
+void UpdateBossActionMove();
 void BossState();											// ボスの状態更新処理
 void SetBossPartsInfo(LoadInfo PartsInfo);					// ボスのバッファやモーション設定処理
+
+void CollisionBosstoModel(void);							// ボスの当たり判定処理
 void CollisionBoss(void);									// ボスの当たり判定処理
 void CollisionBossAction(void);								// ボスのアクション時の当たり判定処理
+void CollisionBosstoSkill(void);
+
 void BossMatrixWand(void);
 float Distance(D3DXVECTOR3 Pos, D3DXVECTOR3 Pos1);
 void HormingPlayerMove(float Speed);

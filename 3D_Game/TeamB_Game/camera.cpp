@@ -50,8 +50,8 @@ void UpdateCamera(void)
 	g_camera.posRDest.y = pPlayer->pos.y;
 	g_camera.posRDest.z = pPlayer->pos.z + cosf(pPlayer->rot.z) * (pPlayer->pos.z - g_camera.posR.z);
 
-	g_camera.posVDest.x = pPlayer->pos.x + sinf(g_camera.rot.y - D3DX_PI) * g_camera.fDistance;
-	g_camera.posVDest.z = pPlayer->pos.z + cosf(g_camera.rot.y - D3DX_PI) * g_camera.fDistance;
+	g_camera.posVDest.x = pPlayer->pos.x + sinf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
+	g_camera.posVDest.z = pPlayer->pos.z + cosf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
 
 
 	g_camera.posR.x += (g_camera.posRDest.x - g_camera.posR.x) * 0.08f;
@@ -67,7 +67,7 @@ void UpdateCamera(void)
 	{//カメラの自動回転
 		pPlayer->pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//プレイヤーの位置を０に
 		//回転
-		g_camera.rot.y += 0.01f;
+		g_camera.rotDest.y += 0.01f;
 	}
 	//それ以外
 	else
