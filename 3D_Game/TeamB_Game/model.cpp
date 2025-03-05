@@ -182,6 +182,7 @@ void DrawStageModel()
 			{
 				if (g_StageModel[ModelCount].bHitRayCamera == true)
 				{
+					pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);		// Zバッファには書き込まない
 					D3DXMATERIAL CameraRayHit;
 					CameraRayHit = pMat[ModelMatCount];
 					CameraRayHit.MatD3D.Diffuse.a = 0.5f;
@@ -190,6 +191,7 @@ void DrawStageModel()
 				}
 				else
 				{
+					pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);		// Zバッファには書き込まない
 					//マテリアルの設定
 					pDevice->SetMaterial(&pMat[ModelMatCount].MatD3D);
 				}
