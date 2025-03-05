@@ -15,6 +15,7 @@
 #include "impact.h"
 #include "boss.h"
 #include "sound.h"
+#include "collision.h"
 
 //ÉOÉçÅ[ÉoÉãïœêîêÈåæ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffSkill = NULL;
@@ -118,6 +119,28 @@ void UpdateSkill(void)
 	{
 		if (g_Skill[nCnt].bUse == true)
 		{
+			STAGEMODEL* pObb = GetModel();
+			for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++, pObb++)
+			{
+				if (pObb->bUse == true)
+				{
+					OBB BossObb;
+					BossObb.CenterPos = g_Skill[nCnt].pos;
+
+					BossObb.fLength[0] = 10.0f;
+					BossObb.fLength[1] = 20.0f;
+					BossObb.fLength[2] = 10.0f;
+
+					BossObb.RotVec[0] = D3DXVECTOR3(1.0f, 0.0f, 0.0f);
+					BossObb.RotVec[1] = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+					BossObb.RotVec[2] = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+					bool bCollision = collisionobb(BossObb, pObb->ObbModel, g_Skill[nCnt].pos, pObb->pos);
+					if (bCollision == true)
+					{
+						g_Skill[nCnt].bUse = false;
+					}
+				}
+			}
 			if (g_Skill[nCnt].ntype == SKILLTYPE_HORMING)
 			{
 				g_Skill[nCnt].nCounter++;
