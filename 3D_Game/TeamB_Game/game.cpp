@@ -406,8 +406,6 @@ void DrawGame(void)
 	//メッシュ壁の描画処理
 	DrawMeshWall();
 
-	DrawBiillboard();
-
 	//アイテムの描画処理
 	DrawItemBillboard();
 
@@ -419,6 +417,9 @@ void DrawGame(void)
 
 		//ステージの描画処理
 		DrawStageModel();
+
+		//ビルボードの描画処理
+		DrawBiillboard();
 
 		//敵の描画処理
 		DrawEnemy();
