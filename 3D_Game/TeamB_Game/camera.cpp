@@ -127,7 +127,7 @@ void UpdateCameratoMousePos(void)
 	GetCursorPos(&MousePos);
 	D3DXVECTOR2 DiffMouse = D3DXVECTOR2((FLOAT)MousePos.x - (FLOAT)SetMousePos.x,
 		(FLOAT)MousePos.y - (FLOAT)SetMousePos.y);
-
+	
 	const FLOAT MouseSensitivity = 0.0008f;
 	DiffMouse *= MouseSensitivity;
 	g_camera.rotDest.x += DiffMouse.y;

@@ -84,7 +84,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hInstancePrev, _
 	DWORD dwExecLastTime;
 
 	//èâä˙âªèàóù
-	if (FAILED(Init(hInstance, hWnd, FALSE)))
+	//if (FAILED(Init(hInstance, hWnd, FALSE)))
+	//{
+	//	return -1;
+	//}
+	if (FAILED(Init(hInstance, hWnd, TRUE)))
 	{
 		return -1;
 	}

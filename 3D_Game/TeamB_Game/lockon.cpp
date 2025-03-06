@@ -92,7 +92,6 @@ void UpdateLockon(void)
 	Player* pPlayer = GetPlayer();
 	ENEMY* pEnemy = GetEnemy();
 	BOSS* pBoss = GetBoss();
-	Camera* pCamera = GetCamera();				//ƒJƒƒ‰‚Ìî•ñæ“¾
 
 	bool bUse = true;
 

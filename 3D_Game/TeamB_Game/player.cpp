@@ -154,6 +154,7 @@ void UpdatePlayer(void)
 			fMathDistance = pLockon->pos.x - g_player.pos.x;
 			fMathDistance1 = pLockon->pos.z - g_player.pos.z;
 			g_player.rotDest.y = atan2f(fMathDistance, fMathDistance1) + D3DX_PI;
+
 			pCamera->rotDest.y = g_player.rotDest.y + D3DX_PI;
 		}
 
