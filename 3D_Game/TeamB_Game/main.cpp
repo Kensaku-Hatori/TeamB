@@ -92,6 +92,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hInstancePrev, _
 	//{
 	//	return -1;
 	//}
+	
 	//•ª‰ğ”\‚ğİ’è
 	timeBeginPeriod(1);
 	dwCurrentTime = 0;
