@@ -84,14 +84,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hInstancePrev, _
 	DWORD dwExecLastTime;
 
 	//‰Šú‰»ˆ—
-	//if (FAILED(Init(hInstance, hWnd, FALSE)))
-	//{
-	//	return -1;
-	//}
-	if (FAILED(Init(hInstance, hWnd, TRUE)))
+	if (FAILED(Init(hInstance, hWnd, FALSE)))
 	{
 		return -1;
 	}
+	//if (FAILED(Init(hInstance, hWnd, TRUE)))
+	//{
+	//	return -1;
+	//}
 	//•ª‰ğ”\‚ğİ’è
 	timeBeginPeriod(1);
 	dwCurrentTime = 0;
