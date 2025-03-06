@@ -289,6 +289,7 @@ void NormalizeBossRot(void)
 //***************
 void HitBoss(float Atack)
 {
+	Player* pPlayer = GetPlayer();
 	Camera* pCamera = GetCamera();
 
 	g_Boss.Status.fHP -= (int)Atack;
@@ -296,6 +297,15 @@ void HitBoss(float Atack)
 	g_Boss.Action = BOSSACTION_WELL;
 	g_Boss.state = BOSSSTATE_KNOCKUP;
 	g_Boss.bHit = true;
+
+	if (pPlayer->Skilltype == SKILLTYPE_EXPLOSION)
+	{
+		float move = 1.5f;
+
+		D3DXVECTOR3 Vec = g_Boss.Object.Pos - pPlayer->pos;
+		D3DXVec3Normalize(&Vec, &Vec);
+		g_Boss.move = Vec * move;
+	}
 
 	if (Atack >= 10)
 	{// ダメージが最小値以上なら

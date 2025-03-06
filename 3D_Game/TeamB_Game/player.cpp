@@ -32,6 +32,7 @@
 #include "score.h"
 #include "mouse.h"
 #include "itemui.h"
+#include "particle.h"
 
 //グローバル変数
 Player g_player;
@@ -239,7 +240,6 @@ void UpdatePlayer(void)
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartFrame = 15;
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndFrame = 16;
 				}
-
 			}
 
 			//ロックオン

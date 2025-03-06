@@ -92,6 +92,7 @@ void UpdateLockon(void)
 	Player* pPlayer = GetPlayer();
 	ENEMY* pEnemy = GetEnemy();
 	BOSS* pBoss = GetBoss();
+	Camera* pCamera = GetCamera();				//ƒJƒƒ‰‚Ìî•ñŽæ“¾
 
 	bool bUse = true;
 
@@ -220,20 +221,21 @@ void DrawLockon(void)
 bool IsEnemyInsight(D3DXVECTOR3 Pos, int type)
 {
 	Player* pPlayer = GetPlayer();
+	Camera* pCamera = GetCamera();				//ƒJƒƒ‰‚Ìî•ñŽæ“¾
 
 	D3DXVECTOR3 playerFront;
-
-	playerFront.x = -sinf(pPlayer->rot.y);
-	playerFront.y = 0.0f;
-	playerFront.z = -cosf(pPlayer->rot.y);
 
 	D3DXVECTOR3 toEnemy;
 
 	bool bLock = false;
 
-	toEnemy.x = Pos.x - pPlayer->pos.x;
+	playerFront.x = sinf(pCamera->rot.y);
+	playerFront.y = 0.0f;
+	playerFront.z = cosf(pCamera->rot.y);
+
+	toEnemy.x = Pos.x - pCamera->posR.x;
 	toEnemy.y = 0.0f;
-	toEnemy.z = Pos.z - pPlayer->pos.z;
+	toEnemy.z = Pos.z - pCamera->posR.z;
 
 	D3DXVec3Normalize(&playerFront, &playerFront);
 
@@ -244,9 +246,9 @@ bool IsEnemyInsight(D3DXVECTOR3 Pos, int type)
 	if (dotProduct > cosf(pPlayer->fSightAngle * 0.5f))
 	{
 		float distanceSquared =
-			(pPlayer->pos.x - Pos.x) * (pPlayer->pos.x - Pos.x) +
-			(pPlayer->pos.y - Pos.y) * (pPlayer->pos.y - Pos.y) +
-			(pPlayer->pos.z - Pos.z) * (pPlayer->pos.z - Pos.z);
+			(pCamera->posR.x - Pos.x) * (pCamera->posR.x - Pos.x) +
+			(pCamera->posR.y - Pos.y) * (pCamera->posR.y - Pos.y) +
+			(pCamera->posR.z - Pos.z) * (pCamera->posR.z - Pos.z);
 
 		if (distanceSquared <= pPlayer->fSightRange * pPlayer->fSightRange)
 		{
@@ -254,6 +256,35 @@ bool IsEnemyInsight(D3DXVECTOR3 Pos, int type)
 			bLock = true;
 		}
 	}
+
+
+	//playerFront.x = -sinf(pPlayer->rot.y);
+	//playerFront.y = 0.0f;
+	//playerFront.z = -cosf(pPlayer->rot.y);
+	//
+	//toEnemy.x = Pos.x - pPlayer->pos.x;
+	//toEnemy.y = 0.0f;
+	//toEnemy.z = Pos.z - pPlayer->pos.z;
+	//
+	//D3DXVec3Normalize(&playerFront, &playerFront);
+	//
+	//D3DXVec3Normalize(&toEnemy, &toEnemy);
+	//
+	//float dotProduct = D3DXVec3Dot(&playerFront, &toEnemy);
+	//
+	//if (dotProduct > cosf(pPlayer->fSightAngle * 0.5f))
+	//{
+	//	float distanceSquared =
+	//		(pPlayer->pos.x - Pos.x) * (pPlayer->pos.x - Pos.x) +
+	//		(pPlayer->pos.y - Pos.y) * (pPlayer->pos.y - Pos.y) +
+	//		(pPlayer->pos.z - Pos.z) * (pPlayer->pos.z - Pos.z);
+	//
+	//	if (distanceSquared <= pPlayer->fSightRange * pPlayer->fSightRange)
+	//	{
+	//		g_LockonEnemy.type = type;
+	//		bLock = true;
+	//	}
+	//}
 
 	return bLock;
 }

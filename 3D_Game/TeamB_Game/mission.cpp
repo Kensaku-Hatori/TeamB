@@ -14,6 +14,8 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffMission = NULL;
 Mission g_Mission;
 
 D3DXVECTOR3 g_Missionpos;
+
+int g_CntState;
 //=============
 // 初期化処理
 //=============
@@ -31,7 +33,9 @@ void InitMission(void)
 	g_Mission.mission = MISSION_ZENMETU;
 
 	g_Missionpos = D3DXVECTOR3(1130.0f, 250.0f, 0.0f);
-
+	
+	g_CntState = 60;
+	
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
 
@@ -99,6 +103,14 @@ void UninitMission(void)
 //==========
 void UpdateMission(void)
 {
+	//頂点バッファの生成・頂点情報の設定
+	VERTEX_2D* pVtx;
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	g_pVtxBuffMission->Lock(0, 0, (void**)&pVtx, 0);
+
+
+	//頂点バッファをアンロック
+	g_pVtxBuffMission->Unlock();
 }
 //===========
 // 描画処理
