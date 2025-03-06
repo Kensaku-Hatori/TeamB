@@ -75,7 +75,7 @@ void InitButtonUi(void)
 void UninitButtonUi(void)
 {
 	//テクスチャの破棄
-	for (int nCnt = 0; nCnt < MAX_BUTTONUI; nCnt++)
+	for (int nCnt = 0; nCnt < BUTTONUI_MAX; nCnt++)
 	{
 		if (g_pTextureButtonUi[nCnt] != NULL)
 		{
