@@ -15,6 +15,7 @@
 #include "mission.h"
 #include "player.h"
 #include "bossgauge.h"
+#include "ButtonUi.h"
 
 //ÉOÉçÅ[ÉoÉãïœêî
 
@@ -24,6 +25,8 @@
 void InitUi(void)
 {
 	Player* pPlayer = GetPlayer();
+
+	InitButtonUi();
 
 	InitTimer();
 	SetTimer(0,0);
@@ -69,6 +72,8 @@ void UninitUi(void)
 
 	UninitBossGauge();
 
+	UninitButtonUi();
+
 	UninitLockon();
 }
 //===========
@@ -97,6 +102,8 @@ void UpdateUi(void)
 		UpdateBossGauge();
 	}
 
+	UpdateButtonUi();
+
 	UpdateLockon();
 }
 //===========
@@ -124,6 +131,8 @@ void DrawUi(void)
 	{
 		DrawBossGauge();
 	}
+
+	DrawButtonUi();
 
 	DrawLockon();
 }

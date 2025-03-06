@@ -8,6 +8,7 @@
 #include "input.h"
 #include "player.h"
 #include "mouse.h"
+#include "lockon.h"
 //ƒOƒ[ƒoƒ‹•Ï”
 Camera g_camera;
 
@@ -41,18 +42,52 @@ void UpdateCamera(void)
 	Player* pPlayer;
 	pPlayer = GetPlayer();
 
+	Lockon* pLockon = GetLockOn();
+
 	MODE pMode;
 	pMode = GetMode();
+
+	// Šp“x‚Ì‹ß“¹
+	if (g_camera.rotDest.y >= D3DX_PI)
+	{
+		g_camera.rotDest.y -= D3DX_PI * 2.0f;
+		g_camera.rot.y -= D3DX_PI * 2.0f;
+	}
+	else if (g_camera.rotDest.y <= -D3DX_PI)
+	{
+		g_camera.rotDest.y += D3DX_PI * 2.0f;
+		g_camera.rot.y += D3DX_PI * 2.0f;
+	}
+	// Šp“x‚Ì‹ß“¹
+	if (g_camera.rotDest.x >= D3DX_PI)
+	{
+		g_camera.rotDest.x -= D3DX_PI * 2.0f;
+	}
+	else if ((g_camera.rotDest.x) <= -D3DX_PI)
+	{
+		g_camera.rotDest.x += D3DX_PI * 2.0f;
+	}
 	
 	g_camera.rot += (g_camera.rotDest - g_camera.rot) * 0.3f;
 
-	g_camera.posRDest.x = pPlayer->pos.x + sinf(pPlayer->rot.x) * (pPlayer->pos.x - g_camera.posR.x);
-	g_camera.posRDest.y = pPlayer->pos.y;
-	g_camera.posRDest.z = pPlayer->pos.z + cosf(pPlayer->rot.z) * (pPlayer->pos.z - g_camera.posR.z);
+	if (pPlayer->bLockOn == true)
+	{
+		g_camera.posRDest.x = pLockon->pos.x + sinf(pPlayer->rot.x) * (pLockon->pos.x - g_camera.posR.x);
+		g_camera.posRDest.y = pLockon->pos.y;
+		g_camera.posRDest.z = pLockon->pos.z + cosf(pPlayer->rot.z) * (pLockon->pos.z - g_camera.posR.z);
 
-	g_camera.posVDest.x = pPlayer->pos.x + sinf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
-	g_camera.posVDest.z = pPlayer->pos.z + cosf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
+		g_camera.posVDest.x = pLockon->pos.x + sinf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
+		g_camera.posVDest.z = pLockon->pos.z + cosf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
+	}
+	else
+	{
+		g_camera.posRDest.x = pPlayer->pos.x + sinf(pPlayer->rot.x) * (pPlayer->pos.x - g_camera.posR.x);
+		g_camera.posRDest.y = pPlayer->pos.y;
+		g_camera.posRDest.z = pPlayer->pos.z + cosf(pPlayer->rot.z) * (pPlayer->pos.z - g_camera.posR.z);
 
+		g_camera.posVDest.x = pPlayer->pos.x + sinf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
+		g_camera.posVDest.z = pPlayer->pos.z + cosf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
+	}
 
 	g_camera.posR.x += (g_camera.posRDest.x - g_camera.posR.x) * 0.08f;
 	g_camera.posR.y += (g_camera.posRDest.y - g_camera.posR.y) * 1.0f;
@@ -102,6 +137,7 @@ void UpdateCamera(void)
 			SetCursorPos(640, 360);
 		}
 
+
 		g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
 		g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
 	}
@@ -113,31 +149,12 @@ void UpdateCameratoMousePos(void)
 	GetCursorPos(&MousePos);
 	D3DXVECTOR2 DiffMouse = D3DXVECTOR2((FLOAT)MousePos.x - (FLOAT)SetMousePos.x,
 		(FLOAT)MousePos.y - (FLOAT)SetMousePos.y);
-
+	
 	const FLOAT MouseSensitivity = 0.0008f;
 	DiffMouse *= MouseSensitivity;
 	g_camera.rotDest.x += DiffMouse.y;
 	g_camera.rotDest.y += DiffMouse.x;
 
-	// Šp“x‚Ì‹ß“¹
-	if ((g_camera.rotDest.y - g_camera.rot.y) >= D3DX_PI)
-	{
-		g_camera.rotDest.y -= D3DX_PI * 2.0f;
-	}
-	else if ((g_camera.rotDest.y - g_camera.rot.y) <= -D3DX_PI)
-	{
-		g_camera.rotDest.y += D3DX_PI * 2.0f;
-	}
-
-	// Šp“x‚Ì‹ß“¹
-	if ((g_camera.rotDest.x - g_camera.rot.x) >= D3DX_PI)
-	{
-		g_camera.rotDest.x -= D3DX_PI * 2.0f;
-	}
-	else if ((g_camera.rotDest.x - g_camera.rot.x) <= -D3DX_PI)
-	{
-		g_camera.rotDest.x += D3DX_PI * 2.0f;
-	}
 	SetCursorPos((int)SetMousePos.x, (int)SetMousePos.y);
 }
 void UpdateCameratoJoyPadPos(void)

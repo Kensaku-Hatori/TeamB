@@ -10,6 +10,7 @@
 #include "input.h"
 #include "sound.h"
 #include "game.h"
+#include "circle.h"
 
 //グローバル変数
 //枠
@@ -440,6 +441,7 @@ void UseItem(ITEMTYPE type)
 
 	int aPosTexU[MAX_ITEMGET];
 	int nItemType = 0;
+	int circleIndx = 0;
 	if (type == ITEMTYPE_HP)
 	{
 		if (g_nCntItemHP >= 1)
@@ -451,6 +453,22 @@ void UseItem(ITEMTYPE type)
 			{
 				pPlayer->Status.fHP = PLAYER_HP;
 			}
+
+			//サークルの設定
+			circleIndx = SetCircle(D3DXVECTOR3(pPlayer->pos.x, pPlayer->pos.y + 1.0f, pPlayer->pos.z),
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+				D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f),
+				20,
+				0,
+				10.0f,
+				36.0f,
+				false,
+				true);
+
+			//サークルのアニメーションの設定
+			SetAnime(circleIndx,
+				ANIMETYPE_0,
+				60);
 		}
 
 		g_nCntItemHP--;
@@ -471,6 +489,22 @@ void UseItem(ITEMTYPE type)
 			{
 				pPlayer->Status.nMP = PLAYER_MP;
 			}
+
+			//サークルの設定
+			circleIndx = SetCircle(D3DXVECTOR3(pPlayer->pos.x, pPlayer->pos.y + 1.0f, pPlayer->pos.z),
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+				D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f),
+				20,
+				0,
+				10.0f,
+				36.0f,
+				false,
+				true);
+
+			//サークルのアニメーションの設定
+			SetAnime(circleIndx,
+				ANIMETYPE_0,
+				60);
 		}
 		g_nCntItemMP--;
 		if (g_nCntItemMP <= 0)

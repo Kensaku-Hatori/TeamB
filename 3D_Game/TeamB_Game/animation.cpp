@@ -380,6 +380,7 @@ void CaceOneAction(OBJECTINFO* Motion)
 				1.0f,
 				0.0f,
 				EFFECT_EXPROSION);
+
 			pPlayer->state = PLAYERSTATE_NORMAL;
 
 			// MP‚ðŒ¸‚ç‚·

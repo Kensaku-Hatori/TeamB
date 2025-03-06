@@ -150,6 +150,7 @@
     <ClCompile Include="billboard.cpp" />
     <ClCompile Include="boss.cpp" />
     <ClCompile Include="bossgauge.cpp" />
+    <ClCompile Include="buttonUI.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="circle.cpp" />
     <ClCompile Include="collision.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="billboard.h" />
     <ClInclude Include="boss.h" />
     <ClInclude Include="bossgauge.h" />
+    <ClInclude Include="buttonUI.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="circle.h" />
     <ClInclude Include="collision.h" />

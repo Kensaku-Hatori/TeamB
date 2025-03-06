@@ -9,6 +9,7 @@
 #include "result.h"
 #include "fade.h"
 #include "game.h"
+#include "score.h"
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureTimer = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTimer = NULL;
@@ -411,4 +412,39 @@ void AddTimerMinutes(int nValue)
 	//頂点バッファをアンロック
 	g_pVtxBuffTimerMinutes->Unlock();
 
+}
+//==============
+//タイマーの取得
+//==============
+int GetMinutes(void)
+{
+	return g_nMinutes;
+}
+
+//
+//
+//
+void TimeScore(void)
+{
+	MODE mode = GetMode();
+
+	if (mode != MODE_STAGEONE)
+	{
+		if (g_nMinutes == 0)
+		{
+			AddScore(1000);
+		}
+		else if (g_nMinutes == 1)
+		{
+			AddScore(500);
+		}
+		else if (g_nMinutes == 2)
+		{
+			AddScore(250);
+		}
+		else
+		{
+			AddScore(0);
+		}
+	}
 }

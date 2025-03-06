@@ -32,6 +32,7 @@
 #include "score.h"
 #include "mouse.h"
 #include "itemui.h"
+#include "particle.h"
 
 //グローバル変数
 Player g_player;
@@ -153,7 +154,8 @@ void UpdatePlayer(void)
 			fMathDistance = pLockon->pos.x - g_player.pos.x;
 			fMathDistance1 = pLockon->pos.z - g_player.pos.z;
 			g_player.rotDest.y = atan2f(fMathDistance, fMathDistance1) + D3DX_PI;
-			pCamera->rotDest.y = g_player.rotDest.y + D3DX_PI;
+
+			pCamera->rotDest.y = g_player.rotDest.y - D3DX_PI;
 		}
 
 		// 角度の近道
@@ -239,7 +241,6 @@ void UpdatePlayer(void)
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartFrame = 15;
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndFrame = 16;
 				}
-
 			}
 
 			//ロックオン
@@ -391,6 +392,7 @@ void UpdatePlayer(void)
 
 					//矢印の設定処理
 					SetArrow(Destpos, g_player.pos, D3DCOLOR_RGBA(255, 200, 0, 200), 35.0f, 15.0f, 21.0f, true, false);
+
 				}
 				//ボスが死んだなら
 				else if ((DethBoss()) == false)
@@ -403,6 +405,7 @@ void UpdatePlayer(void)
 				{
 					pMission->mission = MISSION_BOSS;
 				}
+				TimeScore();
 
 				//全滅している状態にする
 				g_player.bAbolition = true;

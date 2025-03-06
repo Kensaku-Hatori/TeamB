@@ -6,6 +6,7 @@
 //==============================
 #include "skillui.h"
 #include "player.h"
+#include "buttonUI.h"
 
 //グローバル変数
 //枠
@@ -123,7 +124,8 @@ void InitSkillUI(void)
 		//頂点バッファをアンロック
 		g_pVtxBuffSkillUI->Unlock();
 	}
-
+	
+	//SetButtonUi(BUTTONUI_WHEEL, g_SkillUIpos, D3DXVECTOR3(20.0f, 20.0f, 0.0f));
 }
 //==========
 // 終了処理
