@@ -23,5 +23,7 @@ void SetTimer(int nTimer, int nMinutes);
 void AddTimer(int nValue);
 int GetTimer(void);
 void AddTimerMinutes(int nValue);
+int GetMinutes(void);
+void TimeScore(void);
 
 #endif

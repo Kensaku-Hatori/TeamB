@@ -392,6 +392,7 @@ void UpdatePlayer(void)
 
 					//–îˆó‚Ìİ’èˆ—
 					SetArrow(Destpos, g_player.pos, D3DCOLOR_RGBA(255, 200, 0, 200), 35.0f, 15.0f, 21.0f, true, false);
+
 				}
 				//ƒ{ƒX‚ª€‚ñ‚¾‚È‚ç
 				else if ((DethBoss()) == false)
@@ -404,6 +405,7 @@ void UpdatePlayer(void)
 				{
 					pMission->mission = MISSION_BOSS;
 				}
+				TimeScore();
 
 				//‘S–Å‚µ‚Ä‚¢‚éó‘Ô‚É‚·‚é
 				g_player.bAbolition = true;
