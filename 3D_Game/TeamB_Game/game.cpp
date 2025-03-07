@@ -138,8 +138,6 @@ void InitGame(void)
 
 	g_bPause = false;					//ポーズしていない状態へ
 	bAbo = false;						//全滅していない状態へ
-
-	Player* pPlayer = GetPlayer();
 }
 
 //===========
