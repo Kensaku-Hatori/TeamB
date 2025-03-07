@@ -20,6 +20,15 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTutorial = NULL;
 LPDIRECT3DTEXTURE9 g_pTextureArrow = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffArrow = NULL;
 
+LPDIRECT3DTEXTURE9 g_pTextureTutoMAX = NULL;
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTutoMAX = NULL;
+
+LPDIRECT3DTEXTURE9 g_pTextureSlash = NULL;
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffSlash = NULL;
+
+LPDIRECT3DTEXTURE9 g_pTextureTutoNo = NULL;
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTutoNo = NULL;
+
 TUTORIAL g_TutorialType = TUTORIAL_MOVE;
 int g_CntTutorialState = 0;
 D3DXVECTOR3 g_ButtonSize;
@@ -130,9 +139,9 @@ void InitTutorial(void)
 				pVtx[1].tex = D3DXVECTOR2(1.0f, 1.0f);
 				pVtx[2].tex = D3DXVECTOR2(0.0f, 0.0f);
 				pVtx[3].tex = D3DXVECTOR2(0.0f, 1.0f);
+
 				SetButtonUi(BUTTONUI_AKEY, D3DXVECTOR3(Arrowpos.x - g_ButtonSize.x, Arrowpos.y - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
 				SetButtonUi(BUTTONUI_L1, D3DXVECTOR3(Arrowpos.x + g_ButtonSize.x, Arrowpos.y - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
-
 			}
 			else if (nCnt == 1)
 			{
@@ -312,5 +321,56 @@ void SetTutorial(TUTORIAL type)
 
 	SetButtonUi(BUTTONUI_DKEY, D3DXVECTOR3(1150.0f - g_ButtonSize.x, SCREEN_HEIGHT / 2 - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
 	SetButtonUi(BUTTONUI_R1, D3DXVECTOR3(1150.0f + g_ButtonSize.x, SCREEN_HEIGHT / 2 - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
+}
+
+//
+//
+//
+void SetTutorialNo(void)
+{
+	LPDIRECT3DDEVICE9 pDevice;
+	//デバイスの取得
+	pDevice = GetDevice();
+	VERTEX_2D* pVtx;
+
+	//
+	{
+		D3DXVECTOR3 Arrowpos = D3DXVECTOR3(120.0f, SCREEN_HEIGHT / 2, 0.0f);
+
+		//頂点バッファの生成
+		pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
+			D3DUSAGE_WRITEONLY,
+			FVF_VERTEX_2D,
+			D3DPOOL_MANAGED,
+			&g_pVtxBuffArrow,
+			NULL);
+
+		//頂点バッファをロックし、頂点情報へのポインタを取得
+		g_pVtxBuffArrow->Lock(0, 0, (void**)&pVtx, 0);
+		
+		//頂点座標の設定
+		pVtx[0].pos = D3DXVECTOR3(Arrowpos.x - YAJIRUSI_SIZE, Arrowpos.y - YAJIRUSI_SIZE, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(Arrowpos.x + YAJIRUSI_SIZE, Arrowpos.y - YAJIRUSI_SIZE, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(Arrowpos.x - YAJIRUSI_SIZE, Arrowpos.y + YAJIRUSI_SIZE, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(Arrowpos.x + YAJIRUSI_SIZE, Arrowpos.y + YAJIRUSI_SIZE, 0.0f);
+		//頂点カラーの設定
+		pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		//rhwの設定
+		pVtx[0].rhw = 1.0f;
+		pVtx[1].rhw = 1.0f;
+		pVtx[2].rhw = 1.0f;
+		pVtx[3].rhw = 1.0f;
+		//テクスチャ座標の設定
+		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+		
+		//頂点バッファをアンロック
+		g_pVtxBuffArrow->Unlock();
+	}
 
 }

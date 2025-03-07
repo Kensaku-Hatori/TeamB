@@ -220,7 +220,7 @@ void UpdateGame(void)
 
 	if (Mode == MODE_STAGEONE)
 	{
-		if (KeyboardTrigger(DIK_T) == true || GetJoypadTrigger(JOYKEY_BACK) == true)
+		if (KeyboardTrigger(DIK_TAB) == true || GetJoypadTrigger(JOYKEY_BACK) == true)
 		{
 			g_bTutorial = g_bTutorial ? false : true;
 			if (g_bTutorial == true)
