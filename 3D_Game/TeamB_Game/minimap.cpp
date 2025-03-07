@@ -36,6 +36,8 @@ void InitMiniMap(void)
 	
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ownmachine.jpg", &g_pTextureMapPlayer);		//HP 
 
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\enemyicon.png", &pTextureMapEnemy);		//HP 
+
 
 	g_MiniMappos = D3DXVECTOR3(1000.0f, 0.0f, 0.0f);
 	g_MapPlayerpos = D3DXVECTOR3(1800.0f, 100.0f, 0.0f);
@@ -124,19 +126,25 @@ void InitMiniMap(void)
 void UninitMiniMap(void)
 {
 	//テクスチャの破棄
-	if (g_pTextureMiniMap != NULL && g_pTextureMapPlayer != NULL)
+	if (g_pTextureMiniMap != NULL)
 	{
 		g_pTextureMiniMap->Release();
 		g_pTextureMiniMap = NULL;
+	}
+	if (g_pTextureMapPlayer != NULL)
+	{
 		g_pTextureMapPlayer->Release();
 		g_pTextureMapPlayer = NULL;
 	}
 
 	//頂点バッファの破棄
-	if (g_pVtxBuffMiniMap != NULL && g_pVtxBuffMapPlayer != NULL)
+	if (g_pVtxBuffMiniMap != NULL)
 	{
 		g_pVtxBuffMiniMap->Release();
 		g_pVtxBuffMiniMap = NULL;
+	}
+	if (g_pVtxBuffMapPlayer != NULL)
+	{
 		g_pVtxBuffMapPlayer->Release();
 		g_pVtxBuffMapPlayer = NULL;
 	}
@@ -319,10 +327,15 @@ int SetMapEnemy(D3DXVECTOR3 Pos)
 			pVtx[2].rhw = 1.0f;
 			pVtx[3].rhw = 1.0f;
 			//頂点カラーの設定
-			pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			pVtx[0].col = D3DCOLOR_RGBA(255, 0, 0, 255);
+			pVtx[1].col = D3DCOLOR_RGBA(255, 0, 0, 255);
+			pVtx[2].col = D3DCOLOR_RGBA(255, 0, 0, 255);
+			pVtx[3].col = D3DCOLOR_RGBA(255, 0, 0, 255);
+			//テクスチャ座標の設定
+			pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+			pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+			pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+			pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
 			//頂点バッファをアンロック
 			g_MiniMapEnemy[MaxpEnemyCount].pVtxBuffMapEnemy->Unlock();
