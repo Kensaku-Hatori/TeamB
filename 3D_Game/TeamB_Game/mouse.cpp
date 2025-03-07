@@ -1,9 +1,18 @@
+//**************************************
+// 
+// Author: HATORI
+// マウス関係の処理をまとめた[mouse.cpp]
+// 
+//**************************************
 #include "mouse.h"
 
 LPDIRECTINPUT8 g_pInputInterface = NULL;
 LPDIRECTINPUTDEVICE8 g_pMouseDevice = NULL;
 DIMOUSESTATE g_MouseState;
 DIMOUSESTATE g_MouseOldState;
+//*******************
+// マウスの初期化処理
+//*******************
 HRESULT InitMouse(HINSTANCE hInstance, HWND hWnd)
 {
 	//キーボード初期化
@@ -32,6 +41,9 @@ HRESULT InitMouse(HINSTANCE hInstance, HWND hWnd)
 
 	return S_OK;
 }
+//*****************
+// マウスの終了処理
+//*****************
 void UninitMouse(void)
 {
 	//入力デバイスの破棄
@@ -48,6 +60,9 @@ void UninitMouse(void)
 		g_pInputInterface = NULL;
 	}
 }
+//*****************
+// マウスの更新処理
+//*****************
 void UpdateMouse(void)
 {
 	// 更新前に最新マウス情報を保存する
@@ -65,12 +80,16 @@ void UpdateMouse(void)
 	g_MouseState.lX = p.x;
 	g_MouseState.lY = p.y;
 }
-// クリックしている間
+//***********************************
+// マウスのボタンを押している間の処理
+//***********************************
 bool OnMousePress(int button_type)
 {
 	return(g_MouseState.rgbButtons[button_type] & (0x80)) ? true : false;
 }
-// クリックした瞬間の判定
+//*********************************
+// マウスのボタンを押した瞬間の処理
+//*********************************
 bool OnMouseDown(int button_type)
 {
 	if (!(g_MouseOldState.rgbButtons[button_type] & (0x80)) &&
@@ -81,7 +100,9 @@ bool OnMouseDown(int button_type)
 
 	return false;
 }
-// クリックを離した瞬間
+//*********************************
+// マウスのボタンを離した瞬間の処理
+//*********************************
 bool OnMouseUp(int button_type)
 {
 	if (g_MouseOldState.rgbButtons[button_type] & (0x80) &&
@@ -92,12 +113,16 @@ bool OnMouseUp(int button_type)
 
 	return false;
 }
-// 移動量の取得
+//*******************************
+// マウスのOldStageを取得する処理
+//*******************************
 D3DXVECTOR2 GetMouseVelocityOld(void)
 {
 	return D3DXVECTOR2((float)g_MouseOldState.lX, (float)g_MouseOldState.lY);
 }
-// 移動量の取得
+//****************************
+// マウスのStageを取得する処理
+//****************************
 D3DXVECTOR2 GetMouseVelocity(void)
 {
 	return D3DXVECTOR2((float)g_MouseState.lX, (float)g_MouseState.lY);

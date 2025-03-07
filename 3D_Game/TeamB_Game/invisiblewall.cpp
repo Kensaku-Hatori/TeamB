@@ -191,11 +191,17 @@ void CollisionInvisibleWall(Invisiblewall Box, D3DXVECTOR3 Point , D3DXVECTOR3 &
 	}
 }
 
+//***********
+// デバッグ用
+//***********
 D3DXVECTOR2 Gettest()
 {
 	return test;
 }
 
+//***********************************
+// 矢印を出すための情報を取得する処理
+//***********************************
 D3DXVECTOR3 GetBottom()
 {
 	return g_InvisibleWall[WALLTYPE_EXIT].Bottom;
