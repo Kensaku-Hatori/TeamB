@@ -15,7 +15,8 @@
 
 #define MAPSIZE_PLAYER (30)
 #define MAPSIZE_ENEMY (30)
-#define ENEMYANGLE (atan2f(30.0f,30.0f))
+#define MAPSIZE_SIGHT (float)(1000.0f)
+#define ENEMYANGLE (atan2f(MAPSIZE_ENEMY,MAPSIZE_ENEMY))
 
 typedef struct
 {
@@ -29,6 +30,7 @@ typedef struct
 void InitMiniMap(void);
 void UninitMiniMap(void);
 void UpdateMiniMap(void);
+void UpdateMiniMapSight(void);
 void UpdateMiniMapEnemy(int Indx,D3DXVECTOR3 PosEnemy);
 void DrawMiniMap(void);
 void SetMapPlayer(int nStageNo);
