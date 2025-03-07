@@ -416,10 +416,6 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 	r.y = (float)fabs(D3DXVec3Dot(&MathY, &NBe2));
 	r.z = (float)fabs(D3DXVec3Dot(&MathZ, &NBe3));
 
-	FLOAT sX = D3DXVec3Dot(&MathPos, &NBe1);
-	FLOAT sY = D3DXVec3Dot(&MathPos, &NBe2);
-	FLOAT sZ = D3DXVec3Dot(&MathPos, &NBe3);
-
 	D3DXVECTOR3 Interval = MathPos;
 	bool bCollision = true;
 
@@ -566,8 +562,6 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 	{
 		bCollision = false;
 	}
-
-	bool bTop = false;
 
 	if (bCollision == true)
 	{
@@ -768,8 +762,4 @@ FLOAT LenSegOnSeparateAxis(D3DXVECTOR3* Sep, D3DXVECTOR3* e1, D3DXVECTOR3* e2, D
 	FLOAT r2 = (float)fabs(D3DXVec3Dot(Sep, e2));
 	FLOAT r3 = e3 ? (float)fabs(D3DXVec3Dot(Sep, e3)) : 0;
 	return r1 + r2 + r3;
-}
-void DotOBBToPoint(OBB& obb, D3DXVECTOR3& p)
-{
-
 }

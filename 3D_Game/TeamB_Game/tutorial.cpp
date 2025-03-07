@@ -64,7 +64,7 @@ void InitTutorial(void)
 
 	g_TutorialType = TUTORIAL_MOVE;
 	g_ButtonSize = D3DXVECTOR3(25.0f, 25.0f, 0.0f);
-	ButtonY = 50.0f;
+	ButtonY = 75.0f;
 
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
@@ -106,7 +106,7 @@ void InitTutorial(void)
 		g_pVtxBuffTutorialBack->Unlock();
 	}
 
-	
+
 	//チュートリアル
 	{
 		D3DXVECTOR3 Tutorialpos = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f);
@@ -148,6 +148,7 @@ void InitTutorial(void)
 		g_pVtxBuffTutorial->Unlock();
 	}
 
+	float nSpace = 5.0f;
 	//矢印
 	{
 		D3DXVECTOR3 Arrowpos = D3DXVECTOR3(120.0f, SCREEN_HEIGHT / 2, 0.0f);
@@ -188,8 +189,8 @@ void InitTutorial(void)
 				pVtx[2].tex = D3DXVECTOR2(0.0f, 0.0f);
 				pVtx[3].tex = D3DXVECTOR2(0.0f, 1.0f);
 
-				SetButtonUi(BUTTONUI_AKEY, D3DXVECTOR3(Arrowpos.x - g_ButtonSize.x, Arrowpos.y - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
-				SetButtonUi(BUTTONUI_L1, D3DXVECTOR3(Arrowpos.x + g_ButtonSize.x, Arrowpos.y - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
+				SetButtonUi(BUTTONUI_AKEY, D3DXVECTOR3(Arrowpos.x - (g_ButtonSize.x + nSpace), Arrowpos.y - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
+				SetButtonUi(BUTTONUI_L1, D3DXVECTOR3(Arrowpos.x + (g_ButtonSize.x + nSpace), Arrowpos.y - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
 			}
 			else if (nCnt == 1)
 			{
@@ -199,8 +200,8 @@ void InitTutorial(void)
 				pVtx[2].tex = D3DXVECTOR2(1.0f, 1.0f);
 				pVtx[3].tex = D3DXVECTOR2(1.0f, 0.0f);
 
-				SetButtonUi(BUTTONUI_DKEY, D3DXVECTOR3(Arrowpos.x - g_ButtonSize.x, Arrowpos.y - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
-				SetButtonUi(BUTTONUI_R1, D3DXVECTOR3(Arrowpos.x + g_ButtonSize.x, Arrowpos.y - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
+				SetButtonUi(BUTTONUI_DKEY, D3DXVECTOR3(Arrowpos.x - (g_ButtonSize.x + nSpace), Arrowpos.y - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
+				SetButtonUi(BUTTONUI_R1, D3DXVECTOR3(Arrowpos.x + (g_ButtonSize.x + nSpace), Arrowpos.y - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
 			}
 
 			Arrowpos.x += 1030.0f;
@@ -272,9 +273,9 @@ void UpdateTutorial(void)
 	g_fade = GetFade();
 	Player* pPlayer = GetPlayer();
 
-	ChangeTutorial();	
+	ChangeTutorial();
 	//ChangeTutorialArrow();
-	
+
 	VERTEX_2D* pVtx;
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffNumer->Lock(0, 0, (void**)&pVtx, 0);
@@ -426,8 +427,8 @@ void ChangeTutorialArrow(void)
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffArrow->Lock(0, 0, (void**)&pVtx, 0);
 
-	
-	
+
+
 	//頂点バッファをアンロック
 	g_pVtxBuffArrow->Unlock();
 }
@@ -438,12 +439,12 @@ void ChangeTutorialArrow(void)
 void SetTutorial(TUTORIAL type)
 {
 	g_TutorialType = type;
+	float nSpace = 5.0f;
+	SetButtonUi(BUTTONUI_AKEY, D3DXVECTOR3(120.0f - (g_ButtonSize.x + nSpace), SCREEN_HEIGHT / 2 - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
+	SetButtonUi(BUTTONUI_L1, D3DXVECTOR3(120.0f + (g_ButtonSize.x + nSpace), SCREEN_HEIGHT / 2 - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
 
-	SetButtonUi(BUTTONUI_AKEY, D3DXVECTOR3(120.0f - g_ButtonSize.x, SCREEN_HEIGHT / 2 - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
-	SetButtonUi(BUTTONUI_L1, D3DXVECTOR3(120.0f + g_ButtonSize.x, SCREEN_HEIGHT / 2 - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
-
-	SetButtonUi(BUTTONUI_DKEY, D3DXVECTOR3(1150.0f - g_ButtonSize.x, SCREEN_HEIGHT / 2 - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
-	SetButtonUi(BUTTONUI_R1, D3DXVECTOR3(1150.0f + g_ButtonSize.x, SCREEN_HEIGHT / 2 - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
+	SetButtonUi(BUTTONUI_DKEY, D3DXVECTOR3(1150.0f - (g_ButtonSize.x + nSpace), SCREEN_HEIGHT / 2 - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
+	SetButtonUi(BUTTONUI_R1, D3DXVECTOR3(1150.0f + (g_ButtonSize.x + nSpace), SCREEN_HEIGHT / 2 - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
 }
 
 //
@@ -474,7 +475,7 @@ void SetTutorialNo(void)
 
 		//頂点バッファをロックし、頂点情報へのポインタを取得
 		g_pVtxBuffDenom->Lock(0, 0, (void**)&pVtx, 0);
-		
+
 		//頂点座標の設定
 		pVtx[0].pos = D3DXVECTOR3(pos.x - TUTO_NO_SIZE, pos.y - TUTO_NO_SIZE, 0.0f);
 		pVtx[1].pos = D3DXVECTOR3(pos.x + TUTO_NO_SIZE, pos.y - TUTO_NO_SIZE, 0.0f);
@@ -497,7 +498,7 @@ void SetTutorialNo(void)
 		pVtx[1].tex = D3DXVECTOR2((aPosTexU * 0.1f) + 0.1f, 0.0f);
 		pVtx[2].tex = D3DXVECTOR2((aPosTexU * 0.1f), 1.0f);
 		pVtx[3].tex = D3DXVECTOR2((aPosTexU * 0.1f) + 0.1f, 1.0f);
-		
+
 		//頂点バッファをアンロック
 		g_pVtxBuffDenom->Unlock();
 	}
@@ -570,7 +571,7 @@ void SetTutorialNo(void)
 		pVtx[1].rhw = 1.0f;
 		pVtx[2].rhw = 1.0f;
 		pVtx[3].rhw = 1.0f;
-		
+
 		aPosTexU = g_TutorialType % nData / nData2;
 		//テクスチャ座標の設定
 		pVtx[0].tex = D3DXVECTOR2((aPosTexU * 0.1f) + 0.1f, 0.0f);

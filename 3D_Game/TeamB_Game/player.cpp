@@ -136,7 +136,6 @@ void UpdatePlayer(void)
 {
 	Camera *pCamera = GetCamera();				//カメラの情報取得
 	Lockon* pLockon = GetLockOn();
-	ENEMY* pEnemy = GetEnemy();					//敵の情報取得
 	Mission* pMission = GetMission();
 	int* NumEnemy = GetNumEnemy();				//敵の数取得
 
@@ -847,8 +846,6 @@ void PlayerMoveJoyPad(void)
 
 		if (fMag > DeadZone)
 		{
-			float X = (pStick->Gamepad.sThumbLX / fMag);
-			float Y = (pStick->Gamepad.sThumbLY / fMag);
 			float fAngle = atan2f(pStick->Gamepad.sThumbLX, pStick->Gamepad.sThumbLY);
 			g_player.move.x = sinf(pCamera->rot.y + fAngle);
 			g_player.move.z = cosf(pCamera->rot.y + fAngle);
@@ -945,12 +942,6 @@ void HitPlayer(float Atack,D3DXVECTOR3 Pos)
 		}
 	}
 }
-
-void SetMesh(char* pFilePath, int Indx)
-{
-
-}
-
 //===================
 // パーツ情報の設定
 //===================

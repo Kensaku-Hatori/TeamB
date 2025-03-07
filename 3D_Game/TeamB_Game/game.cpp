@@ -96,7 +96,7 @@ void InitGame(void)
 
 	//アイテム初期化
 	InitItem();
-	
+
 	//カメラの初期化
 	InitCamera();
 
@@ -138,6 +138,7 @@ void InitGame(void)
 
 	g_bPause = false;					//ポーズしていない状態へ
 	bAbo = false;						//全滅していない状態へ
+
 	if (Mode == MODE_STAGEONE)
 	{
 		g_bTutorial = true;
@@ -233,7 +234,7 @@ void UpdateGame(void)
 				SetTutorial(TUTORIAL_MOVE);
 			}
 		}
-	}	
+	}
 
 	if (g_gamestate != GAMESTATE_EFFECTEDITER)
 	{
@@ -415,7 +416,7 @@ void UpdateGame(void)
 	}
 	else
 	{
-	//パーティクルエディターの更新処理
+		//パーティクルエディターの更新処理
 		UpdateParticleEditer();
 	}
 }

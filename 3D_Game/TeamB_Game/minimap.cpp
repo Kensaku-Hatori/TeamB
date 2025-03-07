@@ -125,18 +125,6 @@ void InitMiniMap(void)
 //==========
 void UninitMiniMap(void)
 {
-	//テクスチャの破棄
-	if (g_pTextureMiniMap != NULL)
-	{
-		g_pTextureMiniMap->Release();
-		g_pTextureMiniMap = NULL;
-	}
-	if (g_pTextureMapPlayer != NULL)
-	{
-		g_pTextureMapPlayer->Release();
-		g_pTextureMapPlayer = NULL;
-	}
-
 	//頂点バッファの破棄
 	if (g_pVtxBuffMiniMap != NULL)
 	{
@@ -161,6 +149,17 @@ void UninitMiniMap(void)
 		pTextureMapEnemy->Release();
 		pTextureMapEnemy = NULL;
 	}
+	//テクスチャの破棄
+	if (g_pTextureMiniMap != NULL)
+	{
+		g_pTextureMiniMap->Release();
+		g_pTextureMiniMap = NULL;
+	}
+	if (g_pTextureMapPlayer != NULL)
+	{
+		g_pTextureMapPlayer->Release();
+		g_pTextureMapPlayer = NULL;
+	}
 }
 //==========
 // 更新処理
@@ -171,7 +170,7 @@ void UpdateMiniMap(void)
 
 	if (mode == MODE_STAGEONE || mode == MODE_STAGETWO || mode == MODE_STAGETHREE || mode == MODE_STAGEFOUR)
 	{
-		SetMapPlayer(mode);
+		//SetMapPlayer(mode);
 	}
 }
 void UpdateMiniMapEnemy(int Indx,D3DXVECTOR3 PosEnemy)

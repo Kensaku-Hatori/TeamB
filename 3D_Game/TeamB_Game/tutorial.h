@@ -14,7 +14,6 @@
 
 #define YAJIRUSI_SIZE (50)
 #define TUTO_NO_SIZE (50)
-
 //ポーズメニュー
 typedef enum
 {
@@ -36,5 +35,4 @@ void ChangeTutorial(void);
 void ChangeTutorialArrow(void);
 void SetTutorial(TUTORIAL type);
 void SetTutorialNo(void);
-void AddTutorialNo(void);
 #endif
