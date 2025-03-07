@@ -29,6 +29,8 @@ void InitCamera(void)
 	g_camera.fDistance = sqrtf(((g_camera.posV.x - g_camera.posR.x) * (g_camera.posV.x - g_camera.posR.x))
 							 + ((g_camera.posV.y - g_camera.posR.y) * (g_camera.posV.y - g_camera.posR.y))
 							 + ((g_camera.posV.z - g_camera.posR.z) * (g_camera.posV.z - g_camera.posR.z)));
+
+	g_camera.bResete = false;
 }
 
 //===================
@@ -48,6 +50,8 @@ void UpdateCamera(void)
 	Player* pPlayer = GetPlayer();				//プレイヤー
 	Lockon* pLockon = GetLockOn();				//ロックオン
 	MODE pMode = GetMode();						//ゲームモード
+
+	//ResetCameraPos(D3DXVECTOR3(350.0f, 200.0f, 1245.0f), pPlayer->pos);
 
 	// 角度の近道
 	if (g_camera.rotDest.y >= D3DX_PI)
@@ -133,7 +137,7 @@ void UpdateCamera(void)
 		Player* pPlayer = GetPlayer();
 		if (pPlayer->bLockOn == false)
 		{
-			UpdateCameratoMousePos();
+			//UpdateCameratoMousePos();
 			UpdateCameratoJoyPadPos();
 		}
 		else
@@ -247,8 +251,18 @@ void SetMouseWheel(int zDelta)
 //=============================
 void ResetCameraPos(D3DXVECTOR3 posV, D3DXVECTOR3 posR)
 {
-	//g_camera.posV = posV;				//視点
-	//g_camera.posR = posR;				//注視点
-	g_camera.posVDest = posV;			//視点
-	g_camera.posRDest = posR;			//注視点
+	if (g_camera.bResete == false)
+	{
+		g_camera.posV = posV;				//視点
+		g_camera.posR = posR;				//注視点
+		g_camera.posVDest = posV;			//視点
+		g_camera.posRDest = posR;			//注視点
+		D3DXVECTOR3 vec = (g_camera.posRDest- g_camera.posVDest);
+
+		//角度の取得
+		float fAngle = atan2(vec.x, vec.z);
+
+		g_camera.rotDest.y = fAngle;
+		g_camera.bResete = true;
+	}
 }
