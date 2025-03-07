@@ -35,4 +35,5 @@ void UpdateCameratoJoyPadPos(void);
 void SetCamera(void);
 Camera * GetCamera(void);
 void SetMouseWheel(int zDelta);
+void ResetCameraPos(D3DXVECTOR3 posV, D3DXVECTOR3 posR);
 #endif
