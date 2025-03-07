@@ -227,39 +227,55 @@ void UninitTutorial(void)
 			g_pTextureTutorial[nCnt] = NULL;
 		}
 	}
-	if (g_pTextureArrow != NULL && g_pTextureDenom != NULL && g_pTextureSlash != NULL && g_pTextureNumer != NULL)
+	if (g_pTextureArrow != NULL)
 	{
 		g_pTextureArrow->Release();
 		g_pTextureArrow = NULL;
-
+	}
+	if (g_pTextureDenom != NULL)
+	{
 		g_pTextureDenom->Release();
 		g_pTextureDenom = NULL;
-
+	}
+	if (g_pTextureSlash != NULL)
+	{
 		g_pTextureSlash->Release();
 		g_pTextureSlash = NULL;
-
+	}
+	if (g_pTextureNumer != NULL)
+	{
 		g_pTextureNumer->Release();
 		g_pTextureNumer = NULL;
 	}
 
 	//頂点バッファの破棄
-	if (g_pVtxBuffTutorial != NULL && g_pVtxBuffArrow != NULL && g_pVtxBuffDenom != NULL && g_pVtxBuffSlash != NULL && g_pVtxBuffNumer != NULL && g_pVtxBuffTutorialBack != NULL)
+	if (g_pVtxBuffTutorial != NULL)
 	{
 		g_pVtxBuffTutorial->Release();
 		g_pVtxBuffTutorial = NULL;
-
+	}
+	if (g_pVtxBuffArrow != NULL)
+	{
 		g_pVtxBuffArrow->Release();
 		g_pVtxBuffArrow = NULL;
-
+	}
+	if (g_pVtxBuffDenom != NULL)
+	{
 		g_pVtxBuffDenom->Release();
 		g_pVtxBuffDenom = NULL;
-
+	}
+	if (g_pVtxBuffSlash != NULL)
+	{
 		g_pVtxBuffSlash->Release();
 		g_pVtxBuffSlash = NULL;
-
+	}
+	if (g_pVtxBuffNumer != NULL)
+	{
 		g_pVtxBuffNumer->Release();
 		g_pVtxBuffNumer = NULL;
-
+	}
+	if (g_pVtxBuffTutorialBack != NULL)
+	{
 		g_pVtxBuffTutorialBack->Release();
 		g_pVtxBuffTutorialBack = NULL;
 	}

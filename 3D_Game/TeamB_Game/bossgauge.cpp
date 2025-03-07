@@ -160,23 +160,35 @@ void InitBossGauge(void)
 void UninitBossGauge(void)
 {
 	//テクスチャの破棄
-	if (g_pTextureBossGauge != NULL && g_pTextureBossGaugeBack != NULL && g_pTextureBossName != NULL)
+	if (g_pTextureBossGauge != NULL)
 	{
 		g_pTextureBossGauge->Release();
 		g_pTextureBossGauge = NULL;
+	}
+	if (g_pTextureBossGaugeBack != NULL)
+	{
 		g_pTextureBossGaugeBack->Release();
 		g_pTextureBossGaugeBack = NULL;
+	}
+	if (g_pTextureBossName != NULL)
+	{
 		g_pTextureBossName->Release();
 		g_pTextureBossName = NULL;
 	}
 
 	//頂点バッファの破棄
-	if (g_pVtxBuffBossGauge != NULL && g_pVtxBuffBossGaugeBack != NULL && g_pVtxBuffBossName != NULL)
+	if (g_pVtxBuffBossGauge != NULL)
 	{
 		g_pVtxBuffBossGauge->Release();
 		g_pVtxBuffBossGauge = NULL;
+	}
+	if (g_pVtxBuffBossGaugeBack != NULL)
+	{
 		g_pVtxBuffBossGaugeBack->Release();
 		g_pVtxBuffBossGaugeBack = NULL;
+	}
+	if (g_pVtxBuffBossName != NULL)
+	{
 		g_pVtxBuffBossName->Release();
 		g_pVtxBuffBossName = NULL;
 	}

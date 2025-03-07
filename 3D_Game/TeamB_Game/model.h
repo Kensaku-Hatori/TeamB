@@ -56,7 +56,7 @@ typedef struct
 	D3DXVECTOR3 OffSetRot;
 	D3DXVECTOR3 size;		//サイズ
 	D3DXMATRIX mtxWorld;	//ワールドマトリックス
-	LPDIRECT3DTEXTURE9 pTexture[128];
+	LPDIRECT3DTEXTURE9 pTexture[MAX_TEX];
 }MODELINFO;
 
 // OBBのもととなる物の構造体

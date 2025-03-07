@@ -44,12 +44,12 @@ void InitMeshWall(void)
 void UninitMeshWall(void)
 {
 	
-		//テクスチャの破棄
-		if (g_pTextureMeshWall != NULL)
-		{
-			g_pTextureMeshWall->Release();
-			g_pTextureMeshWall = NULL;
-		}
+	//テクスチャの破棄
+	if (g_pTextureMeshWall != NULL)
+	{
+		g_pTextureMeshWall->Release();
+		g_pTextureMeshWall = NULL;
+	}
 
 	for (int nCnt = 0; nCnt < MAX_MESHWALL; nCnt++)
 	{
