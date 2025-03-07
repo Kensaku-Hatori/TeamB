@@ -183,7 +183,8 @@ void UpdateMiniMapEnemy(int Indx,D3DXVECTOR3 PosEnemy)
 	MathPos.x = g_MiniMapEnemy[Indx].MiniMappos.x - pPlayer->pos.x;
 	MathPos.z = g_MiniMapEnemy[Indx].MiniMappos.z - pPlayer->pos.z;
 	fAngle = atan2f(MathPos.x, MathPos.z);
-	fDistance = fabsf(MathPos.x + MathPos.z);
+
+	fDistance = fabsf(sqrtf(MathPos.x * MathPos.x + MathPos.z * MathPos.z));
 	if (fDistance >= 100.0f)
 	{
 		fDistance = 100.0f;
@@ -195,6 +196,7 @@ void UpdateMiniMapEnemy(int Indx,D3DXVECTOR3 PosEnemy)
 	D3DXVECTOR2 Pos = { g_MapPlayerpos.x ,g_MapPlayerpos.y };
 	Pos.x -= sinf(fAngle) * fDistance;
 	Pos.y += cosf(fAngle) * fDistance;
+
 	//頂点座標の設定
 	pVtx[0].pos = D3DXVECTOR3(Pos.x, Pos.y, 0.0f);
 	pVtx[1].pos = D3DXVECTOR3(Pos.x + MAPSIZE_PLAYER, Pos.y, 0.0f);
@@ -298,10 +300,10 @@ int SetMapEnemy(D3DXVECTOR3 Pos)
 				D3DUSAGE_WRITEONLY,
 				FVF_VERTEX_2D,
 				D3DPOOL_MANAGED,
-				&g_MiniMapEnemy->pVtxBuffMapEnemy,
+				&g_MiniMapEnemy[MaxpEnemyCount].pVtxBuffMapEnemy,
 				NULL);
 			//頂点バッファをロックし、頂点情報へのポインタを取得
-			g_MiniMapEnemy->pVtxBuffMapEnemy->Lock(0, 0, (void**)&pVtx, 0);
+			g_MiniMapEnemy[MaxpEnemyCount].pVtxBuffMapEnemy->Lock(0, 0, (void**)&pVtx, 0);
 
 			D3DXVECTOR2 Pos = { g_MapPlayerpos.x ,g_MapPlayerpos.y};
 			Pos.x += sinf(fAngle) * 100.0f;
@@ -323,7 +325,7 @@ int SetMapEnemy(D3DXVECTOR3 Pos)
 			pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 
 			//頂点バッファをアンロック
-			g_MiniMapEnemy->pVtxBuffMapEnemy->Unlock();
+			g_MiniMapEnemy[MaxpEnemyCount].pVtxBuffMapEnemy->Unlock();
 
 			break;
 		}
