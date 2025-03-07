@@ -48,6 +48,6 @@ void InitButtonUi(void);
 void UninitButtonUi(void);
 void UpdateButtonUi(void);
 void DrawButtonUi(void);
+void DrawTutorialButtonUi(void);
 void SetButtonUi(BUTTONUI type, D3DXVECTOR3 pos, D3DXVECTOR3 size,BUTTONUI_TYPE UiType);
-void DeleteTutorialUI(void);
 #endif

@@ -13,7 +13,7 @@
 #define TUTO_Y (250)
 
 #define YAJIRUSI_SIZE (50)
-
+#define TUTO_NO_SIZE (50)
 //ポーズメニュー
 typedef enum
 {
