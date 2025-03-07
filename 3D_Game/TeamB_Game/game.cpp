@@ -138,6 +138,7 @@ void InitGame(void)
 
 	g_bPause = false;					//ポーズしていない状態へ
 	bAbo = false;						//全滅していない状態へ
+
 	if (Mode == MODE_STAGEONE)
 	{
 		g_bTutorial = true;
