@@ -194,6 +194,7 @@
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="titleinfo.cpp" />
+    <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="ui.cpp" />
     <ClCompile Include="wall.cpp" />
     <ClCompile Include="wave.cpp" />
@@ -251,6 +252,7 @@
     <ClInclude Include="timer.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="titleinfo.h" />
+    <ClInclude Include="tutorial.h" />
     <ClInclude Include="ui.h" />
     <ClInclude Include="wall.h" />
     <ClInclude Include="wave.h" />
