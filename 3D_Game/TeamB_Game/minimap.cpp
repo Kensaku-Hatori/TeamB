@@ -172,7 +172,10 @@ void InitMiniMap(void)
 		//頂点バッファをアンロック
 		g_pVtxBuffMapSight->Unlock();
 	}
-
+	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++)
+	{
+		g_MiniMapEnemy[EnemyCount].bUse = false;
+	}
 }
 //==========
 // 終了処理
@@ -283,12 +286,6 @@ void UpdateMiniMapSight(void)
 	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
 	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
-	////頂点座標の設定
-	//pVtx[0].pos = D3DXVECTOR3(g_MapPlayerpos.x, g_MapPlayerpos.y, 0.0f);
-	//pVtx[1].pos = D3DXVECTOR3(g_MapPlayerpos.x + MAPSIZE_PLAYER, g_MapPlayerpos.y, 0.0f);
-	//pVtx[2].pos = D3DXVECTOR3(g_MapPlayerpos.x, g_MapPlayerpos.y + MAPSIZE_PLAYER, 0.0f);
-	//pVtx[3].pos = D3DXVECTOR3(g_MapPlayerpos.x + MAPSIZE_PLAYER, g_MapPlayerpos.y + MAPSIZE_PLAYER, 0.0f);
-
 	//頂点バッファをアンロック
 	g_pVtxBuffMapSight->Unlock();
 }
@@ -360,7 +357,7 @@ void DrawMiniMap(void)
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 	}
 
-	//アイテム欄
+	//視界
 	{
 		//頂点バッファをデータストリームに設定
 		pDevice->SetStreamSource(0, g_pVtxBuffMapSight, 0, sizeof(VERTEX_2D));
