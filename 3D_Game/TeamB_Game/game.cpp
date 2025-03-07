@@ -138,6 +138,14 @@ void InitGame(void)
 
 	g_bPause = false;					//ポーズしていない状態へ
 	bAbo = false;						//全滅していない状態へ
+	if (Mode == MODE_STAGEONE)
+	{
+		g_bTutorial = true;
+	}
+	else
+	{
+		g_bTutorial = false;
+	}
 }
 
 //===========
@@ -215,22 +223,17 @@ void UpdateGame(void)
 	{//ポーズキーが押された
 		g_bPause = g_bPause ? false : true;
 	}
-
-	if (Mode == MODE_STAGEONE)
+	else if ((KeyboardTrigger(DIK_TAB) == true || GetJoypadTrigger(JOYKEY_BACK) == true) && g_bPause == false)
 	{
-		if (KeyboardTrigger(DIK_TAB) == true || GetJoypadTrigger(JOYKEY_BACK) == true)
+		if (Mode == MODE_STAGEONE)
 		{
 			g_bTutorial = g_bTutorial ? false : true;
 			if (g_bTutorial == true)
 			{
 				SetTutorial(TUTORIAL_MOVE);
 			}
-			else if (g_bTutorial == false)
-			{
-				DeleteTutorialUI();
-			}
 		}
-	}
+	}	
 
 	if (g_gamestate != GAMESTATE_EFFECTEDITER)
 	{
@@ -239,8 +242,9 @@ void UpdateGame(void)
 			//ポーズの更新処理
 			g_gamestate = GAMESTATE_PAUSE;
 			UpdatePause(0);
+			g_bTutorial = false;
 		}
-		else if (g_bTutorial == true)
+		else if (g_bTutorial == true && g_bPause == false)
 		{//ポーズ中
 			//ポーズの更新処理
 			UpdateTutorial();
@@ -493,8 +497,8 @@ void DrawGame(void)
 	{//ポーズ中
 		//ポーズの描画処理
 		DrawTutorial();
+		DrawTutorialButtonUi();
 	}
-
 }
 
 //===============

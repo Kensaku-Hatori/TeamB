@@ -119,7 +119,7 @@ void DrawButtonUi(void)
 	//枠
 	for (int nCnt = 0; nCnt < MAX_BUTTONUI; nCnt++)
 	{
-		if (g_ButtonUi[nCnt].bUse == true)
+		if (g_ButtonUi[nCnt].UiType == BUTTONUI_TYPE_GAME && g_ButtonUi[nCnt].bUse == true)
 		{
 			//頂点バッファをデータストリームに設定
 			pDevice->SetStreamSource(0, g_pVtxBuffButtonUi, 0, sizeof(VERTEX_2D));
@@ -130,6 +130,30 @@ void DrawButtonUi(void)
 		}
 	}
 }
+void DrawTutorialButtonUi(void)
+{
+	LPDIRECT3DDEVICE9 pDevice;
+	//デバイスの取得
+	pDevice = GetDevice();
+
+	//頂点フォーマットの設定
+	pDevice->SetFVF(FVF_VERTEX_2D);
+
+	//枠
+	for (int nCnt = 0; nCnt < MAX_BUTTONUI; nCnt++)
+	{
+		if (g_ButtonUi[nCnt].UiType == BUTTONUI_TYPE_TUTORIAL && g_ButtonUi[nCnt].bUse == true)
+		{
+			//頂点バッファをデータストリームに設定
+			pDevice->SetStreamSource(0, g_pVtxBuffButtonUi, 0, sizeof(VERTEX_2D));
+			//テクスチャの設定
+			pDevice->SetTexture(0, g_pTextureButtonUi[g_ButtonUi[nCnt].ButtonUi]);
+			//プレイヤーの描画
+			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
+		}
+	}
+}
+
 //===========
 // UIの設定
 //===========
@@ -177,20 +201,4 @@ void SetButtonUi(BUTTONUI type, D3DXVECTOR3 pos, D3DXVECTOR3 size, BUTTONUI_TYPE
 	}
 	//頂点バッファをアンロック
 	g_pVtxBuffButtonUi->Unlock();
-}
-//
-//
-//
-void DeleteTutorialUI(void)
-{
-	for (int nCnt = 0; nCnt < MAX_BUTTONUI; nCnt++)
-	{
-		if (g_ButtonUi[nCnt].bUse == true)
-		{
-			if (g_ButtonUi[nCnt].UiType == BUTTONUI_TYPE_TUTORIAL)
-			{
-				g_ButtonUi[nCnt].bUse = false;
-			}
-		}
-	}
 }
