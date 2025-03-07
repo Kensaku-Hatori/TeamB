@@ -28,6 +28,7 @@ typedef enum
 typedef struct
 {
 	D3DXVECTOR3 pos;			// ˆÊ’u
+	D3DXVECTOR3 posDest;
 	D3DXVECTOR3 StartPos;		// Å‰‚ÌˆÊ’u
 	D3DXVECTOR3 move;			// ˆÚ“®—Ê
 	D3DXVECTOR3 moveDest;		// ˆÚ“®—Ê

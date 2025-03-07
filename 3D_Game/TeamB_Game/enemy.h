@@ -18,8 +18,8 @@
 #define ENEMY_RADIUS (float)(8.0f)		// 敵の大きさ
 #define ENEMY_RUNSPEED (float)(1.0f)	// 敵の走るスピード
 
-#define ENEMY_HP (float)(200)			// HP
-#define ENEMY_SPEED (float) (2.0f)		// 速度
+#define ENEMY_HP (float)(150)			// HP
+#define ENEMY_SPEED (float) (3.0f)		// 速度
 #define ENEMY_AP (float)(100)			// 攻撃力
 
 // 行動の距離
@@ -30,8 +30,8 @@
 #define ATTACK_FREAM (180)				// 攻撃a
 
 //移動量
-#define HOMING_MOVE (float)(0.2f)		// ホーミング
-#define WELL_MOVE (float)(0.1f)			// 様子見
+#define HOMING_MOVE (float)(0.8f)		// ホーミング
+#define WELL_MOVE (float)(0.2f)			// 様子見
 
 #define ENEMY_SCORE (100)
 // 敵の状態
@@ -85,6 +85,7 @@ typedef struct
 	int nNumKey, nKey, nCounterMotion, nNextKey;
 	int nNumModel;
 	int IndxShadow;
+	int IndxArrow;
 	int nActionCount,nActionCounter;
 	int statecount;
 	int CollModel;

@@ -243,42 +243,47 @@ void UpdateHorming(int Indx)
 			{
 				if (SerchHormingEnemy(Indx, pEnemy->Object.Pos) == true)
 				{
-					g_Skill[Indx].nIndxHorming = EnemyCount;
-					g_Skill[Indx].rot = pPlayer->rot;
 					g_Skill[Indx].bHorming = true;
-					if (pPlayer->bLockOn != true)
+					if (pPlayer->bLockOn == true)
 					{
-						pEnemy += g_Skill[Indx].nIndxHorming;
-					}
-					else
-					{
+						pEnemy -= EnemyCount;
 						pEnemy += pPlayer->nLockOnEnemy;
+						g_Skill[Indx].posDest = pEnemy->Object.Pos;
+						break;
 					}
-					if (pEnemy->bUse == true)
-					{
-						D3DXVECTOR3 fMoveVec = pEnemy->Object.Pos - g_Skill[Indx].pos;
-						D3DXVec3Normalize(&fMoveVec, &fMoveVec);
-						g_Skill[Indx].moveDest = fMoveVec * 10.0f;
-						//g_Skill[nCnt].move = fMoveVec;
-					}
-					else
-					{
-						g_Skill[Indx].moveDest = D3DXVECTOR3(0.0, 0.0f, 0.0f);
-					}
-					break;
 				}
+				//{
+				//	g_Skill[Indx].nIndxHorming = EnemyCount;
+				//	g_Skill[Indx].bHorming = true;
+				//	if (pEnemy->bUse == true)
+				//	{
+				//		D3DXVECTOR3 fMoveVec = pEnemy->Object.Pos - g_Skill[Indx].pos;
+				//		D3DXVec3Normalize(&fMoveVec, &fMoveVec);
+				//		g_Skill[Indx].moveDest = fMoveVec * 10.0f;
+				//		//g_Skill[nCnt].move = fMoveVec;
+				//	}
+				//	else
+				//	{
+				//		g_Skill[Indx].moveDest = D3DXVECTOR3(0.0, 0.0f, 0.0f);
+				//	}
+				//	break;
+				//}
 			}
 		}
 		if (pBoss->bUse == true)
 		{
 			if (SerchHormingEnemy(Indx, pBoss->Object.Pos) == true)
 			{
-				g_Skill[Indx].rot = pPlayer->rot;
 				g_Skill[Indx].bHorming = true;
-				D3DXVECTOR3 fMoveVec = pBoss->Object.Pos - g_Skill[Indx].pos;
-				D3DXVec3Normalize(&fMoveVec, &fMoveVec);
-				g_Skill[Indx].moveDest = fMoveVec * 10.0f;
+				g_Skill[Indx].posDest = pBoss->Object.Pos;
 			}
+		}
+		if (g_Skill[Indx].bHorming == true)
+		{
+			g_Skill[Indx].rot = pPlayer->rot;
+			D3DXVECTOR3 fMoveVec = g_Skill[Indx].posDest - g_Skill[Indx].pos;
+			D3DXVec3Normalize(&fMoveVec, &fMoveVec);
+			g_Skill[Indx].moveDest = fMoveVec * 10.0f;
 		}
 	}
 	if (g_Skill[Indx].bHorming == true && g_Skill[Indx].bHit == false)
@@ -422,7 +427,7 @@ void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot, SKILLTYPE ntyp
 			// ”š”­–‚–@
 			else if (ntype == SKILLTYPE_EXPLOSION)
 			{
-				g_Skill[nCnt].fPower = pPlayer->Status.fPower * 1.25f;
+				g_Skill[nCnt].fPower = pPlayer->Status.fPower * 1.5f;
 			}
 			g_Skill[nCnt].bHit = false;
 			g_Skill[nCnt].bUse = true;
@@ -442,6 +447,7 @@ bool SerchHormingEnemy(int Indx, D3DXVECTOR3 Pos)
 		if (g_Skill[Indx].fDistance <= sqrtf((fDistance.x * fDistance.x) + (fDistance.y + fDistance.y) + (fDistance.z * fDistance.z)))
 		{
 			g_Skill[Indx].fDistance = sqrtf((fDistance.x * fDistance.x) + (fDistance.y + fDistance.y) + (fDistance.z * fDistance.z));
+			g_Skill[Indx].posDest = Pos;
 		}
 		return true;
 		g_Skill[Indx].nCount = INTERVAL_HORMING;
@@ -493,7 +499,7 @@ void SubMP(SKILLTYPE type)
 		break;
 
 	case SKILLTYPE_EXPLOSION:
-		pPlayer->Status.nMP -= 10;
+		pPlayer->Status.nMP -= 25;
 		break;
 	default:
 		break;

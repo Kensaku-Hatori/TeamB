@@ -449,15 +449,17 @@ void SetSkillParticle(EFFECTTYPE nType, int Indx, D3DXVECTOR3 StartPos, D3DXVECT
 //***********************
 void CollisionEffect(int Indx)
 {
+	Player* pPlayer = GetPlayer();
 	ENEMY* pEnemy = GetEnemy();
 	BOSS* pBoss = GetBoss();
+
 	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++,pEnemy++)
 	{
 		if (pEnemy->bUse == true && pEnemy->bHit == false)
 		{
 			if (collisioncircle(g_effect[Indx].Object.Pos, g_effect[Indx].Scale.x * 0.5f, pEnemy->Object.Pos, ENEMY_RADIUS * 0.5f) == true)
 			{
-				HitEnemy(10.0f, EnemyCount);
+				HitEnemy(pPlayer->Status.fPower * 0.5f, EnemyCount);
 			}
 		}
 	}
@@ -465,7 +467,7 @@ void CollisionEffect(int Indx)
 	{
 		if (collisioncircle(g_effect[Indx].Object.Pos, g_effect[Indx].Scale.x * 0.5f, pBoss->Object.Pos, pBoss->Radius * 0.5f) == true)
 		{
-			//HitBoss(10.0f);
+			HitBoss(pPlayer->Status.fPower * 0.5f);
 		}
 	}
 }

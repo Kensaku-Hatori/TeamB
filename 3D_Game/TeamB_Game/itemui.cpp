@@ -9,6 +9,8 @@
 #include "player.h"
 #include "input.h"
 #include "sound.h"
+#include "game.h"
+#include "circle.h"
 
 //グローバル変数
 //枠
@@ -36,6 +38,7 @@ int g_nCntItemMP;
 void InitItemUI(void)
 {
 	Player* pPlayer = GetPlayer();
+	MODE mode = GetMode();
 
 	LPDIRECT3DDEVICE9 pDevice;
 	//デバイスの取得
@@ -49,9 +52,9 @@ void InitItemUI(void)
 
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number002.png", &g_pTextureItemUINo);	//No 
 
-	g_ItemUIframepos = D3DXVECTOR3(985.0f, 470.0f, 0.0f);
-	g_ItemUIpos = D3DXVECTOR3(1000.0f, 490.0f, 0.0f);
-	g_ItemUINopos = D3DXVECTOR3(ITEMUI_X + 1000.0f, 490.0f, 0.0f);
+	g_ItemUIframepos = D3DXVECTOR3(985.0f, 550.0f, 0.0f);
+	g_ItemUIpos = D3DXVECTOR3(1000.0f, 570.0f, 0.0f);
+	g_ItemUINopos = D3DXVECTOR3(ITEMUI_X + 1000.0f, 570.0f, 0.0f);
 
 
 	//頂点バッファの生成・頂点情報の設定
@@ -186,7 +189,9 @@ void InitItemUI(void)
 		g_pVtxBuffItemUINo->Unlock();
 	}
 
-	if (pPlayer->bfirst == true)
+
+
+	if (pPlayer->bfirst == true || mode == MODE_STAGEONE)
 	{
 		g_nCntItemHP = 0;
 		g_nCntItemMP = 0;
@@ -436,6 +441,7 @@ void UseItem(ITEMTYPE type)
 
 	int aPosTexU[MAX_ITEMGET];
 	int nItemType = 0;
+	int circleIndx = 0;
 	if (type == ITEMTYPE_HP)
 	{
 		if (g_nCntItemHP >= 1)
@@ -447,6 +453,22 @@ void UseItem(ITEMTYPE type)
 			{
 				pPlayer->Status.fHP = PLAYER_HP;
 			}
+
+			//サークルの設定
+			circleIndx = SetCircle(D3DXVECTOR3(pPlayer->pos.x, pPlayer->pos.y + 1.0f, pPlayer->pos.z),
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+				D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f),
+				20,
+				0,
+				10.0f,
+				36.0f,
+				false,
+				true);
+
+			//サークルのアニメーションの設定
+			SetAnime(circleIndx,
+				ANIMETYPE_0,
+				60);
 		}
 
 		g_nCntItemHP--;
@@ -467,6 +489,22 @@ void UseItem(ITEMTYPE type)
 			{
 				pPlayer->Status.nMP = PLAYER_MP;
 			}
+
+			//サークルの設定
+			circleIndx = SetCircle(D3DXVECTOR3(pPlayer->pos.x, pPlayer->pos.y + 1.0f, pPlayer->pos.z),
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+				D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f),
+				20,
+				0,
+				10.0f,
+				36.0f,
+				false,
+				true);
+
+			//サークルのアニメーションの設定
+			SetAnime(circleIndx,
+				ANIMETYPE_0,
+				60);
 		}
 		g_nCntItemMP--;
 		if (g_nCntItemMP <= 0)

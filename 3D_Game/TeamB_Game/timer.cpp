@@ -9,6 +9,7 @@
 #include "result.h"
 #include "fade.h"
 #include "game.h"
+#include "score.h"
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureTimer = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTimer = NULL;
@@ -40,7 +41,7 @@ void InitTimer(void)
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
 
-	g_posTimer = D3DXVECTOR3(1000.0f, 210.0f, 0.0f);
+	g_posTimer = D3DXVECTOR3(SCREEN_WIDTH / 2 - 100.0f, 0.0f, 0.0f);
 
 	//分タイマー
 	g_nMinutes = 0;
@@ -60,8 +61,8 @@ void InitTimer(void)
 		//頂点座標の設定
 		pVtx[0].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y - 0.0f, 0.0f);
 		pVtx[1].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y - 0.0f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y + 100.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y + 100.0f, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y + 50.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y + 50.0f, 0.0f);
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;
@@ -99,8 +100,8 @@ void InitTimer(void)
 	//頂点座標の設定
 	pVtx[0].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y - 0.0f, 0.0f);
 	pVtx[1].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y - 0.0f, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y + 100.0f, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y + 100.0f, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y + 50.0f, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y + 50.0f, 0.0f);
 	//rhwの設定
 	pVtx[0].rhw = 1.0f;
 	pVtx[1].rhw = 1.0f;
@@ -141,8 +142,8 @@ void InitTimer(void)
 		//頂点座標の設定
 		pVtx[0].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y - 0.0f, 0.0f);
 		pVtx[1].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y - 0.0f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y + 100.0f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y + 100.0f, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(g_posTimer.x - TIMER_SIZE, g_posTimer.y + 50.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(g_posTimer.x + TIMER_SIZE, g_posTimer.y + 50.0f, 0.0f);
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;
@@ -196,23 +197,23 @@ void UninitTimer(void)
 //==========
 void UpdateTimer(void)
 {
-	GAMESTATE gamestate = GetGameSatate();
+	MODE mode = GetMode();
 
-	g_nSeconds++;
-	//一秒経過
-	if (g_nSeconds >= 60)
+	if (mode != MODE_STAGEONE)
 	{
-		AddTimer(1);
-		g_nSeconds = 0;
+		g_nSeconds++;
+		//一秒経過
+		if (g_nSeconds >= 60)
+		{
+			AddTimer(1);
+			g_nSeconds = 0;
+		}
+		if (g_nTimer >= 60)
+		{
+			AddTimerMinutes(1);
+			AddTimer(-60);
+		}
 	}
-	if (g_nTimer >= 60)
-	{
-		AddTimerMinutes(1);
-		AddTimer(-60);
-	}
-
-
-
 }
 //===========
 //描画処理
@@ -222,43 +223,48 @@ void DrawTimer(void)
 	LPDIRECT3DDEVICE9 pDevice;
 	//デバイスの取得
 	pDevice = GetDevice();
+	MODE mode = GetMode();
 
-	//頂点フォーマットの設定
-	pDevice->SetFVF(FVF_VERTEX_2D);
-
-	
-	//分
-	//頂点バッファをデータストリームに設定
-	pDevice->SetStreamSource(0, g_pVtxBuffTimerMinutes, 0, sizeof(VERTEX_2D));
-	int nCnt;
-	for (nCnt = 0; nCnt < MAX_TIMER; nCnt++)
+	if (mode != MODE_STAGEONE)
 	{
+
+		//頂点フォーマットの設定
+		pDevice->SetFVF(FVF_VERTEX_2D);
+
+
+		//分
+		//頂点バッファをデータストリームに設定
+		pDevice->SetStreamSource(0, g_pVtxBuffTimerMinutes, 0, sizeof(VERTEX_2D));
+		int nCnt;
+		for (nCnt = 0; nCnt < MAX_TIMER; nCnt++)
+		{
+			//テクスチャの設定
+			pDevice->SetTexture(0, g_pTextureTimer);
+			//プレイヤーの描画
+			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
+		}
+
+
+		//コロン
+		//頂点バッファをデータストリームに設定
+		pDevice->SetStreamSource(0, g_pVtxBuffColon, 0, sizeof(VERTEX_2D));
 		//テクスチャの設定
-		pDevice->SetTexture(0, g_pTextureTimer);
+		pDevice->SetTexture(0, g_pTextureColon);
 		//プレイヤーの描画
-		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
-	}
+		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 
 
-	//コロン
-	//頂点バッファをデータストリームに設定
-	pDevice->SetStreamSource(0, g_pVtxBuffColon, 0, sizeof(VERTEX_2D));
-	//テクスチャの設定
-	pDevice->SetTexture(0, g_pTextureColon);
-	//プレイヤーの描画
-	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+		//秒
+		//頂点バッファをデータストリームに設定
+		pDevice->SetStreamSource(0, g_pVtxBuffTimer, 0, sizeof(VERTEX_2D));
 
-
-	//秒
-	//頂点バッファをデータストリームに設定
-	pDevice->SetStreamSource(0, g_pVtxBuffTimer, 0, sizeof(VERTEX_2D));
-	
-	for (nCnt = 0; nCnt < MAX_TIMER; nCnt++)
-	{
-		//テクスチャの設定
-		pDevice->SetTexture(0, g_pTextureTimer);
-		//プレイヤーの描画
-		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
+		for (nCnt = 0; nCnt < MAX_TIMER; nCnt++)
+		{
+			//テクスチャの設定
+			pDevice->SetTexture(0, g_pTextureTimer);
+			//プレイヤーの描画
+			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
+		}
 	}
 }
 //=================
@@ -406,4 +412,39 @@ void AddTimerMinutes(int nValue)
 	//頂点バッファをアンロック
 	g_pVtxBuffTimerMinutes->Unlock();
 
+}
+//==============
+//タイマーの取得
+//==============
+int GetMinutes(void)
+{
+	return g_nMinutes;
+}
+
+//
+//
+//
+void TimeScore(void)
+{
+	MODE mode = GetMode();
+
+	if (mode != MODE_STAGEONE)
+	{
+		if (g_nMinutes == 0)
+		{
+			AddScore(1000);
+		}
+		else if (g_nMinutes == 1)
+		{
+			AddScore(500);
+		}
+		else if (g_nMinutes == 2)
+		{
+			AddScore(250);
+		}
+		else
+		{
+			AddScore(0);
+		}
+	}
 }

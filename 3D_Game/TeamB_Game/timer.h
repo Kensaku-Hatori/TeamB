@@ -12,7 +12,7 @@
 
 #define MAX_TIME (MAX_GAMETIME * 60)
 #define MAX_TIMER (2)
-#define TIMER_SIZE (30)
+#define TIMER_SIZE (15)
  
 //プロトタイプ宣言
 void InitTimer(void);
@@ -23,5 +23,7 @@ void SetTimer(int nTimer, int nMinutes);
 void AddTimer(int nValue);
 int GetTimer(void);
 void AddTimerMinutes(int nValue);
+int GetMinutes(void);
+void TimeScore(void);
 
 #endif

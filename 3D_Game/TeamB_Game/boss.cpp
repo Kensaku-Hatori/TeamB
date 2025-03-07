@@ -107,63 +107,8 @@ void UpdateBoss(void)
 			// 行動の更新
 			UpdateBossAction();
 		}
-		STAGEMODEL* pObb = GetModel();
-		for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++, pObb++)
-		{
-			if (pObb->bUse == true)
-			{
-				OBB BossObb;
-				BossObb.CenterPos = g_Boss.Object.Pos;
-
-				BossObb.fLength[0] = 10.0f;
-				BossObb.fLength[1] = 20.0f;
-				BossObb.fLength[2] = 10.0f;
-
-				BossObb.RotVec[0] = D3DXVECTOR3(1.0f, 0.0f, 0.0f);
-				BossObb.RotVec[1] = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-				BossObb.RotVec[2] = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
-				bool bCollision = collisionobb(BossObb, pObb->ObbModel, g_Boss.Object.Pos, pObb->pos);
-				if (bCollision == true)
-				{
-					D3DXVECTOR3 VecMove = g_Boss.Object.OldPos - g_Boss.Object.Pos;
-					D3DXVECTOR3 NorFace = collisionobbfacedot(pObb->ObbModel, D3DXVECTOR3(g_Boss.Object.Pos.x,
-						g_Boss.Object.Pos.y + 10.0f,
-						g_Boss.Object.Pos.z), VecMove);
-					PushPosition(&g_Boss.Object.Pos, VecMove, NorFace);
-				}
-			}
-		}
-		if (g_Boss.BossMotion.motionType == MOTIONTYPE_MOVE)
-		{
-			HormingPlayerMove(BOSSHORMING_MOVE);
-		}
-		else if (g_Boss.BossMotion.motionType == MOTIONTYPE_LOCKON_F_MOVE)
-		{
-			HormingPlayerMove(BOSSHORMING_MOVE * 10.0f);
-			float DistancePlayer = Distance(g_Boss.Object.Pos, pPlayer->pos);
-			if (DistancePlayer < 100.0f)
-			{
-				if (g_Boss.BossMotion.motionType != MOTIONTYPE_DOWN)
-				{// モーションの種類設定
-					SetMotion(MOTIONTYPE_DOWN, &g_Boss.BossMotion);
-				}
-			}
-		}
-		// 魔法との当たり判定
-		for (int SkillCount = 0; SkillCount < MAX_SKILL; SkillCount++)
-		{
-			if (pSkill[SkillCount].bUse == true)
-			{
-				// 当たり判定
-				if (collisioncircle(g_Boss.Object.Pos, g_Boss.Radius, pSkill[SkillCount].pos, SKILL_SIZE) == true)
-				{
-					pSkill[SkillCount].nLife = 1;
-					pSkill[SkillCount].bHit = true;
-					HitBoss(pSkill[SkillCount].fPower);
-				}
-			}
-		}
-
+		UpdateBossActionMove();
+		NormalizeBossRot();
 		// 攻撃時の当たり判定
 		if (pPlayer->state != PLAYERSTATE_KNOCKUP)
 		{
@@ -180,16 +125,6 @@ void UpdateBoss(void)
 			{
 				pPlayer->bLockOn = true;
 			}
-		}
-
-		// 角度の近道
-		if (g_Boss.rotDest.y - g_Boss.Object.Rot.y >= D3DX_PI)
-		{
-			g_Boss.Object.Rot.y += D3DX_PI * 2.0f;
-		}
-		else if (g_Boss.rotDest.y - g_Boss.Object.Rot.y <= -D3DX_PI)
-		{
-			g_Boss.Object.Rot.y -= D3DX_PI * 2.0f;
 		}
 
 		if (g_Boss.statecount <= 0)
@@ -223,6 +158,9 @@ void UpdateBoss(void)
 
 		// モーションの更新
 		UpdateMotion(&g_Boss.BossMotion);
+
+		CollisionBosstoModel();
+		CollisionBosstoSkill();
 	}
 }
 
@@ -334,11 +272,24 @@ BOSS* GetBoss()
 	return &g_Boss;
 }
 
+void NormalizeBossRot(void)
+{
+	// 角度の近道
+	if (g_Boss.rotDest.y - g_Boss.Object.Rot.y >= D3DX_PI)
+	{
+		g_Boss.Object.Rot.y += D3DX_PI * 2.0f;
+	}
+	else if (g_Boss.rotDest.y - g_Boss.Object.Rot.y <= -D3DX_PI)
+	{
+		g_Boss.Object.Rot.y -= D3DX_PI * 2.0f;
+	}
+}
 //***************
 // ボスのヒット処理
 //***************
 void HitBoss(float Atack)
 {
+	Player* pPlayer = GetPlayer();
 	Camera* pCamera = GetCamera();
 
 	g_Boss.Status.fHP -= (int)Atack;
@@ -346,6 +297,15 @@ void HitBoss(float Atack)
 	g_Boss.Action = BOSSACTION_WELL;
 	g_Boss.state = BOSSSTATE_KNOCKUP;
 	g_Boss.bHit = true;
+
+	if (pPlayer->Skilltype == SKILLTYPE_EXPLOSION)
+	{
+		float move = 1.5f;
+
+		D3DXVECTOR3 Vec = g_Boss.Object.Pos - pPlayer->pos;
+		D3DXVec3Normalize(&Vec, &Vec);
+		g_Boss.move = Vec * move;
+	}
 
 	if (Atack >= 10)
 	{// ダメージが最小値以上なら
@@ -446,6 +406,26 @@ void HormingPlayerMove(float Speed)
 
 	// 角度の目標設定
 	g_Boss.rotDest.y = fAngle + D3DX_PI;
+}
+void UpdateBossActionMove()
+{
+	Player* pPlayer = GetPlayer();
+	if (g_Boss.BossMotion.motionType == MOTIONTYPE_MOVE)
+	{
+		HormingPlayerMove(BOSSHORMING_MOVE);
+	}
+	else if (g_Boss.BossMotion.motionType == MOTIONTYPE_LOCKON_F_MOVE)
+	{
+		HormingPlayerMove(BOSSHORMING_MOVE * 10.0f);
+		float DistancePlayer = Distance(g_Boss.Object.Pos, pPlayer->pos);
+		if (DistancePlayer < 100.0f)
+		{
+			if (g_Boss.BossMotion.motionType != MOTIONTYPE_DOWN)
+			{// モーションの種類設定
+				SetMotion(MOTIONTYPE_DOWN, &g_Boss.BossMotion);
+			}
+		}
+	}
 }
 //***************
 // ボスの行動を更新
@@ -623,6 +603,53 @@ void SetBossPartsInfo(LoadInfo PartsInfo)
 	}
 }
 
+void CollisionBosstoSkill(void)
+{
+	Skill* pSkill = GetSkill();
+	// 魔法との当たり判定
+	for (int SkillCount = 0; SkillCount < MAX_SKILL; SkillCount++)
+	{
+		if (pSkill[SkillCount].bUse == true)
+		{
+			// 当たり判定
+			if (collisioncircle(g_Boss.Object.Pos, g_Boss.Radius, pSkill[SkillCount].pos, SKILL_SIZE) == true)
+			{
+				pSkill[SkillCount].nLife = 1;
+				pSkill[SkillCount].bHit = true;
+				HitBoss(pSkill[SkillCount].fPower);
+			}
+		}
+	}
+}
+void CollisionBosstoModel(void)
+{
+	STAGEMODEL* pObb = GetModel();
+	for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++, pObb++)
+	{
+		if (pObb->bUse == true)
+		{
+			OBB BossObb;
+			BossObb.CenterPos = g_Boss.Object.Pos;
+
+			BossObb.fLength[0] = 10.0f;
+			BossObb.fLength[1] = 20.0f;
+			BossObb.fLength[2] = 10.0f;
+
+			BossObb.RotVec[0] = D3DXVECTOR3(1.0f, 0.0f, 0.0f);
+			BossObb.RotVec[1] = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+			BossObb.RotVec[2] = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+			bool bCollision = collisionobb(BossObb, pObb->ObbModel, g_Boss.Object.Pos, pObb->pos);
+			if (bCollision == true)
+			{
+				D3DXVECTOR3 VecMove = g_Boss.Object.OldPos - g_Boss.Object.Pos;
+				D3DXVECTOR3 NorFace = collisionobbfacedot(pObb->ObbModel, D3DXVECTOR3(g_Boss.Object.Pos.x,
+					g_Boss.Object.Pos.y + 10.0f,
+					g_Boss.Object.Pos.z), VecMove);
+				PushPosition(&g_Boss.Object.Pos, VecMove, NorFace);
+			}
+		}
+	}
+}
 //==============================
 // ボスとプレイヤーの当たり判定
 //==============================

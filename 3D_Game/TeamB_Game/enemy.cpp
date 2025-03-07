@@ -25,6 +25,7 @@
 #include "HPgauge.h"
 #include "score.h"
 #include "sound.h"
+#include "arrow.h"
 
 //*******************
 // グローバル変数宣言
@@ -173,8 +174,12 @@ void UpdateEnemy(void)
 					}
 				}
 			}
-			// 行動の更新
-			UpdateAction(EnemyCount);
+
+			if (g_Enemy[EnemyCount].state != ENEMYSTATE_KNOCKUP)
+			{
+				// 行動の更新
+				UpdateAction(EnemyCount);
+			}
 
 			// 魔法との当たり判定
 			for (int SkillCount = 0; SkillCount < MAX_SKILL; SkillCount++)
@@ -384,11 +389,22 @@ ENEMY* GetEnemy()
 //***************
 void HitEnemy(float Atack,int Indx)
 {
+	Player* pPlayer = GetPlayer();
+
 	g_Enemy[Indx].Status.fHP -= (int)Atack;
 
 	g_Enemy[Indx].Action = ENEMYACTION_WELL;
 	g_Enemy[Indx].state = ENEMYSTATE_KNOCKUP;
 	g_Enemy[Indx].bHit = true;
+
+	if (pPlayer->Skilltype == SKILLTYPE_EXPLOSION)
+	{
+		float move = 1.5f;
+
+		D3DXVECTOR3 Vec = g_Enemy[Indx].Object.Pos - pPlayer->pos;
+		D3DXVec3Normalize(&Vec, &Vec);
+		g_Enemy[Indx].move = Vec * move;
+	}
 
 	//HPゲージの更新
 	HPgaugeDeff(g_Enemy[Indx].IndxGuage, g_Enemy[Indx].Status.fHP);
@@ -414,6 +430,7 @@ void HitEnemy(float Atack,int Indx)
 //*************
 void SetEnemy(D3DXVECTOR3 pos, int nType, D3DXVECTOR3 rot)
 {
+	Player* pPlayer = GetPlayer();
 	MODE nMode = GetMode();
 
 	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++)
@@ -454,7 +471,7 @@ void SetEnemy(D3DXVECTOR3 pos, int nType, D3DXVECTOR3 rot)
 				g_Enemy[EnemyCount].type = ENEMYTYPE_SKELETON;
 				g_Enemy[EnemyCount].CollModel = 3;
 				g_Enemy[EnemyCount].Status.fPower = ENEMY_AP;				// 攻撃力
-				g_Enemy[EnemyCount].Status.fSpeed = ENEMY_SPEED;			// スピード
+				g_Enemy[EnemyCount].Status.fSpeed = HOMING_MOVE;			// スピード
 				g_Enemy[EnemyCount].Status.fHP = ENEMY_HP;					// HP
 				g_Enemy[EnemyCount].Status.Score = ENEMY_SCORE;				// スコア
 			}
@@ -463,7 +480,7 @@ void SetEnemy(D3DXVECTOR3 pos, int nType, D3DXVECTOR3 rot)
 				g_Enemy[EnemyCount].type = ENEMYTYPE_ZOMBIE;
 				g_Enemy[EnemyCount].CollModel = 1;
 				g_Enemy[EnemyCount].Status.fPower = ENEMY_AP;				// 攻撃力
-				g_Enemy[EnemyCount].Status.fSpeed = ENEMY_SPEED;			// スピード
+				g_Enemy[EnemyCount].Status.fSpeed = HOMING_MOVE * 0.25f;	// スピード
 				g_Enemy[EnemyCount].Status.fHP = ENEMY_HP;					// HP
 				g_Enemy[EnemyCount].Status.Score = ENEMY_SCORE;				// スコア
 			}
@@ -472,7 +489,7 @@ void SetEnemy(D3DXVECTOR3 pos, int nType, D3DXVECTOR3 rot)
 				g_Enemy[EnemyCount].type = ENEMYTYPE_MIDBOSS;
 				g_Enemy[EnemyCount].CollModel = 10;
 				g_Enemy[EnemyCount].Status.fPower = ENEMY_AP * 1.5;			// 攻撃力
-				g_Enemy[EnemyCount].Status.fSpeed = ENEMY_SPEED;			// スピード
+				g_Enemy[EnemyCount].Status.fSpeed = HOMING_MOVE * 0.5f;			// スピード
 				g_Enemy[EnemyCount].Status.fHP = ENEMY_HP * 2;				// HP
 				g_Enemy[EnemyCount].Status.Score = ENEMY_SCORE * 2;			// スコア
 			}
@@ -589,6 +606,7 @@ void UpdateAction(int nCount)
 		{
 			//モーションの種類設定
 			g_Enemy[nCount].ActionType = ENEMYACTION_RUN;
+
 			//移動量の設定
 			g_Enemy[nCount].move.x = sinf(fAngle) * HOMING_MOVE;
 			g_Enemy[nCount].move.z = cosf(fAngle) * HOMING_MOVE;
