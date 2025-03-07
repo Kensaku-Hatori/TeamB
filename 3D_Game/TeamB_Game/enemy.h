@@ -89,6 +89,7 @@ typedef struct
 	int nActionCount,nActionCounter;
 	int statecount;
 	int CollModel;
+	int IndxMiniMap;
 	float ShadowRadius;
 	float ModelMinX, ModelMaxX;
 	float Radius;
