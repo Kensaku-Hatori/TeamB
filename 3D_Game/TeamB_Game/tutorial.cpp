@@ -64,7 +64,7 @@ void InitTutorial(void)
 
 	g_TutorialType = TUTORIAL_MOVE;
 	g_ButtonSize = D3DXVECTOR3(25.0f, 25.0f, 0.0f);
-	ButtonY = 50.0f;
+	ButtonY = 75.0f;
 
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
@@ -148,6 +148,7 @@ void InitTutorial(void)
 		g_pVtxBuffTutorial->Unlock();
 	}
 
+	float nSpace = 5.0f;
 	//矢印
 	{
 		D3DXVECTOR3 Arrowpos = D3DXVECTOR3(120.0f, SCREEN_HEIGHT / 2, 0.0f);
@@ -188,8 +189,8 @@ void InitTutorial(void)
 				pVtx[2].tex = D3DXVECTOR2(0.0f, 0.0f);
 				pVtx[3].tex = D3DXVECTOR2(0.0f, 1.0f);
 
-				SetButtonUi(BUTTONUI_AKEY, D3DXVECTOR3(Arrowpos.x - g_ButtonSize.x, Arrowpos.y - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
-				SetButtonUi(BUTTONUI_L1, D3DXVECTOR3(Arrowpos.x + g_ButtonSize.x, Arrowpos.y - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
+				SetButtonUi(BUTTONUI_AKEY, D3DXVECTOR3(Arrowpos.x - (g_ButtonSize.x + nSpace), Arrowpos.y - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
+				SetButtonUi(BUTTONUI_L1, D3DXVECTOR3(Arrowpos.x + (g_ButtonSize.x + nSpace), Arrowpos.y - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
 			}
 			else if (nCnt == 1)
 			{
@@ -199,8 +200,8 @@ void InitTutorial(void)
 				pVtx[2].tex = D3DXVECTOR2(1.0f, 1.0f);
 				pVtx[3].tex = D3DXVECTOR2(1.0f, 0.0f);
 
-				SetButtonUi(BUTTONUI_DKEY, D3DXVECTOR3(Arrowpos.x - g_ButtonSize.x, Arrowpos.y - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
-				SetButtonUi(BUTTONUI_R1, D3DXVECTOR3(Arrowpos.x + g_ButtonSize.x, Arrowpos.y - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
+				SetButtonUi(BUTTONUI_DKEY, D3DXVECTOR3(Arrowpos.x - (g_ButtonSize.x + nSpace), Arrowpos.y - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
+				SetButtonUi(BUTTONUI_R1, D3DXVECTOR3(Arrowpos.x + (g_ButtonSize.x + nSpace), Arrowpos.y - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
 			}
 
 			Arrowpos.x += 1030.0f;
@@ -438,12 +439,12 @@ void ChangeTutorialArrow(void)
 void SetTutorial(TUTORIAL type)
 {
 	g_TutorialType = type;
+	float nSpace = 5.0f;
+	SetButtonUi(BUTTONUI_AKEY, D3DXVECTOR3(120.0f - (g_ButtonSize.x + nSpace), SCREEN_HEIGHT / 2 - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
+	SetButtonUi(BUTTONUI_L1, D3DXVECTOR3(120.0f + (g_ButtonSize.x + nSpace), SCREEN_HEIGHT / 2 - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
 
-	SetButtonUi(BUTTONUI_AKEY, D3DXVECTOR3(120.0f - g_ButtonSize.x, SCREEN_HEIGHT / 2 - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
-	SetButtonUi(BUTTONUI_L1, D3DXVECTOR3(120.0f + g_ButtonSize.x, SCREEN_HEIGHT / 2 - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
-
-	SetButtonUi(BUTTONUI_DKEY, D3DXVECTOR3(1150.0f - g_ButtonSize.x, SCREEN_HEIGHT / 2 - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
-	SetButtonUi(BUTTONUI_R1, D3DXVECTOR3(1150.0f + g_ButtonSize.x, SCREEN_HEIGHT / 2 - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
+	SetButtonUi(BUTTONUI_DKEY, D3DXVECTOR3(1150.0f - (g_ButtonSize.x + nSpace), SCREEN_HEIGHT / 2 - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
+	SetButtonUi(BUTTONUI_R1, D3DXVECTOR3(1150.0f + (g_ButtonSize.x + nSpace), SCREEN_HEIGHT / 2 - ButtonY, 0.0f), g_ButtonSize, BUTTONUI_TYPE_TUTORIAL);
 }
 
 //
