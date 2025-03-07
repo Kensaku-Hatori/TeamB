@@ -34,4 +34,6 @@ void DrawTutorial(void);
 void ChangeTutorial(void);
 void ChangeTutorialArrow(void);
 void SetTutorial(TUTORIAL type);
+void SetTutorialNo(void);
+void AddTutorialNo(void);
 #endif
