@@ -419,7 +419,6 @@ void HitEnemy(float Atack,int Indx)
 	if (g_Enemy[Indx].Status.fHP <= 0.0f && g_Enemy[Indx].bUse == true)
 	{// Žg‚í‚ê‚Ä‚¢‚Ä‘Ì—Í‚ª‚OˆÈ‰º‚È‚ç
 		DeadEnemy(Indx);
-		DeleteEnemyMiniMap(g_Enemy[Indx].IndxMiniMap);
 	}
 }
 
@@ -557,6 +556,7 @@ void DeadEnemy(int Indx)
 		pPlayer->bLockOn = false;
 	}
 
+	DeleteEnemyMiniMap(g_Enemy[Indx].IndxMiniMap);
 	AddScore(g_Enemy[Indx].Status.Score);
 }
 

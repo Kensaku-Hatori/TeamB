@@ -369,7 +369,7 @@ void DrawMiniMap(void)
 
 	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++)
 	{
-		if(g_MiniMapEnemy->bUse == true)
+		if(g_MiniMapEnemy[EnemyCount].bUse == true)
 		{//アイテム欄
 			//頂点バッファをデータストリームに設定
 			pDevice->SetStreamSource(0, g_MiniMapEnemy[EnemyCount].pVtxBuffMapEnemy, 0, sizeof(VERTEX_2D));
