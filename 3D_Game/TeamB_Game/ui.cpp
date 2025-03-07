@@ -40,8 +40,8 @@ void InitUi(void)
 
 	InitItemUI();
 
-	//InitMiniMap();
-	//SetMapPlayer(MODE_STAGEONE);
+	InitMiniMap();
+	SetMapPlayer(MODE_STAGEONE);
 
 	InitSkillUI();
 
@@ -64,7 +64,7 @@ void UninitUi(void)
 
 	UninitItemUI();
 
-	//UninitMiniMap();
+	UninitMiniMap();
 
 	UninitSkillUI();
 
@@ -91,7 +91,7 @@ void UpdateUi(void)
 
 	UpdateItemUI();
 
-	//UpdateMiniMap();
+	UpdateMiniMap();
 
 	UpdateSkillUI();
 
@@ -121,7 +121,7 @@ void DrawUi(void)
 
 	DrawItemUI();
 
-	//DrawMiniMap();
+	DrawMiniMap();
 
 	DrawSkillUI();
 
