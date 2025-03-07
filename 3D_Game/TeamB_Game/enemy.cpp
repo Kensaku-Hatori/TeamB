@@ -394,7 +394,7 @@ void HitEnemy(float Atack,int Indx)
 	g_Enemy[Indx].state = ENEMYSTATE_KNOCKUP;
 	g_Enemy[Indx].bHit = true;
 
-	if (pPlayer->Skilltype == SKILLTYPE_EXPLOSION)
+	if (pPlayer->Skilltype == SKILLTYPE_EXPLOSION && g_Enemy[Indx].type != ENEMYTYPE_MIDBOSS)
 	{
 		float move = 1.5f;
 

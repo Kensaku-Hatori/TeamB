@@ -52,7 +52,7 @@ void UpdateCamera(void)
 	Lockon* pLockon = GetLockOn();				//ロックオン
 	MODE pMode = GetMode();						//ゲームモード
 
-	//ResetCameraPos(D3DXVECTOR3(350.0f, 200.0f, 1245.0f), pPlayer->pos);
+	ResetCameraPos(D3DXVECTOR3(350.0f, 200.0f, 1245.0f), pPlayer->pos);
 
 	// 角度の近道
 	if (g_camera.rotDest.y >= D3DX_PI)
@@ -138,7 +138,7 @@ void UpdateCamera(void)
 		Player* pPlayer = GetPlayer();
 		if (pPlayer->bLockOn == false)
 		{
-			//UpdateCameratoMousePos();
+			UpdateCameratoMousePos();
 			UpdateCameratoJoyPadPos();
 		}
 		else
