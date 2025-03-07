@@ -126,19 +126,25 @@ void InitMiniMap(void)
 void UninitMiniMap(void)
 {
 	//テクスチャの破棄
-	if (g_pTextureMiniMap != NULL && g_pTextureMapPlayer != NULL)
+	if (g_pTextureMiniMap != NULL)
 	{
 		g_pTextureMiniMap->Release();
 		g_pTextureMiniMap = NULL;
+	}
+	if (g_pTextureMapPlayer != NULL)
+	{
 		g_pTextureMapPlayer->Release();
 		g_pTextureMapPlayer = NULL;
 	}
 
 	//頂点バッファの破棄
-	if (g_pVtxBuffMiniMap != NULL && g_pVtxBuffMapPlayer != NULL)
+	if (g_pVtxBuffMiniMap != NULL)
 	{
 		g_pVtxBuffMiniMap->Release();
 		g_pVtxBuffMiniMap = NULL;
+	}
+	if (g_pVtxBuffMapPlayer != NULL)
+	{
 		g_pVtxBuffMapPlayer->Release();
 		g_pVtxBuffMapPlayer = NULL;
 	}
