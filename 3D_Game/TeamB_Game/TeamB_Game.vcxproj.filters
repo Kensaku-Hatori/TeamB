@@ -157,6 +157,9 @@
     <ClCompile Include="buttonUI.cpp">
       <Filter>K_A\.cpp</Filter>
     </ClCompile>
+    <ClCompile Include="tutorial.cpp">
+      <Filter>K_A\.cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="wall.h">
@@ -322,6 +325,9 @@
       <Filter>K_A\.h</Filter>
     </ClInclude>
     <ClInclude Include="buttonUI.h">
+      <Filter>K_A\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial.h">
       <Filter>K_A\.h</Filter>
     </ClInclude>
   </ItemGroup>

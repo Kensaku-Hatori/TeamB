@@ -29,7 +29,12 @@ LPDIRECT3D9 g_pD3D = NULL;
 LPDIRECT3DDEVICE9 g_pD3DDevice = NULL;
 MODE g_mode = MODE_TITLE;
 LPD3DXFONT g_pFont;
+RECT g_windowRect; // ウィンドウ切り替え変数
 bool bDispFont = true;
+bool g_isFullscreen = false; // 初期状態をフルスクリーンにしない
+
+// プロトタイプ宣言
+void ToggleFullScreen(HWND hWnd); // フルスクリーン変更処理
 
 //=============
 // メイン関数
@@ -84,24 +89,22 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hInstancePrev, _
 	DWORD dwExecLastTime;
 
 	//初期化処理
-	
-	if (FAILED(Init(hInstance, hWnd, FALSE)))
-	{
+	//初期化処理
+	if (FAILED(Init(hInstance, hWnd, TRUE)))
+	{// 初期化処理が失敗したとき
 		return -1;
 	}
-	//if (FAILED(Init(hInstance, hWnd, TRUE)))
-	//{
-	//	return -1;
-	//}
-	//
+
+	
 	//分解能を設定
 	timeBeginPeriod(1);
 	dwCurrentTime = 0;
 	dwExecLastTime = timeGetTime();	
 
-	//ウインドウの表示
-	ShowWindow(hWnd, nCmdShow);
+	//ウインドウの表示 (フルスクリーン)
+	ShowWindow(hWnd, SW_SHOWMAXIMIZED);
 	UpdateWindow(hWnd);
+
 	//メッセージループ
 	while (1)
 	{
@@ -180,12 +183,18 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			if (nID == IDYES)
 			{
 				DestroyWindow(hWnd);
-				break;
 			}
 			else
 			{
 				return 0;
 			}
+			break;
+
+		case VK_F11:
+			// F11キーが押された
+			ToggleFullScreen(hWnd);
+			break;
+
 		default:
 			break;
 		}
@@ -810,4 +819,31 @@ D3DXVECTOR3* PitoRadian(D3DXVECTOR3* rot)
 	}
 
 	return rot;
+}
+//****************************************
+// ウィンドウをフルスクリーンにする処理
+//****************************************
+void ToggleFullScreen(HWND hWnd)
+{
+	// 現在のウィンドウスタイルを取得
+	DWORD dwStyle = GetWindowLong(hWnd, GWL_STYLE);
+	if (g_isFullscreen)
+	{
+		// ウィンドウモードに切り替え
+		SetWindowLong(hWnd, GWL_STYLE, dwStyle | WS_OVERLAPPEDWINDOW);
+		SetWindowPos(hWnd, HWND_TOP, g_windowRect.left, g_windowRect.top,
+			g_windowRect.right - g_windowRect.left, g_windowRect.bottom - g_windowRect.top,
+			SWP_FRAMECHANGED | SWP_NOACTIVATE);
+		ShowWindow(hWnd, SW_NORMAL);
+	}
+	else
+	{
+		// フルスクリーンモードに切り替え
+		GetWindowRect(hWnd, &g_windowRect);
+		SetWindowLong(hWnd, GWL_STYLE, dwStyle & ~WS_OVERLAPPEDWINDOW);
+		SetWindowPos(hWnd, HWND_TOP, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN),
+			SWP_FRAMECHANGED | SWP_NOACTIVATE);
+		ShowWindow(hWnd, SW_MAXIMIZE);
+	}
+	g_isFullscreen = !g_isFullscreen;
 }

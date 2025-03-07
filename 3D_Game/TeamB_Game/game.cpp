@@ -39,12 +39,15 @@
 #include "HPgauge.h"
 #include "mouse.h"
 #include "billboard.h"
+#include "tutorial.h"
+#include "buttonUI.h"
 
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
 int g_nCounterGameState = 0;
 bool g_bPause = false;  //ポーズ中かどうか
 bool bAbo = false;//全滅フラグ
+bool g_bTutorial = true;
 
 //=============
 // 初期化処理
@@ -126,6 +129,8 @@ void InitGame(void)
 	// 見えない壁の初期化処理
 	InitInvisibleWall();
 
+	InitTutorial();
+
 	//各初期化
 	g_gamestate = GAMESTATE_NORMAL;		//ゲームステート
 	g_nCounterGameState = 0;			//ステートカウンター
@@ -195,6 +200,8 @@ void UninitGame(void)
 
 	//メッシュフィールドの終了処理
 	UninitMeshfield();
+
+	UninitTutorial();
 }
 
 //===========
@@ -202,9 +209,27 @@ void UninitGame(void)
 //===========
 void UpdateGame(void)
 {
+	MODE Mode = GetMode();
+
 	if (KeyboardTrigger(DIK_P) == true || GetJoypadTrigger(JOYKEY_START) == true)
 	{//ポーズキーが押された
 		g_bPause = g_bPause ? false : true;
+	}
+
+	if (Mode == MODE_STAGEONE)
+	{
+		if (KeyboardTrigger(DIK_TAB) == true || GetJoypadTrigger(JOYKEY_BACK) == true)
+		{
+			g_bTutorial = g_bTutorial ? false : true;
+			if (g_bTutorial == true)
+			{
+				SetTutorial(TUTORIAL_MOVE);
+			}
+			else if (g_bTutorial == false)
+			{
+				DeleteTutorialUI();
+			}
+		}
 	}
 
 	if (g_gamestate != GAMESTATE_EFFECTEDITER)
@@ -215,7 +240,12 @@ void UpdateGame(void)
 			g_gamestate = GAMESTATE_PAUSE;
 			UpdatePause(0);
 		}
-		else if (g_bPause == false)
+		else if (g_bTutorial == true)
+		{//ポーズ中
+			//ポーズの更新処理
+			UpdateTutorial();
+		}
+		else if (g_bPause == false && g_bTutorial == false)
 		{
 			//メッシュフィールドの更新処理
 			UpdateMeshfield();
@@ -458,6 +488,13 @@ void DrawGame(void)
 		//ポーズの描画処理
 		DrawPause();
 	}
+	//ポーズしているなら
+	else if (g_bTutorial == true)
+	{//ポーズ中
+		//ポーズの描画処理
+		DrawTutorial();
+	}
+
 }
 
 //===============
@@ -482,4 +519,12 @@ GAMESTATE GetGameSatate(void)
 void SetEnablePause(bool bPause)
 {
 	g_bPause = bPause;
+}
+
+//
+//
+//
+void SetEnableTutorial(bool bTutorial)
+{
+	g_bTutorial = bTutorial;
 }

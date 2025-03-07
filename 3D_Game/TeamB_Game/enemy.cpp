@@ -26,6 +26,7 @@
 #include "score.h"
 #include "sound.h"
 #include "arrow.h"
+#include "minimap.h"
 
 //*******************
 // グローバル変数宣言
@@ -148,6 +149,7 @@ void UpdateEnemy(void)
 	{
 		if (g_Enemy[EnemyCount].bUse == true)
 		{
+			UpdateMiniMapEnemy(g_Enemy[EnemyCount].IndxMiniMap,g_Enemy[EnemyCount].Object.Pos);
 			STAGEMODEL*pObb = GetModel();
 			for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++, pObb++)
 			{
@@ -422,6 +424,7 @@ void HitEnemy(float Atack,int Indx)
 	if (g_Enemy[Indx].Status.fHP <= 0.0f && g_Enemy[Indx].bUse == true)
 	{// 使われていて体力が０以下なら
 		DeadEnemy(Indx);
+		DeleteEnemyMiniMap(g_Enemy[Indx].IndxMiniMap);
 	}
 }
 
@@ -437,6 +440,7 @@ void SetEnemy(D3DXVECTOR3 pos, int nType, D3DXVECTOR3 rot)
 	{
 		if (g_Enemy[EnemyCount].bUse == false)
 		{
+			g_Enemy[EnemyCount].IndxMiniMap = SetMapEnemy(pos);
 			g_nNumEnemy++;
 			g_Enemy[EnemyCount].bUse = true;
 			g_Enemy[EnemyCount].Object.Pos = pos;
@@ -445,6 +449,7 @@ void SetEnemy(D3DXVECTOR3 pos, int nType, D3DXVECTOR3 rot)
 			g_Enemy[EnemyCount].nType = nType;
 			g_Enemy[EnemyCount].nNumModel = g_EnemyOrigin[nType].nNumParts;
 			g_Enemy[EnemyCount].EnemyMotion.nNumModel = g_EnemyOrigin[nType].nNumParts;
+
 			for (int PartsCount = 0; PartsCount < g_EnemyOrigin[nType].nNumParts; PartsCount++)
 			{
 				g_Enemy[EnemyCount].EnemyMotion.aModel[PartsCount].nIndx = g_EnemyOrigin[nType].EnemyMotion.aModel[PartsCount].nIndx;

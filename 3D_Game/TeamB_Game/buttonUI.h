@@ -14,18 +14,32 @@
 typedef enum
 {
 	//キーボード
-	BUTTONUI_WHEEL,
+	BUTTONUI_WHEEL = 0,
+	BUTTONUI_AKEY,
+	BUTTONUI_DKEY,
 
 	//コントローラー
 	BUTTONUI_SAYU,
+	BUTTONUI_R1,
+	BUTTONUI_L1,
+
 	BUTTONUI_MAX
 }BUTTONUI;
+
+typedef enum
+{
+	BUTTONUI_TYPE_GAME = 0,
+	BUTTONUI_TYPE_TUTORIAL,
+	BUTTONUI_TYPE_MAX
+}BUTTONUI_TYPE;
+
 
 typedef struct
 {
 	BUTTONUI ButtonUi;
 	D3DXVECTOR3 pos;
 	D3DXVECTOR3 size;
+	BUTTONUI_TYPE UiType;
 	bool bUse;
 }ButtonUi;
 
@@ -34,6 +48,6 @@ void InitButtonUi(void);
 void UninitButtonUi(void);
 void UpdateButtonUi(void);
 void DrawButtonUi(void);
-void SetButtonUi(BUTTONUI type, D3DXVECTOR3 pos, D3DXVECTOR3 size);
-
+void SetButtonUi(BUTTONUI type, D3DXVECTOR3 pos, D3DXVECTOR3 size,BUTTONUI_TYPE UiType);
+void DeleteTutorialUI(void);
 #endif

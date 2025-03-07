@@ -753,7 +753,7 @@ void LoadBillBoardInfo(FILE* pFile)
 			}
 			else if (strcmp(&cData1[0], "END_BILLBOARDSET") == 0)
 			{
-				SetBiillboard(Pos, (int)Size.x, (int)Size.y, nType, D3DXVECTOR2(Origin.x, Origin.y), bShadow);
+				//SetBiillboard(Pos, (int)Size.x, (int)Size.y, nType, D3DXVECTOR2(Origin.x, Origin.y), bShadow);
 				break;
 			}
 		}
