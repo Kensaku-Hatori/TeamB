@@ -190,16 +190,10 @@ void UninitTutorial(void)
 //==========
 void UpdateTutorial(void)
 {
-	FADE g_fade;
-	g_fade = GetFade();
-	Player* pPlayer = GetPlayer();
-
 	ChangeTutorial();	
 	//ChangeTutorialArrow();
 	
 	//VERTEX_2D* pVtx;
-
-
 }
 //===========
 //•`‰æˆ—

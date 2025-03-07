@@ -110,8 +110,6 @@ void UninitSkill(void)
 //=======================
 void UpdateSkill(void)
 {
-	//プレイヤーの情報取得
-	Player* pPlayer = GetPlayer();
 	//影の情報取得
 	Shadow* pShadow = GetShadow();
 	
@@ -469,10 +467,6 @@ void UpdateHormingPosition(int Indx)
 		pPlayer->PlayerMotion.aModel[1].mtxWorld._42,
 		pPlayer->PlayerMotion.aModel[1].mtxWorld._43) + fDistance;
 	g_Skill[Indx].StartPos = g_Skill[Indx].pos;
-}
-void UpdateHormingAnim(int Indx)
-{
-
 }
 //==============
 // 魔法の取得
