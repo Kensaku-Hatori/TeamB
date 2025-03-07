@@ -1,3 +1,9 @@
+//*********************************************
+// 
+// Author: HATORI
+// パーティクルのエディター[particleEditer.cpp]
+// 
+//*********************************************
 #include "particleEditer.h"
 #include "particle.h"
 #include "effect.h"
@@ -10,6 +16,9 @@
 
 PARTICLEEDITER g_ParticleEditer;
 
+//***********************************
+// パーティクルエディターの初期化処理
+//***********************************
 void InitParticleEditer()
 {
 	Player* pPlayer = GetPlayer();
@@ -38,6 +47,9 @@ void InitParticleEditer()
 		1.0f,
 		EFFECT_NONE);
 }
+//*********************************
+// パーティクルエディターの更新処理
+//*********************************
 void UpdateParticleEditer()
 {
 	UpdateEffect();
@@ -136,6 +148,9 @@ void UpdateParticleEditer()
 	}
 	SetParticleInfo(g_ParticleEditer.ParticleInfo);
 }
+//*********************************
+// パーティクルエディターの取得処理
+//*********************************
 PARTICLEEDITER *GetParticleInfo()
 {
 	return &g_ParticleEditer;

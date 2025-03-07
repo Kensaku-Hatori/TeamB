@@ -1,9 +1,9 @@
-//**********************
+//*********************************
 // 
 // Author: HATORI
-// ビルボード描画処理
+// エフェクトに関する処理をまとめた
 // 
-//**********************
+//*********************************
 
 
 //*************
@@ -327,6 +327,9 @@ void DrawEffect(void)
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 }
+//*********************
+// エフェクトの設定処理
+//*********************
 void SetEffect(D3DXVECTOR3 pos, D3DXVECTOR3 dir, int nLife, float speed,D3DXVECTOR3 scale,D3DCOLOR col,EFFECTTYPE nType,int Indx,float gravity,D3DXVECTOR3 Rot)
 {
 	VERTEX_3D* pVtx = NULL;

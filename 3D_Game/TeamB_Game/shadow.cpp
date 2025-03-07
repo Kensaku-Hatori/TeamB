@@ -25,7 +25,6 @@ void InitShadow(void)
 		g_shadow[nCnt].pos = D3DXVECTOR3(0.0f, 0.1f, 0.0f);			//ˆÊ’u‚Ì‰Šú‰»
 		g_shadow[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			//Œü‚«‚Ì‰Šú‰»
 		g_shadow[nCnt].fRadius = 0.0f;								//”¼Œa‚Ì‰Šú‰»
-
 		g_shadow[nCnt].bUse = false;								//g—p‚µ‚Ä‚µ‚Ä‚¢‚È‚¢ó‘Ô‚É‚·‚é
 	}
 

@@ -51,7 +51,18 @@ void InitLight(void)
 //====================
 void UninitLight(void)
 {
+	LPDIRECT3DDEVICE9 pDevice;
+	//デバイスの取得
+	pDevice = GetDevice();
 
+	for (int LightCount = 0; LightCount < MAX_LIGHT; LightCount++)
+	{
+		//ライトを設定
+		pDevice->SetLight(LightCount, &g_light[LightCount]);
+
+		//ライトを有効にする
+		pDevice->LightEnable(LightCount, FALSE);
+	}
 }
 //====================
 // ライトの更新処理

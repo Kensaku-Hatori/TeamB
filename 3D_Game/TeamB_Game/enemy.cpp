@@ -237,11 +237,6 @@ void UpdateEnemy(void)
 			}
 			g_Enemy[EnemyCount].statecount--;
 
-			////移動量の更新(減衰)
-			//g_Enemy[EnemyCount].move.x = (0.0f - g_Enemy[EnemyCount].move.x) * 0.1f;
-			//g_Enemy[EnemyCount].move.y = (0.0f - g_Enemy[EnemyCount].move.y) * 0.1f;
-			//g_Enemy[EnemyCount].move.z = (0.0f - g_Enemy[EnemyCount].move.z) * 0.1f;
-
 			//床判定
 			if (g_Enemy[EnemyCount].Object.Pos.y < 0)
 			{
@@ -424,7 +419,6 @@ void HitEnemy(float Atack,int Indx)
 	if (g_Enemy[Indx].Status.fHP <= 0.0f && g_Enemy[Indx].bUse == true)
 	{// 使われていて体力が０以下なら
 		DeadEnemy(Indx);
-		DeleteEnemyMiniMap(g_Enemy[Indx].IndxMiniMap);
 	}
 }
 
@@ -562,6 +556,7 @@ void DeadEnemy(int Indx)
 		pPlayer->bLockOn = false;
 	}
 
+	DeleteEnemyMiniMap(g_Enemy[Indx].IndxMiniMap);
 	AddScore(g_Enemy[Indx].Status.Score);
 }
 
@@ -881,16 +876,4 @@ void EnemyMatrixWand(int Index)
 
 	pDevice->SetTransform(D3DTS_WORLD,
 		&g_Enemy[Index].mtxWand);
-
-	//// エフェクトの設定
-	//SetEffect(D3DXVECTOR3(g_Enemy[Index].mtxWand._41, g_Enemy[Index].mtxWand._42, g_Enemy[Index].mtxWand._43),
-	//	D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-	//	50,
-	//	0,
-	//	D3DXVECTOR3(g_Enemy[Index].Radius / 2, g_Enemy[Index].Radius / 2, g_Enemy[Index].Radius / 2),
-	//	D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-	//	EFFECT_SKILL,
-	//	0,
-	//	0.0f,
-	//	D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 }

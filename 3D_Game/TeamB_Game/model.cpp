@@ -115,14 +115,6 @@ void UpdateStageModel()
 			obb1Center.z = pPlayer->pos.z;
 			SetObbInfo(ModelCount);
 			CollOBBs(g_StageModel[ModelCount].ObbModel, obb1Center, ModelCount);
-			//if (CollisionRaytoObb(LocalRayPos, LocalRayDirection, g_StageModel[ModelCount].ObbModel) == true)
-			//{
-			//	g_StageModel[ModelCount].bHitRayCamera = true;
-			//}
-			//else
-			//{
-			//	g_StageModel[ModelCount].bHitRayCamera = false;
-			//}
 		}
 	}
 }

@@ -126,6 +126,15 @@ void UninitPlayer(void)
 			g_player.PlayerMotion.aModel[nCnt].pBuffMat->Release();
 			g_player.PlayerMotion.aModel[nCnt].pBuffMat = NULL;
 		}
+		for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
+		{
+			//ƒ}ƒeƒŠƒAƒ‹‚Ì”jŠü
+			if (g_player.PlayerMotion.aModel[nCnt].pTexture[TexCount] != NULL)
+			{
+				g_player.PlayerMotion.aModel[nCnt].pTexture[TexCount]->Release();
+				g_player.PlayerMotion.aModel[nCnt].pTexture[TexCount] = NULL;
+			}
+		}
 	}
 }
 

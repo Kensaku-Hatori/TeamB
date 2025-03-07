@@ -26,6 +26,7 @@ void InitCamera(void)
 	g_camera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
 	g_camera.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	g_camera.rotDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_camera.fDistance = sqrtf(((g_camera.posV.x - g_camera.posR.x) * (g_camera.posV.x - g_camera.posR.x))
 							 + ((g_camera.posV.y - g_camera.posR.y) * (g_camera.posV.y - g_camera.posR.y))
 							 + ((g_camera.posV.z - g_camera.posR.z) * (g_camera.posV.z - g_camera.posR.z)));
