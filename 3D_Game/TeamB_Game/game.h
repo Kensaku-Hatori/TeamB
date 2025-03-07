@@ -41,5 +41,6 @@ void DrawGame(void);
 void SetGameState(GAMESTATE state);
 GAMESTATE GetGameSatate(void);
 void SetEnablePause(bool bPause);
+void SetEnableTutorial(bool bTutorial);
 
 #endif

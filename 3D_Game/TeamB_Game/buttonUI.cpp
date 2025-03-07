@@ -23,8 +23,13 @@ void InitButtonUi(void)
 	pDevice = GetDevice();
 
 	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ENTERkey.png", &g_pTextureButtonUi[BUTTONUI_WHEEL]);	//枠
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ESCkey.png", &g_pTextureButtonUi[BUTTONUI_SAYU]);	//枠
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ENTERkey.png", &g_pTextureButtonUi[BUTTONUI_WHEEL]);	//
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\ESCkey.png", &g_pTextureButtonUi[BUTTONUI_SAYU]);	//
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\Akey.png", &g_pTextureButtonUi[BUTTONUI_AKEY]);	//
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\Dkey.png", &g_pTextureButtonUi[BUTTONUI_DKEY]);	//
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\R1.png", &g_pTextureButtonUi[BUTTONUI_R1]);	//
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\L1.png", &g_pTextureButtonUi[BUTTONUI_L1]);	//
+
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_BUTTONUI,
@@ -43,6 +48,7 @@ void InitButtonUi(void)
 		g_ButtonUi[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		g_ButtonUi[nCnt].size = D3DXVECTOR3(10.0f, 10.0f, 0.0f);
 		g_ButtonUi[nCnt].ButtonUi = BUTTONUI_WHEEL;
+		g_ButtonUi[nCnt].UiType = BUTTONUI_TYPE_GAME;
 		g_ButtonUi[nCnt].bUse = false;
 
 		//頂点座標の設定
@@ -96,6 +102,7 @@ void UninitButtonUi(void)
 //==========
 void UpdateButtonUi(void)
 {
+
 }
 //===========
 // 描画処理
@@ -126,7 +133,7 @@ void DrawButtonUi(void)
 //===========
 // UIの設定
 //===========
-void SetButtonUi(BUTTONUI type, D3DXVECTOR3 pos, D3DXVECTOR3 size)
+void SetButtonUi(BUTTONUI type, D3DXVECTOR3 pos, D3DXVECTOR3 size, BUTTONUI_TYPE UiType)
 {
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
@@ -140,7 +147,7 @@ void SetButtonUi(BUTTONUI type, D3DXVECTOR3 pos, D3DXVECTOR3 size)
 			g_ButtonUi[nCnt].pos = pos;
 			g_ButtonUi[nCnt].size = size;
 			g_ButtonUi[nCnt].ButtonUi = type;
-
+			g_ButtonUi[nCnt].UiType = UiType;
 			//頂点座標の設定
 			pVtx[0].pos = D3DXVECTOR3(g_ButtonUi[nCnt].pos.x - g_ButtonUi[nCnt].size.x, g_ButtonUi[nCnt].pos.y - g_ButtonUi[nCnt].size.y, 0.0f);
 			pVtx[1].pos = D3DXVECTOR3(g_ButtonUi[nCnt].pos.x + g_ButtonUi[nCnt].size.x, g_ButtonUi[nCnt].pos.y - g_ButtonUi[nCnt].size.y, 0.0f);
@@ -170,4 +177,20 @@ void SetButtonUi(BUTTONUI type, D3DXVECTOR3 pos, D3DXVECTOR3 size)
 	}
 	//頂点バッファをアンロック
 	g_pVtxBuffButtonUi->Unlock();
+}
+//
+//
+//
+void DeleteTutorialUI(void)
+{
+	for (int nCnt = 0; nCnt < MAX_BUTTONUI; nCnt++)
+	{
+		if (g_ButtonUi[nCnt].bUse == true)
+		{
+			if (g_ButtonUi[nCnt].UiType == BUTTONUI_TYPE_TUTORIAL)
+			{
+				g_ButtonUi[nCnt].bUse = false;
+			}
+		}
+	}
 }
