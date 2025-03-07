@@ -33,4 +33,5 @@ void UpdateMiniMapEnemy(int Indx,D3DXVECTOR3 PosEnemy);
 void DrawMiniMap(void);
 void SetMapPlayer(int nStageNo);
 int SetMapEnemy(D3DXVECTOR3 Pos);
+void DeleteEnemyMiniMap(int Indx);
 #endif

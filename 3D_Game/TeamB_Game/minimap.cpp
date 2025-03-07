@@ -200,6 +200,9 @@ void UpdateMiniMapEnemy(int Indx,D3DXVECTOR3 PosEnemy)
 	pVtx[1].pos = D3DXVECTOR3(Pos.x + MAPSIZE_PLAYER, Pos.y, 0.0f);
 	pVtx[2].pos = D3DXVECTOR3(Pos.x, Pos.y + MAPSIZE_PLAYER, 0.0f);
 	pVtx[3].pos = D3DXVECTOR3(Pos.x + MAPSIZE_PLAYER, Pos.y + MAPSIZE_PLAYER, 0.0f);
+
+	//頂点バッファをアンロック
+	g_MiniMapEnemy[Indx].pVtxBuffMapEnemy->Unlock();
 }
 //===========
 // 描画処理
@@ -326,4 +329,8 @@ int SetMapEnemy(D3DXVECTOR3 Pos)
 		}
 	}
 	return MaxpEnemyCount;
+}
+void DeleteEnemyMiniMap(int Indx)
+{
+	g_MiniMapEnemy[Indx].bUse = false;
 }
