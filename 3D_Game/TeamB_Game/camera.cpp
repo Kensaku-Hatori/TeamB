@@ -72,25 +72,25 @@ void UpdateCamera(void)
 	
 	g_camera.rot += (g_camera.rotDest - g_camera.rot) * 0.3f;
 
-//	//プレイヤーがロックオンしているなら
-//	if (pPlayer->bLockOn == true)
-//	{
-//		g_camera.posRDest.x = pLockon->pos.x + sinf(pPlayer->rot.x) * (pLockon->pos.x - g_camera.posR.x);
-//		g_camera.posRDest.y = pLockon->pos.y;
-//		g_camera.posRDest.z = pLockon->pos.z + cosf(pPlayer->rot.z) * (pLockon->pos.z - g_camera.posR.z);
-//
-//		g_camera.posVDest.x = pLockon->pos.x + sinf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
-//		g_camera.posVDest.z = pLockon->pos.z + cosf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
-//	}
-//	else
-//	{
-//		g_camera.posRDest.x = pPlayer->pos.x + sinf(pPlayer->rot.x) * (pPlayer->pos.x - g_camera.posR.x);
-//		g_camera.posRDest.y = pPlayer->pos.y;
-//		g_camera.posRDest.z = pPlayer->pos.z + cosf(pPlayer->rot.z) * (pPlayer->pos.z - g_camera.posR.z);
-//
-//		g_camera.posVDest.x = pPlayer->pos.x + sinf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
-//		g_camera.posVDest.z = pPlayer->pos.z + cosf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
-//	}
+	//プレイヤーがロックオンしているなら
+	if (pPlayer->bLockOn == true)
+	{
+		g_camera.posRDest.x = pLockon->pos.x + sinf(pPlayer->rot.x) * (pLockon->pos.x - g_camera.posR.x);
+		g_camera.posRDest.y = pLockon->pos.y;
+		g_camera.posRDest.z = pLockon->pos.z + cosf(pPlayer->rot.z) * (pLockon->pos.z - g_camera.posR.z);
+
+		g_camera.posVDest.x = pLockon->pos.x + sinf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
+		g_camera.posVDest.z = pLockon->pos.z + cosf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
+	}
+	else
+	{
+		g_camera.posRDest.x = pPlayer->pos.x + sinf(pPlayer->rot.x) * (pPlayer->pos.x - g_camera.posR.x);
+		g_camera.posRDest.y = pPlayer->pos.y;
+		g_camera.posRDest.z = pPlayer->pos.z + cosf(pPlayer->rot.z) * (pPlayer->pos.z - g_camera.posR.z);
+
+		g_camera.posVDest.x = pPlayer->pos.x + sinf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
+		g_camera.posVDest.z = pPlayer->pos.z + cosf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
+	}
 
 	g_camera.posR.x += (g_camera.posRDest.x - g_camera.posR.x) * 0.08f;
 	g_camera.posR.y += (g_camera.posRDest.y - g_camera.posR.y) * 1.0f;
