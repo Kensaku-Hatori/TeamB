@@ -21,7 +21,7 @@ Camera g_camera;
 void InitCamera(void)
 {
 	//視点・注視点・上方向を設定する
-	g_camera.posV = D3DXVECTOR3(0.0f, 200.0f, 300.0f);
+	g_camera.posV = D3DXVECTOR3(0.0f, 200.0f, -300.0f);
 	g_camera.posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_camera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
@@ -72,25 +72,25 @@ void UpdateCamera(void)
 	
 	g_camera.rot += (g_camera.rotDest - g_camera.rot) * 0.3f;
 
-	////プレイヤーがロックオンしているなら
-	//if (pPlayer->bLockOn == true)
-	//{
-	//	g_camera.posRDest.x = pLockon->pos.x + sinf(pPlayer->rot.x) * (pLockon->pos.x - g_camera.posR.x);
-	//	g_camera.posRDest.y = pLockon->pos.y;
-	//	g_camera.posRDest.z = pLockon->pos.z + cosf(pPlayer->rot.z) * (pLockon->pos.z - g_camera.posR.z);
+	//プレイヤーがロックオンしているなら
+	if (pPlayer->bLockOn == true)
+	{
+		g_camera.posRDest.x = pLockon->pos.x + sinf(pPlayer->rot.x) * (pLockon->pos.x - g_camera.posR.x);
+		g_camera.posRDest.y = pLockon->pos.y;
+		g_camera.posRDest.z = pLockon->pos.z + cosf(pPlayer->rot.z) * (pLockon->pos.z - g_camera.posR.z);
 
-	//	g_camera.posVDest.x = pLockon->pos.x + sinf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
-	//	g_camera.posVDest.z = pLockon->pos.z + cosf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
-	//}
-	//else
-	//{
-	//	g_camera.posRDest.x = pPlayer->pos.x + sinf(pPlayer->rot.x) * (pPlayer->pos.x - g_camera.posR.x);
-	//	g_camera.posRDest.y = pPlayer->pos.y;
-	//	g_camera.posRDest.z = pPlayer->pos.z + cosf(pPlayer->rot.z) * (pPlayer->pos.z - g_camera.posR.z);
+		g_camera.posVDest.x = pLockon->pos.x + sinf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
+		g_camera.posVDest.z = pLockon->pos.z + cosf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
+	}
+	else
+	{
+		g_camera.posRDest.x = pPlayer->pos.x + sinf(pPlayer->rot.x) * (pPlayer->pos.x - g_camera.posR.x);
+		g_camera.posRDest.y = pPlayer->pos.y;
+		g_camera.posRDest.z = pPlayer->pos.z + cosf(pPlayer->rot.z) * (pPlayer->pos.z - g_camera.posR.z);
 
-	//	g_camera.posVDest.x = pPlayer->pos.x + sinf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
-	//	g_camera.posVDest.z = pPlayer->pos.z + cosf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
-	//}
+		g_camera.posVDest.x = pPlayer->pos.x + sinf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
+		g_camera.posVDest.z = pPlayer->pos.z + cosf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
+	}
 
 	g_camera.posR.x += (g_camera.posRDest.x - g_camera.posR.x) * 0.08f;
 	g_camera.posR.y += (g_camera.posRDest.y - g_camera.posR.y) * 1.0f;
@@ -104,6 +104,7 @@ void UpdateCamera(void)
 	if (pMode == MODE_TITLE || pMode == MODE_RESULT)
 	{//カメラの自動回転
 		pPlayer->pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//プレイヤーの位置を０に
+
 		//回転
 		g_camera.rotDest.y += 0.01f;
 	}
@@ -246,10 +247,8 @@ void SetMouseWheel(int zDelta)
 //=============================
 void ResetCameraPos(D3DXVECTOR3 posV, D3DXVECTOR3 posR)
 {
-	g_camera.posV = posV;				//視点
-	g_camera.posR = posR;				//注視点
-	g_camera.posVDest = posV;				//視点
-	g_camera.posRDest = posR;				//注視点
-
-	int i = 0;
+	//g_camera.posV = posV;				//視点
+	//g_camera.posR = posR;				//注視点
+	g_camera.posVDest = posV;			//視点
+	g_camera.posRDest = posR;			//注視点
 }
