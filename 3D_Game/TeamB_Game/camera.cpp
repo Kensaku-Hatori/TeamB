@@ -4,11 +4,14 @@
 //　Author:kaiti
 //
 //=============================
+
+//インクルード
 #include "camera.h"
 #include "input.h"
 #include "player.h"
 #include "mouse.h"
 #include "lockon.h"
+
 //グローバル変数
 Camera g_camera;
 
@@ -18,7 +21,7 @@ Camera g_camera;
 void InitCamera(void)
 {
 	//視点・注視点・上方向を設定する
-	g_camera.posV = D3DXVECTOR3(0.0f, 200.0f, -300.0f);
+	g_camera.posV = D3DXVECTOR3(0.0f, 200.0f, 300.0f);
 	g_camera.posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_camera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
@@ -27,6 +30,7 @@ void InitCamera(void)
 							 + ((g_camera.posV.y - g_camera.posR.y) * (g_camera.posV.y - g_camera.posR.y))
 							 + ((g_camera.posV.z - g_camera.posR.z) * (g_camera.posV.z - g_camera.posR.z)));
 }
+
 //===================
 // カメラの終了処理
 //===================
@@ -34,18 +38,16 @@ void UninitCamera(void)
 {
 
 }
+
 //====================
 // カメラの更新処理
 //====================
 void UpdateCamera(void)
 {
-	Player* pPlayer;
-	pPlayer = GetPlayer();
-
-	Lockon* pLockon = GetLockOn();
-
-	MODE pMode;
-	pMode = GetMode();
+	//各種情報取得
+	Player* pPlayer = GetPlayer();				//プレイヤー
+	Lockon* pLockon = GetLockOn();				//ロックオン
+	MODE pMode = GetMode();						//ゲームモード
 
 	// 角度の近道
 	if (g_camera.rotDest.y >= D3DX_PI)
@@ -70,24 +72,25 @@ void UpdateCamera(void)
 	
 	g_camera.rot += (g_camera.rotDest - g_camera.rot) * 0.3f;
 
-	if (pPlayer->bLockOn == true)
-	{
-		g_camera.posRDest.x = pLockon->pos.x + sinf(pPlayer->rot.x) * (pLockon->pos.x - g_camera.posR.x);
-		g_camera.posRDest.y = pLockon->pos.y;
-		g_camera.posRDest.z = pLockon->pos.z + cosf(pPlayer->rot.z) * (pLockon->pos.z - g_camera.posR.z);
+	////プレイヤーがロックオンしているなら
+	//if (pPlayer->bLockOn == true)
+	//{
+	//	g_camera.posRDest.x = pLockon->pos.x + sinf(pPlayer->rot.x) * (pLockon->pos.x - g_camera.posR.x);
+	//	g_camera.posRDest.y = pLockon->pos.y;
+	//	g_camera.posRDest.z = pLockon->pos.z + cosf(pPlayer->rot.z) * (pLockon->pos.z - g_camera.posR.z);
 
-		g_camera.posVDest.x = pLockon->pos.x + sinf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
-		g_camera.posVDest.z = pLockon->pos.z + cosf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
-	}
-	else
-	{
-		g_camera.posRDest.x = pPlayer->pos.x + sinf(pPlayer->rot.x) * (pPlayer->pos.x - g_camera.posR.x);
-		g_camera.posRDest.y = pPlayer->pos.y;
-		g_camera.posRDest.z = pPlayer->pos.z + cosf(pPlayer->rot.z) * (pPlayer->pos.z - g_camera.posR.z);
+	//	g_camera.posVDest.x = pLockon->pos.x + sinf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
+	//	g_camera.posVDest.z = pLockon->pos.z + cosf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
+	//}
+	//else
+	//{
+	//	g_camera.posRDest.x = pPlayer->pos.x + sinf(pPlayer->rot.x) * (pPlayer->pos.x - g_camera.posR.x);
+	//	g_camera.posRDest.y = pPlayer->pos.y;
+	//	g_camera.posRDest.z = pPlayer->pos.z + cosf(pPlayer->rot.z) * (pPlayer->pos.z - g_camera.posR.z);
 
-		g_camera.posVDest.x = pPlayer->pos.x + sinf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
-		g_camera.posVDest.z = pPlayer->pos.z + cosf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
-	}
+	//	g_camera.posVDest.x = pPlayer->pos.x + sinf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
+	//	g_camera.posVDest.z = pPlayer->pos.z + cosf(g_camera.rotDest.y - D3DX_PI) * g_camera.fDistance;
+	//}
 
 	g_camera.posR.x += (g_camera.posRDest.x - g_camera.posR.x) * 0.08f;
 	g_camera.posR.y += (g_camera.posRDest.y - g_camera.posR.y) * 1.0f;
@@ -142,6 +145,10 @@ void UpdateCamera(void)
 		g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
 	}
 }
+
+//=============================
+//マウスによるカメラ操作処理
+//=============================
 void UpdateCameratoMousePos(void)
 {
 	static POINT SetMousePos = { (LONG)SCREEN_WIDTH / (LONG)2.0f,(LONG)SCREEN_HEIGHT / (LONG)2.0f };
@@ -157,6 +164,10 @@ void UpdateCameratoMousePos(void)
 
 	SetCursorPos((int)SetMousePos.x, (int)SetMousePos.y);
 }
+
+//====================================
+//ジョイパッドによるカメラ操作処理
+//====================================
 void UpdateCameratoJoyPadPos(void)
 {
 	XINPUT_STATE* pStick = GetJoyStickAngle();
@@ -181,6 +192,7 @@ void UpdateCameratoJoyPadPos(void)
 		}
 	}
 }
+
 //================
 // カメラの設定
 //================
@@ -215,14 +227,29 @@ void SetCamera(void)
 	//プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &g_camera.mtxProjection);
 }
+
 //=================
-//
+//カメラの情報取得処理
 //=================
 Camera * GetCamera(void)
 {
 	return &g_camera;
 }
+
 void SetMouseWheel(int zDelta)
 {
 	g_camera.fDistance += zDelta * CAMERA_DISTANCESPEED;
+}
+
+//=============================
+//カメラの視点、注視点の設定
+//=============================
+void ResetCameraPos(D3DXVECTOR3 posV, D3DXVECTOR3 posR)
+{
+	g_camera.posV = posV;				//視点
+	g_camera.posR = posR;				//注視点
+	g_camera.posVDest = posV;				//視点
+	g_camera.posRDest = posR;				//注視点
+
+	int i = 0;
 }
