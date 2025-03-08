@@ -24,6 +24,7 @@ typedef struct
 	D3DXVECTOR3 rot;//向き
 	D3DXVECTOR3 rotDest;
 	float fDistance;//視点から注視点の距離
+	bool bResete;
 }Camera;
 
 //プロトタイプ宣言

@@ -100,6 +100,7 @@ void InitGame(void)
 	//カメラの初期化
 	InitCamera();
 
+
 	//ライトの初期化
 	InitLight();
 
@@ -131,6 +132,9 @@ void InitGame(void)
 
 	InitTutorial();
 
+	//プレイヤーの情報取得
+	Player* pPlayer = GetPlayer();
+
 	//各初期化
 	g_gamestate = GAMESTATE_NORMAL;		//ゲームステート
 	g_nCounterGameState = 0;			//ステートカウンター
@@ -147,6 +151,36 @@ void InitGame(void)
 	{
 		g_bTutorial = false;
 	}
+
+	//カメラの位置設定
+	D3DXVECTOR3 CameraPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	switch (Mode)
+	{
+	case MODE_STAGEONE:
+
+		CameraPos = D3DXVECTOR3(350.0f, 200.0f, 1245.0f);
+		break;
+
+	case MODE_STAGETWO:
+
+		CameraPos = D3DXVECTOR3(1245.0f, 200.0f, 645.0f);
+		break;
+
+	case MODE_STAGETHREE:
+
+		CameraPos = D3DXVECTOR3(85.0f, 200.0f, -1025.0f);
+		break;
+
+	case MODE_STAGEFOUR:
+
+		CameraPos = D3DXVECTOR3(45.0f, 200.0f, -860.0f);
+		break;
+
+	default:
+		break;
+	}
+
+	ResetCameraPos(CameraPos, pPlayer->pos);
 }
 
 //===========

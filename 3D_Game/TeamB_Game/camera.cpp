@@ -21,7 +21,7 @@ Camera g_camera;
 void InitCamera(void)
 {
 	//視点・注視点・上方向を設定する
-	g_camera.posV = D3DXVECTOR3(0.0f, 200.0f, 300.0f);
+	g_camera.posV = D3DXVECTOR3(0.0f, 200.0f, -300.0f);
 	g_camera.posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_camera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
@@ -30,6 +30,8 @@ void InitCamera(void)
 	g_camera.fDistance = sqrtf(((g_camera.posV.x - g_camera.posR.x) * (g_camera.posV.x - g_camera.posR.x))
 							 + ((g_camera.posV.y - g_camera.posR.y) * (g_camera.posV.y - g_camera.posR.y))
 							 + ((g_camera.posV.z - g_camera.posR.z) * (g_camera.posV.z - g_camera.posR.z)));
+
+	g_camera.bResete = false;
 }
 
 //===================
@@ -49,6 +51,8 @@ void UpdateCamera(void)
 	Player* pPlayer = GetPlayer();				//プレイヤー
 	Lockon* pLockon = GetLockOn();				//ロックオン
 	MODE pMode = GetMode();						//ゲームモード
+
+	ResetCameraPos(D3DXVECTOR3(350.0f, 200.0f, 1245.0f), pPlayer->pos);
 
 	// 角度の近道
 	if (g_camera.rotDest.y >= D3DX_PI)
@@ -105,6 +109,7 @@ void UpdateCamera(void)
 	if (pMode == MODE_TITLE || pMode == MODE_RESULT)
 	{//カメラの自動回転
 		pPlayer->pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//プレイヤーの位置を０に
+
 		//回転
 		g_camera.rotDest.y += 0.01f;
 	}
@@ -247,10 +252,18 @@ void SetMouseWheel(int zDelta)
 //=============================
 void ResetCameraPos(D3DXVECTOR3 posV, D3DXVECTOR3 posR)
 {
-	g_camera.posV = posV;				//視点
-	g_camera.posR = posR;				//注視点
-	g_camera.posVDest = posV;				//視点
-	g_camera.posRDest = posR;				//注視点
+	if (g_camera.bResete == false)
+	{
+		g_camera.posV = posV;				//視点
+		g_camera.posR = posR;				//注視点
+		g_camera.posVDest = posV;			//視点
+		g_camera.posRDest = posR;			//注視点
+		D3DXVECTOR3 vec = (g_camera.posRDest- g_camera.posVDest);
 
-	int i = 0;
+		//角度の取得
+		float fAngle = atan2(vec.x, vec.z);
+
+		g_camera.rotDest.y = fAngle;
+		g_camera.bResete = true;
+	}
 }
