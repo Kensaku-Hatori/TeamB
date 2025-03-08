@@ -130,7 +130,7 @@ void DrawShadow(void)
 	//pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 }
 
-void DrwaShadowPlayer(int Indx, D3DXVECTOR3 Pos, D3DXVECTOR3 Rot)
+void DrwaShadowPlayer(int Indx, D3DXMATRIX mtxWorld)
 {
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
@@ -152,19 +152,12 @@ void DrwaShadowPlayer(int Indx, D3DXVECTOR3 Pos, D3DXVECTOR3 Rot)
 		//ワールドマトリックスの初期化
 		D3DXMatrixIdentity(&g_shadow[Indx].mtxWorld);
 
-		//向きを反転
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, Rot.y, Rot.x, Rot.z);
-		D3DXMatrixMultiply(&g_shadow[Indx].mtxWorld, &g_shadow[Indx].mtxWorld, &mtxRot);
-
-		//位置を反映
-		D3DXMatrixTranslation(&mtxTrans, Pos.x, 0.1f, Pos.z);
-		D3DXMatrixMultiply(&g_shadow[Indx].mtxWorld, &g_shadow[Indx].mtxWorld, &mtxTrans);
-
 		D3DXVECTOR4 LightPos = D3DXVECTOR4(0.0f, 10.0f, 0.0f, 0.0f);
 		D3DXPLANE Plane = D3DXPLANE(0.0f, 1.0f, 0.0f, 0.0f);
 
 		D3DXMatrixShadow(&mtxShadow, &LightPos, &Plane);
-		D3DXMatrixMultiply(&g_shadow[Indx].mtxWorld, &g_shadow[Indx].mtxWorld, &mtxShadow);
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxShadow);
+		D3DXMatrixMultiply(&g_shadow[Indx].mtxWorld, &g_shadow[Indx].mtxWorld, &mtxWorld);
 
 		//ワールドマトリックスの設定
 		pDevice->SetTransform(D3DTS_WORLD, &g_shadow[Indx].mtxWorld);

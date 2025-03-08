@@ -520,9 +520,8 @@ void DrawPlayer(void)
 				&mtxParent);
 
 			DrwaShadowPlayer(g_player.nIdxShadow,
-				D3DXVECTOR3(g_player.PlayerMotion.aModel[nCntModel].mtxWorld._41,
-					g_player.PlayerMotion.aModel[nCntModel].mtxWorld._42,
-					g_player.PlayerMotion.aModel[nCntModel].mtxWorld._43), g_player.PlayerMotion.aModel[nCntModel].rot);
+				g_player.PlayerMotion.aModel[nCntModel].mtxWorld
+			);
 
 			//パーツのワールドマトリックスの設定
 			pDevice->SetTransform(D3DTS_WORLD,
