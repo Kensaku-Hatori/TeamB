@@ -68,6 +68,70 @@ void UpdateShadow(void)
 //====================
 void DrawShadow(void)
 {
+	////デバイスの取得
+	//LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
+	////減算合成の設定
+	//pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_REVSUBTRACT);
+	//pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	//pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+
+	//pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
+	//pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+
+	//for (int nCnt = 0; nCnt < MAX_SHADOW; nCnt++)
+	//{
+	//	//使用している状態なら
+	//	if (g_shadow[nCnt].bUse == true)
+	//	{
+	//		//計算用マトリックス
+	//		D3DXMATRIX mtxRot, mtxTrans, mtxShadow;
+
+	//		//ワールドマトリックスの初期化
+	//		D3DXMatrixIdentity(&g_shadow[nCnt].mtxWorld);
+
+	//		//向きを反転
+	//		D3DXMatrixRotationYawPitchRoll(&mtxRot, g_shadow[nCnt].rot.y, g_shadow[nCnt].rot.x, g_shadow[nCnt].rot.z);
+	//		D3DXMatrixMultiply(&g_shadow[nCnt].mtxWorld, &g_shadow[nCnt].mtxWorld, &mtxRot);
+
+	//		//位置を反映
+	//		D3DXMatrixTranslation(&mtxTrans, g_shadow[nCnt].pos.x, 0.1f, g_shadow[nCnt].pos.z);
+	//		D3DXMatrixMultiply(&g_shadow[nCnt].mtxWorld, &g_shadow[nCnt].mtxWorld, &mtxTrans);
+
+	//		D3DXVECTOR4 LightPos = D3DXVECTOR4(0.0f, 10.0f, 0.0f, 0.0f);
+	//		D3DXPLANE Plane = D3DXPLANE(0.0f, 1.0f, 0.0f, 0.0f);
+
+	//		D3DXMatrixShadow(&mtxShadow, &LightPos, &Plane);
+	//		D3DXMatrixMultiply(&g_shadow[nCnt].mtxWorld, &g_shadow[nCnt].mtxWorld, &mtxShadow);
+
+	//		//ワールドマトリックスの設定
+	//		pDevice->SetTransform(D3DTS_WORLD, &g_shadow[nCnt].mtxWorld);
+
+	//		//頂点バッファをデータストリームに設定
+	//		pDevice->SetStreamSource(0, g_shadow[nCnt].pVtxBuffShadow, 0, sizeof(VERTEX_3D));
+
+	//		//頂点フォーマットの設定
+	//		pDevice->SetFVF(FVF_VERTEX_3D);
+
+	//		//テクスチャの設定
+	//		pDevice->SetTexture(0, g_apTextureShadow);
+
+	//		//ポリゴンを描画
+	//		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+	//	}
+	//}
+
+	//pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+	//pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+
+	////設定を元に戻す
+	//pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	//pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	//pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+}
+
+void DrwaShadowPlayer(int Indx, D3DXVECTOR3 Pos, D3DXVECTOR3 Rot)
+{
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
@@ -79,46 +143,43 @@ void DrawShadow(void)
 	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
-	for (int nCnt = 0; nCnt < MAX_SHADOW; nCnt++)
+	//使用している状態なら
+	if (g_shadow[Indx].bUse == true)
 	{
-		//使用している状態なら
-		if (g_shadow[nCnt].bUse == true)
-		{
-			//計算用マトリックス
-			D3DXMATRIX mtxRot, mtxTrans, mtxShadow;
+		//計算用マトリックス
+		D3DXMATRIX mtxRot, mtxTrans, mtxShadow;
 
-			//ワールドマトリックスの初期化
-			D3DXMatrixIdentity(&g_shadow[nCnt].mtxWorld);
+		//ワールドマトリックスの初期化
+		D3DXMatrixIdentity(&g_shadow[Indx].mtxWorld);
 
-			//D3DLIGHT9* Light = GetLight();
-			//D3DXPLANE test = {};
-			//D3DXVECTOR4 test1 = D3DXVECTOR4(Light->Direction.x, Light->Direction.y, Light->Direction.z, 0.0f);
-			//D3DXMatrixShadow(&mtxShadow, &test1, &test);
-			//D3DXMatrixMultiply(&g_shadow[nCnt].mtxWorld, &g_shadow[nCnt].mtxWorld, &mtxShadow);
+		//向きを反転
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, Rot.y, Rot.x, Rot.z);
+		D3DXMatrixMultiply(&g_shadow[Indx].mtxWorld, &g_shadow[Indx].mtxWorld, &mtxRot);
 
-			//向きを反転
-			D3DXMatrixRotationYawPitchRoll(&mtxRot, g_shadow[nCnt].rot.y, g_shadow[nCnt].rot.x, g_shadow[nCnt].rot.z);
-			D3DXMatrixMultiply(&g_shadow[nCnt].mtxWorld, &g_shadow[nCnt].mtxWorld, &mtxRot);
+		//位置を反映
+		D3DXMatrixTranslation(&mtxTrans, Pos.x, 0.1f, Pos.z);
+		D3DXMatrixMultiply(&g_shadow[Indx].mtxWorld, &g_shadow[Indx].mtxWorld, &mtxTrans);
 
-			//位置を反映
-			D3DXMatrixTranslation(&mtxTrans, g_shadow[nCnt].pos.x, 0.1f, g_shadow[nCnt].pos.z);
-			D3DXMatrixMultiply(&g_shadow[nCnt].mtxWorld, &g_shadow[nCnt].mtxWorld, &mtxTrans);
+		D3DXVECTOR4 LightPos = D3DXVECTOR4(0.0f, 10.0f, 0.0f, 0.0f);
+		D3DXPLANE Plane = D3DXPLANE(0.0f, 1.0f, 0.0f, 0.0f);
 
-			//ワールドマトリックスの設定
-			pDevice->SetTransform(D3DTS_WORLD, &g_shadow[nCnt].mtxWorld);
+		D3DXMatrixShadow(&mtxShadow, &LightPos, &Plane);
+		D3DXMatrixMultiply(&g_shadow[Indx].mtxWorld, &g_shadow[Indx].mtxWorld, &mtxShadow);
 
-			//頂点バッファをデータストリームに設定
-			pDevice->SetStreamSource(0, g_shadow[nCnt].pVtxBuffShadow, 0, sizeof(VERTEX_3D));
+		//ワールドマトリックスの設定
+		pDevice->SetTransform(D3DTS_WORLD, &g_shadow[Indx].mtxWorld);
 
-			//頂点フォーマットの設定
-			pDevice->SetFVF(FVF_VERTEX_3D);
+		//頂点バッファをデータストリームに設定
+		pDevice->SetStreamSource(0, g_shadow[Indx].pVtxBuffShadow, 0, sizeof(VERTEX_3D));
 
-			//テクスチャの設定
-			pDevice->SetTexture(0, g_apTextureShadow);
+		//頂点フォーマットの設定
+		pDevice->SetFVF(FVF_VERTEX_3D);
 
-			//ポリゴンを描画
-			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
-		}
+		//テクスチャの設定
+		pDevice->SetTexture(0, g_apTextureShadow);
+
+		//ポリゴンを描画
+		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 	}
 
 	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
@@ -129,7 +190,6 @@ void DrawShadow(void)
 	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 }
-
 //=============
 // 影の設定
 //=============

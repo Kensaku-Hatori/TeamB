@@ -494,7 +494,6 @@ void DrawPlayer(void)
 
 			//パーツのワールドマトリックスの初期化
 			D3DXMatrixIdentity(&g_player.PlayerMotion.aModel[nCntModel].mtxWorld);
-
 			//向きを反転
 			D3DXMatrixRotationYawPitchRoll(&mtxRotModel, g_player.PlayerMotion.aModel[nCntModel].rot.y, g_player.PlayerMotion.aModel[nCntModel].rot.x, g_player.PlayerMotion.aModel[nCntModel].rot.z);
 			D3DXMatrixMultiply(&g_player.PlayerMotion.aModel[nCntModel].mtxWorld, &g_player.PlayerMotion.aModel[nCntModel].mtxWorld, &mtxRotModel);
@@ -517,7 +516,12 @@ void DrawPlayer(void)
 			D3DXMatrixMultiply(&g_player.PlayerMotion.aModel[nCntModel].mtxWorld,
 				&g_player.PlayerMotion.aModel[nCntModel].mtxWorld,
 				&mtxParent);
-			
+
+			DrwaShadowPlayer(g_player.nIdxShadow,
+				D3DXVECTOR3(g_player.PlayerMotion.aModel[nCntModel].mtxWorld._41,
+					g_player.PlayerMotion.aModel[nCntModel].mtxWorld._42,
+					g_player.PlayerMotion.aModel[nCntModel].mtxWorld._43), g_player.PlayerMotion.aModel[nCntModel].rot);
+
 			//パーツのワールドマトリックスの設定
 			pDevice->SetTransform(D3DTS_WORLD,
 				&g_player.PlayerMotion.aModel[nCntModel].mtxWorld);
@@ -535,6 +539,7 @@ void DrawPlayer(void)
 				//プレイヤーの描画
 				g_player.PlayerMotion.aModel[nCntModel].pMesh->DrawSubset(nCntMat);
 			}
+
 			if (nCntModel == 12)
 			{
 				MatrixWand();

@@ -331,6 +331,12 @@ void DrawEnemy(void)
 					&g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld,
 					&mtxParent);
 
+				DrwaShadowPlayer(g_Enemy[EnemyCount].IndxShadow,
+					D3DXVECTOR3(g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld._41,
+						g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld._42,
+						g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld._43), 
+					g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].rot);
+
 				pDevice->SetTransform(D3DTS_WORLD,
 					&g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld);
 
