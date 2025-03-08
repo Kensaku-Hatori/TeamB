@@ -181,7 +181,7 @@ void UpdatePlayer(void)
 		if (g_player.state == PLAYERSTATE_NORMAL)
 		{
 			//魔法発射
-			if ((KeyboardTrigger(DIK_RETURN) || OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true) 
+			if ((OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true) 
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_HORMING
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_EXPLOSION)
@@ -271,6 +271,8 @@ void UpdatePlayer(void)
 		{
 			UseItem(g_player.ItemType);
 		}
+
+		SkillChange(0);
 
 		//ローリング
 		if (g_player.bRolling == true)
@@ -583,11 +585,11 @@ void PlayerMove(void)
 		g_player.bRolling = true;
 		g_player.state = PLAYERSTATE_ROLL;
 	}
-	if (g_player.state != PLAYERSTATE_ACTION)
+	if (g_player.state != PLAYERSTATE_ACTION && g_player.state != PLAYERSTATE_KNOCKUP)
 	{
 		//移動
 		//左
-		if (GetKeyboardPress(DIK_A) || GetJoypadPress(JOYKEY_LEFT))
+		if (GetKeyboardPress(DIK_A))
 			{
 				//モーション
 				if (g_player.bRolling == false)
@@ -641,7 +643,7 @@ void PlayerMove(void)
 				}
 			}
 		//右
-		else if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_RIGHT))
+		else if (GetKeyboardPress(DIK_D))
 			{
 				//モーション
 				if (g_player.bRolling == false)
@@ -695,7 +697,7 @@ void PlayerMove(void)
 				}
 			}
 		//前
-		else if (GetKeyboardPress(DIK_W) == true || GetJoypadPress(JOYKEY_DOWN) == true)
+		else if (GetKeyboardPress(DIK_W) == true)
 			{
 				//モーション
 				if (g_player.bRolling == false)
@@ -743,7 +745,7 @@ void PlayerMove(void)
 				}
 			}
 		//後
-		else if (GetKeyboardPress(DIK_S) || GetJoypadPress(JOYKEY_UP))
+		else if (GetKeyboardPress(DIK_S))
 			{
 				//モーション
 				if (g_player.bRolling == false)
@@ -896,7 +898,7 @@ void SkillChange(int zDelta)
 		}
 	}
 	else if (KeyboardTrigger(DIK_RIGHT) || GetJoypadTrigger(JOYKEY_RIGHT) ||
-		zDelta > 0)
+			 zDelta > 0)
 	{
 		switch (g_player.Skilltype)
 		{
@@ -915,6 +917,7 @@ void SkillChange(int zDelta)
 			break;
 		}
 	}
+
 }
 
 //===================
