@@ -331,6 +331,9 @@ void DrawEnemy(void)
 					&g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld,
 					&mtxParent);
 
+				DrwaShadowPlayer(g_Enemy[EnemyCount].IndxShadow,
+					g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld);
+
 				pDevice->SetTransform(D3DTS_WORLD,
 					&g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld);
 

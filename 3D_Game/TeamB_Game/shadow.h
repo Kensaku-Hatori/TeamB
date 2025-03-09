@@ -28,6 +28,7 @@ void InitShadow(void);
 void UninitShadow(void);
 void UpdateShadow(void);
 void DrawShadow(void);
+void DrwaShadowPlayer(int Indx,D3DXMATRIX mtxWorld);
 int SetShadow(D3DXVECTOR3 pos, D3DXVECTOR3 rot,float fRadius);					//影の初期位置、向き、半径の設定
 void SetPositionShadow(int nIdxShadow, D3DXVECTOR3 pos,bool bUse);				//影の位置更新
 void SetSizeShadow(D3DXVECTOR3 pos,int nIndx);						//影のサイズ更新
