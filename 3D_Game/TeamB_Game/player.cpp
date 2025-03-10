@@ -176,7 +176,7 @@ void UpdatePlayer(void)
 		{
 			g_player.rot.y -= D3DX_PI * 2.0f;
 		}
-		
+
 		g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
 
 		if (g_player.state == PLAYERSTATE_NORMAL)
