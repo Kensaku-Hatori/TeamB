@@ -328,6 +328,7 @@ void CaceOneAction(OBJECTINFO* Motion)
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		break;
 	case MOTIONTYPE_ACTION:
+		pPlayer->state = PLAYERSTATE_NORMAL;
 		if (pPlayer->Status.nMP >= 50)
 		{
 			// MP‚ðŒ¸‚ç‚·
@@ -338,11 +339,11 @@ void CaceOneAction(OBJECTINFO* Motion)
 					pPlayer->rot,
 					SKILLTYPE_NONE,
 					0.0f);
-			pPlayer->state = PLAYERSTATE_NORMAL;
 			PlaySound(SOUND_LABEL_MAGIC);
 		}
 		break;
 	case MOTIONTYPE_ACTION_HORMING:
+		pPlayer->state = PLAYERSTATE_NORMAL;
 		if (pPlayer->Status.nMP >= 100)
 		{
 			for (int nCount = 0; nCount < 5; nCount++)
@@ -361,12 +362,12 @@ void CaceOneAction(OBJECTINFO* Motion)
 					SKILLTYPE_HORMING,
 					fRatio);
 			}
-			pPlayer->state = PLAYERSTATE_NORMAL;
 			// MP‚ðŒ¸‚ç‚·
 			SubMP(pPlayer->Skilltype);
 		}
 		break;
 	case MOTIONTYPE_ACTION_EXPLOSION:
+		pPlayer->state = PLAYERSTATE_NORMAL;
 		if (pPlayer->Status.nMP >= 10)
 		{
 			SetParticle(Pos,
@@ -381,7 +382,6 @@ void CaceOneAction(OBJECTINFO* Motion)
 				0.0f,
 				EFFECT_EXPROSION);
 
-			pPlayer->state = PLAYERSTATE_NORMAL;
 
 			// MP‚ðŒ¸‚ç‚·
 			SubMP(pPlayer->Skilltype);
