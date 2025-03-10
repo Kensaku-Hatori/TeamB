@@ -178,7 +178,7 @@ void UpdatePlayer(void)
 
 		g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
 
-		if (g_player.state == PLAYERSTATE_NORMAL)
+		if (g_player.state != PLAYERSTATE_ACTION && g_player.state != PLAYERSTATE_KNOCKUP)
 		{
 			//–‚–@”­ŽË
 			if ((OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true)
