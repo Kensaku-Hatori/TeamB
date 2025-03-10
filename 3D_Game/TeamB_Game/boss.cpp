@@ -259,7 +259,9 @@ void DrawBoss(void)
 			DrawPlayerShadow(g_Boss.BossMotion.aModel[EnemyPartsCount].mtxWorld,
 				g_Boss.BossMotion.aModel[EnemyPartsCount].pBuffMat,
 				g_Boss.BossMotion.aModel[EnemyPartsCount].pMesh,
-				(int)g_Boss.BossMotion.aModel[EnemyPartsCount].dwNumMat);
+				(int)g_Boss.BossMotion.aModel[EnemyPartsCount].dwNumMat,
+				g_Boss.BossMotion.aModel[EnemyPartsCount].rot,
+				g_Boss.BossMotion.aModel[EnemyPartsCount].pos);
 
 			if (EnemyPartsCount == g_Boss.CollModel)
 			{

@@ -549,7 +549,9 @@ void DrawPlayer(void)
 			DrawPlayerShadow(g_player.PlayerMotion.aModel[nCntModel].mtxWorld,
 				g_player.PlayerMotion.aModel[nCntModel].pBuffMat,
 				g_player.PlayerMotion.aModel[nCntModel].pMesh,
-				(int)g_player.PlayerMotion.aModel[nCntModel].dwNumMat);
+				(int)g_player.PlayerMotion.aModel[nCntModel].dwNumMat,
+				g_player.PlayerMotion.aModel[nCntModel].rot,
+				g_player.PlayerMotion.aModel[nCntModel].pos);
 
 			if (nCntModel == 12)
 			{
@@ -564,23 +566,27 @@ void DrawPlayer(void)
 //*************************************
 // シャドウマトリックスを使った影の描画
 //*************************************
-void DrawPlayerShadow(D3DXMATRIX mtxWorld, LPD3DXBUFFER pBuffer, LPD3DXMESH pMesh, int NumMat)
+void DrawPlayerShadow(D3DXMATRIX mtxWorld, LPD3DXBUFFER pBuffer, LPD3DXMESH pMesh, int NumMat,D3DXVECTOR3 Rot,D3DXVECTOR3 OffSet)
 {
 	LPDIRECT3DDEVICE9 pDevice;
 	//デバイスの取得
 	pDevice = GetDevice();
 
-	D3DXMATRIX mtxShadow;
+	D3DXMATRIX mtxRotModel, mtxTransModel;
+	D3DXMATRIX mtxParent, mtxShadow,mtxOut;
 
 	D3DXVECTOR4 LightPos = D3DXVECTOR4(0.0f, 10.0f, 0.0f, 0.0f);
 	D3DXPLANE Plane = D3DXPLANE(0.0f, 1.0f, 0.0f, -1.0f);
 
+	//パーツのワールドマトリックスの初期化
+	D3DXMatrixIdentity(&mtxOut);
+
 	D3DXMatrixShadow(&mtxShadow, &LightPos, &Plane);
-	D3DXMatrixMultiply(&mtxShadow, &mtxWorld, &mtxShadow);
+	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxShadow);
 
 	//パーツのワールドマトリックスの設定
 	pDevice->SetTransform(D3DTS_WORLD,
-		&mtxShadow);
+		&mtxWorld);
 
 	//マテリアルデータへのポインタ
 	D3DXMATERIAL* pMat;
