@@ -226,8 +226,8 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 			g_Circle[nCnt].nCntFrame = 0;
 			g_Circle[nCnt].fHeight = fHeight;
 			g_Circle[nCnt].fRadius = fRadius;
-			g_Circle[nCnt].bGradation = bGradation;																						//グラデーションの有無
-			g_Circle[nCnt].bAnime = bAnime;																								//動きの有無
+			g_Circle[nCnt].bGradation = bGradation;	//グラデーションの有無
+			g_Circle[nCnt].bAnime = bAnime;			//動きの有無
 			if (type == 1)
 			{
 				//テクスチャの読込
@@ -237,7 +237,7 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 			//アニメーションがtrueなら
 			if (g_Circle[nCnt].bAnime == true)
 			{
-				D3DXCOLOR Col = (col);																									//計算結果保存用
+				D3DXCOLOR Col = (col);	//計算結果保存用
 
 				//D3DCOLOR_RGBA対策
 				if (col.r > 1.0f)
@@ -307,7 +307,10 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 					//グラデーション有なら
 					if (g_Circle[nCnt].bGradation == true)
 					{
-						pVtx[indx].col = D3DXCOLOR(g_Circle[nCnt].col.r, g_Circle[nCnt].col.g, g_Circle[nCnt].col.b, (g_Circle[nCnt].col.a / (g_Circle[nCnt].nDiviY)) * (nCntY));
+						pVtx[indx].col = D3DXCOLOR(g_Circle[nCnt].col.r, 
+							g_Circle[nCnt].col.g, 
+							g_Circle[nCnt].col.b, 
+							(g_Circle[nCnt].col.a / (g_Circle[nCnt].nDiviY)) * (nCntY));
 					}
 
 					//テクスチャ座標の設定
