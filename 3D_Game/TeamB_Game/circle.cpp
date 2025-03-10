@@ -56,6 +56,14 @@ void UninitCircle()
 			g_Circle[nCnt].IndxBuff->Release();
 			g_Circle[nCnt].IndxBuff = NULL;
 		}
+
+		//テクスチャの破棄
+		if (g_Circle[nCnt].tex != NULL)
+		{
+			g_Circle[nCnt].tex->Release();
+			g_Circle[nCnt].tex = NULL;
+		}
+
 	}
 }
 
@@ -164,7 +172,7 @@ void DrawCircle()
 			pDevice->SetIndices(g_Circle[nCnt].IndxBuff);
 
 			// テクスチャの設定
-			pDevice->SetTexture(0, NULL);
+			pDevice->SetTexture(0, g_Circle[nCnt].tex);
 
 			// 頂点フォーマットの設定
 			pDevice->SetFVF(FVF_VERTEX_3D);
@@ -193,7 +201,7 @@ void DrawCircle()
 //=========================
 //サークルの設定処理
 //=========================
-int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int DiviY, float fHeight, float fRadius, bool bGradation, bool bAnime)
+int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int DiviY, float fHeight, float fRadius, bool bGradation, bool bAnime, int type)
 {
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
@@ -220,6 +228,11 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 			g_Circle[nCnt].fRadius = fRadius;
 			g_Circle[nCnt].bGradation = bGradation;																						//グラデーションの有無
 			g_Circle[nCnt].bAnime = bAnime;																								//動きの有無
+			if (type == 1)
+			{
+				//テクスチャの読込
+				D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\mountain001.png", &g_Circle[nCnt].tex); //1
+			}
 
 			//アニメーションがtrueなら
 			if (g_Circle[nCnt].bAnime == true)

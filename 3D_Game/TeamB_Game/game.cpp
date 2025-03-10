@@ -61,6 +61,8 @@ void InitGame(void)
 	//サークルの初期化
 	InitCircle();
 
+	SetCircle(D3DXVECTOR3(0.0f, 50.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 8, 2, 500.0f, 2000.0f, false, false, 1);
+
 	//矢印の初期化
 	InitArrow();
 
@@ -393,7 +395,7 @@ void UpdateGame(void)
 						D3DXVECTOR3 pos = GetBottom();
 
 						//サークルを出す
-						SetCircle(pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 150, 150), 8, 0, 200.0f, 100.0f, true, false);
+						SetCircle(pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 150, 150), 8, 0, 200.0f, 100.0f, true, false, 0);
 					}
 				}
 				bAbo = true;
