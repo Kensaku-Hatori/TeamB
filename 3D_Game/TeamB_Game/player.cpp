@@ -519,6 +519,10 @@ void DrawPlayer(void)
 				&g_player.PlayerMotion.aModel[nCntModel].mtxWorld,
 				&mtxParent);
 
+			DrwaShadowPlayer(g_player.nIdxShadow,
+				g_player.PlayerMotion.aModel[nCntModel].mtxWorld
+			);
+
 			//パーツのワールドマトリックスの設定
 			pDevice->SetTransform(D3DTS_WORLD,
 				&g_player.PlayerMotion.aModel[nCntModel].mtxWorld);
@@ -536,11 +540,6 @@ void DrawPlayer(void)
 				//プレイヤーの描画
 				g_player.PlayerMotion.aModel[nCntModel].pMesh->DrawSubset(nCntMat);
 			}
-
-			DrawPlayerShadow(g_player.PlayerMotion.aModel[nCntModel].mtxWorld,
-				g_player.PlayerMotion.aModel[nCntModel].pBuffMat,
-				g_player.PlayerMotion.aModel[nCntModel].pMesh,
-				(int)g_player.PlayerMotion.aModel[nCntModel].dwNumMat);
 
 			if (nCntModel == 12)
 			{
@@ -600,8 +599,7 @@ void DrawPlayerShadow(D3DXMATRIX mtxWorld, LPD3DXBUFFER pBuffer, LPD3DXMESH pMes
 	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
 	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-}
-//====================
+}//====================
 // プレイヤーの移動
 //====================
 void PlayerMove(void)
@@ -633,7 +631,7 @@ void PlayerMove(void)
 		Speed = g_player.Status.fSpeed;
 	}
 	
-	if (KeyboardTrigger(DIK_SPACE) && g_player.bRolling == false)
+	if ((KeyboardTrigger(DIK_SPACE)) && g_player.bRolling == false)
 	{
 		Speed = g_player.Status.fSpeed * 20;
 		g_player.bRolling = true;
@@ -853,9 +851,14 @@ void PlayerMove(void)
 				}
 			}
 		//
+		else if (GetJoyStickL() == true)
+		{
+
+		}
+		//
 		else
 		{
-			if (   g_player.PlayerMotion.motionType == MOTIONTYPE_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_R_MOVE
+			if (g_player.PlayerMotion.motionType == MOTIONTYPE_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_R_MOVE
 				|| g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_L_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_F_MOVE
 				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MAE || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_USIRO
 				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MIGI || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_HIDARI)
@@ -914,7 +917,6 @@ void PlayerMoveJoyPad(void)
 	{
 		Speed = g_player.Status.fSpeed;
 	}
-
 	if (GetJoypadTrigger(JOYKEY_A) && g_player.bRolling == false)
 	{
 		Speed = g_player.Status.fSpeed * 20;
@@ -938,50 +940,6 @@ void PlayerMoveJoyPad(void)
 				g_player.move.x = sinf(pCamera->rot.y + fAngle) * Speed;
 				g_player.move.z = cosf(pCamera->rot.y + fAngle) * Speed;
 				g_player.rotDest.y = pCamera->rot.y + fAngle + D3DX_PI;
-			}
-
-			//モーション
-			if (   g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_R_MOVE
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_L_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_F_MOVE
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE && g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_USIRO
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MIGI && g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_HIDARI)
-			{
-				if (g_player.bRolling == false)
-				{
-					if (g_player.bLockOn == false && g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE)
-					{
-						SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
-					}
-					else if (g_player.bLockOn == true)
-					{
-						SetMotion(MOTIONTYPE_LOCKON_L_MOVE, &g_player.PlayerMotion);
-					}
-				}
-				else
-				{
-					if (g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE && g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_HIDARI)
-					{
-						if (g_player.bLockOn == false)
-						{
-							SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion);
-						}
-						else if (g_player.bLockOn == true)
-						{
-							SetMotion(MOTIONTYPE_KAIHI_HIDARI, &g_player.PlayerMotion);
-						}
-					}
-				}
-			}
-		}
-		else
-		{
-			if (   g_player.PlayerMotion.motionType == MOTIONTYPE_MOVE			|| g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_R_MOVE
-				|| g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_L_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_F_MOVE
-				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MAE		|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_USIRO
-				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MIGI	|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_HIDARI)
-			{
-				SetMotion(MOTIONTYPE_NEUTRAL, &g_player.PlayerMotion);
-				g_player.state = PLAYERSTATE_NORMAL;
 			}
 		}
 	}
