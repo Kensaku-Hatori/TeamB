@@ -533,7 +533,21 @@ void DeadEnemy(int Indx)
 	DeleteHPGuage(g_Enemy[Indx].IndxGuage);
 
 	//アイテムドロップ
-	Itemtype = rand() % NUM_ITEMTYPE;
+	Itemtype = rand() % 9;
+	if (Itemtype == 1 || Itemtype == 2 || Itemtype == 3 || Itemtype == 4)
+	{
+		Itemtype = ITEMTYPE_HP;
+	}
+	else if (Itemtype == 5 || Itemtype == 6 || Itemtype == 7 || Itemtype == 8)
+	{
+		Itemtype = ITEMTYPE_MP;
+	}
+	else if (Itemtype == 9)
+	{
+		Itemtype = ITEMTYPE_POWER;
+	}
+
+
 	//アイテムの設定
 	SetItem(g_Enemy[Indx].Object.Pos, (ITEMTYPE)Itemtype);
 

@@ -644,6 +644,7 @@ void PlayerMove(void)
 	
 	if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && g_player.bRolling == false)
 	{
+		g_player.bSkillUse = false;
 		Speed = g_player.Status.fSpeed * 20;
 		g_player.bRolling = true;
 		g_player.state = PLAYERSTATE_ROLL;
@@ -887,6 +888,7 @@ void PlayerMove(void)
 		{
 			SetMotion(MOTIONTYPE_DOWN, &g_player.PlayerMotion);
 		}
+		g_player.bSkillUse = false;
 		g_player.nCntState++;
 		if (g_player.nCntState >= PLAYER_DOWNTIME)
 		{
