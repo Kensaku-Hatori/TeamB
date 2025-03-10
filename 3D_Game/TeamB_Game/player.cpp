@@ -519,10 +519,6 @@ void DrawPlayer(void)
 				&g_player.PlayerMotion.aModel[nCntModel].mtxWorld,
 				&mtxParent);
 
-			DrwaShadowPlayer(g_player.nIdxShadow,
-				g_player.PlayerMotion.aModel[nCntModel].mtxWorld
-			);
-
 			//パーツのワールドマトリックスの設定
 			pDevice->SetTransform(D3DTS_WORLD,
 				&g_player.PlayerMotion.aModel[nCntModel].mtxWorld);
@@ -540,6 +536,11 @@ void DrawPlayer(void)
 				//プレイヤーの描画
 				g_player.PlayerMotion.aModel[nCntModel].pMesh->DrawSubset(nCntMat);
 			}
+
+			DrawPlayerShadow(g_player.PlayerMotion.aModel[nCntModel].mtxWorld,
+				g_player.PlayerMotion.aModel[nCntModel].pBuffMat,
+				g_player.PlayerMotion.aModel[nCntModel].pMesh,
+				(int)g_player.PlayerMotion.aModel[nCntModel].dwNumMat);
 
 			if (nCntModel == 12)
 			{
