@@ -163,7 +163,7 @@ void UpdatePlayer(void)
 			fMathDistance1 = pLockon->pos.z - g_player.pos.z;
 			g_player.rotDest.y = atan2f(fMathDistance, fMathDistance1) + D3DX_PI;
 
-			pCamera->rotDest.y = g_player.rotDest.y - D3DX_PI;
+			pCamera->rot.y = g_player.rotDest.y - D3DX_PI;
 		}
 
 		// Šp“x‚Ì‹ß“¹
@@ -175,7 +175,7 @@ void UpdatePlayer(void)
 		{
 			g_player.rot.y -= D3DX_PI * 2.0f;
 		}
-		
+
 		g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
 
 		if (g_player.state == PLAYERSTATE_NORMAL)
