@@ -17,6 +17,8 @@ D3DXVECTOR3 g_TutorialUIpos;
 LPD3DXFONT g_pMissionFont;
 const char *g_MissionInfo[MISSION_MAX][255];
 D3DXVECTOR2 g_MissionPos[MISSION_MAX];
+LPD3DXFONT g_pTutorialFont;
+D3DXVECTOR2 g_TutorialPos;
 
 int g_CntState;
 //=============
@@ -32,7 +34,12 @@ void InitMission(void)
 	D3DXCreateFont(pDevice, 23, 0, 0, 0,
 		FALSE, SHIFTJIS_CHARSET,
 		OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH,
-		"Terminal", &g_pMissionFont);
+		"Arial", &g_pMissionFont);
+
+	D3DXCreateFont(pDevice, 20, 0, 0, 0,
+		FALSE, SHIFTJIS_CHARSET,
+		OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH,
+		"Arial", &g_pTutorialFont);
 
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\tutorial100.jpg", &g_pTextureTutorialUI);	//枠
 	g_MissionInfo[MISSION_ZENMETU][0] = { "敵を全滅させろ" };
@@ -44,6 +51,8 @@ void InitMission(void)
 	g_MissionPos[MISSION_BOSS] = D3DXVECTOR2(1080.0f,250.0f);
 
 	g_Mission.mission = MISSION_ZENMETU;
+
+	g_TutorialPos = D3DXVECTOR2(1040.0f,530.0f);
 
 	g_CntState = 60;
 	
@@ -123,6 +132,12 @@ void UpdateMission(void)
 		g_MissionPos[g_Mission.mission],
 		D3DXCOLOR(0.0f,1.0f,0.0f,1.0f),
 		D3DXCOLOR(1.0f,1.0f,1.0f,1.0f),
+		2);
+
+	DrawMission("チュートリアル:TAB/BACK", g_pTutorialFont,
+		g_TutorialPos,
+		D3DXCOLOR(0.0f, 0.5f, 0.0f, 1.0f),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 		2);
 }
 //===========
