@@ -31,7 +31,7 @@ void InitBossGauge(void)
 	pDevice = GetDevice();
 
 	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\bossgage1.png", &g_pTextureBossGaugeBack);	//HP 枠	
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\bossgauge1.png", &g_pTextureBossGaugeBack);	//HP 枠	
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\GUAGE.png", &g_pTextureBossGauge);	//
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\bossname.png", &g_pTextureBossName);	//
 

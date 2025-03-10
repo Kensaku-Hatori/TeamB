@@ -178,7 +178,7 @@ void UpdatePlayer(void)
 
 		g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
 
-		if (g_player.state == PLAYERSTATE_NORMAL)
+		if (g_player.state != PLAYERSTATE_ACTION && g_player.state != PLAYERSTATE_KNOCKUP)
 		{
 			//–‚–@”­ŽË
 			if ((OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true)
@@ -1069,6 +1069,17 @@ void HitPlayer(float Atack,D3DXVECTOR3 Pos)
 			if (g_player.Status.fHP <= 0.0f && g_player.bUse == true)
 			{// Žg‚í‚ê‚Ä‚¢‚Ä‘Ì—Í‚ª‚OˆÈ‰º‚È‚ç
 				g_player.bUse = false;
+				SetParticle(g_player.pos,
+					D3DXVECTOR3(162, 1, 1),
+					D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+					PARTICLE_NONE,
+					D3DXVECTOR3(1.0f, 1.0f, 1.0f),
+					100,
+					50,
+					500.0f,
+					500.0f,
+					0.0f,
+					EFFECT_NONE);
 				SetGameState(GAMESTATE_GAMEOVER);
 			}
 		}

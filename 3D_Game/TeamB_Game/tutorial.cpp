@@ -50,8 +50,7 @@ void InitTutorial(void)
 	{
 		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\tutorial001.jpg", &g_pTextureTutorial[TUTORIAL_MOVE]);		 //
 		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\tutorial004.jpg", &g_pTextureTutorial[TUTORIAL_ROLL]);		 //
-		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\tutorial002.jpg", &g_pTextureTutorial[TUTORIAL_SKILL]);		 //
-		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\tutorial006.jpg", &g_pTextureTutorial[TUTORIAL_SKILLCHENGE]); //
+		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\tutorial006.jpg", &g_pTextureTutorial[TUTORIAL_SKILL]); //
 		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\tutorial003.jpg", &g_pTextureTutorial[TUTORIAL_ITEM]);		 //
 		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\tutorial005.jpg", &g_pTextureTutorial[TUTORIAL_LOCKON]);		 //
 
@@ -390,9 +389,6 @@ void ChangeTutorial(void)
 			g_TutorialType = TUTORIAL_SKILL;
 			break;
 		case TUTORIAL_SKILL:
-			g_TutorialType = TUTORIAL_SKILLCHENGE;
-			break;
-		case TUTORIAL_SKILLCHENGE:
 			g_TutorialType = TUTORIAL_ITEM;
 			break;
 		case TUTORIAL_ITEM:
@@ -418,11 +414,8 @@ void ChangeTutorial(void)
 		case TUTORIAL_SKILL:
 			g_TutorialType = TUTORIAL_ROLL;
 			break;
-		case TUTORIAL_SKILLCHENGE:
-			g_TutorialType = TUTORIAL_SKILL;
-			break;
 		case TUTORIAL_ITEM:
-			g_TutorialType = TUTORIAL_SKILLCHENGE;
+			g_TutorialType = TUTORIAL_SKILL;
 			break;
 		case TUTORIAL_LOCKON:
 			g_TutorialType = TUTORIAL_ITEM;
