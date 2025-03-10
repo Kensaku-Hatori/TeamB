@@ -312,6 +312,7 @@ void CaceOneAction(OBJECTINFO* Motion)
 	Pos.y = pPlayer->mtxWand._42;
 	Pos.z = pPlayer->mtxWand._43;
 
+
 	switch (Motion->motionType)
 	{
 	case MOTIONTYPE_MOVE:
@@ -381,7 +382,6 @@ void CaceOneAction(OBJECTINFO* Motion)
 				1.0f,
 				0.0f,
 				EFFECT_EXPROSION);
-
 
 			// MP‚ðŒ¸‚ç‚·
 			SubMP(pPlayer->Skilltype);
