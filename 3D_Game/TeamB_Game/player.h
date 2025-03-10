@@ -98,4 +98,5 @@ void SetMesh(char* pFilePath, int Indx);
 void SetPartsInfo(LoadInfo PartsInfo);
 void PlayerMotion(MOTIONINFO *pMotionInfo);
 void MatrixWand(void);
+
 #endif
