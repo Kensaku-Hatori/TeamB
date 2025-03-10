@@ -185,11 +185,11 @@ void UpdateCameratoJoyPadPos(void)
 		{
 			if (pStick->Gamepad.sThumbRX < -DeadZone)
 			{
-				g_camera.rotDest.y += 0.03f;
+				g_camera.rot.y += 0.03f;
 			}
 			else if (pStick->Gamepad.sThumbRX > DeadZone)
 			{
-				g_camera.rotDest.y -= 0.03f;
+				g_camera.rot.y -= 0.03f;
 			}
 		}
 	}
