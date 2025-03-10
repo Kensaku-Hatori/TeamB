@@ -519,10 +519,6 @@ void DrawPlayer(void)
 				&g_player.PlayerMotion.aModel[nCntModel].mtxWorld,
 				&mtxParent);
 
-			DrwaShadowPlayer(g_player.nIdxShadow,
-				g_player.PlayerMotion.aModel[nCntModel].mtxWorld
-			);
-
 			//パーツのワールドマトリックスの設定
 			pDevice->SetTransform(D3DTS_WORLD,
 				&g_player.PlayerMotion.aModel[nCntModel].mtxWorld);
@@ -541,6 +537,11 @@ void DrawPlayer(void)
 				g_player.PlayerMotion.aModel[nCntModel].pMesh->DrawSubset(nCntMat);
 			}
 
+			DrawPlayerShadow(g_player.PlayerMotion.aModel[nCntModel].mtxWorld,
+				g_player.PlayerMotion.aModel[nCntModel].pBuffMat,
+				g_player.PlayerMotion.aModel[nCntModel].pMesh,
+				(int)g_player.PlayerMotion.aModel[nCntModel].dwNumMat);
+
 			if (nCntModel == 12)
 			{
 				MatrixWand();
@@ -551,6 +552,52 @@ void DrawPlayer(void)
 	}
 }
 
+void DrawPlayerShadow(D3DXMATRIX mtxWorld, LPD3DXBUFFER pBuffer, LPD3DXMESH pMesh, int NumMat)
+{
+	LPDIRECT3DDEVICE9 pDevice;
+	//デバイスの取得
+	pDevice = GetDevice();
+
+	D3DXMATRIX mtxShadow;
+
+	D3DXVECTOR4 LightPos = D3DXVECTOR4(0.0f, 10.0f, 0.0f, 0.0f);
+	D3DXPLANE Plane = D3DXPLANE(0.0f, 1.0f, 0.0f, -1.0f);
+
+	D3DXMatrixShadow(&mtxShadow, &LightPos, &Plane);
+	D3DXMatrixMultiply(&mtxShadow, &mtxWorld, &mtxShadow);
+
+	//パーツのワールドマトリックスの設定
+	pDevice->SetTransform(D3DTS_WORLD,
+		&mtxShadow);
+
+	//マテリアルデータへのポインタ
+	D3DXMATERIAL* pMat;
+
+	//マテリアルデータへのポインタを取得
+	pMat = (D3DXMATERIAL*)pBuffer->GetBufferPointer();
+
+	//減算合成の設定
+	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_REVSUBTRACT);
+	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+
+	for (int nCntMat = 0; nCntMat < (int)NumMat; nCntMat++)
+	{
+		D3DXMATERIAL test = pMat[nCntMat];
+		test.MatD3D.Diffuse.r = 255;
+		test.MatD3D.Diffuse.g = 255;
+		test.MatD3D.Diffuse.b = 255;
+		//マテリアルの設定
+		pDevice->SetMaterial(&test.MatD3D);
+		//プレイヤーの描画
+		pMesh->DrawSubset(nCntMat);
+	}
+
+	//設定を元に戻す
+	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+}
 //====================
 // プレイヤーの移動
 //====================

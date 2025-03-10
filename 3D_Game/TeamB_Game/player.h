@@ -87,6 +87,7 @@ void InitPlayer(void);
 void UninitPlayer(void);
 void UpdatePlayer(void);
 void DrawPlayer(void);
+void DrawPlayerShadow(D3DXMATRIX mtxWorld, LPD3DXBUFFER pBuffer, LPD3DXMESH pMesh, int NumMat);
 void PlayerMove(void);
 void PlayerMoveJoyPad(void);
 void PlayerRolling(void);
