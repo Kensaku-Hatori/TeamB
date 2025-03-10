@@ -98,7 +98,7 @@ FIELDSET
 	POS = 0 0 0
 	ROT = 0 0 0
 	BLOCK = 16 16
-	SIZE = 120 120
+	SIZE = 300 300
 END_FIELDSET
 
 #道路
@@ -230,6 +230,70 @@ FIELDSET
 	SIZE = 500 220
 END_FIELDSET
 
+FIELDSET
+	TEXTYPE = 3
+	POS = 350 1 -1500
+	ROT = 0 -90 0
+	BLOCK = 1 1
+	SIZE = 1200 220
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 3
+	POS = 350 1 1500
+	ROT = 0 90 0
+	BLOCK = 1 1
+	SIZE = 1200 220
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 3
+	POS = -350 1 1500
+	ROT = 0 90 0
+	BLOCK = 1 1
+	SIZE = 1200 220
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 3
+	POS = -1500 1 650
+	ROT = 0 0 0
+	BLOCK = 1 1
+	SIZE = 1200 220
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 3
+	POS = 1500 1 650
+	ROT = 0 180 0
+	BLOCK = 1 1
+	SIZE = 1200 220
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 3
+	POS = -350 1 -1500
+	ROT = 0 -90 0
+	BLOCK = 1 1
+	SIZE = 1200 220
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 3
+	POS = 1500 1 -650
+	ROT = 0 180 0
+	BLOCK = 1 1
+	SIZE = 1200 220
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 3
+	POS = -1500 1 -650
+	ROT = 0 0 0
+	BLOCK = 1 1
+	SIZE = 1200 220
+END_FIELDSET
+
 #------------------------------------------------------------------------------
 # 壁情報
 #------------------------------------------------------------------------------
@@ -274,22 +338,10 @@ END_WALLSET
 #-----------------------------------
 # スケルトン
 #-----------------------------------
-MODELSET
-	TYPE = 0
-	POS = -284 0 427
-	ROT = 0 0 0
-	SHADOW = 0
-END_MODELSET
 
 #-----------------------------------
 # プレイヤー
 #-----------------------------------
-MODELSET
-	TYPE = 1
-	POS = 100 0 250
-	ROT = 0 135 0
-	SHADOW = 0
-END_MODELSET
 
 #-----------------------------------
 # ビル01(一方向ぐるん)
@@ -443,42 +495,42 @@ END_MODELSET
 #-----------------------------------
 MODELSET
 	TYPE = 4
-	POS = 572 90 884
+	POS = 572 0 884
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
 	TYPE = 4
-	POS = 579 90 -862
+	POS = 579 0 -862
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
 	TYPE = 4
-	POS = 600 75 0
+	POS = 600 0 0
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
 	TYPE = 4
-	POS = 861 90 0
+	POS = 861 0 0
 	ROT = 0 0 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
 	TYPE = 4
-	POS = 874 90 69
+	POS = 874 0 69
 	ROT = 0 15 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
 	TYPE = 4
-	POS = 840 50 371
+	POS = 840 0 371
 	ROT = 0 15 30
 	SHADOW = 0
 END_MODELSET
