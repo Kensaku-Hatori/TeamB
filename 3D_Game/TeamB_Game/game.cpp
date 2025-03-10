@@ -484,9 +484,6 @@ void DrawGame(void)
 		//プレイヤーの描画処理
 		DrawPlayer();
 
-		//ステージの描画処理
-		DrawStageModel();
-
 		//ビルボードの描画処理
 		DrawBiillboard();
 
@@ -495,6 +492,9 @@ void DrawGame(void)
 
 		//敵の描画処理
 		DrawBoss();
+
+		//ステージの描画処理
+		DrawStageModel();
 
 		//エフェクトの描画処理
 		DrawEffect();
