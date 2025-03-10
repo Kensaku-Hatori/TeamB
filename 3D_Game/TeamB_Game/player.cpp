@@ -854,7 +854,6 @@ void PlayerMove(void)
 		//
 		else if (GetJoyStickL() == true)
 		{
-
 		}
 		//
 		else
@@ -941,6 +940,14 @@ void PlayerMoveJoyPad(void)
 				g_player.move.x = sinf(pCamera->rot.y + fAngle) * Speed;
 				g_player.move.z = cosf(pCamera->rot.y + fAngle) * Speed;
 				g_player.rotDest.y = pCamera->rot.y + fAngle + D3DX_PI;
+			}
+
+			if (   g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE			&& g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_R_MOVE
+				&& g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_L_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_F_MOVE
+				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE		&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_USIRO
+				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MIGI	&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_HIDARI)
+			{
+
 			}
 		}
 	}
