@@ -369,6 +369,7 @@ void CaceOneAction(OBJECTINFO* Motion)
 		break;
 	case MOTIONTYPE_ACTION_EXPLOSION:
 		pPlayer->state = PLAYERSTATE_NORMAL;
+
 		if (pPlayer->Status.nMP >= 10)
 		{
 			SetParticle(Pos,
