@@ -471,7 +471,8 @@ void UseItem(ITEMTYPE type)
 				10.0f,
 				36.0f,
 				false,
-				true);
+				true,
+				0);
 
 			//サークルのアニメーションの設定
 			SetAnime(circleIndx,
@@ -507,7 +508,8 @@ void UseItem(ITEMTYPE type)
 				10.0f,
 				36.0f,
 				false,
-				true);
+				true,
+				0);
 
 			//サークルのアニメーションの設定
 			SetAnime(circleIndx,

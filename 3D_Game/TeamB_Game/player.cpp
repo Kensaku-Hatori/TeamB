@@ -407,7 +407,7 @@ void UpdatePlayer(void)
 				if (mode != MODE_STAGEFOUR)
 				{
 					//サークルの設定処理
-					g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DCOLOR_RGBA(255, 255, 50, 204), 12, 0, 10.0f, 20.0f, true, false);
+					g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DCOLOR_RGBA(255, 255, 50, 204), 12, 0, 10.0f, 20.0f, true, false, 0);
 
 					//矢印の設定処理
 					SetArrow(Destpos, g_player.pos, D3DCOLOR_RGBA(255, 200, 0, 200), 35.0f, 15.0f, 21.0f, true, false);
@@ -417,7 +417,7 @@ void UpdatePlayer(void)
 				else if ((DethBoss()) == false)
 				{
 					//サークルの設定処理
-					g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DCOLOR_RGBA(255, 255, 50, 204), 12, 0, 10.0f, 20.0f, true, false);
+					g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DCOLOR_RGBA(255, 255, 50, 204), 12, 0, 10.0f, 20.0f, true, false, 0);
 				}
 
 				else

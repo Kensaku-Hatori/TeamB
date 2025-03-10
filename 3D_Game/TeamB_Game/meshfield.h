@@ -10,7 +10,7 @@
 #include "main.h"
 
 //マクロ定義
-#define MESH_NUM_MAX (16)//メッシュフィールドの数
+#define MESH_NUM_MAX (32)//メッシュフィールドの数
 #define MAX_TEX_FIELD (64)//テクスチャの最大数
 
 //ポリゴン(横)の構造体
