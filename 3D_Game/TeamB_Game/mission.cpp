@@ -29,7 +29,7 @@ void InitMission(void)
 	pDevice = GetDevice();
 	// デバック表示用フォントの生成
 
-	D3DXCreateFont(pDevice, 18, 0, 0, 0,
+	D3DXCreateFont(pDevice, 23, 0, 0, 0,
 		FALSE, SHIFTJIS_CHARSET,
 		OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH,
 		"Terminal", &g_pMissionFont);
@@ -39,9 +39,9 @@ void InitMission(void)
 	g_MissionInfo[MISSION_IDOU][0] = { "次のエリアに移動しろ" };
 	g_MissionInfo[MISSION_BOSS][0] = { "ボスを倒せ" };
 
-	g_MissionPos[MISSION_ZENMETU] = D3DXVECTOR2(1075.0f,250.0f);
-	g_MissionPos[MISSION_IDOU] = D3DXVECTOR2(1055.0f,250.0f);
-	g_MissionPos[MISSION_BOSS] = D3DXVECTOR2(1085.0f,250.0f);
+	g_MissionPos[MISSION_ZENMETU] = D3DXVECTOR2(1060.0f,250.0f);
+	g_MissionPos[MISSION_IDOU] = D3DXVECTOR2(1030.0f,250.0f);
+	g_MissionPos[MISSION_BOSS] = D3DXVECTOR2(1080.0f,250.0f);
 
 	g_Mission.mission = MISSION_ZENMETU;
 
