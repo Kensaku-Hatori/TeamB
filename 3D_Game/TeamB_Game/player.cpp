@@ -552,6 +552,9 @@ void DrawPlayer(void)
 	}
 }
 
+//*************************************
+// シャドウマトリックスを使った影の描画
+//*************************************
 void DrawPlayerShadow(D3DXMATRIX mtxWorld, LPD3DXBUFFER pBuffer, LPD3DXMESH pMesh, int NumMat)
 {
 	LPDIRECT3DDEVICE9 pDevice;
