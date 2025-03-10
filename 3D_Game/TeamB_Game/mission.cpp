@@ -6,13 +6,7 @@
 //==============================
 #include "mission.h"
 #include "player.h"
-//グローバル変数
-LPDIRECT3DTEXTURE9 g_pTextureTutorialUI = NULL;
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTutorialUI = NULL;
-
 Mission g_Mission;
-
-D3DXVECTOR3 g_TutorialUIpos;
 
 LPD3DXFONT g_pMissionFont;
 const char *g_MissionInfo[MISSION_MAX][255];
@@ -41,7 +35,6 @@ void InitMission(void)
 		OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH,
 		"Arial", &g_pTutorialFont);
 
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\tutorial100.jpg", &g_pTextureTutorialUI);	//枠
 	g_MissionInfo[MISSION_ZENMETU][0] = { "敵を全滅させろ" };
 	g_MissionInfo[MISSION_IDOU][0] = { "次のエリアに移動しろ" };
 	g_MissionInfo[MISSION_BOSS][0] = { "ボスを倒せ" };
@@ -54,47 +47,7 @@ void InitMission(void)
 
 	g_TutorialPos = D3DXVECTOR2(1040.0f,530.0f);
 
-	g_CntState = 60;
-	
-	////頂点バッファの生成・頂点情報の設定
-	//VERTEX_2D* pVtx;
-
-	////チュートリアル
-	//{
-	//	//頂点バッファの生成
-	//	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
-	//		D3DUSAGE_WRITEONLY,
-	//		FVF_VERTEX_2D,
-	//		D3DPOOL_MANAGED,
-	//		&g_pVtxBuffTutorialUI,
-	//		NULL);
-	//	//頂点バッファをロックし、頂点情報へのポインタを取得
-	//	g_pVtxBuffTutorialUI->Lock(0, 0, (void**)&pVtx, 0);
-
-	//	//頂点座標の設定
-	//	pVtx[0].pos = D3DXVECTOR3(g_Missionpos.x - MISSION_X, g_Missionpos.y - MISSION_Y, 0.0f);
-	//	pVtx[1].pos = D3DXVECTOR3(g_Missionpos.x + MISSION_X, g_Missionpos.y - MISSION_Y, 0.0f);
-	//	pVtx[2].pos = D3DXVECTOR3(g_Missionpos.x - MISSION_X, g_Missionpos.y + MISSION_Y, 0.0f);
-	//	pVtx[3].pos = D3DXVECTOR3(g_Missionpos.x + MISSION_X, g_Missionpos.y + MISSION_Y, 0.0f);
-	//	//rhwの設定
-	//	pVtx[0].rhw = 1.0f;
-	//	pVtx[1].rhw = 1.0f;
-	//	pVtx[2].rhw = 1.0f;
-	//	pVtx[3].rhw = 1.0f;
-	//	//頂点カラーの設定
-	//	pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	//	pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	//	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	//	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	//	//テクスチャ座標の設定
-	//	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	//	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	//	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	//	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-
-	//	//頂点バッファをアンロック
-	//	g_pVtxBuffTutorialUI->Unlock();
-	//}
+	g_CntState = 60;	
 }
 //==========
 // 終了処理
@@ -106,22 +59,11 @@ void UninitMission(void)
 		g_pMissionFont->Release();
 		g_pMissionFont = NULL;
 	}
-	////テクスチャの破棄
-	//for (int nCnt = 0; nCnt < MISSION_MAX; nCnt++)
-	//{
-	//	if (g_pTextureMission[nCnt] != NULL)
-	//	{
-	//		g_pTextureMission[nCnt]->Release();
-	//		g_pTextureMission[nCnt] = NULL;
-	//	}
-	//}
-
-	////頂点バッファの破棄
-	//if (g_pVtxBuffMission != NULL)
-	//{
-	//	g_pVtxBuffMission->Release();
-	//	g_pVtxBuffMission = NULL;
-	//}
+	if (g_pTutorialFont != NULL)
+	{
+		g_pTutorialFont->Release();
+		g_pTutorialFont = NULL;
+	}
 }
 //==========
 // 更新処理
@@ -134,11 +76,15 @@ void UpdateMission(void)
 		D3DXCOLOR(1.0f,1.0f,1.0f,1.0f),
 		2);
 
-	DrawMission("チュートリアル:TAB/BACK", g_pTutorialFont,
-		g_TutorialPos,
-		D3DXCOLOR(0.0f, 0.5f, 0.0f, 1.0f),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-		2);
+	MODE pMode = GetMode();
+	if (pMode == MODE_STAGEONE)
+	{
+		DrawMission("チュートリアル:TAB/BACK", g_pTutorialFont,
+			g_TutorialPos,
+			D3DXCOLOR(0.0f, 0.5f, 0.0f, 1.0f),
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			2);
+	}
 }
 //===========
 // 描画処理
