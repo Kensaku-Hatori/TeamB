@@ -70,7 +70,7 @@ typedef struct
 	int nKey;						// 現在のキーNo
 	int nCntMotion;					// モーションのカウンター
 
-	bool btest;
+	bool bSkillUse;
 	bool bAbolition;				// 全滅フラグ(trueで全滅)
 
 	float fSightRange;

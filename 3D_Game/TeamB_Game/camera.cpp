@@ -261,7 +261,7 @@ void ResetCameraPos(D3DXVECTOR3 posV, D3DXVECTOR3 posR)
 		D3DXVECTOR3 vec = (g_camera.posRDest- g_camera.posVDest);
 
 		//Šp“x‚ÌŽæ“¾
-		float fAngle = atan2(vec.x, vec.z);
+		float fAngle = atan2f(vec.x, vec.z);
 
 		g_camera.rotDest.y = fAngle;
 		g_camera.bResete = true;

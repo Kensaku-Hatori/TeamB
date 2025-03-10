@@ -208,6 +208,9 @@ void UpdateSkill(void)
 				}
 				else
 				{
+					Player* pPlayer = GetPlayer();
+					pPlayer->bSkillUse = false;
+
 					SetParticle(g_Skill[nCnt].pos,
 						D3DXVECTOR3(628.0f, 628.0f, 628.0f),
 						D3DXCOLOR(0.05f, 0.25f, 1.0f, 1.0f),
