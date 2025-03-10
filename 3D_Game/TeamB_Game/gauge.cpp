@@ -291,20 +291,36 @@ void SetGauge(GAUGETYPE type, D3DXVECTOR3 pos, D3DXVECTOR2 size)
 	{
 		if (g_gauge[nCnt].bUse == false)
 		{
+			VERTEX_2D* pVtx1;
+			//頂点バッファをロックし、頂点情報へのポインタを取得
+			g_pVtxBuffGauge->Lock(0, 0, (void**)&pVtx1, 0);
+
 			g_gauge[nCnt].type = type;
 			g_gauge[nCnt].pos = pos;
 
 			if (g_gauge[nCnt].type == GAUGETYPE_HP)
 			{
 				g_gauge[nCnt].size = D3DXVECTOR2(size.x + PLAYER_HP / 10, size.y);
+				//頂点座標の設定
+				pVtx1[0].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x, g_gauge[nCnt].pos.y - g_gauge[nCnt].size.y, 0.0f);
+				pVtx1[1].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x + g_gauge[nCnt].size.x, g_gauge[nCnt].pos.y - g_gauge[nCnt].size.y, 0.0f);
+				pVtx1[2].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x, g_gauge[nCnt].pos.y + g_gauge[nCnt].size.y, 0.0f);
+				pVtx1[3].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x + g_gauge[nCnt].size.x, g_gauge[nCnt].pos.y + g_gauge[nCnt].size.y, 0.0f);
 			}
 			else if (g_gauge[nCnt].type == GAUGETYPE_MP)
 			{
+				pVtx1 += 4;
 				g_gauge[nCnt].size = D3DXVECTOR2(size.x + PLAYER_MP / 10, size.y);
+				//頂点座標の設定
+				pVtx1[0].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x, g_gauge[nCnt].pos.y - g_gauge[nCnt].size.y, 0.0f);
+				pVtx1[1].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x + g_gauge[nCnt].size.x, g_gauge[nCnt].pos.y - g_gauge[nCnt].size.y, 0.0f);
+				pVtx1[2].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x, g_gauge[nCnt].pos.y + g_gauge[nCnt].size.y, 0.0f);
+				pVtx1[3].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x + g_gauge[nCnt].size.x, g_gauge[nCnt].pos.y + g_gauge[nCnt].size.y, 0.0f);
 			}
-
 			g_gauge[nCnt].bUse = true;
 
+			//頂点バッファをアンロック
+			g_pVtxBuffGauge->Unlock();
 
 			//頂点座標の設定
 			pVtx[0].pos = D3DXVECTOR3(g_gauge[nCnt].pos.x, g_gauge[nCnt].pos.y - g_gauge[nCnt].size.y, 0.0f);

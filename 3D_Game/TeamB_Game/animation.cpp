@@ -369,6 +369,7 @@ void CaceOneAction(OBJECTINFO* Motion)
 		break;
 	case MOTIONTYPE_ACTION_EXPLOSION:
 		pPlayer->state = PLAYERSTATE_NORMAL;
+
 		if (pPlayer->Status.nMP >= 10)
 		{
 			SetParticle(Pos,
@@ -540,7 +541,8 @@ void CaceThreeAction(OBJECTINFO* Motion)
 			10.0f,
 			36.0f,
 			false,
-			true);
+			true,
+			0);
 
 		//サークルのアニメーションの設定
 		SetAnime(circleIndx,
@@ -570,7 +572,8 @@ void CaceThreeAction(OBJECTINFO* Motion)
 			10.0f,
 			36.0f,
 			false,
-			true);
+			true,
+			0);
 
 		//サークルのアニメーションの設定
 		SetAnime(circleIndx,

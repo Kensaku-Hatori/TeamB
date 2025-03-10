@@ -24,6 +24,7 @@
 #include "score.h"
 #include "game.h"
 #include "sound.h"
+#include "minimap.h"
 
 //*******************
 // グローバル変数宣言
@@ -102,6 +103,7 @@ void UpdateBoss(void)
 	{
 		Routine();
 		EndAction();
+		UpdateMiniMapEnemy(g_Boss.MiniMapIndx, g_Boss.Object.Pos);
 		if (g_Boss.BossAi.bFinishAction == true)
 		{
 			// 行動の更新
@@ -323,6 +325,7 @@ void HitBoss(float Atack)
 
 	if (g_Boss.Status.fHP <= 0.0f && g_Boss.bUse == true)
 	{// 使われていて体力が０以下なら
+		DeleteEnemyMiniMap(g_Boss.MiniMapIndx);
 		DeadBoss();
 	}
 }
@@ -342,6 +345,8 @@ void SetBoss(D3DXVECTOR3 pos, D3DXVECTOR3 rot)
 		g_Boss.state = BOSSSTATE_NORMAL;
 		g_Boss.IndxShadow = SetShadow(g_Boss.Object.Pos, g_Boss.Object.Rot, 20.0f);
 		g_Boss.nActionCount = rand() % 180 + 120;
+		g_Boss.MiniMapIndx = SetMapEnemy(pos);
+
 	}
 }
 
