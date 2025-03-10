@@ -82,6 +82,7 @@ void InitPlayer(void)
 	g_player.nCntState = 0;					// プレイヤーの状態時間
 	g_player.nCntRollingState = 0;			// ローリングのカウント
 	g_player.bRolling = false;				// ローリングを使用しているかどうか
+	g_player.bSkillUse = false;
 	//g_player.bLanding = true;
 
 	//モーション関連
@@ -152,7 +153,6 @@ void UpdatePlayer(void)
 	{
 		//プレイヤー移動
 		PlayerMove();
-		PlayerMoveJoyPad();
 
 		//ロックオン状態なら
 		if (g_player.bLockOn == true)
@@ -175,7 +175,7 @@ void UpdatePlayer(void)
 		{
 			g_player.rot.y -= D3DX_PI * 2.0f;
 		}
-		
+
 		g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
 
 		if (g_player.state == PLAYERSTATE_NORMAL)
@@ -184,7 +184,8 @@ void UpdatePlayer(void)
 			if ((OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true) 
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_HORMING
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_EXPLOSION)
+				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_EXPLOSION
+				)
 			{// MPが５０以上の時
 				g_player.state = PLAYERSTATE_ACTION;
 
@@ -215,21 +216,25 @@ void UpdatePlayer(void)
 				}
 				else if (g_player.Skilltype == SKILLTYPE_HORMING)
 				{
-					SetMotion(MOTIONTYPE_ACTION_HORMING, &g_player.PlayerMotion);
+					if (g_player.bSkillUse == false)
+					{
+						g_player.bSkillUse = true;
+						SetMotion(MOTIONTYPE_ACTION_HORMING, &g_player.PlayerMotion);
 
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bActionStart = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bFirst = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartKey = 2;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndKey = 2;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartFrame = 23;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndFrame = 24;
+						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bActionStart = false;
+						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bFirst = false;
+						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartKey = 2;
+						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndKey = 2;
+						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartFrame = 23;
+						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndFrame = 24;
 
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].bActionStart = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].bFirst = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nStartKey = 0;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nEndKey = 0;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nStartFrame = 1;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nEndFrame = 2;
+						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].bActionStart = false;
+						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].bFirst = false;
+						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nStartKey = 0;
+						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nEndKey = 0;
+						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nStartFrame = 1;
+						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nEndFrame = 2;
+					}
 				}
 				else if (g_player.Skilltype == SKILLTYPE_EXPLOSION)
 				{
@@ -854,18 +859,19 @@ void PlayerMove(void)
 		//
 		else if (GetJoyStickL() == true)
 		{
+			PlayerMoveJoyPad();
 		}
 		//
 		else
 		{
-			if (g_player.PlayerMotion.motionType == MOTIONTYPE_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_R_MOVE
-				|| g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_L_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_F_MOVE
-				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MAE || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_USIRO
-				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MIGI || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_HIDARI)
-			{
-				SetMotion(MOTIONTYPE_NEUTRAL, &g_player.PlayerMotion);
-				g_player.state = PLAYERSTATE_NORMAL;
-			}
+				if (g_player.PlayerMotion.motionType == MOTIONTYPE_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_R_MOVE
+					|| g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_L_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_F_MOVE
+					|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MAE || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_USIRO
+					|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MIGI || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_HIDARI)
+				{
+					SetMotion(MOTIONTYPE_NEUTRAL, &g_player.PlayerMotion);
+					g_player.state = PLAYERSTATE_NORMAL;
+				}
 		}
 	}
 	else if(g_player.state == PLAYERSTATE_KNOCKUP)
@@ -924,56 +930,72 @@ void PlayerMoveJoyPad(void)
 		g_player.state = PLAYERSTATE_ROLL;
 	}
 
-	if (g_player.state != PLAYERSTATE_ACTION && g_player.state != PLAYERSTATE_KNOCKUP)
+	float fStickAngleX = (float)pStick->Gamepad.sThumbLX * pStick->Gamepad.sThumbLX;
+	float fStickAngleY = (float)pStick->Gamepad.sThumbLY * pStick->Gamepad.sThumbLY;
+
+	float DeadZone = 10920.0f;
+	float fMag = sqrtf(fStickAngleX + fStickAngleY);
+
+	if (fMag > DeadZone)
 	{
-		if (GetJoyStickL() == true)
+		float fAngle = atan2f(pStick->Gamepad.sThumbLX, pStick->Gamepad.sThumbLY);
+		g_player.move.x = sinf(pCamera->rot.y + fAngle) * Speed;
+		g_player.move.z = cosf(pCamera->rot.y + fAngle) * Speed;
+		g_player.rotDest.y = pCamera->rot.y + fAngle + D3DX_PI;
+
+		// モーション
+		if (g_player.bRolling == false)
 		{
-			float fStickAngleX = (float)pStick->Gamepad.sThumbLX * pStick->Gamepad.sThumbLX;
-			float fStickAngleY = (float)pStick->Gamepad.sThumbLY * pStick->Gamepad.sThumbLY;
-
-			float DeadZone = 10920.0f;
-			float fMag = sqrtf(fStickAngleX + fStickAngleY);
-
-			if (fMag > DeadZone)
+			if (g_player.bLockOn == false && g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE)
 			{
-				float fAngle = atan2f(pStick->Gamepad.sThumbLX, pStick->Gamepad.sThumbLY);
-				g_player.move.x = sinf(pCamera->rot.y + fAngle) * Speed;
-				g_player.move.z = cosf(pCamera->rot.y + fAngle) * Speed;
-				g_player.rotDest.y = pCamera->rot.y + fAngle + D3DX_PI;
+				SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
 			}
-
-			if (   g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE			&& g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_R_MOVE
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_L_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_F_MOVE
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE		&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_USIRO
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MIGI	&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_HIDARI)
+			else if (g_player.bLockOn == true)
 			{
-				if (g_player.bRolling == false)
+				if (pStick->Gamepad.sThumbLX < 0 && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_L_MOVE)
 				{
-					if (g_player.bLockOn == false)
-					{
-						SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
-					}
-					else if (g_player.bLockOn == true)
-					{
-						SetMotion(MOTIONTYPE_LOCKON_L_MOVE, &g_player.PlayerMotion);
-					}
-					
+					SetMotion(MOTIONTYPE_LOCKON_L_MOVE, &g_player.PlayerMotion);
 				}
-				else
+				else if (pStick->Gamepad.sThumbLX > 0 && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_R_MOVE)
 				{
-					if (g_player.bLockOn == false)
-					{
-						SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion);
-					}
-					else if (g_player.bLockOn == true)
+					SetMotion(MOTIONTYPE_LOCKON_R_MOVE, &g_player.PlayerMotion);
+				}
+				else if (pStick->Gamepad.sThumbLY < 0 && pStick->Gamepad.sThumbLY > 0 && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_F_MOVE)
+				{
+					SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion);
+				}
+			}
+		}
+		else if(g_player.bRolling == true)
+		{
+			if (g_player.bLockOn == false && g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE)
+			{
+				SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion);
+			}
+			else if (g_player.bLockOn == true)
+			{
+				if (   g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE && g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_USIRO
+					&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_HIDARI && g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MIGI)
+				{
+					if (pStick->Gamepad.sThumbLX < 0)
 					{
 						SetMotion(MOTIONTYPE_KAIHI_HIDARI, &g_player.PlayerMotion);
 					}
-					
+					else if (pStick->Gamepad.sThumbLX > 0)
+					{
+						SetMotion(MOTIONTYPE_KAIHI_MIGI, &g_player.PlayerMotion);
+					}
+					else if (pStick->Gamepad.sThumbLY < 0)
+					{
+						SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion);
+					}
+					else if (pStick->Gamepad.sThumbLY > 0)
+					{
+						SetMotion(MOTIONTYPE_KAIHI_USIRO, &g_player.PlayerMotion);
+					}
 				}
-
 			}
-		}
+		}	
 	}
 }
 //===============
