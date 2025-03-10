@@ -519,10 +519,6 @@ void DrawPlayer(void)
 				&g_player.PlayerMotion.aModel[nCntModel].mtxWorld,
 				&mtxParent);
 
-			DrwaShadowPlayer(g_player.nIdxShadow,
-				g_player.PlayerMotion.aModel[nCntModel].mtxWorld
-			);
-
 			//パーツのワールドマトリックスの設定
 			pDevice->SetTransform(D3DTS_WORLD,
 				&g_player.PlayerMotion.aModel[nCntModel].mtxWorld);
@@ -541,6 +537,11 @@ void DrawPlayer(void)
 				g_player.PlayerMotion.aModel[nCntModel].pMesh->DrawSubset(nCntMat);
 			}
 
+			DrawPlayerShadow(g_player.PlayerMotion.aModel[nCntModel].mtxWorld,
+				g_player.PlayerMotion.aModel[nCntModel].pBuffMat,
+				g_player.PlayerMotion.aModel[nCntModel].pMesh,
+				(int)g_player.PlayerMotion.aModel[nCntModel].dwNumMat);
+
 			if (nCntModel == 12)
 			{
 				MatrixWand();
@@ -551,7 +552,55 @@ void DrawPlayer(void)
 	}
 }
 
-//====================
+//*************************************
+// シャドウマトリックスを使った影の描画
+//*************************************
+void DrawPlayerShadow(D3DXMATRIX mtxWorld, LPD3DXBUFFER pBuffer, LPD3DXMESH pMesh, int NumMat)
+{
+	LPDIRECT3DDEVICE9 pDevice;
+	//デバイスの取得
+	pDevice = GetDevice();
+
+	D3DXMATRIX mtxShadow;
+
+	D3DXVECTOR4 LightPos = D3DXVECTOR4(0.0f, 10.0f, 0.0f, 0.0f);
+	D3DXPLANE Plane = D3DXPLANE(0.0f, 1.0f, 0.0f, -1.0f);
+
+	D3DXMatrixShadow(&mtxShadow, &LightPos, &Plane);
+	D3DXMatrixMultiply(&mtxShadow, &mtxWorld, &mtxShadow);
+
+	//パーツのワールドマトリックスの設定
+	pDevice->SetTransform(D3DTS_WORLD,
+		&mtxShadow);
+
+	//マテリアルデータへのポインタ
+	D3DXMATERIAL* pMat;
+
+	//マテリアルデータへのポインタを取得
+	pMat = (D3DXMATERIAL*)pBuffer->GetBufferPointer();
+
+	//減算合成の設定
+	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_REVSUBTRACT);
+	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+
+	for (int nCntMat = 0; nCntMat < (int)NumMat; nCntMat++)
+	{
+		D3DXMATERIAL test = pMat[nCntMat];
+		test.MatD3D.Diffuse.r = 255;
+		test.MatD3D.Diffuse.g = 255;
+		test.MatD3D.Diffuse.b = 255;
+		//マテリアルの設定
+		pDevice->SetMaterial(&test.MatD3D);
+		//プレイヤーの描画
+		pMesh->DrawSubset(nCntMat);
+	}
+
+	//設定を元に戻す
+	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+}//====================
 // プレイヤーの移動
 //====================
 void PlayerMove(void)
@@ -583,7 +632,7 @@ void PlayerMove(void)
 		Speed = g_player.Status.fSpeed;
 	}
 	
-	if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && g_player.bRolling == false)
+	if ((KeyboardTrigger(DIK_SPACE)) && g_player.bRolling == false)
 	{
 		Speed = g_player.Status.fSpeed * 20;
 		g_player.bRolling = true;
@@ -803,6 +852,10 @@ void PlayerMove(void)
 				}
 			}
 		//
+		else if (GetJoyStickL() == true)
+		{
+		}
+		//
 		else
 		{
 			if (g_player.PlayerMotion.motionType == MOTIONTYPE_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_R_MOVE
@@ -847,24 +900,79 @@ void PlayerMove(void)
 		g_player.pos.z = STAGE_SIZE;
 	}
 }
+//==========================
+// コントローラーでの移動
+//==========================
 void PlayerMoveJoyPad(void)
 {
 	Camera* pCamera = GetCamera();
 	XINPUT_STATE* pStick = GetJoyStickAngle();
-	if (GetJoyStickL() == true)
+
+	float Speed;
+	if (g_player.bLockOn == true)
 	{
-		float fStickAngleX = (float)pStick->Gamepad.sThumbLX * pStick->Gamepad.sThumbLX;
-		float fStickAngleY = (float)pStick->Gamepad.sThumbLY * pStick->Gamepad.sThumbLY;
+		Speed = g_player.Status.fSpeed / 2;
+	}
+	else
+	{
+		Speed = g_player.Status.fSpeed;
+	}
+	if (GetJoypadTrigger(JOYKEY_A) && g_player.bRolling == false)
+	{
+		Speed = g_player.Status.fSpeed * 20;
+		g_player.bRolling = true;
+		g_player.state = PLAYERSTATE_ROLL;
+	}
 
-		float DeadZone = 10920.0f;
-		float fMag = sqrtf(fStickAngleX + fStickAngleY);
-
-		if (fMag > DeadZone)
+	if (g_player.state != PLAYERSTATE_ACTION && g_player.state != PLAYERSTATE_KNOCKUP)
+	{
+		if (GetJoyStickL() == true)
 		{
-			float fAngle = atan2f(pStick->Gamepad.sThumbLX, pStick->Gamepad.sThumbLY);
-			g_player.move.x = sinf(pCamera->rot.y + fAngle);
-			g_player.move.z = cosf(pCamera->rot.y + fAngle);
-			g_player.rotDest.y = pCamera->rot.y + fAngle + D3DX_PI;
+			float fStickAngleX = (float)pStick->Gamepad.sThumbLX * pStick->Gamepad.sThumbLX;
+			float fStickAngleY = (float)pStick->Gamepad.sThumbLY * pStick->Gamepad.sThumbLY;
+
+			float DeadZone = 10920.0f;
+			float fMag = sqrtf(fStickAngleX + fStickAngleY);
+
+			if (fMag > DeadZone)
+			{
+				float fAngle = atan2f(pStick->Gamepad.sThumbLX, pStick->Gamepad.sThumbLY);
+				g_player.move.x = sinf(pCamera->rot.y + fAngle) * Speed;
+				g_player.move.z = cosf(pCamera->rot.y + fAngle) * Speed;
+				g_player.rotDest.y = pCamera->rot.y + fAngle + D3DX_PI;
+			}
+
+			if (   g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE			&& g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_R_MOVE
+				&& g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_L_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_F_MOVE
+				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE		&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_USIRO
+				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MIGI	&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_HIDARI)
+			{
+				if (g_player.bRolling == false)
+				{
+					if (g_player.bLockOn == false)
+					{
+						SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+					}
+					else if (g_player.bLockOn == true)
+					{
+						SetMotion(MOTIONTYPE_LOCKON_L_MOVE, &g_player.PlayerMotion);
+					}
+					
+				}
+				else
+				{
+					if (g_player.bLockOn == false)
+					{
+						SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion);
+					}
+					else if (g_player.bLockOn == true)
+					{
+						SetMotion(MOTIONTYPE_KAIHI_HIDARI, &g_player.PlayerMotion);
+					}
+					
+				}
+
+			}
 		}
 	}
 }

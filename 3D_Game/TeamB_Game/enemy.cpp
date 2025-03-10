@@ -331,9 +331,6 @@ void DrawEnemy(void)
 					&g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld,
 					&mtxParent);
 
-				DrwaShadowPlayer(g_Enemy[EnemyCount].IndxShadow,
-					g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld);
-
 				pDevice->SetTransform(D3DTS_WORLD,
 					&g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld);
 
@@ -365,6 +362,11 @@ void DrawEnemy(void)
 					// モデル(パーツ)の描画
 					g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].pMesh->DrawSubset(nCntMat);
 				}
+
+				DrawPlayerShadow(g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld,
+					g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].pBuffMat,
+					g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].pMesh,
+					(int)g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].dwNumMat);
 
 				if (EnemyPartsCount == g_Enemy[EnemyCount].CollModel)
 				{

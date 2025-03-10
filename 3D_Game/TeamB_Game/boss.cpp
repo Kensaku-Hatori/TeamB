@@ -254,6 +254,11 @@ void DrawBoss(void)
 				g_Boss.BossMotion.aModel[EnemyPartsCount].pMesh->DrawSubset(nCntMat);
 			}
 
+			DrawPlayerShadow(g_Boss.BossMotion.aModel[EnemyPartsCount].mtxWorld,
+				g_Boss.BossMotion.aModel[EnemyPartsCount].pBuffMat,
+				g_Boss.BossMotion.aModel[EnemyPartsCount].pMesh,
+				(int)g_Boss.BossMotion.aModel[EnemyPartsCount].dwNumMat);
+
 			if (EnemyPartsCount == g_Boss.CollModel)
 			{
 				BossMatrixWand();
