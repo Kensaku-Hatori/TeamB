@@ -9,7 +9,7 @@
 
 #include"main.h"
 
-#define MISSION_X (80)
+#define MISSION_X (120)
 #define MISSION_Y (35)
 
 typedef enum
@@ -29,9 +29,7 @@ typedef struct
 void InitMission(void);
 void UninitMission(void);
 void UpdateMission(void);
-void DrawMission(void);
+void DrawMission(const char *MissionInfo, LPD3DXFONT Font,D3DXVECTOR2 Pos,D3DXCOLOR Grow,D3DXCOLOR FontCol,int GrowRadius);
 void SetMapPlayer(int nStageNo);
 Mission* GetMission();
-
-
 #endif

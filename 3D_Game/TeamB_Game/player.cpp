@@ -178,15 +178,19 @@ void UpdatePlayer(void)
 
 		g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
 
-		if (g_player.state != PLAYERSTATE_ACTION && g_player.state != PLAYERSTATE_KNOCKUP)
+		if (g_player.state == PLAYERSTATE_NORMAL || g_player.state == PLAYERSTATE_ROLL)
 		{
 			//–‚–@”­ŽË
 			if ((OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true)
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_HORMING
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_EXPLOSION
-				)
-			{// MP‚ª‚T‚OˆÈã‚ÌŽž
+				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_HIDARI
+				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MIGI
+				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE
+				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_USIRO
+				&& g_player.state != PLAYERSTATE_ACTION)
+			{
 				g_player.state = PLAYERSTATE_ACTION;
 
 				if (g_player.Skilltype == SKILLTYPE_NONE)
@@ -282,7 +286,7 @@ void UpdatePlayer(void)
 		if (g_player.bRolling == true)
 		{
 			g_player.nCntRollingState++;
-			if (g_player.nCntRollingState >= 30)
+			if (g_player.nCntRollingState >= 40)
 			{
 				g_player.bRolling = false;
 				g_player.nCntRollingState = 0;
@@ -869,7 +873,8 @@ void PlayerMove(void)
 			if (g_player.PlayerMotion.motionType == MOTIONTYPE_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_R_MOVE
 				|| g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_L_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_F_MOVE
 				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MAE || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_USIRO
-				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MIGI || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_HIDARI)
+				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MIGI || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_HIDARI
+				)
 			{
 				SetMotion(MOTIONTYPE_NEUTRAL, &g_player.PlayerMotion);
 				g_player.state = PLAYERSTATE_NORMAL;

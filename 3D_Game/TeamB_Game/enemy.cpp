@@ -533,14 +533,9 @@ void DeadEnemy(int Indx)
 	DeleteHPGuage(g_Enemy[Indx].IndxGuage);
 
 	//アイテムドロップ
-	Drop = rand() % 2;
 	Itemtype = rand() % NUM_ITEMTYPE;
-
-	if (Drop == 1)
-	{
-		//アイテムの設定
-		SetItem(g_Enemy[Indx].Object.Pos, (ITEMTYPE)Itemtype);
-	}
+	//アイテムの設定
+	SetItem(g_Enemy[Indx].Object.Pos, (ITEMTYPE)Itemtype);
 
 	SetParticle(g_Enemy[Indx].Object.Pos, 
 		D3DXVECTOR3(100.0f, 100.0f, 100.0f), 

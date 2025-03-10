@@ -95,8 +95,6 @@ void UpdateUi(void)
 
 	UpdateSkillUI();
 
-	UpdateMission();
-
 	if (nMode == MODE_STAGEFOUR)
 	{
 		UpdateBossGauge();
@@ -125,7 +123,7 @@ void DrawUi(void)
 
 	DrawSkillUI();
 
-	DrawMission();
+	UpdateMission();
 
 	if (nMode == MODE_STAGEFOUR)
 	{

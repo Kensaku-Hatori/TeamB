@@ -49,11 +49,12 @@ void InitTutorial(void)
 	//テクスチャの読み込み
 	{
 		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\tutorial001.jpg", &g_pTextureTutorial[TUTORIAL_MOVE]);		 //
+		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\tutorial007.jpg", &g_pTextureTutorial[TUTORIAL_CAMERA]);		 //
 		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\tutorial004.jpg", &g_pTextureTutorial[TUTORIAL_ROLL]);		 //
 		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\tutorial006.jpg", &g_pTextureTutorial[TUTORIAL_SKILL]); //
 		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\tutorial003.jpg", &g_pTextureTutorial[TUTORIAL_ITEM]);		 //
 		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\tutorial005.jpg", &g_pTextureTutorial[TUTORIAL_LOCKON]);		 //
-
+		
 		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\sirusi.png", &g_pTextureArrow);		 //
 
 		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number200.png", &g_pTextureDenom);		 //
@@ -383,6 +384,9 @@ void ChangeTutorial(void)
 		switch (g_TutorialType)
 		{
 		case TUTORIAL_MOVE:
+			g_TutorialType = TUTORIAL_CAMERA;
+			break;
+		case TUTORIAL_CAMERA:
 			g_TutorialType = TUTORIAL_ROLL;
 			break;
 		case TUTORIAL_ROLL:
@@ -408,8 +412,11 @@ void ChangeTutorial(void)
 		{
 		case TUTORIAL_MOVE:
 			break;
-		case TUTORIAL_ROLL:
+		case TUTORIAL_CAMERA:
 			g_TutorialType = TUTORIAL_MOVE;
+			break;
+		case TUTORIAL_ROLL:
+			g_TutorialType = TUTORIAL_CAMERA;
 			break;
 		case TUTORIAL_SKILL:
 			g_TutorialType = TUTORIAL_ROLL;
