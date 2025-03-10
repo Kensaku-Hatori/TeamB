@@ -946,6 +946,30 @@ void PlayerMoveJoyPad(void)
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE		&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_USIRO
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MIGI	&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_HIDARI)
 			{
+				if (g_player.bRolling == false)
+				{
+					if (g_player.bLockOn == false)
+					{
+						SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+					}
+					else if (g_player.bLockOn == true)
+					{
+						SetMotion(MOTIONTYPE_LOCKON_L_MOVE, &g_player.PlayerMotion);
+					}
+					
+				}
+				else
+				{
+					if (g_player.bLockOn == false)
+					{
+						SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion);
+					}
+					else if (g_player.bLockOn == true)
+					{
+						SetMotion(MOTIONTYPE_KAIHI_HIDARI, &g_player.PlayerMotion);
+					}
+					
+				}
 
 			}
 		}
