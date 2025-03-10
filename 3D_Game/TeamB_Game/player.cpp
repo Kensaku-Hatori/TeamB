@@ -181,7 +181,7 @@ void UpdatePlayer(void)
 		if (g_player.state == PLAYERSTATE_NORMAL)
 		{
 			//魔法発射
-			if ((OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true) 
+			if ((OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true)
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_HORMING
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_EXPLOSION
@@ -255,7 +255,6 @@ void UpdatePlayer(void)
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndFrame = 16;
 				}
 			}
-
 			//ロックオン
 			if ((GetJoypadTrigger(JOYKEY_R1) == true) ||
 				OnMouseDown(1))
@@ -348,6 +347,7 @@ void UpdatePlayer(void)
 		//HP減らす
 		if (KeyboardTrigger(DIK_9) == true)
 		{
+			g_player.Status.nMP = 0;
 			g_player.Status.fHP -= 100;
 			if (g_player.Status.fHP <= 0)
 			{
@@ -605,7 +605,8 @@ void DrawPlayerShadow(D3DXMATRIX mtxWorld, LPD3DXBUFFER pBuffer, LPD3DXMESH pMes
 	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
 	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-}//====================
+}
+//====================
 // プレイヤーの移動
 //====================
 void PlayerMove(void)
@@ -637,13 +638,14 @@ void PlayerMove(void)
 		Speed = g_player.Status.fSpeed;
 	}
 	
-	if ((KeyboardTrigger(DIK_SPACE)) && g_player.bRolling == false)
+	if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && g_player.bRolling == false)
 	{
 		Speed = g_player.Status.fSpeed * 20;
 		g_player.bRolling = true;
 		g_player.state = PLAYERSTATE_ROLL;
 	}
-	if (g_player.state != PLAYERSTATE_ACTION && g_player.state != PLAYERSTATE_KNOCKUP)
+
+	if (g_player.state == PLAYERSTATE_NORMAL || g_player.state == PLAYERSTATE_ROLL)
 	{
 		//移動
 		//左
@@ -859,19 +861,19 @@ void PlayerMove(void)
 		//
 		else if (GetJoyStickL() == true)
 		{
-			PlayerMoveJoyPad();
+			PlayerMoveJoyPad(Speed);
 		}
 		//
 		else
 		{
-				if (g_player.PlayerMotion.motionType == MOTIONTYPE_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_R_MOVE
-					|| g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_L_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_F_MOVE
-					|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MAE || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_USIRO
-					|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MIGI || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_HIDARI)
-				{
-					SetMotion(MOTIONTYPE_NEUTRAL, &g_player.PlayerMotion);
-					g_player.state = PLAYERSTATE_NORMAL;
-				}
+			if (g_player.PlayerMotion.motionType == MOTIONTYPE_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_R_MOVE
+				|| g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_L_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_F_MOVE
+				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MAE || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_USIRO
+				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MIGI || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_HIDARI)
+			{
+				SetMotion(MOTIONTYPE_NEUTRAL, &g_player.PlayerMotion);
+				g_player.state = PLAYERSTATE_NORMAL;
+			}
 		}
 	}
 	else if(g_player.state == PLAYERSTATE_KNOCKUP)
@@ -909,26 +911,10 @@ void PlayerMove(void)
 //==========================
 // コントローラーでの移動
 //==========================
-void PlayerMoveJoyPad(void)
+void PlayerMoveJoyPad(float Speed)
 {
 	Camera* pCamera = GetCamera();
 	XINPUT_STATE* pStick = GetJoyStickAngle();
-
-	float Speed;
-	if (g_player.bLockOn == true)
-	{
-		Speed = g_player.Status.fSpeed / 2;
-	}
-	else
-	{
-		Speed = g_player.Status.fSpeed;
-	}
-	if (GetJoypadTrigger(JOYKEY_A) && g_player.bRolling == false)
-	{
-		Speed = g_player.Status.fSpeed * 20;
-		g_player.bRolling = true;
-		g_player.state = PLAYERSTATE_ROLL;
-	}
 
 	float fStickAngleX = (float)pStick->Gamepad.sThumbLX * pStick->Gamepad.sThumbLX;
 	float fStickAngleY = (float)pStick->Gamepad.sThumbLY * pStick->Gamepad.sThumbLY;
@@ -985,11 +971,11 @@ void PlayerMoveJoyPad(void)
 					{
 						SetMotion(MOTIONTYPE_KAIHI_MIGI, &g_player.PlayerMotion);
 					}
-					else if (pStick->Gamepad.sThumbLY < 0)
+					else if (pStick->Gamepad.sThumbLY > 0)
 					{
 						SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion);
 					}
-					else if (pStick->Gamepad.sThumbLY > 0)
+					else if (pStick->Gamepad.sThumbLY < 0)
 					{
 						SetMotion(MOTIONTYPE_KAIHI_USIRO, &g_player.PlayerMotion);
 					}
