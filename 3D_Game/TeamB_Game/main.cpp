@@ -585,16 +585,16 @@ MODE GetMode(void)
 //===========================
 void DrawPlayerCollision()
 {
-	PARTICLEEDITER* pEditer = GetParticleInfo();
-	RECT rect = { 0,0,SCREEN_WIDTH,SCREEN_HEIGHT };
-	char aStr[256];
-	Player* pPlayer = GetPlayer();
+	//PARTICLEEDITER* pEditer = GetParticleInfo();
+	//RECT rect = { 0,0,SCREEN_WIDTH,SCREEN_HEIGHT };
+	//char aStr[256];
+	//Player* pPlayer = GetPlayer();
 
-	// 文字列に代入
-	sprintf(&aStr[0], "当たっているか:%d\nプレイヤーのポス:%3.2f,%3.2f,%3.2f",pPlayer->btest,pPlayer->pos.x, pPlayer->pos.y, pPlayer->pos.z);
+	//// 文字列に代入
+	//sprintf(&aStr[0], "当たっているか:%d\nプレイヤーのポス:%3.2f,%3.2f,%3.2f",pPlayer->btest,pPlayer->pos.x, pPlayer->pos.y, pPlayer->pos.z);
 
-	// テキスト表示
-	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
+	//// テキスト表示
+	//g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
 }
 
 //============================
