@@ -366,7 +366,9 @@ void DrawEnemy(void)
 				DrawPlayerShadow(g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].mtxWorld,
 					g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].pBuffMat,
 					g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].pMesh,
-					(int)g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].dwNumMat);
+					(int)g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].dwNumMat,
+					g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].rot,
+					g_Enemy[EnemyCount].EnemyMotion.aModel[EnemyPartsCount].pos);
 
 				if (EnemyPartsCount == g_Enemy[EnemyCount].CollModel)
 				{
