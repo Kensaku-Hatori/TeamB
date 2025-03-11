@@ -580,13 +580,14 @@ void DrawPlayerShadow(D3DXMATRIX mtxWorld, LPD3DXBUFFER pBuffer, LPD3DXMESH pMes
 
 	//パーツのワールドマトリックスの初期化
 	D3DXMatrixIdentity(&mtxOut);
+	mtxOut = mtxWorld;
 
 	D3DXMatrixShadow(&mtxShadow, &LightPos, &Plane);
-	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxShadow);
+	D3DXMatrixMultiply(&mtxOut, &mtxOut, &mtxShadow);
 
 	//パーツのワールドマトリックスの設定
 	pDevice->SetTransform(D3DTS_WORLD,
-		&mtxWorld);
+		&mtxOut);
 
 	//マテリアルデータへのポインタ
 	D3DXMATERIAL* pMat;

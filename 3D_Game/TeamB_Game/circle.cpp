@@ -142,15 +142,18 @@ void DrawCircle()
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
 	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
-	// 加算合成を設定する
-	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
-
 	for (int nCnt = 0; nCnt < MAX_CIRCLE; nCnt++)
 	{
 		if (g_Circle[nCnt].bUse == true)
 		{
+			if (g_Circle[nCnt].type == 1)
+			{
+				// 加算合成を設定する
+				pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+				pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+				pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+			}
+
 			// ワールドマトリックスの初期化
 			D3DXMatrixIdentity(&g_Circle[nCnt].mtxWorld);
 
@@ -159,7 +162,7 @@ void DrawCircle()
 			D3DXMatrixMultiply(&g_Circle[nCnt].mtxWorld, &g_Circle[nCnt].mtxWorld, &mtxRot);
 
 			// 位置を反映
-			D3DXMatrixTranslation(&mtxTrans, g_Circle[nCnt].pos.x, 0.0f, g_Circle[nCnt].pos.z);
+			D3DXMatrixTranslation(&mtxTrans, g_Circle[nCnt].pos.x, g_Circle[nCnt].pos.y, g_Circle[nCnt].pos.z);
 			D3DXMatrixMultiply(&g_Circle[nCnt].mtxWorld, &g_Circle[nCnt].mtxWorld, &mtxTrans);
 
 			// ワールドマトリックスの設定
@@ -231,7 +234,7 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 			if (type == 1)
 			{
 				//テクスチャの読込
-				D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\mountain001.png", &g_Circle[nCnt].tex); //1
+				D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\haikei2.jpg", &g_Circle[nCnt].tex); //1
 			}
 
 			//アニメーションがtrueなら
@@ -314,8 +317,8 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 					}
 
 					//テクスチャ座標の設定
-					pVtx[indx].tex = D3DXVECTOR2((1.0f / g_Circle[nCnt].nDiviX) * nCntX, (1.0f / g_Circle[nCnt].nDiviY) * nCntY);
-
+					pVtx[indx].tex = D3DXVECTOR2(1.0f * nCntX,1.0f * nCntY);
+					//pVtx[indx].tex = D3DXVECTOR2((1.0f / g_Circle[nCnt].nDiviX) * nCntX, (1.0f / g_Circle[nCnt].nDiviY) * nCntY);
 					indx++;
 				}
 			}

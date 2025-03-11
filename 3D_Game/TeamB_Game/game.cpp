@@ -61,7 +61,7 @@ void InitGame(void)
 	//ƒT[ƒNƒ‹‚Ì‰Šú‰»
 	InitCircle();
 
-	SetCircle(D3DXVECTOR3(0.0f, 50.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 8, 2, 500.0f, 2000.0f, false, false, 1);
+	SetCircle(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 8, 0, 500.0f, 2000.0f, false, false, 1);
 
 	//–îˆó‚Ì‰Šú‰»
 	InitArrow();
