@@ -231,7 +231,7 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 			if (type == 1)
 			{
 				//テクスチャの読込
-				D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\mountain001.png", &g_Circle[nCnt].tex); //1
+				D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\haikei2.jpg", &g_Circle[nCnt].tex); //1
 			}
 
 			//アニメーションがtrueなら
