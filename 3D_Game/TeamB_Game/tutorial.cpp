@@ -247,7 +247,7 @@ void UpdateTutorial(void)
 	Player* pPlayer = GetPlayer();
 
 	ChangeTutorial();
-	//ChangeTutorialArrow();
+	ChangeTutorialArrow();
 
 	VERTEX_2D* pVtx;
 	//頂点バッファをロックし、頂点情報へのポインタを取得
@@ -266,25 +266,6 @@ void UpdateTutorial(void)
 
 	//頂点バッファをアンロック
 	g_pVtxBuffNumer->Unlock();
-
-	//頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffArrow->Lock(0, 0, (void**)&pVtx, 0);
-	static float Alpha = 0.0f;
-	Alpha++;
-	Alpha = (int)Alpha % 50;
-
-	for (int ArrowCount = 0; ArrowCount < 2; ArrowCount++)
-	{
-		//テクスチャ座標の設定
-		pVtx[0].col = D3DXCOLOR(1.0f,1.0f,1.0f,Alpha / 50);
-		pVtx[1].col = D3DXCOLOR(1.0f,1.0f,1.0f,Alpha / 50);
-		pVtx[2].col = D3DXCOLOR(1.0f,1.0f,1.0f,Alpha / 50);
-		pVtx[3].col = D3DXCOLOR(1.0f,1.0f,1.0f,Alpha / 50);
-		pVtx += 4;
-	}
-
-	//頂点バッファをアンロック
-	g_pVtxBuffArrow->Unlock();
 }
 //===========
 //描画処理
@@ -350,9 +331,9 @@ void DrawTutorial(void)
 
 }
 
-//
-//
-//
+//=========================
+// チュートリアル画像変更
+//=========================
 void ChangeTutorial(void)
 {
 	if (KeyboardTrigger(DIK_D) == true || GetJoypadTrigger(JOYKEY_R1) == true)
@@ -410,23 +391,35 @@ void ChangeTutorial(void)
 	}
 }
 
-//
-//
-//
+//============
+// 矢印の変更
+//============
 void ChangeTutorialArrow(void)
 {
 	VERTEX_2D* pVtx;
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffArrow->Lock(0, 0, (void**)&pVtx, 0);
 
+	static float Alpha = 0.0f;
+	Alpha++;
+	Alpha = (int)Alpha % 50;
 
+	for (int ArrowCount = 0; ArrowCount < 2; ArrowCount++)
+	{
+		//テクスチャ座標の設定
+		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, Alpha / 50);
+		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, Alpha / 50);
+		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, Alpha / 50);
+		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, Alpha / 50);
+		pVtx += 4;
+	}
 
 	//頂点バッファをアンロック
 	g_pVtxBuffArrow->Unlock();
 }
 
 //
-//
+// 
 //
 void SetTutorial(TUTORIAL type)
 {
@@ -440,7 +433,7 @@ void SetTutorial(TUTORIAL type)
 }
 
 //
-//
+// 
 //
 void SetTutorialNo(void)
 {
