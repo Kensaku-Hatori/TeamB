@@ -65,28 +65,13 @@ void InitBoss(void)
 void UninitBoss(void)
 {
 	for (int PartsCount = 0; PartsCount < MAX_PARTS; PartsCount++)
-	{ 
-		// メッシュの破棄
-		if (g_Boss.BossMotion.aModel[PartsCount].pMesh != NULL)
-		{
-			g_Boss.BossMotion.aModel[PartsCount].pMesh->Release();
-			g_Boss.BossMotion.aModel[PartsCount].pMesh = NULL;
-		}
-
-		// マテリアルの破棄
-		if (g_Boss.BossMotion.aModel[PartsCount].pBuffMat != NULL)
-		{
-			g_Boss.BossMotion.aModel[PartsCount].pBuffMat->Release();
-			g_Boss.BossMotion.aModel[PartsCount].pBuffMat = NULL;
-		}
+	{
+		Uninit(g_Boss.BossMotion.aModel[PartsCount].pMesh);
+		Uninit(g_Boss.BossMotion.aModel[PartsCount].pBuffMat);
 
 		for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
 		{//テクスチャの破棄
-			if (g_Boss.BossMotion.aModel[PartsCount].pTexture[TexCount] != NULL)
-			{
-				g_Boss.BossMotion.aModel[PartsCount].pTexture[TexCount]->Release();
-				g_Boss.BossMotion.aModel[PartsCount].pTexture[TexCount] = NULL;
-			}
+			Uninit(g_Boss.BossMotion.aModel[PartsCount].pTexture[TexCount]);
 		}
 	}
 }

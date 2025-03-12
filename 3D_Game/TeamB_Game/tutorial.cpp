@@ -218,67 +218,24 @@ void InitTutorial(void)
 //==========
 void UninitTutorial(void)
 {
+	// テクスチャの破棄
 	for (int nCnt = 0; nCnt < TUTORIAL_MAX; nCnt++)
 	{
-		//テクスチャの破棄
-		if (g_pTextureTutorial[nCnt] != NULL)
-		{
-			g_pTextureTutorial[nCnt]->Release();
-			g_pTextureTutorial[nCnt] = NULL;
-		}
-	}
-	if (g_pTextureArrow != NULL)
-	{
-		g_pTextureArrow->Release();
-		g_pTextureArrow = NULL;
-	}
-	if (g_pTextureDenom != NULL)
-	{
-		g_pTextureDenom->Release();
-		g_pTextureDenom = NULL;
-	}
-	if (g_pTextureSlash != NULL)
-	{
-		g_pTextureSlash->Release();
-		g_pTextureSlash = NULL;
-	}
-	if (g_pTextureNumer != NULL)
-	{
-		g_pTextureNumer->Release();
-		g_pTextureNumer = NULL;
+		Uninit(g_pTextureTutorial[nCnt]);
 	}
 
-	//頂点バッファの破棄
-	if (g_pVtxBuffTutorial != NULL)
-	{
-		g_pVtxBuffTutorial->Release();
-		g_pVtxBuffTutorial = NULL;
-	}
-	if (g_pVtxBuffArrow != NULL)
-	{
-		g_pVtxBuffArrow->Release();
-		g_pVtxBuffArrow = NULL;
-	}
-	if (g_pVtxBuffDenom != NULL)
-	{
-		g_pVtxBuffDenom->Release();
-		g_pVtxBuffDenom = NULL;
-	}
-	if (g_pVtxBuffSlash != NULL)
-	{
-		g_pVtxBuffSlash->Release();
-		g_pVtxBuffSlash = NULL;
-	}
-	if (g_pVtxBuffNumer != NULL)
-	{
-		g_pVtxBuffNumer->Release();
-		g_pVtxBuffNumer = NULL;
-	}
-	if (g_pVtxBuffTutorialBack != NULL)
-	{
-		g_pVtxBuffTutorialBack->Release();
-		g_pVtxBuffTutorialBack = NULL;
-	}
+	Uninit(g_pTextureArrow);
+	Uninit(g_pTextureDenom);
+	Uninit(g_pTextureSlash);
+	Uninit(g_pTextureNumer);
+
+	// 頂点バッファの破棄
+	Uninit(g_pVtxBuffTutorial);
+	Uninit(g_pVtxBuffArrow);
+	Uninit(g_pVtxBuffDenom);
+	Uninit(g_pVtxBuffSlash);
+	Uninit(g_pVtxBuffNumer);
+	Uninit(g_pVtxBuffTutorialBack);
 }
 //==========
 //更新処理
@@ -309,6 +266,25 @@ void UpdateTutorial(void)
 
 	//頂点バッファをアンロック
 	g_pVtxBuffNumer->Unlock();
+
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	g_pVtxBuffArrow->Lock(0, 0, (void**)&pVtx, 0);
+	static float Alpha = 0.0f;
+	Alpha++;
+	Alpha = (int)Alpha % 50;
+
+	for (int ArrowCount = 0; ArrowCount < 2; ArrowCount++)
+	{
+		//テクスチャ座標の設定
+		pVtx[0].col = D3DXCOLOR(1.0f,1.0f,1.0f,Alpha / 50);
+		pVtx[1].col = D3DXCOLOR(1.0f,1.0f,1.0f,Alpha / 50);
+		pVtx[2].col = D3DXCOLOR(1.0f,1.0f,1.0f,Alpha / 50);
+		pVtx[3].col = D3DXCOLOR(1.0f,1.0f,1.0f,Alpha / 50);
+		pVtx += 4;
+	}
+
+	//頂点バッファをアンロック
+	g_pVtxBuffArrow->Unlock();
 }
 //===========
 //描画処理

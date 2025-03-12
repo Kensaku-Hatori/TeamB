@@ -57,23 +57,11 @@ void UninitStageModel()
 {
 	for (int ModelCount = 0; ModelCount < MODELTYPE_MAX; ModelCount++)
 	{
-		if (g_ModelOrigin[ModelCount].pBuffMat != NULL)
-		{
-			g_ModelOrigin[ModelCount].pBuffMat->Release();
-			g_ModelOrigin[ModelCount].pBuffMat = NULL;
-		}
-		if (g_ModelOrigin[ModelCount].pMesh != NULL)
-		{
-			g_ModelOrigin[ModelCount].pMesh->Release();
-			g_ModelOrigin[ModelCount].pMesh = NULL;
-		}
+		Uninit(g_ModelOrigin[ModelCount].pBuffMat);
+		Uninit(g_ModelOrigin[ModelCount].pMesh);
 		for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
 		{
-			if (g_ModelOrigin[ModelCount].pTexture[TexCount] != NULL)
-			{
-				g_ModelOrigin[ModelCount].pTexture[TexCount]->Release();
-				g_ModelOrigin[ModelCount].pTexture[TexCount] = NULL;
-			}
+			Uninit(g_ModelOrigin[ModelCount].pTexture[TexCount]);
 		}
 	}
 	for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++)

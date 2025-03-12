@@ -51,21 +51,9 @@ void UninitImpact(void)
 {
 	for (int ImpactCount = 0; ImpactCount < MAX_IMPACT; ImpactCount++)
 	{
-		if (g_Impact[ImpactCount].pIdxBuffImpact != NULL)
-		{
-			g_Impact[ImpactCount].pIdxBuffImpact->Release();
-			g_Impact[ImpactCount].pIdxBuffImpact = NULL;
-		}
-		if(g_Impact[ImpactCount].pVtxBuffImpact != NULL)
-		{
-			g_Impact[ImpactCount].pVtxBuffImpact->Release();
-			g_Impact[ImpactCount].pVtxBuffImpact = NULL;
-		}
-		if (g_Impact[ImpactCount].pTextureImpact != NULL)
-		{
-			g_Impact[ImpactCount].pTextureImpact->Release();
-			g_Impact[ImpactCount].pTextureImpact = NULL;
-		}
+		Uninit(g_Impact[ImpactCount].pIdxBuffImpact);
+		Uninit(g_Impact[ImpactCount].pVtxBuffImpact);
+		Uninit(g_Impact[ImpactCount].pTextureImpact);
 	}
 }
 //*****************

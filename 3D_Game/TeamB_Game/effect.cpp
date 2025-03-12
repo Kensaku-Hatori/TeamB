@@ -114,19 +114,10 @@ void InitEffect(void)
 //*********
 void UninitEffect(void)
 {
-	// 頂点バッファの開放
-	if (g_pVtxBuffEffect != NULL)
-	{
-		g_pVtxBuffEffect->Release();
-		g_pVtxBuffEffect = NULL;
-	}
+	Uninit(g_pVtxBuffEffect);
 	for (int texcount = 0; texcount < EFFECT_MAX; texcount++)
 	{
-		if (g_pTextureEffect[texcount] != NULL)
-		{
-			g_pTextureEffect[texcount]->Release();
-			g_pTextureEffect[texcount] = NULL;
-		}
+		Uninit(g_pTextureEffect[texcount]);
 	}
 }
 //*********

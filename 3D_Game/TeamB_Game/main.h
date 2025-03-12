@@ -87,5 +87,9 @@ void DrawCameraInfo();
 void DrawPlayerInfo();
 void DrawTestInfo();
 void DrawBossInfo();
-
+void Uninit(LPDIRECT3DTEXTURE9 Texture);
+void Uninit(LPDIRECT3DVERTEXBUFFER9 Buffer);
+void Uninit(LPD3DXMESH Mesh);
+void Uninit(LPD3DXBUFFER Buffer);
+void Uninit(LPDIRECT3DINDEXBUFFER9 IndxBuffer);
 #endif

@@ -128,30 +128,16 @@ void InitTitleInfo(void)
 //==========
 void UninitTitleInfo(void)
 {
+	// テクスチャの破棄
 	for (int nCnt = 0; nCnt < MAX_TEXTURE; nCnt++)
 	{
-		//テクスチャの破棄
-		if (g_pTexturetitleinfo[nCnt] != NULL)
-		{
-			g_pTexturetitleinfo[nCnt]->Release();
-			g_pTexturetitleinfo[nCnt] = NULL;
-		}
+		Uninit(g_pTexturetitleinfo[nCnt]);
 	}
-	//テクスチャの破棄
-	if (g_pTexturetitleinfoLogo != NULL)
-	{
-		g_pTexturetitleinfoLogo->Release();
-		g_pTexturetitleinfoLogo = NULL;
-	}
+	Uninit(g_pTexturetitleinfoLogo);
 
-	//頂点バッファの破棄
-	if (g_pVtxBufftitleinfo != NULL && g_pVtxBufftitleinfoLogo != NULL)
-	{
-		g_pVtxBufftitleinfo->Release();
-		g_pVtxBufftitleinfo = NULL;
-		g_pVtxBufftitleinfoLogo->Release();
-		g_pVtxBufftitleinfoLogo = NULL;
-	}
+	// バッファの破棄
+	Uninit(g_pVtxBufftitleinfo);
+	Uninit(g_pVtxBufftitleinfoLogo);
 }
 //==========
 //更新処理
