@@ -44,7 +44,7 @@ void InitBoss(void)
 	g_Boss.Status.Score = BOSS_SCORE;								// スコア
 	g_Boss.BossMotion.motionType = MOTIONTYPE_NEUTRAL;				// モーションの種類
 	g_Boss.BossMotion.nKey = 0;										// モーションのキー
-	g_Boss.BossMotion.nNextKey = 1;									// モーションの次のキー
+	g_Boss.BossMotion.NextKey = 1;									// モーションの次のキー
 	g_Boss.BossMotion.bBlendMotion = true;							// モーションブレンドをするかどうか
 	g_Boss.Object.Pos = D3DXVECTOR3(0.0f, 0.0f, -100.0f);			// 位置
 	g_Boss.Object.Rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				// 向き
@@ -434,7 +434,7 @@ void UpdateBossActionMove()
 		{
 			if (g_Boss.BossMotion.motionType != MOTIONTYPE_DOWN)
 			{// モーションの種類設定
-				SetMotion(MOTIONTYPE_DOWN, &g_Boss.BossMotion,10);
+				SetMotion(MOTIONTYPE_DOWN, &g_Boss.BossMotion);
 			}
 		}
 	}
@@ -507,7 +507,7 @@ void UpdateBossAction()
 			{
 				if (g_Boss.BossMotion.motionType != MOTIONTYPE_LOCKON_F_MOVE)
 				{// モーションの種類設定
-					SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_Boss.BossMotion,10);
+					SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_Boss.BossMotion);
 				}
 			}
 			else if (DistancePlayer < 100.0f)
@@ -516,7 +516,7 @@ void UpdateBossAction()
 				{// モーションの種類設定
 					g_Boss.move.x = 0.0f;
 					g_Boss.move.z = 0.0f;
-					SetMotion(MOTIONTYPE_ACTION, &g_Boss.BossMotion,10);
+					SetMotion(MOTIONTYPE_ACTION, &g_Boss.BossMotion);
 				}
 			}
 		}
@@ -529,7 +529,7 @@ void UpdateBossAction()
 			if (g_Boss.BossMotion.motionType != MOTIONTYPE_MOVE)
 			{
 				g_Boss.BossAi.ActionEnd[g_Boss.BossMotion.motionType] = MOVEEND_FLAME;
-				SetMotion(MOTIONTYPE_MOVE, &g_Boss.BossMotion,10);
+				SetMotion(MOTIONTYPE_MOVE, &g_Boss.BossMotion);
 			}
 		}
 	}
@@ -540,7 +540,7 @@ void UpdateBossAction()
 		{
 			g_Boss.move.x = 0.0f;
 			g_Boss.move.z = 0.0f;
-			SetMotion(MOTIONTYPE_NEUTRAL, &g_Boss.BossMotion,10);
+			SetMotion(MOTIONTYPE_NEUTRAL, &g_Boss.BossMotion);
 		}
 	}
 	g_Boss.BossAi.bFinishAction = false;

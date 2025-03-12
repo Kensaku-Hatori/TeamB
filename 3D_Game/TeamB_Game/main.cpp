@@ -720,7 +720,7 @@ void DrawPlayerInfo()
 	rect = { 0,400,SCREEN_WIDTH,SCREEN_HEIGHT };
 
 	// 文字列に代入
-	sprintf(&aStr[0], "プレイヤーの次のキー:%d", pPlayer->PlayerMotion.nNextKey);
+	sprintf(&aStr[0], "プレイヤーの次のキー:%d", pPlayer->PlayerMotion.NextKey);
 
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));

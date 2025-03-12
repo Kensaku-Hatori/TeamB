@@ -239,18 +239,12 @@ void UninitRanking(void)
 		}
 	}
 
-	if (g_pVtxBuffRank != NULL)
+	if (g_pVtxBuffRank != NULL && g_pVtxBuffRankBack != NULL && g_pVtxBuffRankScore != NULL)
 	{
 		g_pVtxBuffRank->Release();
 		g_pVtxBuffRank = NULL;
-	}
-	if (g_pVtxBuffRankBack != NULL)
-	{
 		g_pVtxBuffRankBack->Release();
 		g_pVtxBuffRankBack = NULL;
-	}
-	if (g_pVtxBuffRankScore != NULL)
-	{
 		g_pVtxBuffRankScore->Release();
 		g_pVtxBuffRankScore = NULL;
 	}
