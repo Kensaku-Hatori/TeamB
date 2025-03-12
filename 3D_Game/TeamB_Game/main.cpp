@@ -847,3 +847,51 @@ void ToggleFullScreen(HWND hWnd)
 	}
 	g_isFullscreen = !g_isFullscreen;
 }
+//*****************
+// テクスチャの破棄
+//*****************
+void Uninit(LPDIRECT3DTEXTURE9 Texture)
+{
+	if (Texture != NULL)
+	{
+		Texture->Release();
+		Texture = NULL;
+	}
+}
+//*****************
+// バッファーの破棄
+//*****************
+void Uninit(LPDIRECT3DVERTEXBUFFER9 Buffer)
+{
+	if (Buffer != NULL)
+	{
+		Buffer->Release();
+		Buffer = NULL;
+	}
+}
+void Uninit(LPD3DXMESH Mesh)
+{
+	//メッシュの破棄
+	if (Mesh != NULL)
+	{
+		Mesh->Release();
+		Mesh = NULL;
+	}
+}
+void Uninit(LPD3DXBUFFER Buffer)
+{
+	//マテリアルの破棄
+	if (Buffer != NULL)
+	{
+		Buffer->Release();
+		Buffer = NULL;
+	}
+}
+void Uninit(LPDIRECT3DINDEXBUFFER9 IndxBuffer)
+{
+	if (IndxBuffer != NULL)
+	{
+		IndxBuffer->Release();
+		IndxBuffer = NULL;
+	}
+}

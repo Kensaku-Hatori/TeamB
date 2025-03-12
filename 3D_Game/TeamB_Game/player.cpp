@@ -115,26 +115,11 @@ void UninitPlayer(void)
 	//プレイヤーの破棄
 	for (int nCnt = 0; nCnt < g_player.nNumModel; nCnt++)
 	{
-		//メッシュの破棄
-		if (g_player.PlayerMotion.aModel[nCnt].pMesh != NULL)
-		{
-			g_player.PlayerMotion.aModel[nCnt].pMesh->Release();
-			g_player.PlayerMotion.aModel[nCnt].pMesh = NULL;
-		}
-		//マテリアルの破棄
-		if (g_player.PlayerMotion.aModel[nCnt].pBuffMat != NULL)
-		{
-			g_player.PlayerMotion.aModel[nCnt].pBuffMat->Release();
-			g_player.PlayerMotion.aModel[nCnt].pBuffMat = NULL;
-		}
+		Uninit(g_player.PlayerMotion.aModel[nCnt].pMesh);
+		Uninit(g_player.PlayerMotion.aModel[nCnt].pBuffMat);
 		for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
 		{
-			//マテリアルの破棄
-			if (g_player.PlayerMotion.aModel[nCnt].pTexture[TexCount] != NULL)
-			{
-				g_player.PlayerMotion.aModel[nCnt].pTexture[TexCount]->Release();
-				g_player.PlayerMotion.aModel[nCnt].pTexture[TexCount] = NULL;
-			}
+			Uninit(g_player.PlayerMotion.aModel[nCnt].pTexture[TexCount]);
 		}
 	}
 }

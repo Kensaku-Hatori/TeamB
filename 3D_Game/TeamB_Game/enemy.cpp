@@ -81,28 +81,12 @@ void UninitEnemy(void)
 	{
 		for (int PartsCount = 0; PartsCount < MAX_PARTS; PartsCount++)
 		{
-			//メッシュの破棄
-			if (g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pMesh != NULL)
-			{
-				g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pMesh->Release();
-				g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pMesh = NULL;
-			}
-
-			//マテリアルの破棄
-			if (g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pBuffMat != NULL)
-			{
-				g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pBuffMat->Release();
-				g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pBuffMat = NULL;
-			}
+			Uninit(g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pMesh);
+			Uninit(g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pBuffMat);
 
 			for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
 			{
-				//テクスチャの破棄
-				if (g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pTexture[TexCount] != NULL)
-				{
-					g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pTexture[TexCount]->Release();
-					g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pTexture[TexCount] = NULL;
-				}
+				Uninit(g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pTexture[TexCount]);
 			}
 		}
 	}
