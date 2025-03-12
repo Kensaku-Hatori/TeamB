@@ -272,6 +272,10 @@ void UpdatePlayer(void)
 					g_player.bWantLockOn = true;
 				}
 			}
+			else
+			{
+				g_player.bWantLockOn = false;
+			}
 		}
 
 		//ƒAƒCƒeƒ€‰ñ•œ
@@ -624,6 +628,7 @@ void PlayerMove(void)
 {
 	Camera* pCamera;
 	pCamera = GetCamera();
+
 
 	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].bActionStart = false;
 	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].bFirst = false;
