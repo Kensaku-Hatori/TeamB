@@ -147,6 +147,11 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 	{
 		if (g_Sphere[nCnt].bUse == false)
 		{
+			//変数宣言
+			int indx = 0;//頂点インデックス
+			D3DXVECTOR3 vec = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			//ベクトルの保存用
+
+
 			//各種設定
 			g_Sphere[nCnt].pos = pos;									// 位置
 			g_Sphere[nCnt].textype = textype;							// テクスチャの種類
@@ -160,6 +165,9 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 			g_Sphere[nCnt].nPolyNum = (2 * g_Sphere[nCnt].DiviX * (g_Sphere[nCnt].DiviY - 1));								// ポリゴン数
 			int indexNum = (2 * (g_Sphere[nCnt].DiviY * (2 + g_Sphere[nCnt].DiviX) - 1));									// インデックス
 
+			//テクスチャの設定
+			SetSphereTexture(nCnt);
+
 			//頂点バッファの生成
 			pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * g_Sphere[nCnt].nMaxVtx,
 				D3DUSAGE_WRITEONLY,
@@ -170,11 +178,6 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 
 			//頂点バッファをロックし、頂点情報へのポインタを取得
 			g_Sphere[nCnt].pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
-
-			int indx = 0;//頂点インデックス
-
-			//ベクトルの保存用
-			D3DXVECTOR3 vec = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 			for (int nCntY = 0; nCntY <= g_Sphere[nCnt].DiviY; nCntY++)
 			{
@@ -198,9 +201,9 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 					}
 
 					//頂点の設定
-					pVtx[indx].pos.x = g_Sphere[nCnt].fRadius * sin(fAngle2) * sin(fAngle);
-					pVtx[indx].pos.y = g_Sphere[nCnt].fRadius * cos(fAngle2);
-					pVtx[indx].pos.z = g_Sphere[nCnt].fRadius * sin(fAngle2) * cos(fAngle);
+					pVtx[indx].pos.x = (FLOAT)g_Sphere[nCnt].fRadius * sinf(fAngle2) * sinf(fAngle);
+					pVtx[indx].pos.y = (FLOAT)g_Sphere[nCnt].fRadius * cosf(fAngle2);
+					pVtx[indx].pos.z = (FLOAT)g_Sphere[nCnt].fRadius * sinf(fAngle2) * cosf(fAngle);
 
 					//各頂点のベクトル
 					if (g_Sphere[nCnt].bHead == false)

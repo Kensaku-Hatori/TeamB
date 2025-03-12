@@ -133,9 +133,6 @@
     <ClCompile Include="Item.cpp">
       <Filter>O_R\.cpp</Filter>
     </ClCompile>
-    <ClCompile Include="minimap.cpp">
-      <Filter>O_R\.cpp</Filter>
-    </ClCompile>
     <ClCompile Include="model.cpp">
       <Filter>H_K\.cpp</Filter>
     </ClCompile>
@@ -159,6 +156,12 @@
     </ClCompile>
     <ClCompile Include="tutorial.cpp">
       <Filter>K_A\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="minimap.cpp">
+      <Filter>K_A\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="meshSphere.cpp">
+      <Filter>O_R\.cpp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -329,6 +332,9 @@
     </ClInclude>
     <ClInclude Include="tutorial.h">
       <Filter>K_A\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="meshSphere.h">
+      <Filter>O_R\.h</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -28,18 +28,16 @@ typedef struct
 	float fHeight;
 	float fWidth;
 	float fRadius;
-	int Index;
 	bool bAnim;
 	bool bUse;
 }Arrow;
 
 //プロトタイプ宣言
-void InitArrow();
-void UninitArrow();
-void UpdateArrow();
-void DrawArrow();
+void InitArrow(void);
+void UninitArrow(void);
+void UpdateArrow(void);
+void DrawArrow(void);
 void SetArrow(D3DXVECTOR3 DestPos, D3DXVECTOR3 pos, D3DXCOLOR col, float fWidth, float fHeight, float fRadius, bool bGradation, bool bAnim);
 void SetPositonArrow(int nIdex, D3DXVECTOR3 pos);
-void TrackingArrow();
 
 #endif // !ARROW_H_

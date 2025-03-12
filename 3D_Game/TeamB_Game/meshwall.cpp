@@ -246,5 +246,4 @@ void SetwallTexture(int indx)
 	{
 		g_pTextureMeshWall = pTexture;
 	}
-
 }

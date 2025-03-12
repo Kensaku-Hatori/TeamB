@@ -14,30 +14,29 @@ Arrow g_Arrow[MAX_ARROW];
 //===================
 //矢印の初期化処理
 //===================
-void InitArrow()
+void InitArrow(void)
 {
 	for (int nCnt = 0; nCnt < MAX_ARROW; nCnt++)
 	{
 		//各種初期化
-		g_Arrow[nCnt].Destpos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//目的位置
-		g_Arrow[nCnt].Destrot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//目的への向き
-		g_Arrow[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//位置
-		g_Arrow[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//向き
-		g_Arrow[nCnt].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);//色
-		g_Arrow[nCnt].VtxBuff = { NULL };//頂点情報
-		g_Arrow[nCnt].tex = { NULL };//テクスチャポインタ
-		g_Arrow[nCnt].fHeight = 0.0;//ポリゴンの高さ
-		g_Arrow[nCnt].fWidth = 0.0f;//ポリゴンの幅
-		g_Arrow[nCnt].fRadius = 0.0f;//posからどれだけ離すか
-		g_Arrow[nCnt].Index = 0;
-		g_Arrow[nCnt].bUse = false;//使用していない状態にする
+		g_Arrow[nCnt].Destpos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			//目的位置
+		g_Arrow[nCnt].Destrot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			//目的への向き
+		g_Arrow[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				//位置
+		g_Arrow[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				//向き
+		g_Arrow[nCnt].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);			//色
+		g_Arrow[nCnt].VtxBuff = { NULL };								//頂点情報
+		g_Arrow[nCnt].tex = { NULL };									//テクスチャポインタ
+		g_Arrow[nCnt].fHeight = 0.0;									//ポリゴンの高さ
+		g_Arrow[nCnt].fWidth = 0.0f;									//ポリゴンの幅
+		g_Arrow[nCnt].fRadius = 0.0f;									//posからどれだけ離すか
+		g_Arrow[nCnt].bUse = false;										//使用していない状態にする
 	}
 }
 
 //===================
 //矢印の終了処理
 //===================
-void UninitArrow()
+void UninitArrow(void)
 {
 	for (int nCnt = 0; nCnt < MAX_ARROW; nCnt++)
 	{
@@ -60,7 +59,7 @@ void UninitArrow()
 //===================
 //矢印の更新処理
 //===================
-void UpdateArrow()
+void UpdateArrow(void)
 {
 	for (int nCnt = 0; nCnt < MAX_ARROW; nCnt++)
 	{
@@ -112,7 +111,7 @@ void UpdateArrow()
 //===================
 //矢印の描画処理
 //===================
-void DrawArrow()
+void DrawArrow(void)
 {
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
