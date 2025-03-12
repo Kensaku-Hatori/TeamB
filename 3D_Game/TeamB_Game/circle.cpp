@@ -18,21 +18,21 @@ void InitCircle()
 	for (int nCnt = 0; nCnt < MAX_CIRCLE; nCnt++)
 	{
 		//各種初期化
-		g_Circle[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);					// 位置
-		g_Circle[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);					// 向き
-		g_Circle[nCnt].AddCol = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);			// 色の変化量
-		g_Circle[nCnt].pVtxBuff = { NULL };									// 頂点バッファ
-		g_Circle[nCnt].IndxBuff = { NULL };									// インデックスバッファ
-		g_Circle[nCnt].nDiviX = 0;											// Xの分割数
-		g_Circle[nCnt].nDiviY = 0;											// Yの分割数
-		g_Circle[nCnt].nMaxVtx = 0;											// 頂点数
-		g_Circle[nCnt].nPolyNum = 0;										// ポリゴン数
-		g_Circle[nCnt].nCntFrame = 0;										// フレームカウンター
-		g_Circle[nCnt].fHeight = 0.0f;										// 高さ
-		g_Circle[nCnt].fRadius = 0.0f;										// 半径
-		g_Circle[nCnt].bGradation = false;									// グラデーションするかどうか
-		g_Circle[nCnt].bAnime = false;										// 動きをつけるかどうか
-		g_Circle[nCnt].bUse = false;										// 使用しているかどうか
+		g_Circle[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				// 位置
+		g_Circle[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				// 向き
+		g_Circle[nCnt].AddCol = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);		// 色の変化量
+		g_Circle[nCnt].pVtxBuff = { NULL };								// 頂点バッファ
+		g_Circle[nCnt].IndxBuff = { NULL };								// インデックスバッファ
+		g_Circle[nCnt].nDiviX = 0;										// Xの分割数
+		g_Circle[nCnt].nDiviY = 0;										// Yの分割数
+		g_Circle[nCnt].nMaxVtx = 0;										// 頂点数
+		g_Circle[nCnt].nPolyNum = 0;									// ポリゴン数
+		g_Circle[nCnt].nCntFrame = 0;									// フレームカウンター
+		g_Circle[nCnt].fHeight = 0.0f;									// 高さ
+		g_Circle[nCnt].fRadius = 0.0f;									// 半径
+		g_Circle[nCnt].bGradation = false;								// グラデーションするかどうか
+		g_Circle[nCnt].bAnime = false;									// 動きをつけるかどうか
+		g_Circle[nCnt].bUse = false;									// 使用しているかどうか
 	}
 }
 
@@ -318,7 +318,6 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 
 					//テクスチャ座標の設定
 					pVtx[indx].tex = D3DXVECTOR2(1.0f * nCntX,1.0f * nCntY);
-					//pVtx[indx].tex = D3DXVECTOR2((1.0f / g_Circle[nCnt].nDiviX) * nCntX, (1.0f / g_Circle[nCnt].nDiviY) * nCntY);
 					indx++;
 				}
 			}

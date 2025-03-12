@@ -89,8 +89,13 @@ void UpdatePlayer(void);
 void DrawPlayer(void);
 void DrawPlayerShadow(D3DXMATRIX mtxWorld, LPD3DXBUFFER pBuffer, LPD3DXMESH pMesh, int NumMat, D3DXVECTOR3 Rot, D3DXVECTOR3 OffSet);
 void PlayerMove(void);
+void PlayerMoveData(float Speed);
+void PlayerMoveInput(float Speed);
+void PlayerLockOnMoveInput(float Speed);
+void PlayerRolling(float Speed);
+void PlayerRollingInput(float Speed);
+void PlayerLockOnRollingInput(float Speed);
 void PlayerMoveJoyPad(float Speed);
-void PlayerRolling(void);
 void SkillChange(int zDelta);
 Player* GetPlayer(void);
 void HitPlayer(float Atack, D3DXVECTOR3 Pos);
@@ -98,5 +103,6 @@ void SetMesh(char* pFilePath, int Indx);
 void SetPartsInfo(LoadInfo PartsInfo);
 void PlayerMotion(MOTIONINFO *pMotionInfo);
 void MatrixWand(void);
-
+bool CheckActionConditions(void);
+void SetActionFlame(MOTIONTYPE motiontype, int ActionType, int StartKey, int EndKey, int StartFlame, int EndFlame);
 #endif

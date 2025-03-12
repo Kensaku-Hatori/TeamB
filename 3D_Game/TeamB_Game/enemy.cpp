@@ -53,7 +53,7 @@ void InitEnemy(void)
 		g_Enemy[i].Status.fHP = ENEMY_HP;									// HP
 		g_Enemy[i].EnemyMotion.motionType = MOTIONTYPE_NEUTRAL;				// モーションの種類
 		g_Enemy[i].EnemyMotion.nKey = 0;									// モーションのキー
-		g_Enemy[i].EnemyMotion.NextKey = 1;									// モーションの次のキー
+		g_Enemy[i].EnemyMotion.nNextKey = 1;									// モーションの次のキー
 		g_Enemy[i].EnemyMotion.bBlendMotion = true;
 		g_Enemy[i].Object.Pos = D3DXVECTOR3(0.0f, 0.0f, -100.0f);			// 位置
 		g_Enemy[i].Object.Rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				// 向き
@@ -611,7 +611,7 @@ void UpdateAction(int nCount)
 		{
 			//モーションの種類設定
 			g_Enemy[nCount].ActionType = ENEMYACTION_ATTACK;
-			SetMotion(MOTIONTYPE_ACTION, &g_Enemy[nCount].EnemyMotion);
+			SetMotion(MOTIONTYPE_ACTION, &g_Enemy[nCount].EnemyMotion,10);
 		}
 		g_Enemy[nCount].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	}
@@ -632,7 +632,7 @@ void UpdateAction(int nCount)
 
 			if (g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_MOVE)
 			{
-				SetMotion(MOTIONTYPE_MOVE, &g_Enemy[nCount].EnemyMotion);
+				SetMotion(MOTIONTYPE_MOVE, &g_Enemy[nCount].EnemyMotion,10);
 			}
 		}
 	}
@@ -642,7 +642,7 @@ void UpdateAction(int nCount)
 		g_Enemy[nCount].ActionType = ENEMYACTION_WELL;
 		if (g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_NEUTRAL && g_Enemy[nCount].EnemyMotion.motionType != MOTIONTYPE_ACTION)
 		{
-			SetMotion(MOTIONTYPE_NEUTRAL, &g_Enemy[nCount].EnemyMotion);
+			SetMotion(MOTIONTYPE_NEUTRAL, &g_Enemy[nCount].EnemyMotion,10);
 		}
 		g_Enemy[nCount].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	}

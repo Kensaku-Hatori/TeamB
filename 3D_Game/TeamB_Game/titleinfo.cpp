@@ -145,10 +145,13 @@ void UninitTitleInfo(void)
 	}
 
 	//頂点バッファの破棄
-	if (g_pVtxBufftitleinfo != NULL && g_pVtxBufftitleinfoLogo != NULL)
+	if (g_pVtxBufftitleinfo != NULL)
 	{
 		g_pVtxBufftitleinfo->Release();
 		g_pVtxBufftitleinfo = NULL;
+	}
+	if (g_pVtxBufftitleinfoLogo != NULL)
+	{
 		g_pVtxBufftitleinfoLogo->Release();
 		g_pVtxBufftitleinfoLogo = NULL;
 	}

@@ -182,81 +182,74 @@ void UpdatePlayer(void)
 		{
 			//魔法発射
 			if ((OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true)
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_HORMING
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_EXPLOSION
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_HIDARI
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MIGI
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_USIRO
-				&& g_player.state != PLAYERSTATE_ACTION)
+				&& CheckActionConditions() == true)
 			{
 				g_player.state = PLAYERSTATE_ACTION;
 
 				if (g_player.Skilltype == SKILLTYPE_NONE)
 				{
-					SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion);
+					SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion,10);
 
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bActionStart = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bFirst = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartKey = 3;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndKey = 3;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartFrame = 23;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndFrame = 24;
+					SetActionFlame(g_player.PlayerMotion.motionTypeBlend,
+						0, 
+						3,
+						3,
+						23,
+						24);
 
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].bActionStart = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].bFirst = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartKey = 3;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndKey = 3;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartFrame = 20;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndFrame = 24;
+					SetActionFlame(g_player.PlayerMotion.motionTypeBlend,
+						1,
+						3,
+						3,
+						20,
+						24);
 
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].bActionStart = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].bFirst = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nStartKey = 0;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nEndKey = 0;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nStartFrame = 1;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nEndFrame = 2;
+					SetActionFlame(g_player.PlayerMotion.motionTypeBlend,
+						2,
+						0,
+						0,
+						1,
+						2);
 				}
 				else if (g_player.Skilltype == SKILLTYPE_HORMING)
 				{
 					if (g_player.bSkillUse == false)
 					{
 						g_player.bSkillUse = true;
-						SetMotion(MOTIONTYPE_ACTION_HORMING, &g_player.PlayerMotion);
+						SetMotion(MOTIONTYPE_ACTION_HORMING, &g_player.PlayerMotion,10);
 
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bActionStart = false;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bFirst = false;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartKey = 2;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndKey = 2;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartFrame = 23;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndFrame = 24;
+						SetActionFlame(g_player.PlayerMotion.motionTypeBlend,
+							0,
+							2,
+							2,
+							23,
+							24);
 
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].bActionStart = false;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].bFirst = false;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nStartKey = 0;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nEndKey = 0;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nStartFrame = 1;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nEndFrame = 2;
+						SetActionFlame(g_player.PlayerMotion.motionTypeBlend,
+							2,
+							0,
+							0,
+							1,
+							2);
 					}
 				}
 				else if (g_player.Skilltype == SKILLTYPE_EXPLOSION)
 				{
-					SetMotion(MOTIONTYPE_ACTION_EXPLOSION, &g_player.PlayerMotion);
+					SetMotion(MOTIONTYPE_ACTION_EXPLOSION, &g_player.PlayerMotion,10);
 
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bActionStart = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bFirst = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartKey = 0;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndKey = 0;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartFrame = 15;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndFrame = 16;
+					SetActionFlame(g_player.PlayerMotion.motionTypeBlend,
+						0,
+						0,
+						0,
+						15,
+						16);
 
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].bActionStart = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].bFirst = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartKey = 0;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndKey = 0;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartFrame = 15;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndFrame = 16;
+					SetActionFlame(g_player.PlayerMotion.motionTypeBlend,
+						1,
+						0,
+						0,
+						15,
+						16);
 				}
 			}
 			//ロックオン
@@ -649,251 +642,29 @@ void PlayerMove(void)
 		Speed = g_player.Status.fSpeed;
 	}
 	
-	if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && g_player.bRolling == false)
+	if (g_player.state == PLAYERSTATE_NORMAL)
 	{
-		g_player.bSkillUse = false;
-		Speed = g_player.Status.fSpeed * 20;
-		g_player.bRolling = true;
-		g_player.state = PLAYERSTATE_ROLL;
-	}
-
-	if (g_player.state == PLAYERSTATE_NORMAL || g_player.state == PLAYERSTATE_ROLL)
-	{
-		//移動
-		//左
-		if (GetKeyboardPress(DIK_A))
+		if (KeyboardTrigger(DIK_SPACE) == true)
 		{
-			//モーション
-			if (g_player.bRolling == false)
-			{
-				if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_L_MOVE)
-				{
-					if (g_player.bLockOn == false)
-					{
-						SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
-					}
-					else if (g_player.bLockOn == true)
-					{
-						SetMotion(MOTIONTYPE_LOCKON_L_MOVE, &g_player.PlayerMotion);
-					}
-				}
-			}
-			else
-			{
-				if (g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE && g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_HIDARI)
-				{
-					if (g_player.bLockOn == false)
-					{
-						SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion);
-					}
-					else if (g_player.bLockOn == true)
-					{
-						SetMotion(MOTIONTYPE_KAIHI_HIDARI, &g_player.PlayerMotion);
-					}
-				}
-			}
-
-			//前
-			if (GetKeyboardPress(DIK_W) || GetJoypadPress(JOYKEY_DOWN))
-			{
-				g_player.move.x += sinf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
-				g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
-				g_player.rotDest.y = pCamera->rot.y + D3DX_PI * 0.75f;
-			}
-			//後
-			else if (GetKeyboardPress(DIK_S) || GetJoypadPress(JOYKEY_UP))
-			{
-				g_player.move.x += sinf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
-				g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
-				g_player.rotDest.y = pCamera->rot.y + D3DX_PI * 0.25f;
-			}
-			else
-			{
-				g_player.move.x += cosf(pCamera->rot.y - D3DX_PI) * Speed;
-				g_player.move.z -= sinf(pCamera->rot.y - D3DX_PI) * Speed;
-				g_player.rotDest.y = pCamera->rot.y + D3DX_PI / 2;
-			}
+			Speed = g_player.Status.fSpeed * 20;
+			g_player.bRolling = true;
+			g_player.state = PLAYERSTATE_ROLL;
+			PlayerRolling(Speed);
 		}
-		//右
-		else if (GetKeyboardPress(DIK_D))
-			{
-				//モーション
-				if (g_player.bRolling == false)
-				{
-					if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_R_MOVE)
-					{
-						if (g_player.bLockOn == false)
-						{
-							SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
-						}
-						else if (g_player.bLockOn == true)
-						{
-							SetMotion(MOTIONTYPE_LOCKON_R_MOVE, &g_player.PlayerMotion);
-						}
-					}
-				}
-				else
-				{
-					if (g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE && g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MIGI)
-					{
-						if (g_player.bLockOn == false)
-						{
-							SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion);
-						}
-						else if (g_player.bLockOn == true)
-						{
-							SetMotion(MOTIONTYPE_KAIHI_MIGI, &g_player.PlayerMotion);
-						}
-					}
-				}
-
-				//前
-				if (GetKeyboardPress(DIK_W) || GetJoypadPress(JOYKEY_DOWN))
-				{
-					g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
-					g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
-					g_player.rotDest.y = pCamera->rot.y - D3DX_PI * 0.75f;
-				}
-				//後
-				else if (GetKeyboardPress(DIK_S) || GetJoypadPress(JOYKEY_UP))
-				{
-					g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
-					g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
-					g_player.rotDest.y = pCamera->rot.y - D3DX_PI * 0.25f;
-				}
-				else
-				{
-					g_player.move.x -= cosf(pCamera->rot.y - D3DX_PI) * Speed;
-					g_player.move.z += sinf(pCamera->rot.y - D3DX_PI) * Speed;
-					g_player.rotDest.y = pCamera->rot.y - D3DX_PI / 2;
-				}
-			}
-		//前
-		else if (GetKeyboardPress(DIK_W) == true)
-			{
-				//モーション
-				if (g_player.bRolling == false)
-				{
-					if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_F_MOVE)
-					{
-						if (g_player.bLockOn == false)
-						{
-							SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
-						}
-						else if (g_player.bLockOn == true)
-						{
-							SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion);
-						}
-					}
-				}
-				else
-				{
-					if (g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE)
-					{
-						SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion);
-					}
-				}
-
-
-				//左
-				if (GetKeyboardPress(DIK_A) || GetJoypadPress(JOYKEY_DOWN))
-				{
-					g_player.move.x += sinf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
-					g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
-					g_player.rotDest.y = pCamera->rot.y + D3DX_PI * 0.75f;
-				}
-				//右
-				else if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_UP))
-				{
-					g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
-					g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
-					g_player.rotDest.y = pCamera->rot.y - D3DX_PI * 0.75f;
-				}
-				else
-				{
-					g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI) * Speed;
-					g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI) * Speed;
-					g_player.rotDest.y = pCamera->rot.y - D3DX_PI;
-				}
-			}
-		//後
-		else if (GetKeyboardPress(DIK_S))
-			{
-				//モーション
-				if (g_player.bRolling == false)
-				{
-					if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_F_MOVE)
-					{
-						if (g_player.bLockOn == false)
-						{
-							SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
-						}
-						else if (g_player.bLockOn == true)
-						{
-							SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion);
-						}
-					}
-				}
-				else
-				{
-					if (g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE && g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_USIRO)
-					{
-						if (g_player.bLockOn == false)
-						{
-							SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion);
-						}
-						else if (g_player.bLockOn == true)
-						{
-							SetMotion(MOTIONTYPE_KAIHI_USIRO, &g_player.PlayerMotion);
-						}
-					}
-				}
-
-				//左
-				if (GetKeyboardPress(DIK_A) || GetJoypadPress(JOYKEY_DOWN))
-				{
-					g_player.move.x += sinf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
-					g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
-					g_player.rotDest.y = pCamera->rot.y + D3DX_PI * 0.25f;
-				}
-				//右
-				else if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_UP))
-				{
-					g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
-					g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
-					g_player.rotDest.y = pCamera->rot.y - D3DX_PI * 0.25f;
-				}
-				else
-				{
-					g_player.move.x += sinf(pCamera->rot.y - D3DX_PI) * Speed;
-					g_player.move.z += cosf(pCamera->rot.y - D3DX_PI) * Speed;
-					g_player.rotDest.y = pCamera->rot.y;
-				}
-			}
-		//
-		else if (GetJoyStickL() == true)
+		else if (g_player.bLockOn == true)
 		{
-			PlayerMoveJoyPad(Speed);
+			PlayerLockOnMoveInput(Speed);
 		}
-		//
-		else
+		else if (g_player.bLockOn == false)
 		{
-			if (g_player.PlayerMotion.motionType == MOTIONTYPE_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_R_MOVE
-				|| g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_L_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_F_MOVE
-				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MAE || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_USIRO
-				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MIGI || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_HIDARI
-				)
-			{
-				SetMotion(MOTIONTYPE_NEUTRAL, &g_player.PlayerMotion);
-				g_player.state = PLAYERSTATE_NORMAL;
-			}
+			PlayerMoveInput(Speed);
 		}
 	}
-	else if(g_player.state == PLAYERSTATE_KNOCKUP)
+	else if (g_player.state == PLAYERSTATE_KNOCKUP)
 	{//ダウン状態
 		if (g_player.PlayerMotion.motionType != MOTIONTYPE_DOWN)
 		{
-			SetMotion(MOTIONTYPE_DOWN, &g_player.PlayerMotion);
+			SetMotion(MOTIONTYPE_DOWN, &g_player.PlayerMotion, 10);
 		}
 		g_player.bSkillUse = false;
 		g_player.nCntState++;
@@ -903,6 +674,12 @@ void PlayerMove(void)
 			g_player.state = PLAYERSTATE_NORMAL;
 		}
 	}
+	//if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && g_player.bRolling == false)
+	//{
+	//	Speed = g_player.Status.fSpeed * 20;
+	//	g_player.bRolling = true;
+	//	g_player.state = PLAYERSTATE_ROLL;
+	//}
 
 	//移動制限
 	if (g_player.pos.x <= -STAGE_SIZE)
@@ -921,6 +698,261 @@ void PlayerMove(void)
 	{
 		g_player.pos.z = STAGE_SIZE;
 	}
+}
+void PlayerMoveData(float Speed)
+{
+	Camera* pCamera = GetCamera();
+	if (GetKeyboardPress(DIK_A))
+	{
+		//前
+		if (GetKeyboardPress(DIK_W) || GetJoypadPress(JOYKEY_DOWN))
+		{
+			g_player.move.x += sinf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
+			g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
+			g_player.rotDest.y = pCamera->rot.y + D3DX_PI * 0.75f;
+		}
+		//後
+		else if (GetKeyboardPress(DIK_S) || GetJoypadPress(JOYKEY_UP))
+		{
+			g_player.move.x += sinf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
+			g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
+			g_player.rotDest.y = pCamera->rot.y + D3DX_PI * 0.25f;
+		}
+		else
+		{
+			g_player.move.x += cosf(pCamera->rot.y - D3DX_PI) * Speed;
+			g_player.move.z -= sinf(pCamera->rot.y - D3DX_PI) * Speed;
+			g_player.rotDest.y = pCamera->rot.y + D3DX_PI / 2;
+		}
+	}
+	//右
+	else if (GetKeyboardPress(DIK_D))
+	{
+		//前
+		if (GetKeyboardPress(DIK_W) || GetJoypadPress(JOYKEY_DOWN))
+		{
+			g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
+			g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
+			g_player.rotDest.y = pCamera->rot.y - D3DX_PI * 0.75f;
+		}
+		//後
+		else if (GetKeyboardPress(DIK_S) || GetJoypadPress(JOYKEY_UP))
+		{
+			g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
+			g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
+			g_player.rotDest.y = pCamera->rot.y - D3DX_PI * 0.25f;
+		}
+		else
+		{
+			g_player.move.x -= cosf(pCamera->rot.y - D3DX_PI) * Speed;
+			g_player.move.z += sinf(pCamera->rot.y - D3DX_PI) * Speed;
+			g_player.rotDest.y = pCamera->rot.y - D3DX_PI / 2;
+		}
+	}
+	//前
+	else if (GetKeyboardPress(DIK_W) == true)
+	{
+		g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI) * Speed;
+		g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI) * Speed;
+		g_player.rotDest.y = pCamera->rot.y - D3DX_PI;
+	}
+	//後
+	else if (GetKeyboardPress(DIK_S))
+	{
+		g_player.move.x += sinf(pCamera->rot.y - D3DX_PI) * Speed;
+		g_player.move.z += cosf(pCamera->rot.y - D3DX_PI) * Speed;
+		g_player.rotDest.y = pCamera->rot.y;
+	}
+	//
+	else if (GetJoyStickL() == true)
+	{
+		PlayerMoveJoyPad(Speed);
+	}
+}
+void PlayerMoveInput(float Speed)
+{
+	Camera* pCamera = GetCamera();
+	//移動
+	//左
+	if (GetKeyboardPress(DIK_A))
+	{
+		if (g_player.PlayerMotion.motionTypeBlend != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionTypeBlend != MOTIONTYPE_LOCKON_L_MOVE)
+		{
+			SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion, 10);
+		}
+	}
+	//右
+	else if (GetKeyboardPress(DIK_D))
+	{
+		if (g_player.PlayerMotion.motionTypeBlend != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionTypeBlend != MOTIONTYPE_LOCKON_R_MOVE)
+		{
+			SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion, 10);
+		}
+	}
+	//前
+	else if (GetKeyboardPress(DIK_W) == true)
+	{
+		if (g_player.PlayerMotion.motionTypeBlend != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionTypeBlend != MOTIONTYPE_LOCKON_F_MOVE)
+		{
+			SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion, 10);
+		}
+	}
+	//後
+	else if (GetKeyboardPress(DIK_S))
+	{
+		if (g_player.PlayerMotion.motionTypeBlend != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionTypeBlend != MOTIONTYPE_LOCKON_F_MOVE)
+		{
+			SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion, 10);
+		}
+	}
+	//
+	else if (GetJoyStickL() == true)
+	{
+		PlayerMoveJoyPad(Speed);
+	}
+	//
+	else
+	{
+		const bool bNeutralCondision = g_player.PlayerMotion.motionType == MOTIONTYPE_MOVE;
+		if (bNeutralCondision)
+		{
+			SetMotion(MOTIONTYPE_NEUTRAL, &g_player.PlayerMotion, 10);
+			g_player.state = PLAYERSTATE_NORMAL;
+		}
+	}
+	PlayerMoveData(Speed);
+}
+void PlayerLockOnMoveInput(float Speed)
+{
+	Camera* pCamera = GetCamera();
+	if (g_player.state == PLAYERSTATE_NORMAL || g_player.state == PLAYERSTATE_ROLL)
+	{
+		//移動
+		//左
+		if (GetKeyboardPress(DIK_A))
+		{
+			if (g_player.PlayerMotion.motionTypeBlend != MOTIONTYPE_LOCKON_L_MOVE)
+			{
+				SetMotion(MOTIONTYPE_LOCKON_L_MOVE, &g_player.PlayerMotion, 10);
+			}
+		}
+		//右
+		else if (GetKeyboardPress(DIK_D))
+		{
+			if (g_player.PlayerMotion.motionTypeBlend != MOTIONTYPE_LOCKON_R_MOVE)
+			{
+				SetMotion(MOTIONTYPE_LOCKON_R_MOVE, &g_player.PlayerMotion, 10);
+			}
+		}
+		//前
+		else if (GetKeyboardPress(DIK_W) == true)
+		{
+			if (g_player.PlayerMotion.motionTypeBlend != MOTIONTYPE_LOCKON_F_MOVE)
+			{
+				SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion, 10);
+			}
+		}
+		//後
+		else if (GetKeyboardPress(DIK_S))
+		{
+			if (g_player.PlayerMotion.motionTypeBlend != MOTIONTYPE_LOCKON_F_MOVE)
+			{
+				SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion, 10);
+			}
+		}
+		//
+		else if (GetJoyStickL() == true)
+		{
+			PlayerMoveJoyPad(Speed);
+		}
+		//
+		else
+		{
+			const bool bNeutralCondision = g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_R_MOVE
+				|| g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_L_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_F_MOVE
+				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MAE || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_USIRO
+				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MIGI || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_HIDARI;
+			if (bNeutralCondision)
+			{
+				SetMotion(MOTIONTYPE_NEUTRAL, &g_player.PlayerMotion, 10);
+				g_player.state = PLAYERSTATE_NORMAL;
+			}
+		}
+		PlayerMoveData(Speed);
+	}
+}
+void PlayerRolling(float Speed)
+{
+	if (g_player.bLockOn == true)
+	{
+		PlayerLockOnRollingInput(Speed);
+	}
+	else
+	{
+		PlayerRollingInput(Speed);
+	}
+}
+void PlayerRollingInput(float Speed)
+{
+	if (GetKeyboardPress(DIK_A) == true)
+	{
+		SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion, 100);
+	}
+	else if (GetKeyboardPress(DIK_D) == true)
+	{
+		SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion, 100);
+	}
+	else if (GetKeyboardPress(DIK_W) == true)
+	{
+		SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion, 100);
+	}
+	else if (GetKeyboardPress(DIK_S) == true)
+	{
+		SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion, 100);
+	}
+	PlayerMoveData(Speed);
+}
+void PlayerLockOnRollingInput(float Speed)
+{
+	if (GetKeyboardPress(DIK_A) == true)
+	{
+		if (GetKeyboardPress(DIK_W) == true)
+		{
+			SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion, 10);
+		}
+		else if (GetKeyboardPress(DIK_S) == true)
+		{
+			SetMotion(MOTIONTYPE_KAIHI_USIRO, &g_player.PlayerMotion, 10);
+		}
+		else
+		{
+			SetMotion(MOTIONTYPE_KAIHI_MIGI, &g_player.PlayerMotion, 10);
+		}
+	}
+	else if (GetKeyboardPress(DIK_D) == true)
+	{
+		if (GetKeyboardPress(DIK_W) == true)
+		{
+			SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion, 10);
+		}
+		else if (GetKeyboardPress(DIK_S) == true)
+		{
+			SetMotion(MOTIONTYPE_KAIHI_USIRO, &g_player.PlayerMotion, 10);
+		}
+		else
+		{
+			SetMotion(MOTIONTYPE_KAIHI_HIDARI, &g_player.PlayerMotion, 10);
+		}
+	}
+	if (GetKeyboardPress(DIK_W) == true)
+	{
+		SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion, 10);
+	}
+	else if (GetKeyboardPress(DIK_S) == true)
+	{
+		SetMotion(MOTIONTYPE_KAIHI_USIRO, &g_player.PlayerMotion, 10);
+	}
+	PlayerMoveData(Speed);
 }
 //==========================
 // コントローラーでの移動
@@ -948,21 +980,21 @@ void PlayerMoveJoyPad(float Speed)
 		{
 			if (g_player.bLockOn == false && g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE)
 			{
-				SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+				SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion,10);
 			}
 			else if (g_player.bLockOn == true)
 			{
 				if (pStick->Gamepad.sThumbLX < 0 && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_L_MOVE)
 				{
-					SetMotion(MOTIONTYPE_LOCKON_L_MOVE, &g_player.PlayerMotion);
+					SetMotion(MOTIONTYPE_LOCKON_L_MOVE, &g_player.PlayerMotion,10);
 				}
 				else if (pStick->Gamepad.sThumbLX > 0 && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_R_MOVE)
 				{
-					SetMotion(MOTIONTYPE_LOCKON_R_MOVE, &g_player.PlayerMotion);
+					SetMotion(MOTIONTYPE_LOCKON_R_MOVE, &g_player.PlayerMotion,10);
 				}
 				else if (pStick->Gamepad.sThumbLY < 0 && pStick->Gamepad.sThumbLY > 0 && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_F_MOVE)
 				{
-					SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion);
+					SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion,10);
 				}
 			}
 		}
@@ -970,7 +1002,7 @@ void PlayerMoveJoyPad(float Speed)
 		{
 			if (g_player.bLockOn == false && g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE)
 			{
-				SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion);
+				SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion,10);
 			}
 			else if (g_player.bLockOn == true)
 			{
@@ -979,33 +1011,25 @@ void PlayerMoveJoyPad(float Speed)
 				{
 					if (pStick->Gamepad.sThumbLX < 0)
 					{
-						SetMotion(MOTIONTYPE_KAIHI_HIDARI, &g_player.PlayerMotion);
+						SetMotion(MOTIONTYPE_KAIHI_HIDARI, &g_player.PlayerMotion,10);
 					}
 					else if (pStick->Gamepad.sThumbLX > 0)
 					{
-						SetMotion(MOTIONTYPE_KAIHI_MIGI, &g_player.PlayerMotion);
+						SetMotion(MOTIONTYPE_KAIHI_MIGI, &g_player.PlayerMotion,10);
 					}
 					else if (pStick->Gamepad.sThumbLY > 0)
 					{
-						SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion);
+						SetMotion(MOTIONTYPE_KAIHI_MAE, &g_player.PlayerMotion,10);
 					}
 					else if (pStick->Gamepad.sThumbLY < 0)
 					{
-						SetMotion(MOTIONTYPE_KAIHI_USIRO, &g_player.PlayerMotion);
+						SetMotion(MOTIONTYPE_KAIHI_USIRO, &g_player.PlayerMotion,10);
 					}
 				}
 			}
 		}	
 	}
 }
-//===============
-// ローリング
-//===============
-void PlayerRolling(void)
-{
-
-}
-
 //==========================
 // 使用する魔法の種類変更
 //==========================
@@ -1202,7 +1226,9 @@ void SetPartsInfo(LoadInfo PartsInfo)
 	}
 	g_player.bUse = true;
 }
-
+//*******************************
+// 読み込んだモーション情報を代入
+//*******************************
 void PlayerMotion(MOTIONINFO *pMotionInfo)
 {
 	for (int MotionCount = 0; MotionCount < MOTIONTYPE_MAX; MotionCount++, pMotionInfo++)
@@ -1211,7 +1237,9 @@ void PlayerMotion(MOTIONINFO *pMotionInfo)
 	}
 	g_player.bUse = true;
 }
-
+//*********************************
+// 杖先のワールドマトリックスを計算
+//*********************************
 void MatrixWand(void)
 {
 	LPDIRECT3DDEVICE9 pDevice;
@@ -1238,4 +1266,35 @@ void MatrixWand(void)
 
 	pDevice->SetTransform(D3DTS_WORLD,
 		&g_player.mtxWand);
+}
+//*************************
+// 攻撃できるかどうかを判断
+//*************************
+bool CheckActionConditions(void)
+{
+	if (g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION
+		&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_HORMING
+		&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_EXPLOSION
+		&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_HIDARI
+		&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MIGI
+		&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE
+		&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_USIRO
+		&& g_player.state != PLAYERSTATE_ACTION
+		&& g_player.PlayerMotion.bBlendMotion == false)
+	{
+		return true;
+	}
+	return false;
+}
+//***********************************
+// モーションイベントのフレームを設定
+//***********************************
+void SetActionFlame(MOTIONTYPE motiontype, int ActionType, int StartKey, int EndKey, int StartFlame, int EndFlame)
+{
+	g_player.PlayerMotion.aMotionInfo[motiontype].ActionFrameInfo[ActionType].bActionStart = false;
+	g_player.PlayerMotion.aMotionInfo[motiontype].ActionFrameInfo[ActionType].bFirst = false;
+	g_player.PlayerMotion.aMotionInfo[motiontype].ActionFrameInfo[ActionType].nStartKey = StartKey;
+	g_player.PlayerMotion.aMotionInfo[motiontype].ActionFrameInfo[ActionType].nEndKey = EndKey;
+	g_player.PlayerMotion.aMotionInfo[motiontype].ActionFrameInfo[ActionType].nStartFrame = StartFlame;
+	g_player.PlayerMotion.aMotionInfo[motiontype].ActionFrameInfo[ActionType].nEndFrame = EndFlame;
 }

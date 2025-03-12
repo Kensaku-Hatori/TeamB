@@ -77,13 +77,14 @@ typedef struct
 	bool bLoopMotion;						// ループするかどうか
 	int nNumKey;							// キーの総数
 	int nKey;								// 現在のキーNo
-	int NextKey;							// 次のキー
+	int nNextKey;							// 次のキー
 	int nCntMotion;							// モーションのカウンター
 
 	bool bFinish;							// 現在のモーションが終了しているかどうか
 	bool bBlendMotion;						// ブレンドモーションがあるかどうか
 	MOTIONTYPE motionTypeBlend;				// ブレンドモーションの種類
 	bool bLoopBlend;						// ループするかどうか
+	bool bFirstBlend;						// 出だしのモーションをブレンド
 	int nNumKeyBlend;						// ブレンドモーションのキーの総数
 	int nKeyBlend;							// ブレンドモーションののキーNo
 	int nNextKeyBlend;						// ブレンドモーションの次のキー
