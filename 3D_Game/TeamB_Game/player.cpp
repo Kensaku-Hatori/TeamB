@@ -176,25 +176,25 @@ void UpdatePlayer(void)
 				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_USIRO
 				&& g_player.state != PLAYERSTATE_ACTION)
 			{
-				g_player.state = PLAYERSTATE_ACTION;
-
 				if (g_player.Skilltype == SKILLTYPE_NONE)
 				{
+					g_player.state = PLAYERSTATE_ACTION;
+
 					SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion);
 
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bActionStart = false;
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bFirst = false;
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartKey = 3;
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndKey = 3;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartFrame = 23;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndFrame = 24;
+					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartFrame = 18;
+					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndFrame = 19;
 
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].bActionStart = false;
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].bFirst = false;
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartKey = 3;
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndKey = 3;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartFrame = 20;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndFrame = 24;
+					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartFrame = 15;
+					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndFrame = 19;
 
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].bActionStart = false;
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].bFirst = false;
@@ -207,6 +207,8 @@ void UpdatePlayer(void)
 				{
 					if (g_player.bSkillUse == false)
 					{
+						g_player.state = PLAYERSTATE_ACTION;
+
 						g_player.bSkillUse = true;
 						SetMotion(MOTIONTYPE_ACTION_HORMING, &g_player.PlayerMotion);
 
@@ -227,6 +229,8 @@ void UpdatePlayer(void)
 				}
 				else if (g_player.Skilltype == SKILLTYPE_EXPLOSION)
 				{
+					g_player.state = PLAYERSTATE_ACTION;
+
 					SetMotion(MOTIONTYPE_ACTION_EXPLOSION, &g_player.PlayerMotion);
 
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bActionStart = false;
