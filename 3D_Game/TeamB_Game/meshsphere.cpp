@@ -7,10 +7,11 @@
 
 // インクルード
 #include "meshSphere.h"
+#include "meshfield.h"
 
 // グローバル変数宣言
 MeshSphere g_Sphere[MAX_MESHSPHERE];
-LPDIRECT3DTEXTURE9 pTexture;											// テクスチャ用ポインタ
+LPDIRECT3DTEXTURE9 g_pTexture;											// テクスチャ用ポインタ
 
 //======================================
 //球の初期化処理
@@ -25,7 +26,7 @@ void InitSphere(void)
 		g_Sphere[nCnt].col = D3DXCOLOR(0.5f, 1.0f, 1.0f, 1.0f);			// 色
 		g_Sphere[nCnt].pVtxBuff = NULL;									// 頂点情報のポインタ
 		g_Sphere[nCnt].pIndxBuff = NULL;								// インデックスバッファ
-		g_Sphere[nCnt].Indx = nCnt;										// インデックス
+		g_Sphere[nCnt].textype = 0;										// テクスチャの種類
 		g_Sphere[nCnt].DiviX = 0;										// xの分割数
 		g_Sphere[nCnt].DiviY = 0;										// yの分割数
 		g_Sphere[nCnt].fRadius = 0.0f;									// 半径
@@ -33,7 +34,7 @@ void InitSphere(void)
 		g_Sphere[nCnt].bHead = true;									// 法線を表に向ける
 		g_Sphere[nCnt].bUse = false;									// 使用していない状態にする
 	}
-	pTexture = NULL;													//テクスチャポインタ
+	g_pTexture = NULL;													//テクスチャポインタ
 }
 
 //======================================
@@ -51,10 +52,10 @@ void UninitSphere(void)
 		}
 
 		// テクスチャの破棄
-		if (pTexture != NULL)
+		if (g_pTexture != NULL)
 		{
-			pTexture->Release();
-			pTexture = NULL;
+			g_pTexture->Release();
+			g_pTexture = NULL;
 		}
 
 		// インデックスバッファの破棄
@@ -113,7 +114,7 @@ void DrawSphere(void)
 			pDevice->SetFVF(FVF_VERTEX_3D);
 
 			// テクスチャの設定
-			pDevice->SetTexture(0, NULL);
+			pDevice->SetTexture(0, g_pTexture);
 
 			// ポリゴンを描画
 			pDevice->DrawPrimitive(D3DPT_TRIANGLEFAN, 0, g_Sphere[nCnt].DiviX);
@@ -135,7 +136,7 @@ void DrawSphere(void)
 //======================================
 // 球の設定処理
 //======================================
-int SetSphere(D3DXVECTOR3 pos, int DiviX,int DiviY, float fRadius, bool bHead,bool bHalf)
+int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius, bool bHead, bool bHalf)
 {
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
@@ -148,6 +149,7 @@ int SetSphere(D3DXVECTOR3 pos, int DiviX,int DiviY, float fRadius, bool bHead,bo
 		{
 			//各種設定
 			g_Sphere[nCnt].pos = pos;									// 位置
+			g_Sphere[nCnt].textype = textype;							// テクスチャの種類
 			g_Sphere[nCnt].DiviX = DiviX;								// 分割数
 			g_Sphere[nCnt].DiviY = DiviY + 1;							// 分割数
 			g_Sphere[nCnt].fRadius = fRadius;							// 半径
@@ -286,4 +288,34 @@ int SetSphere(D3DXVECTOR3 pos, int DiviX,int DiviY, float fRadius, bool bHead,bo
 		}
 	}
 	return nCnt;						//球のインデックスを返す
+}
+
+//======================================
+// 球の位置の設定処理
+//======================================
+void SetSpherePos(int indx, D3DXVECTOR3 pos)
+{
+	g_Sphere[indx].pos = pos;
+}
+
+//===================
+// メッシュ壁のテクスチャ設定
+//===================
+void SetSphereTexture(int indx)
+{
+	//テクスチャのポインタを取得
+	LPDIRECT3DTEXTURE9 pTexture = GetTexture2(g_Sphere[indx].textype);
+
+	if (pTexture != NULL)
+	{
+		g_pTexture = pTexture;
+	}
+}
+
+//======================================
+// 球の位置の設定処理
+//======================================
+void DeleteSphere(int indx)
+{
+	g_Sphere[indx].bUse = false;
 }
