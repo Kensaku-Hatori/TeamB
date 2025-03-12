@@ -59,7 +59,10 @@ void InitGame(void)
 	//メッシュフィールドの初期化
 	InitMeshfield();
 
+	// 球体の初期化
 	InitSphere();
+	//// 球体の設定処理
+	//SetSphere(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 8, 2, 300.0f, false, true);
 
 	//サークルの初期化
 	InitCircle();
@@ -300,6 +303,8 @@ void UpdateGame(void)
 			//メッシュフィールドの更新処理
 			UpdateMeshfield();
 
+			UpdateSphere();
+
 			//サークルの更新処理
 			UpdateCircle();
 
@@ -476,6 +481,8 @@ void DrawGame(void)
 
 	//メッシュフィールドの描画処理
 	DrawMeshfield();
+
+	DrawSphere();
 
 	DrawSphere();
 

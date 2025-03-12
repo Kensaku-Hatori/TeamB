@@ -10,7 +10,7 @@
 #include "meshfield.h"
 
 // グローバル変数宣言
-MeshSphere g_Sphere[MAX_MESHSPHERE];
+MeshSphere g_Sphere[MAX_MESHSPHERE];									// 球体構造体
 LPDIRECT3DTEXTURE9 g_pTexture;											// テクスチャ用ポインタ
 
 //======================================
@@ -162,7 +162,7 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 			g_Sphere[nCnt].bHalf = bHalf;								// 半球かどうか
 
 			g_Sphere[nCnt].nMaxVtx = (g_Sphere[nCnt].DiviX + 1) * (g_Sphere[nCnt].DiviY) + 1;								// 頂点数
-			g_Sphere[nCnt].nPolyNum = (2 * g_Sphere[nCnt].DiviX * (g_Sphere[nCnt].DiviY - 1));								// ポリゴン数
+			g_Sphere[nCnt].nPolyNum = ((2 * g_Sphere[nCnt].DiviX) * (g_Sphere[nCnt].DiviY - 1));							// ポリゴン数
 			int indexNum = (2 * (g_Sphere[nCnt].DiviY * (2 + g_Sphere[nCnt].DiviX) - 1));									// インデックス
 
 			//テクスチャの設定
