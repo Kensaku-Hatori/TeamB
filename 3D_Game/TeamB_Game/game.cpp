@@ -41,6 +41,7 @@
 #include "billboard.h"
 #include "tutorial.h"
 #include "buttonUI.h"
+#include "meshsphere.h"
 
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -57,6 +58,8 @@ void InitGame(void)
 	MODE Mode = GetMode();
 	//メッシュフィールドの初期化
 	InitMeshfield();
+
+	InitSphere();
 
 	//サークルの初期化
 	InitCircle();
@@ -106,7 +109,6 @@ void InitGame(void)
 
 	//カメラの初期化
 	InitCamera();
-
 
 	//ライトの初期化
 	InitLight();
@@ -250,6 +252,8 @@ void UninitGame(void)
 
 	//メッシュフィールドの終了処理
 	UninitMeshfield();
+
+	UninitSphere();
 
 	UninitTutorial();
 }
@@ -472,6 +476,8 @@ void DrawGame(void)
 
 	//メッシュフィールドの描画処理
 	DrawMeshfield();
+
+	DrawSphere();
 
 	//影の描画処理
 	DrawShadow();
