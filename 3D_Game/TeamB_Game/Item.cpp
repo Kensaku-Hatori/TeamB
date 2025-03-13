@@ -307,6 +307,7 @@ void CollisionItem(int nIndexItem)
 			g_Item[nIndexItem].nCntTime = 0;						//消えるまでのフレーム初期化
 			g_nCntItem--;											//ドロップ中のアイテム数デクリメント
 			ItemAbility(nIndexItem);
+			PlaySound(SOUND_LABEL_ITEMGET);
 		}
 	}
 }

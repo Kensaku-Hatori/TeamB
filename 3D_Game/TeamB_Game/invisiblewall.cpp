@@ -7,6 +7,7 @@
 
 #include "invisiblewall.h"
 #include "enemy.h"
+#include "sound.h"
 
 Invisiblewall g_InvisibleWall[WALLTYPE_MAX];
 
@@ -188,6 +189,7 @@ void CollisionInvisibleWall(Invisiblewall Box, D3DXVECTOR3 Point , D3DXVECTOR3 &
 		SetFade(Box.MoveStageNum);
 		// èâä˙à íuÇê›íËÇ∑ÇÈ
 		NextPoint = Box.PlayerPos;
+		PlaySound(SOUND_LABEL_STAGECHANGE);
 	}
 }
 

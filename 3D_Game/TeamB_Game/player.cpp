@@ -203,6 +203,7 @@ void UpdatePlayer(void)
 			if (g_player.bLockOn == false)
 			{
 				g_player.bWantLockOn = true;
+				PlaySound(SOUND_LABEL_LOCKON);
 			}
 			else if (g_player.bLockOn == true)
 			{
@@ -343,6 +344,7 @@ void UpdatePlayer(void)
 
 				if (mode != MODE_STAGEFOUR)
 				{
+					PlaySound(SOUND_LABEL_ZENMETU);
 					//サークルの設定処理
 					g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DCOLOR_RGBA(255, 255, 50, 204), 12, 0, 10.0f, 20.0f, true, false, 0);
 
@@ -362,7 +364,6 @@ void UpdatePlayer(void)
 					pMission->mission = MISSION_BOSS;
 				}
 				TimeScore();
-
 				//全滅している状態にする
 				g_player.bAbolition = true;
 			}
@@ -574,6 +575,7 @@ void PlayerMove(void)
 	
 	if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && g_player.bRolling == false)
 	{
+		PlaySound(SOUND_LABEL_ROLLING);
 		g_player.bSkillUse = false;
 		Speed = g_player.Status.fSpeed * 20;
 		g_player.bRolling = true;
