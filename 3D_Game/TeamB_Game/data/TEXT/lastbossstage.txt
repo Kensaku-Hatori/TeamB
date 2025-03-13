@@ -9,23 +9,21 @@ SCRIPT			# この行は絶対消さないこと！
 #------------------------------------------------------------------------------
 # テクスチャ数
 #------------------------------------------------------------------------------
-NUM_TEXTURE = 12
+NUM_TEXTURE = 10
 
 #------------------------------------------------------------------------------
 # テクスチャファイル名
 #------------------------------------------------------------------------------
 TEXTURE_FILENAME = data/TEXTURE/sky002.jpg			# [0]空テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/mountain000.png		# [1]山テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/mountain001.png		# [1]山テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/zimen.jpg			# [2]地面テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/street1.png			# [3]道路テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/street2.png			# [4]交差テクスチャ
 TEXTURE_FILENAME = data/TEXTURE/wall101.jpg			# [5]壁テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/tree000.png			# [6]木テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/deadtree01.png		# [7]木テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/deadtree02.png		# [8]木テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/deadtree03.png		# [9]木テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/grass001.png		# [10]草テクスチャ
-TEXTURE_FILENAME = data/TEXTURE/fire.png			# [11]炎テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/deadtree01.png		# [6]木テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/deadtree02.png		# [7]木テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/deadtree03.png		# [8]木テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/fire.png			# [9]炎テクスチャ
 
 #------------------------------------------------------------------------------
 # モデル数
@@ -454,7 +452,7 @@ END_MODELSET
 # 炎
 #-----------------------------------
 BILLBOARDSET
-	TEXTYPE = 11
+	TEXTYPE = 10
 	POS = -250 140 -250
 	SIZE = 80 80
 	ORIGIN = 40 0
@@ -463,7 +461,7 @@ BILLBOARDSET
 END_BILLBOARDSET
 
 BILLBOARDSET
-	TEXTYPE = 11
+	TEXTYPE = 10
 	POS = -250 140 250
 	SIZE = 80 80
 	ORIGIN = 40 0
@@ -472,7 +470,7 @@ BILLBOARDSET
 END_BILLBOARDSET
 
 BILLBOARDSET
-	TEXTYPE = 11
+	TEXTYPE = 10
 	POS = 250 140 -250
 	SIZE = 80 80
 	ORIGIN = 40 0
@@ -481,7 +479,7 @@ BILLBOARDSET
 END_BILLBOARDSET
 
 BILLBOARDSET
-	TEXTYPE = 11
+	TEXTYPE = 10
 	POS = 250 140 250
 	SIZE = 80 80
 	ORIGIN = 40 0
@@ -515,6 +513,7 @@ PLAYERSET
 	POS = 0 100 0
 	ROT = 0 0 0
 END_PLAYERSET
+
 PLAYERSET
 	MOTION_FILENAME = data/MOTION/BOSS/motion.txt
 	POS = 0 100 0

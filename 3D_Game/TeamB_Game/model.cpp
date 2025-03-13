@@ -43,12 +43,20 @@ void InitStageModel()
 		g_StageModel[ModelCount].ModelBuff.dwNumMat = NULL;
 		g_StageModel[ModelCount].ModelBuff.pBuffMat = NULL;
 		g_StageModel[ModelCount].ModelBuff.pMesh = NULL;
+		for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
+		{
+			g_StageModel[ModelCount].ModelBuff.pTexture[TexCount] = NULL;
+		}
 	}
 	for (int Origin = 0; Origin < MODELTYPE_MAX; Origin++)
 	{
 		g_ModelOrigin[Origin].dwNumMat = NULL;
 		g_ModelOrigin[Origin].pBuffMat = NULL;
 		g_ModelOrigin[Origin].pMesh = NULL;
+		for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
+		{
+			g_ModelOrigin[Origin].pTexture[TexCount] = NULL;
+		}
 	}
 }
 //********************************
@@ -58,15 +66,22 @@ void UninitStageModel()
 {
 	for (int ModelCount = 0; ModelCount < MODELTYPE_MAX; ModelCount++)
 	{
-		Uninit(g_ModelOrigin[ModelCount].pBuffMat);
-		Uninit(g_ModelOrigin[ModelCount].pMesh);
 		for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
 		{
 			Uninit(g_ModelOrigin[ModelCount].pTexture[TexCount]);
 		}
+		Uninit(g_ModelOrigin[ModelCount].pBuffMat);
+		Uninit(g_ModelOrigin[ModelCount].pMesh);
 	}
 	for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++)
 	{
+		for (int texcount = 0; texcount < MAX_TEX; texcount++)
+		{
+			if (g_StageModel[ModelCount].ModelBuff.pTexture[texcount] != NULL)
+			{
+				g_StageModel[ModelCount].ModelBuff.pTexture[texcount] = NULL;
+			}
+		}
 		if (g_StageModel[ModelCount].ModelBuff.pBuffMat != NULL)
 		{
 			g_StageModel[ModelCount].ModelBuff.pBuffMat = NULL;
@@ -74,13 +89,6 @@ void UninitStageModel()
 		if (g_StageModel[ModelCount].ModelBuff.pMesh != NULL)
 		{
 			g_StageModel[ModelCount].ModelBuff.pMesh = NULL;
-		}
-		for (int texcount = 0; texcount < MAX_TEX; texcount++)
-		{
-			if (g_StageModel[ModelCount].ModelBuff.pTexture[texcount] != NULL)
-			{
-				g_StageModel[ModelCount].ModelBuff.pTexture[texcount] = NULL;
-			}
 		}
 	}
 }
