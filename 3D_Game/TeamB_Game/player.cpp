@@ -137,11 +137,11 @@ void UninitPlayer(void)
 	//ƒvƒŒƒCƒ„[‚Ì”jŠü
 	for (int nCnt = 0; nCnt < g_player.nNumModel; nCnt++)
 	{
-		Uninit(g_player.PlayerMotion.aModel[nCnt].pMesh);
-		Uninit(g_player.PlayerMotion.aModel[nCnt].pBuffMat);
+		UninitMesh(g_player.PlayerMotion.aModel[nCnt].pMesh);
+		UninitBuffMat(g_player.PlayerMotion.aModel[nCnt].pBuffMat);
 		for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
 		{
-			Uninit(g_player.PlayerMotion.aModel[nCnt].pTexture[TexCount]);
+			UninitTexture(g_player.PlayerMotion.aModel[nCnt].pTexture[TexCount]);
 		}
 	}
 }

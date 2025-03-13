@@ -221,21 +221,21 @@ void UninitTutorial(void)
 	// テクスチャの破棄
 	for (int nCnt = 0; nCnt < TUTORIAL_MAX; nCnt++)
 	{
-		Uninit(g_pTextureTutorial[nCnt]);
+		UninitTexture(g_pTextureTutorial[nCnt]);
 	}
 
-	Uninit(g_pTextureArrow);
-	Uninit(g_pTextureDenom);
-	Uninit(g_pTextureSlash);
-	Uninit(g_pTextureNumer);
+	UninitTexture(g_pTextureArrow);
+	UninitTexture(g_pTextureDenom);
+	UninitTexture(g_pTextureSlash);
+	UninitTexture(g_pTextureNumer);
 
 	// 頂点バッファの破棄
-	Uninit(g_pVtxBuffTutorial);
-	Uninit(g_pVtxBuffArrow);
-	Uninit(g_pVtxBuffDenom);
-	Uninit(g_pVtxBuffSlash);
-	Uninit(g_pVtxBuffNumer);
-	Uninit(g_pVtxBuffTutorialBack);
+	UninitBuffer(g_pVtxBuffTutorial);
+	UninitBuffer(g_pVtxBuffArrow);
+	UninitBuffer(g_pVtxBuffDenom);
+	UninitBuffer(g_pVtxBuffSlash);
+	UninitBuffer(g_pVtxBuffNumer);
+	UninitBuffer(g_pVtxBuffTutorialBack);
 }
 //==========
 //更新処理

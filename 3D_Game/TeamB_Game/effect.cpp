@@ -114,10 +114,10 @@ void InitEffect(void)
 //*********
 void UninitEffect(void)
 {
-	Uninit(g_pVtxBuffEffect);
+	UninitBuffer(g_pVtxBuffEffect);
 	for (int texcount = 0; texcount < EFFECT_MAX; texcount++)
 	{
-		Uninit(g_pTextureEffect[texcount]);
+		UninitTexture(g_pTextureEffect[texcount]);
 	}
 }
 //*********

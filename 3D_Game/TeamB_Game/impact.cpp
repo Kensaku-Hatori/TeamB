@@ -51,9 +51,9 @@ void UninitImpact(void)
 {
 	for (int ImpactCount = 0; ImpactCount < MAX_IMPACT; ImpactCount++)
 	{
-		Uninit(g_Impact[ImpactCount].pIdxBuffImpact);
-		Uninit(g_Impact[ImpactCount].pVtxBuffImpact);
-		Uninit(g_Impact[ImpactCount].pTextureImpact);
+		UninitIndxBuffer(g_Impact[ImpactCount].pIdxBuffImpact);
+		UninitBuffer(g_Impact[ImpactCount].pVtxBuffImpact);
+		UninitTexture(g_Impact[ImpactCount].pTextureImpact);
 	}
 }
 //*****************

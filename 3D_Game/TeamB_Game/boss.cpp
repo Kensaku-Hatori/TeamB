@@ -66,12 +66,12 @@ void UninitBoss(void)
 {
 	for (int PartsCount = 0; PartsCount < MAX_PARTS; PartsCount++)
 	{
-		Uninit(g_Boss.BossMotion.aModel[PartsCount].pMesh);
-		Uninit(g_Boss.BossMotion.aModel[PartsCount].pBuffMat);
+		UninitMesh(g_Boss.BossMotion.aModel[PartsCount].pMesh);
+		UninitBuffMat(g_Boss.BossMotion.aModel[PartsCount].pBuffMat);
 
 		for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
 		{//テクスチャの破棄
-			Uninit(g_Boss.BossMotion.aModel[PartsCount].pTexture[TexCount]);
+			UninitTexture(g_Boss.BossMotion.aModel[PartsCount].pTexture[TexCount]);
 		}
 	}
 }
