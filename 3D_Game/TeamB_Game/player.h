@@ -98,4 +98,13 @@ void SetMesh(char* pFilePath, int Indx);
 void SetPartsInfo(LoadInfo PartsInfo);
 void PlayerMotion(MOTIONINFO *pMotionInfo);
 void MatrixWand(void);
+
+// ğŒ®‚ÌŠÖ”‰»
+bool isUse();
+
+bool isLockOn();
+// Àì‹Æ‚ÌŠÖ”‰»
+void LockOnRot();
+void NearPlayerRot();
+void UpdateRotation();
 #endif

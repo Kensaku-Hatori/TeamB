@@ -263,3 +263,11 @@ void ResetCameraPos(D3DXVECTOR3 posV, D3DXVECTOR3 posR)
 		g_camera.bResete = true;
 	}
 }
+void SetCameraRotX(float Rot)
+{
+	g_camera.rot.x = Rot;
+}
+void SetCameraRotY(float Rot)
+{
+	g_camera.rot.y = Rot;
+}
