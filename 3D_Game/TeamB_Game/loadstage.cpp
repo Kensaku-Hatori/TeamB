@@ -66,8 +66,8 @@ void LoadModelViewer(MODE Mode)
 			}
 		}
 		LoadStart(pFile);
-		fclose(pFile);
 	}
+	fclose(pFile);
 }
 //*****************************
 // ÉVÉÉÅ[Évà»ç~Çì«Ç›îÚÇŒÇ∑èàóù
@@ -631,7 +631,7 @@ void LoadModelInfo(FILE* pFile)
 	int nType = 0;
 
 	while (1)
-	{
+	{ 
 		fgets(cData, 2, pFile);
 		if (cData[0] == 0x20 || cData[0] == 0x09 || cData[0] == 0x23 || cData[0] == 0x0a)
 		{

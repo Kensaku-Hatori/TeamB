@@ -49,7 +49,6 @@ void InitPlayer(void)
 	LPDIRECT3DDEVICE9 pDevice;
 	//デバイスの取得
 	pDevice = GetDevice();
-
 	
 	if (g_player.bfirst == false)
 	{//ステージ移動しているなら
@@ -248,22 +247,18 @@ void UpdatePlayer(void)
 					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndFrame = 16;
 				}
 			}
-			//ロックオン
-			if ((GetJoypadTrigger(JOYKEY_R1) == true) ||
-				OnMouseDown(1))
+		}
+		//ロックオン
+		if ((GetJoypadTrigger(JOYKEY_R1) == true) ||
+			OnMouseDown(1))
+		{
+			if (g_player.bLockOn == true)
 			{
-				if (g_player.bLockOn == true)
-				{
-					g_player.bLockOn = false;
-				}
-				else if (g_player.bLockOn == false)
-				{
-					g_player.bWantLockOn = true;
-				}
+				g_player.bLockOn = false;
 			}
-			else
+			else if (g_player.bLockOn == false)
 			{
-				g_player.bWantLockOn = false;
+				g_player.bWantLockOn = true;
 			}
 		}
 

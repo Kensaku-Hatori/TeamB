@@ -134,114 +134,125 @@ void UpdatePause(int zDelta)
 		
 	//メニューの選択(上下)
 	//Contnueにいる場合
-	if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true || zDelta > 0) && g_pauseMenu == PAUSE_MENU_CONTNUE)
+	if (KeyboardTrigger(DIK_W) == true || GetJoypadTrigger(JOYKEY_UP) == true || zDelta > 0)
+	{
+		PlaySound(SOUND_LABEL_SELECT);
+		switch (g_pauseMenu)
 		{
+		case PAUSE_MENU_CONTNUE:
 			g_pauseMenu = PAUSE_MENU_QUIT;
-		}
-	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true || zDelta < 0) && g_pauseMenu == PAUSE_MENU_CONTNUE)
-		{
-			g_pauseMenu = PAUSE_MENU_RETRY;
-		}
-	//RETRYにいる場合
-	else if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true || zDelta > 0) && g_pauseMenu == PAUSE_MENU_RETRY)
-		{
+			break;
+		case PAUSE_MENU_RETRY:
 			g_pauseMenu = PAUSE_MENU_CONTNUE;
+			break;
+		case PAUSE_MENU_QUIT:
+			g_pauseMenu = PAUSE_MENU_RETRY;
+			break;
+		default:
+			break;
 		}
-	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true || zDelta < 0) && g_pauseMenu == PAUSE_MENU_RETRY)
+	}
+	else if (KeyboardTrigger(DIK_S) == true || GetJoypadTrigger(JOYKEY_DOWN) == true || zDelta < 0)
+	{
+		PlaySound(SOUND_LABEL_SELECT);
+		switch (g_pauseMenu)
 		{
+		case PAUSE_MENU_CONTNUE:
+			g_pauseMenu = PAUSE_MENU_RETRY;
+			break;
+		case PAUSE_MENU_RETRY:
 			g_pauseMenu = PAUSE_MENU_QUIT;
-		}
-	//QUITにいる場合
-	else if ((KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true || zDelta > 0) && g_pauseMenu == PAUSE_MENU_QUIT)
-		{
-			g_pauseMenu = PAUSE_MENU_RETRY;
-		}
-	else if ((KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true || zDelta < 0) && g_pauseMenu == PAUSE_MENU_QUIT)
-		{
+			break;
+		case PAUSE_MENU_QUIT:
 			g_pauseMenu = PAUSE_MENU_CONTNUE;
+			break;
+		default:
+			break;
 		}
+	}
 
 	//頂点カラーの設定(明るく)
 	if (g_pauseMenu == PAUSE_MENU_CONTNUE)
-		{	//Contnueにいる場合
-			pVtx[4].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-			pVtx[5].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-			pVtx[6].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-			pVtx[7].col = D3DCOLOR_RGBA(255, 255, 0, 255);
+	{	//Contnueにいる場合
+		pVtx[4].col = D3DCOLOR_RGBA(255, 255, 0, 255);
+		pVtx[5].col = D3DCOLOR_RGBA(255, 255, 0, 255);
+		pVtx[6].col = D3DCOLOR_RGBA(255, 255, 0, 255);
+		pVtx[7].col = D3DCOLOR_RGBA(255, 255, 0, 255);
 
-			pVtx[8].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[9].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[10].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[11].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[8].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[9].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[10].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[11].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 
-			pVtx[12].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[13].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[14].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[15].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[12].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[13].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[14].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[15].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 
-		}
+	}
 	else if (g_pauseMenu == PAUSE_MENU_RETRY)
-		{	//RETRYにいる場合
-			pVtx[4].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[5].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[6].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[7].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	{	//RETRYにいる場合
+		pVtx[4].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[5].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[6].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[7].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 
-			pVtx[8].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-			pVtx[9].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-			pVtx[10].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-			pVtx[11].col = D3DCOLOR_RGBA(255, 255, 0, 255);
+		pVtx[8].col = D3DCOLOR_RGBA(255, 255, 0, 255);
+		pVtx[9].col = D3DCOLOR_RGBA(255, 255, 0, 255);
+		pVtx[10].col = D3DCOLOR_RGBA(255, 255, 0, 255);
+		pVtx[11].col = D3DCOLOR_RGBA(255, 255, 0, 255);
 
-			pVtx[12].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[13].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[14].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[15].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		}
+		pVtx[12].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[13].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[14].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[15].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	}
 	else if (g_pauseMenu == PAUSE_MENU_QUIT)
-		{	//QUITにいる場合
-			pVtx[4].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[5].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[6].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[7].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	{	//QUITにいる場合
+		pVtx[4].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[5].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[6].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[7].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 
-			pVtx[8].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[9].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[10].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-			pVtx[11].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[8].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[9].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[10].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[11].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 
-			pVtx[12].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-			pVtx[13].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-			pVtx[14].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-			pVtx[15].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-		}
+		pVtx[12].col = D3DCOLOR_RGBA(255, 255, 0, 255);
+		pVtx[13].col = D3DCOLOR_RGBA(255, 255, 0, 255);
+		pVtx[14].col = D3DCOLOR_RGBA(255, 255, 0, 255);
+		pVtx[15].col = D3DCOLOR_RGBA(255, 255, 0, 255);
+	}
 
 	//頂点バッファをアンロック
 	g_pVtxBuffPause->Unlock();
 
 	if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true || OnMouseDown(0) == true) && g_fade == FADE_NONE)
-		{
-			//メニューに合わせてモードの切り替え
-			if (g_pauseMenu == PAUSE_MENU_CONTNUE)
-			{	//Contnueにいる場合
-				SetEnablePause(false);
-				SetGameState(GAMESTATE_NORMAL);
-			}
-			else if (g_pauseMenu == PAUSE_MENU_RETRY)
-			{	//RETRYにいる場合
-				SetFade(MODE_STAGEONE);
-				pPlayer->bfirst = true;
-
-				StopSound();
-				PlaySound(SOUND_LABEL_GAME);
-			}
-			else if (g_pauseMenu == PAUSE_MENU_QUIT)
-			{	//QUITにいる場合
-				SetFade(MODE_TITLE);
-
-				StopSound();
-				PlaySound(SOUND_LABEL_TITLE);
-			}
+	{
+		PlaySound(SOUND_LABEL_DESICION);
+		//メニューに合わせてモードの切り替え
+		if (g_pauseMenu == PAUSE_MENU_CONTNUE)
+		{	//Contnueにいる場合
+			SetEnablePause(false);
+			SetGameState(GAMESTATE_NORMAL);
 		}
+		else if (g_pauseMenu == PAUSE_MENU_RETRY)
+		{	//RETRYにいる場合
+			SetFade(MODE_STAGEONE);
+			pPlayer->bfirst = true;
+
+			StopSound();
+			PlaySound(SOUND_LABEL_GAME);
+		}
+		else if (g_pauseMenu == PAUSE_MENU_QUIT)
+		{	//QUITにいる場合
+			SetFade(MODE_TITLE);
+
+			StopSound();
+			PlaySound(SOUND_LABEL_TITLE);
+		}
+	}
 }
 //===========
 //描画処理
