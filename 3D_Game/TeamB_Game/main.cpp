@@ -719,8 +719,11 @@ void DrawPlayerInfo()
 
 	rect = { 0,400,SCREEN_WIDTH,SCREEN_HEIGHT };
 
-	// 文字列に代入
-	sprintf(&aStr[0], "プレイヤーの次のキー:%d", pPlayer->PlayerMotion.NextKey);
+	//// 文字列に代入
+	//sprintf(&aStr[0], "プレイヤーの次のキー:%d", pPlayer->PlayerMotion.NextKey);
+
+		// 文字列に代入
+	sprintf(&aStr[0], "プレイヤーのステータス:%d", pPlayer->state);
 
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
@@ -847,6 +850,7 @@ void ToggleFullScreen(HWND hWnd)
 	}
 	g_isFullscreen = !g_isFullscreen;
 }
+
 //*****************
 // テクスチャの破棄
 //*****************
@@ -858,9 +862,10 @@ void Uninit(LPDIRECT3DTEXTURE9 Texture)
 		Texture = NULL;
 	}
 }
-//*****************
-// バッファーの破棄
-//*****************
+
+//*********************
+// 頂点バッファーの破棄
+//*********************
 void Uninit(LPDIRECT3DVERTEXBUFFER9 Buffer)
 {
 	if (Buffer != NULL)
@@ -884,6 +889,10 @@ void Uninit(LPD3DXMESH Mesh)
 //*****************
 // マテリアルの破棄
 //*****************
+
+//***************
+// メッシュの破棄
+//***************
 void Uninit(LPD3DXBUFFER Buffer)
 {
 	//マテリアルの破棄
@@ -903,4 +912,39 @@ void Uninit(LPDIRECT3DINDEXBUFFER9 IndxBuffer)
 		IndxBuffer->Release();
 		IndxBuffer = NULL;
 	}
+}
+
+//********************
+// 1次元ベクトルを引く
+//********************
+float Vector(float StartPoint, float EndPoint)
+{
+	return EndPoint - StartPoint;
+}
+
+//*************************
+// 2Dベクトルの角度を求める
+//*************************
+float Angle(D3DXVECTOR2 Vec)
+{
+	return atan2f(Vec.x, Vec.y);
+}
+
+//*********************
+// 角度の近道を見つける
+//*********************
+void NearRot(float Angle, float& OutAngle)
+{
+	// 角度の近道
+	if (Angle >= D3DX_PI) SetAngle(OutAngle += D3DX_PI * 2.0f,OutAngle);
+	// 角度の近道
+	else if (Angle <= -D3DX_PI) SetAngle(OutAngle -= D3DX_PI * 2.0f,OutAngle);
+}
+
+//*****************************
+// 現在の向きを設定
+//*****************************
+void SetAngle(float fAngle, float& OutAngle)
+{
+	OutAngle = fAngle;
 }

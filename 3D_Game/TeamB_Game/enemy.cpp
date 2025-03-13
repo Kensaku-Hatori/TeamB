@@ -199,7 +199,6 @@ void UpdateEnemy(void)
 					EnemyDistanceSort(EnemyCount);
 					pPlayer->bLockOn = true;
 				}
-				pPlayer->bWantLockOn = false;
 			}
 
 			g_Enemy[EnemyCount].bLockOn = IsPlayerInsight(EnemyCount);

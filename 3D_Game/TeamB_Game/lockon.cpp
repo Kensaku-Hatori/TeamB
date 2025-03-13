@@ -140,6 +140,7 @@ void UpdateLockon(void)
 	}
 	else
 	{
+		pPlayer->bWantLockOn = false;
 		//í∏ì_ÉJÉâÅ[ÇÃê›íË
 		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.01f);
 		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.01f);

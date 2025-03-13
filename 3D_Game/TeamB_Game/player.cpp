@@ -200,13 +200,14 @@ void UpdatePlayer(void)
 		if ((GetJoypadTrigger(JOYKEY_R1) == true) ||
 			OnMouseDown(1))
 		{
-			if (g_player.bLockOn == true)
-			{
-				g_player.bLockOn = false;
-			}
-			else if (g_player.bLockOn == false)
+			if (g_player.bLockOn == false)
 			{
 				g_player.bWantLockOn = true;
+			}
+			else if (g_player.bLockOn == true)
+			{
+				g_player.bLockOn = false;
+				g_player.bWantLockOn = false;
 			}
 		}
 
