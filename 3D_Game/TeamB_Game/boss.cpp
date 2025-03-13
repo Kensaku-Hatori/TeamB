@@ -112,6 +112,10 @@ void UpdateBoss(void)
 			{
 				pPlayer->bLockOn = true;
 			}
+			else
+			{
+				pPlayer->bWantLockOn = false;
+			}
 		}
 
 		if (g_Boss.statecount <= 0)
