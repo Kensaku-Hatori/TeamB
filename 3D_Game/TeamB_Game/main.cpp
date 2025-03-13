@@ -854,7 +854,7 @@ void ToggleFullScreen(HWND hWnd)
 //*****************
 // テクスチャの破棄
 //*****************
-void Uninit(LPDIRECT3DTEXTURE9 Texture)
+void Uninit(LPDIRECT3DTEXTURE9 &Texture)
 {
 	if (Texture != NULL)
 	{
@@ -866,7 +866,7 @@ void Uninit(LPDIRECT3DTEXTURE9 Texture)
 //*********************
 // 頂点バッファーの破棄
 //*********************
-void Uninit(LPDIRECT3DVERTEXBUFFER9 Buffer)
+void Uninit(LPDIRECT3DVERTEXBUFFER9 &Buffer)
 {
 	if (Buffer != NULL)
 	{
@@ -877,7 +877,7 @@ void Uninit(LPDIRECT3DVERTEXBUFFER9 Buffer)
 //***************
 // メッシュの破棄
 //***************
-void Uninit(LPD3DXMESH Mesh)
+void Uninit(LPD3DXMESH &Mesh)
 {
 	//メッシュの破棄
 	if (Mesh != NULL)
@@ -886,14 +886,10 @@ void Uninit(LPD3DXMESH Mesh)
 		Mesh = NULL;
 	}
 }
-//*****************
-// マテリアルの破棄
-//*****************
-
 //***************
 // メッシュの破棄
 //***************
-void Uninit(LPD3DXBUFFER Buffer)
+void Uninit(LPD3DXBUFFER &Buffer)
 {
 	//マテリアルの破棄
 	if (Buffer != NULL)
@@ -905,7 +901,7 @@ void Uninit(LPD3DXBUFFER Buffer)
 //***************************
 // インデックスバッファの破棄
 //***************************
-void Uninit(LPDIRECT3DINDEXBUFFER9 IndxBuffer)
+void Uninit(LPDIRECT3DINDEXBUFFER9 &IndxBuffer)
 {
 	if (IndxBuffer != NULL)
 	{
