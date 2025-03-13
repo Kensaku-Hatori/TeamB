@@ -177,7 +177,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\OneDrive\\デスクトップ\\run_zump\\TeamB\\Stage\\data\\TEXTURE\\rubble_01.jpg";
+    "data\\TEXTURE\\rubble_01.jpg";
    }
   }
  }

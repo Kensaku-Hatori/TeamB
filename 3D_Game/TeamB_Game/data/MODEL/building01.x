@@ -264,7 +264,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\OneDrive\\デスクトップ\\run_zump\\TeamB\\Stage\\data\\TEXTURE\\FYI02359011.jpg";
+    "data\\TEXTURE\\FYI02359011.jpg";
    }
   }
   Material {
@@ -273,7 +273,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\OneDrive\\デスクトップ\\run_zump\\TeamB\\Stage\\data\\TEXTURE\\istockphoto-1305097203-612x612.jpg";
+    "data\\TEXTURE\\istockphoto-1305097203-612x612.jpg";
    }
   }
   Material {
@@ -282,7 +282,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\OneDrive\\デスクトップ\\run_zump\\TeamB\\Stage\\data\\TEXTURE\\doa.jpg";
+    "data\\TEXTURE\\doa.jpg";
    }
   }
   Material {

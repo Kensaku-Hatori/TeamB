@@ -7,6 +7,7 @@
 #include "player.h"
 #include "camera.h"
 #include "collision.h"
+#include <cassert>
 
 // グローバル変数
 MODELORIGIN g_ModelOrigin[MODELTYPE_MAX];
@@ -320,6 +321,11 @@ void SetStageModelInfo(char *ModelPath[], int PathType)
 		&g_ModelOrigin[PathType].dwNumMat,
 		&g_ModelOrigin[PathType].pMesh);
 	
+	if (FAILED(Hresult))
+	{
+		return;
+	}
+
 	D3DXMATERIAL* pMat;//マテリアルへのポインタ
 	pMat = (D3DXMATERIAL*)g_ModelOrigin[PathType].pBuffMat->GetBufferPointer();
 	for (int nCntBlockMat = 0; nCntBlockMat < (int)g_ModelOrigin[PathType].dwNumMat; nCntBlockMat++)
@@ -330,15 +336,6 @@ void SetStageModelInfo(char *ModelPath[], int PathType)
 				pMat[nCntBlockMat].pTextureFilename, 
 				&g_ModelOrigin[PathType].pTexture[nCntBlockMat]); //1
 		}
-		else
-		{
-			g_ModelOrigin[PathType].pTexture[nCntBlockMat] = NULL;
-		}
-	}
-
-	if(FAILED(Hresult))
-	{
-		return;
 	}
 }
 //*************************

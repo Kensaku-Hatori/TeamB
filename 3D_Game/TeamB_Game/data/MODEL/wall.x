@@ -177,7 +177,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Downloads\\81799854-古代の石造りのブロックの壁。灰色のレンガの壁の背景ベクトル.jpg";
+    "data\\TEXTURE\\istockphoto-1305097203-612x612.jpg";
    }
   }
  }
