@@ -131,13 +131,13 @@ void UninitTitleInfo(void)
 	// テクスチャの破棄
 	for (int nCnt = 0; nCnt < MAX_TEXTURE; nCnt++)
 	{
-		Uninit(g_pTexturetitleinfo[nCnt]);
+		UninitTexture(g_pTexturetitleinfo[nCnt]);
 	}
-	Uninit(g_pTexturetitleinfoLogo);
+	UninitTexture(g_pTexturetitleinfoLogo);
 
 	// バッファの破棄
-	Uninit(g_pVtxBufftitleinfo);
-	Uninit(g_pVtxBufftitleinfoLogo);
+	UninitBuffer(g_pVtxBufftitleinfo);
+	UninitBuffer(g_pVtxBufftitleinfoLogo);
 }
 //==========
 //更新処理

@@ -68,10 +68,10 @@ void UninitStageModel()
 	{
 		for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
 		{
-			Uninit(g_ModelOrigin[ModelCount].pTexture[TexCount]);
+			UninitTexture(g_ModelOrigin[ModelCount].pTexture[TexCount]);
 		}
-		Uninit(g_ModelOrigin[ModelCount].pBuffMat);
-		Uninit(g_ModelOrigin[ModelCount].pMesh);
+		UninitBuffMat(g_ModelOrigin[ModelCount].pBuffMat);
+		UninitMesh(g_ModelOrigin[ModelCount].pMesh);
 	}
 	for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++)
 	{

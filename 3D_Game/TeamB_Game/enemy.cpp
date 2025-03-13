@@ -81,12 +81,12 @@ void UninitEnemy(void)
 	{
 		for (int PartsCount = 0; PartsCount < MAX_PARTS; PartsCount++)
 		{
-			Uninit(g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pMesh);
-			Uninit(g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pBuffMat);
+			UninitMesh(g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pMesh);
+			UninitBuffMat(g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pBuffMat);
 
 			for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
 			{
-				Uninit(g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pTexture[TexCount]);
+				UninitTexture(g_EnemyOrigin[OriginCount].EnemyMotion.aModel[PartsCount].pTexture[TexCount]);
 			}
 		}
 	}
