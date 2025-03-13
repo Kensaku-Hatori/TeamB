@@ -36,4 +36,8 @@ void SetCamera(void);
 Camera * GetCamera(void);
 void SetMouseWheel(int zDelta);
 void ResetCameraPos(D3DXVECTOR3 posV, D3DXVECTOR3 posR);
+
+// Àì‹Æ‚ÌŠÖ”‰»
+void SetCameraRotX(float Rot);
+void SetCameraRotY(float Rot);
 #endif

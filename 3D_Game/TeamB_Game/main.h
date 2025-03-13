@@ -92,4 +92,11 @@ void Uninit(LPDIRECT3DVERTEXBUFFER9 Buffer);
 void Uninit(LPD3DXMESH Mesh);
 void Uninit(LPD3DXBUFFER Buffer);
 void Uninit(LPDIRECT3DINDEXBUFFER9 IndxBuffer);
+
+// ŒvZŒn‚ÌŠÖ”
+float Vector(float StartPoint, float EndPoint);
+float Angle(D3DXVECTOR2 Vec);
+void NearRot(float Angle,float &OutAngle);
+// Àì‹ÆŒn‚ÌŠÖ”
+void SetAngle(float fAngle,float &OutAngle);
 #endif

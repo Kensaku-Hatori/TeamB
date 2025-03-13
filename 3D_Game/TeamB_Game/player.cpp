@@ -41,6 +41,15 @@ D3DXVECTOR3 g_vtxMaxPlayer;	//プレイヤーの最大値
 
 int g_nCntHealMP;			//MP回復時間
 
+bool isStateType(PLAYERSTATE State);
+bool isMotionType(MOTIONTYPE MotionType);
+bool isMotionAction();
+bool isMotionRoll();
+bool isActionCondition();
+
+void SetState(PLAYERSTATE State);
+void SetActionFlame(int ActionIndx,int StartKey, int EndKey, int StartFlame, int EndFlame);
+
 //=====================
 // プレイヤーの初期化
 //=====================
@@ -129,122 +138,61 @@ void UninitPlayer(void)
 void UpdatePlayer(void)
 {
 	Camera *pCamera = GetCamera();				//カメラの情報取得
-	Lockon* pLockon = GetLockOn();
 	Mission* pMission = GetMission();
 	int* NumEnemy = GetNumEnemy();				//敵の数取得
 
-	if (g_player.bUse == true)
+	if (isUse() == true)
 	{
 		//プレイヤー移動
 		PlayerMove();
 
 		//ロックオン状態なら
-		if (g_player.bLockOn == true)
+		if (isLockOn() == true)
 		{
-			//プレイヤーの向き
-			float fMathDistance, fMathDistance1;
-			fMathDistance = pLockon->pos.x - g_player.pos.x;
-			fMathDistance1 = pLockon->pos.z - g_player.pos.z;
-			g_player.rotDest.y = atan2f(fMathDistance, fMathDistance1) + D3DX_PI;
-
-			pCamera->rot.y = g_player.rotDest.y - D3DX_PI;
+			LockOnRot();
 		}
 
-		// 角度の近道
-		if (g_player.rotDest.y - g_player.rot.y >= D3DX_PI)
-		{
-			g_player.rot.y += D3DX_PI * 2.0f;
-		}
-		else if (g_player.rotDest.y - g_player.rot.y <= -D3DX_PI)
-		{
-			g_player.rot.y -= D3DX_PI * 2.0f;
-		}
+		NearPlayerRot();
 
-		g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
+		UpdateRotation();
 
-		if (g_player.state == PLAYERSTATE_NORMAL || g_player.state == PLAYERSTATE_ROLL)
+		if (isStateType(PLAYERSTATE_NORMAL) == true|| isStateType(PLAYERSTATE_ROLL) == true)
 		{
 			//魔法発射
-			if ((OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true)
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_HORMING
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_ACTION_EXPLOSION
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_HIDARI
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MIGI
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_MAE
-				&& g_player.PlayerMotion.motionType != MOTIONTYPE_KAIHI_USIRO
-				&& g_player.state != PLAYERSTATE_ACTION)
+			if (OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true
+				&& isActionCondition() == true)
 			{
 				if (g_player.Skilltype == SKILLTYPE_NONE)
 				{
-					g_player.state = PLAYERSTATE_ACTION;
+					SetState(PLAYERSTATE_ACTION);
 
 					SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion);
 
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bActionStart = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bFirst = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartKey = 3;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndKey = 3;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartFrame = 18;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndFrame = 19;
-
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].bActionStart = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].bFirst = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartKey = 3;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndKey = 3;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartFrame = 15;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndFrame = 19;
-
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].bActionStart = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].bFirst = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nStartKey = 0;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nEndKey = 0;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nStartFrame = 1;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nEndFrame = 2;
+					SetActionFlame(0, 3, 3, 18, 19);
+					SetActionFlame(1, 3, 3, 15, 19);
+					SetActionFlame(2, 0, 0, 1, 2);
 				}
 				else if (g_player.Skilltype == SKILLTYPE_HORMING)
 				{
 					if (g_player.bSkillUse == false)
 					{
-						g_player.state = PLAYERSTATE_ACTION;
+						SetState(PLAYERSTATE_ACTION);
 
 						g_player.bSkillUse = true;
 						SetMotion(MOTIONTYPE_ACTION_HORMING, &g_player.PlayerMotion);
 
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bActionStart = false;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bFirst = false;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartKey = 2;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndKey = 2;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartFrame = 23;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndFrame = 24;
-
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].bActionStart = false;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].bFirst = false;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nStartKey = 0;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nEndKey = 0;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nStartFrame = 1;
-						g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[2].nEndFrame = 2;
+						SetActionFlame(0, 2, 2, 23, 24);
+						SetActionFlame(2, 0, 0, 1, 2);
 					}
 				}
 				else if (g_player.Skilltype == SKILLTYPE_EXPLOSION)
 				{
-					g_player.state = PLAYERSTATE_ACTION;
+					SetState(PLAYERSTATE_ACTION);
 
 					SetMotion(MOTIONTYPE_ACTION_EXPLOSION, &g_player.PlayerMotion);
 
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bActionStart = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].bFirst = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartKey = 0;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndKey = 0;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nStartFrame = 15;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[0].nEndFrame = 16;
-
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].bActionStart = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].bFirst = false;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartKey = 0;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndKey = 0;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nStartFrame = 15;
-					g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[1].nEndFrame = 16;
+					SetActionFlame(0, 0, 0, 15, 16);
+					SetActionFlame(1, 0, 0, 15, 16);
 				}
 			}
 		}
@@ -613,21 +561,6 @@ void PlayerMove(void)
 	Camera* pCamera;
 	pCamera = GetCamera();
 
-
-	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].bActionStart = false;
-	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].bFirst = false;
-	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].nStartKey = 1;
-	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].nEndKey = 1;
-	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].nStartFrame = 1;
-	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[0].nEndFrame = 2;
-
-	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[1].bActionStart = false;
-	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[1].bFirst = false;
-	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[1].nStartKey = 3;
-	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[1].nEndKey = 3;
-	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[1].nStartFrame = 1;
-	g_player.PlayerMotion.aMotionInfo[MOTIONTYPE_MOVE].ActionFrameInfo[1].nEndFrame = 2;
-
 	float Speed;
 	if (g_player.bLockOn == true)
 	{
@@ -660,6 +593,8 @@ void PlayerMove(void)
 					if (g_player.bLockOn == false)
 					{
 						SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+						SetActionFlame(0, 1, 1, 1, 2);
+						SetActionFlame(1, 3, 3, 1, 2);
 					}
 					else if (g_player.bLockOn == true)
 					{
@@ -714,6 +649,8 @@ void PlayerMove(void)
 						if (g_player.bLockOn == false)
 						{
 							SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+							SetActionFlame(0, 1, 1, 1, 2);
+							SetActionFlame(1, 3, 3, 1, 2);
 						}
 						else if (g_player.bLockOn == true)
 						{
@@ -768,6 +705,8 @@ void PlayerMove(void)
 						if (g_player.bLockOn == false)
 						{
 							SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+							SetActionFlame(0, 1, 1, 1, 2);
+							SetActionFlame(1, 3, 3, 1, 2);
 						}
 						else if (g_player.bLockOn == true)
 						{
@@ -816,6 +755,8 @@ void PlayerMove(void)
 						if (g_player.bLockOn == false)
 						{
 							SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+							SetActionFlame(0, 1, 1, 1, 2);
+							SetActionFlame(1, 3, 3, 1, 2);
 						}
 						else if (g_player.bLockOn == true)
 						{
@@ -869,12 +810,11 @@ void PlayerMove(void)
 		{
 			if (g_player.PlayerMotion.motionType == MOTIONTYPE_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_R_MOVE
 				|| g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_L_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_F_MOVE
-				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MAE || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_USIRO
-				|| g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_MIGI || g_player.PlayerMotion.motionType == MOTIONTYPE_KAIHI_HIDARI
-				)
+				|| isMotionRoll() == true
+				|| isMotionAction() == true)
 			{
 				SetMotion(MOTIONTYPE_NEUTRAL, &g_player.PlayerMotion);
-				g_player.state = PLAYERSTATE_NORMAL;
+				SetState(PLAYERSTATE_NORMAL);
 			}
 		}
 	}
@@ -1227,4 +1167,74 @@ void MatrixWand(void)
 
 	pDevice->SetTransform(D3DTS_WORLD,
 		&g_player.mtxWand);
+}
+bool isUse()
+{
+	return g_player.bUse;
+}
+bool isLockOn()
+{
+	return g_player.bLockOn;
+}
+bool isStateType(PLAYERSTATE State)
+{
+	return g_player.state == State;
+}
+bool isMotionType(MOTIONTYPE MotionType)
+{
+	return g_player.PlayerMotion.motionType == MotionType;
+}
+bool isMotionAction()
+{
+	return isMotionType(MOTIONTYPE_ACTION) == true
+		|| isMotionType(MOTIONTYPE_ACTION_HORMING) == true
+		|| isMotionType(MOTIONTYPE_ACTION_EXPLOSION) == true;
+}
+bool isMotionRoll()
+{
+	return isMotionType(MOTIONTYPE_KAIHI_HIDARI) == true
+		|| isMotionType(MOTIONTYPE_KAIHI_MIGI) == true
+		|| isMotionType(MOTIONTYPE_KAIHI_MAE) == true
+		|| isMotionType(MOTIONTYPE_KAIHI_USIRO) == true;
+}
+bool isActionCondition()
+{
+	return isMotionAction() == false
+		&& isMotionRoll() == false
+		&& isStateType(PLAYERSTATE_NORMAL) == true
+		&& g_player.PlayerMotion.bBlendMotion == false;
+}
+void LockOnRot()
+{
+	Lockon* pLockon = GetLockOn();
+
+	//プレイヤーの向き
+	float fMathDistance = Vector(g_player.pos.x, pLockon->pos.x);
+	float fMathDistance1 = Vector(g_player.pos.z, pLockon->pos.z);
+	float fAngle = Angle(D3DXVECTOR2(fMathDistance, fMathDistance1));
+	SetAngle(fAngle + D3DX_PI,g_player.rotDest.y);
+
+	SetCameraRotY(g_player.rot.y - D3DX_PI);
+}
+void NearPlayerRot()
+{
+	NearRot(g_player.rotDest.y - g_player.rot.y,g_player.rot.y);
+}
+void UpdateRotation()
+{
+	g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
+}
+
+void SetState(PLAYERSTATE State)
+{
+	g_player.state = State;
+}
+void SetActionFlame(int ActionIndx, int StartKey, int EndKey, int StartFlame, int EndFlame)
+{
+	g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[ActionIndx].bActionStart = false;
+	g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[ActionIndx].bFirst = false;
+	g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[ActionIndx].nStartKey = StartKey;
+	g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[ActionIndx].nEndKey = EndKey;
+	g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[ActionIndx].nStartFrame = StartFlame;
+	g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[ActionIndx].nEndFrame = EndFlame;
 }
