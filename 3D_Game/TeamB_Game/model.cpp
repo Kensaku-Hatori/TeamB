@@ -39,14 +39,6 @@ void InitStageModel()
 
 		g_StageModel[ModelCount].Max = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		g_StageModel[ModelCount].Min = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-
-		g_StageModel[ModelCount].ModelBuff.dwNumMat = NULL;
-		g_StageModel[ModelCount].ModelBuff.pBuffMat = NULL;
-		g_StageModel[ModelCount].ModelBuff.pMesh = NULL;
-		for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
-		{
-			g_StageModel[ModelCount].ModelBuff.pTexture[TexCount] = NULL;
-		}
 	}
 	for (int Origin = 0; Origin < MODELTYPE_MAX; Origin++)
 	{
@@ -72,24 +64,6 @@ void UninitStageModel()
 		}
 		UninitBuffMat(g_ModelOrigin[ModelCount].pBuffMat);
 		UninitMesh(g_ModelOrigin[ModelCount].pMesh);
-	}
-	for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++)
-	{
-		for (int texcount = 0; texcount < MAX_TEX; texcount++)
-		{
-			if (g_StageModel[ModelCount].ModelBuff.pTexture[texcount] != NULL)
-			{
-				g_StageModel[ModelCount].ModelBuff.pTexture[texcount] = NULL;
-			}
-		}
-		if (g_StageModel[ModelCount].ModelBuff.pBuffMat != NULL)
-		{
-			g_StageModel[ModelCount].ModelBuff.pBuffMat = NULL;
-		}
-		if (g_StageModel[ModelCount].ModelBuff.pMesh != NULL)
-		{
-			g_StageModel[ModelCount].ModelBuff.pMesh = NULL;
-		}
 	}
 }
 //********************************
@@ -157,9 +131,9 @@ void DrawStageModel()
 			pDevice->GetMaterial(&matDef);
 
 			//マテリアルデータへのポインタを取得
-			pMat = (D3DXMATERIAL*)g_StageModel[ModelCount].ModelBuff.pBuffMat->GetBufferPointer();
+			pMat = (D3DXMATERIAL*)g_ModelOrigin[g_StageModel[ModelCount].nType].pBuffMat->GetBufferPointer();
 
-			for (int ModelMatCount = 0; ModelMatCount < (int)g_StageModel[ModelCount].ModelBuff.dwNumMat; ModelMatCount++)
+			for (int ModelMatCount = 0; ModelMatCount < (int)g_ModelOrigin[g_StageModel[ModelCount].nType].dwNumMat; ModelMatCount++)
 			{
 				if (g_StageModel[ModelCount].bHitRayCamera == true)
 				{
@@ -177,9 +151,9 @@ void DrawStageModel()
 					pDevice->SetMaterial(&pMat[ModelMatCount].MatD3D);
 				}
 				//テクスチャの設定
-				pDevice->SetTexture(0, g_StageModel[ModelCount].ModelBuff.pTexture[ModelMatCount]);
+				pDevice->SetTexture(0, g_ModelOrigin[g_StageModel[ModelCount].nType].pTexture[ModelMatCount]);
 				//モデルの描画
-				g_StageModel[ModelCount].ModelBuff.pMesh->DrawSubset(ModelMatCount);
+				g_ModelOrigin[g_StageModel[ModelCount].nType].pMesh->DrawSubset(ModelMatCount);
 			}
 			pDevice->SetMaterial(&matDef);
 		}
@@ -206,7 +180,6 @@ void SetStageModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot, MODELTYPE nType)
 			g_StageModel[ModelCount].nType = nType;
 			g_StageModel[ModelCount].pos = pos;
 			g_StageModel[ModelCount].rot = rot;
-			g_StageModel[ModelCount].ModelBuff = g_ModelOrigin[nType];
 			g_StageModel[ModelCount].btest = true;
 			break;
 		}
@@ -226,11 +199,11 @@ void SetObbInfo(int Indx)
 	BYTE* pVtxBuff;//頂点バッファへのポインタ
 
 	//頂点数取得
-	nNumVtx = g_StageModel[Indx].ModelBuff.pMesh->GetNumVertices();
+	nNumVtx = g_ModelOrigin[g_StageModel[Indx].nType].pMesh->GetNumVertices();
 	//頂点フォーマットのサイズ取得
-	sizeFVF = D3DXGetFVFVertexSize(g_StageModel[Indx].ModelBuff.pMesh->GetFVF());
+	sizeFVF = D3DXGetFVFVertexSize(g_ModelOrigin[g_StageModel[Indx].nType].pMesh->GetFVF());
 	//頂点バッファのロック
-	g_StageModel[Indx].ModelBuff.pMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&pVtxBuff);
+	g_ModelOrigin[g_StageModel[Indx].nType].pMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&pVtxBuff);
 
 	if (g_StageModel[Indx].btest == true)
 	{
@@ -272,7 +245,7 @@ void SetObbInfo(int Indx)
 	}
 
 	//頂点バッファのアンロック
-	g_StageModel[Indx].ModelBuff.pMesh->UnlockVertexBuffer();
+	g_ModelOrigin[g_StageModel[Indx].nType].pMesh->UnlockVertexBuffer();
 
 	D3DXMATRIX mtxRotModel, mtxTransModel;
 	D3DXMATRIX mtxParent;

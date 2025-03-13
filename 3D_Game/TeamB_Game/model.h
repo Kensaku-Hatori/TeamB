@@ -71,7 +71,6 @@ typedef struct
 // ステージに出すモデルの構造体
 typedef struct
 {
-	MODELORIGIN ModelBuff;
 	MODELTYPE nType;
 	D3DXVECTOR3 pos;		//位置(オフセット)
 	D3DXVECTOR3 rot;		//向き
