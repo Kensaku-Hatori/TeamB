@@ -56,7 +56,6 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/SE/mahoujin.wav", 0},
 	{"data/SE/allkill.wav", 0},
 	{"data/SE/stagechange.wav", 0},
-
 	
 };
 
