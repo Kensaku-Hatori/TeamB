@@ -9,6 +9,7 @@
 #include "enemy.h"
 #include "camera.h"
 #include "boss.h"
+#include "sound.h"
 //ƒOƒ[ƒoƒ‹•Ï”éŒ¾
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffLockon = NULL;
 LPDIRECT3DTEXTURE9 g_apTextureLockon[1] = {};

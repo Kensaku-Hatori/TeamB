@@ -364,6 +364,7 @@ void CaceOneAction(OBJECTINFO* Motion)
 			}
 			// MPを減らす
 			SubMP(pPlayer->Skilltype);
+			PlaySound(SOUND_LABEL_MAGIC1);
 		}
 		break;
 	case MOTIONTYPE_ACTION_EXPLOSION:
@@ -385,6 +386,8 @@ void CaceOneAction(OBJECTINFO* Motion)
 
 			// MPを減らす
 			SubMP(pPlayer->Skilltype);
+
+			PlaySound(SOUND_LABEL_EXPROSION);
 		}
 		break;
 	case MOTIONTYPE_LANDING:
@@ -547,7 +550,7 @@ void CaceThreeAction(OBJECTINFO* Motion)
 		SetAnime(circleIndx,
 			ANIMETYPE_0,
 			60);
-
+		PlaySound(SOUND_LABEL_MAHOUJIN);
 		break;
 	case MOTIONTYPE_ACTION_HORMING:
 		// エフェクトの設定
@@ -578,6 +581,7 @@ void CaceThreeAction(OBJECTINFO* Motion)
 		SetAnime(circleIndx,
 			ANIMETYPE_0,
 			60);
+		PlaySound(SOUND_LABEL_MAHOUJIN);
 
 		break;
 	}
