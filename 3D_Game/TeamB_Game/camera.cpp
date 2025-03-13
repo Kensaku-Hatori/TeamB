@@ -72,7 +72,6 @@ void UpdateCamera(void)
 	{
 		g_camera.rot.x += D3DX_PI * 2.0f;
 	}
-	
 	//プレイヤーがロックオンしているなら
 	if (pPlayer->bLockOn == true)
 	{
@@ -141,7 +140,6 @@ void UpdateCamera(void)
 		{
 			SetCursorPos(640, 360);
 		}
-
 
 		g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
 		g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
@@ -262,6 +260,10 @@ void ResetCameraPos(D3DXVECTOR3 posV, D3DXVECTOR3 posR)
 		g_camera.rot.y = fAngle;
 		g_camera.bResete = true;
 	}
+}
+void SetCameraDistance(float Distance)
+{
+	g_camera.fDistance = Distance;
 }
 void SetCameraRotX(float Rot)
 {

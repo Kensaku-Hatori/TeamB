@@ -509,7 +509,7 @@ void PlayerMove(void)
 
 	float Speed1 = Speed();
 	
-	if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && g_player.bRolling == false)
+	if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && isRolling() == false)
 	{
 		PlaySound(SOUND_LABEL_ROLLING);
 		g_player.bSkillUse = false;
@@ -526,18 +526,15 @@ void PlayerMove(void)
 			//モーション
 			if (g_player.bRolling == false)
 			{
-				if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_L_MOVE)
+				if (g_player.bLockOn == false && isMotionType(MOTIONTYPE_MOVE) == false)
 				{
-					if (g_player.bLockOn == false)
-					{
-						SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
-						SetActionFlame(0, 1, 1, 1, 2);
-						SetActionFlame(1, 3, 3, 1, 2);
-					}
-					else if (g_player.bLockOn == true)
-					{
-						SetMotion(MOTIONTYPE_LOCKON_L_MOVE, &g_player.PlayerMotion);
-					}
+					SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+					SetActionFlame(0, 1, 1, 1, 2);
+					SetActionFlame(1, 3, 3, 1, 2);
+				}
+				else if (g_player.bLockOn == true && isMotionType(MOTIONTYPE_LOCKON_L_MOVE) == false)
+				{
+					SetMotion(MOTIONTYPE_LOCKON_L_MOVE, &g_player.PlayerMotion);
 				}
 			}
 			else
@@ -582,18 +579,15 @@ void PlayerMove(void)
 				//モーション
 				if (g_player.bRolling == false)
 				{
-					if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_R_MOVE)
+					if (g_player.bLockOn == false && isMotionType(MOTIONTYPE_MOVE) == false)
 					{
-						if (g_player.bLockOn == false)
-						{
-							SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
-							SetActionFlame(0, 1, 1, 1, 2);
-							SetActionFlame(1, 3, 3, 1, 2);
-						}
-						else if (g_player.bLockOn == true)
-						{
-							SetMotion(MOTIONTYPE_LOCKON_R_MOVE, &g_player.PlayerMotion);
-						}
+						SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+						SetActionFlame(0, 1, 1, 1, 2);
+						SetActionFlame(1, 3, 3, 1, 2);
+					}
+					else if (g_player.bLockOn == true && isMotionType(MOTIONTYPE_LOCKON_R_MOVE) == false)
+					{
+						SetMotion(MOTIONTYPE_LOCKON_R_MOVE, &g_player.PlayerMotion);
 					}
 				}
 				else
@@ -638,18 +632,15 @@ void PlayerMove(void)
 				//モーション
 				if (g_player.bRolling == false)
 				{
-					if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_F_MOVE)
+					if (g_player.bLockOn == false && isMotionType(MOTIONTYPE_MOVE) == false)
 					{
-						if (g_player.bLockOn == false)
-						{
-							SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
-							SetActionFlame(0, 1, 1, 1, 2);
-							SetActionFlame(1, 3, 3, 1, 2);
-						}
-						else if (g_player.bLockOn == true)
-						{
-							SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion);
-						}
+						SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+						SetActionFlame(0, 1, 1, 1, 2);
+						SetActionFlame(1, 3, 3, 1, 2);
+					}
+					else if (g_player.bLockOn == true && isMotionType(MOTIONTYPE_LOCKON_F_MOVE) == false)
+					{
+						SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion);
 					}
 				}
 				else
@@ -688,18 +679,15 @@ void PlayerMove(void)
 				//モーション
 				if (g_player.bRolling == false)
 				{
-					if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_F_MOVE)
+					if (g_player.bLockOn == false && isMotionType(MOTIONTYPE_MOVE) == false)
 					{
-						if (g_player.bLockOn == false)
-						{
-							SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
-							SetActionFlame(0, 1, 1, 1, 2);
-							SetActionFlame(1, 3, 3, 1, 2);
-						}
-						else if (g_player.bLockOn == true)
-						{
-							SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion);
-						}
+						SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+						SetActionFlame(0, 1, 1, 1, 2);
+						SetActionFlame(1, 3, 3, 1, 2);
+					}
+					else if (g_player.bLockOn == true && isMotionType(MOTIONTYPE_LOCKON_F_MOVE) == false)
+					{
+						SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion);
 					}
 				}
 				else
@@ -1212,7 +1200,7 @@ bool isActionCondition()
 //***********************
 float Speed()
 {
-	if(KeyboardTrigger(DIK_SPACE) == true) return g_player.Status.fSpeed * 20;
+	if(KeyboardTrigger(DIK_SPACE) == true && isRolling() == false) return g_player.Status.fSpeed * 20;
 	if (isLockOn() == true) return g_player.Status.fSpeed * 0.5f;
 	return g_player.Status.fSpeed;
 }
@@ -1353,7 +1341,7 @@ void LockOnRot()
 	float fAngle = Angle(D3DXVECTOR2(fMathDistance, fMathDistance1));
 	SetAngle(fAngle + D3DX_PI,g_player.rotDest.y);
 
-	SetCameraRotY(g_player.rot.y - D3DX_PI);
+	SetCameraRotY(fAngle);
 }
 
 //***********************************

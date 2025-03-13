@@ -32,6 +32,4 @@ void DrawLockon(void);
 bool IsEnemyInsight(D3DXVECTOR3 Pos ,int type);
 void EnemyDistanceSort(int EnemyCount);
 Lockon* GetLockOn(void);
-
-
 #endif
