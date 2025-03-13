@@ -338,6 +338,7 @@ void ChangeTutorial(void)
 {
 	if (KeyboardTrigger(DIK_D) == true || GetJoypadTrigger(JOYKEY_R1) == true)
 	{
+		PlaySound(SOUND_LABEL_SELECT);
 		switch (g_TutorialType)
 		{
 		case TUTORIAL_MOVE:
@@ -365,6 +366,7 @@ void ChangeTutorial(void)
 	}
 	else if (KeyboardTrigger(DIK_A) == true || GetJoypadTrigger(JOYKEY_L1) == true)
 	{
+		PlaySound(SOUND_LABEL_SELECT);
 		switch (g_TutorialType)
 		{
 		case TUTORIAL_MOVE:

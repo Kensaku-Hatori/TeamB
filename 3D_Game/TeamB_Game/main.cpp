@@ -874,7 +874,6 @@ void Uninit(LPDIRECT3DVERTEXBUFFER9 Buffer)
 		Buffer = NULL;
 	}
 }
-
 //***************
 // メッシュの破棄
 //***************
@@ -887,6 +886,9 @@ void Uninit(LPD3DXMESH Mesh)
 		Mesh = NULL;
 	}
 }
+//*****************
+// マテリアルの破棄
+//*****************
 
 //***************
 // メッシュの破棄
@@ -900,7 +902,6 @@ void Uninit(LPD3DXBUFFER Buffer)
 		Buffer = NULL;
 	}
 }
-
 //***************************
 // インデックスバッファの破棄
 //***************************

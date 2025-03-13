@@ -270,12 +270,14 @@ void UpdateGame(void)
 
 	if (KeyboardTrigger(DIK_P) == true || GetJoypadTrigger(JOYKEY_START) == true)
 	{//ポーズキーが押された
+		PlaySound(SOUND_LABEL_DESICION);
 		g_bPause = g_bPause ? false : true;
 	}
 	else if ((KeyboardTrigger(DIK_TAB) == true || GetJoypadTrigger(JOYKEY_BACK) == true) && g_bPause == false)
 	{
 		if (Mode == MODE_STAGEONE)
 		{
+			PlaySound(SOUND_LABEL_DESICION);
 			g_bTutorial = g_bTutorial ? false : true;
 			if (g_bTutorial == true)
 			{

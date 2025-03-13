@@ -114,7 +114,6 @@ void UpdateLockon(void)
 
 	if (g_Lockon.bUse == true)
 	{
-		pPlayer->bWantLockOn = false;
 		if (bUse == false)
 		{
 			pPlayer->bLockOn = false;
@@ -141,6 +140,7 @@ void UpdateLockon(void)
 	}
 	else
 	{
+		pPlayer->bWantLockOn = false;
 		//’¸“_ƒJƒ‰[‚ÌÝ’è
 		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.01f);
 		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.01f);
@@ -255,36 +255,6 @@ bool IsEnemyInsight(D3DXVECTOR3 Pos, int type)
 			bLock = true;
 		}
 	}
-
-
-	//playerFront.x = -sinf(pPlayer->rot.y);
-	//playerFront.y = 0.0f;
-	//playerFront.z = -cosf(pPlayer->rot.y);
-	//
-	//toEnemy.x = Pos.x - pPlayer->pos.x;
-	//toEnemy.y = 0.0f;
-	//toEnemy.z = Pos.z - pPlayer->pos.z;
-	//
-	//D3DXVec3Normalize(&playerFront, &playerFront);
-	//
-	//D3DXVec3Normalize(&toEnemy, &toEnemy);
-	//
-	//float dotProduct = D3DXVec3Dot(&playerFront, &toEnemy);
-	//
-	//if (dotProduct > cosf(pPlayer->fSightAngle * 0.5f))
-	//{
-	//	float distanceSquared =
-	//		(pPlayer->pos.x - Pos.x) * (pPlayer->pos.x - Pos.x) +
-	//		(pPlayer->pos.y - Pos.y) * (pPlayer->pos.y - Pos.y) +
-	//		(pPlayer->pos.z - Pos.z) * (pPlayer->pos.z - Pos.z);
-	//
-	//	if (distanceSquared <= pPlayer->fSightRange * pPlayer->fSightRange)
-	//	{
-	//		g_LockonEnemy.type = type;
-	//		bLock = true;
-	//	}
-	//}
-
 	return bLock;
 }
 
@@ -294,7 +264,6 @@ bool IsEnemyInsight(D3DXVECTOR3 Pos, int type)
 void EnemyDistanceSort(int EnemyCount)
 {
 	Player* pPlayer = GetPlayer();
-
 	ENEMY* pEnemy = GetEnemy();
 
 	//“G‚Æ‚Ì‹——£
