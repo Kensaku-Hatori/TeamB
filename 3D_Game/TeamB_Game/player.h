@@ -101,10 +101,7 @@ void MatrixWand(void);
 
 // ğŒ®‚ÌŠÖ”‰»
 bool isUse();
-
-bool isLockOn();
 // Àì‹Æ‚ÌŠÖ”‰»
-void LockOnRot();
 void NearPlayerRot();
 void UpdateRotation();
 #endif

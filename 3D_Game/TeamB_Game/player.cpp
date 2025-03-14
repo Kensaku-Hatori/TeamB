@@ -33,6 +33,7 @@
 #include "mouse.h"
 #include "itemui.h"
 #include "particle.h"
+#include <cassert>
 
 //グローバル変数
 Player g_player;
@@ -41,12 +42,28 @@ D3DXVECTOR3 g_vtxMaxPlayer;	//プレイヤーの最大値
 
 int g_nCntHealMP;			//MP回復時間
 
+// 条件式の関数か
+bool isGreaterCount(int Counter,int Max);
+bool isLockOn();
+bool isRolling();
+bool isLanding();
+bool isSkillType(SKILLTYPE SkillType);
 bool isStateType(PLAYERSTATE State);
 bool isMotionType(MOTIONTYPE MotionType);
 bool isMotionAction();
 bool isMotionRoll();
 bool isActionCondition();
 
+// 実作業の関数化
+float Speed();
+void UpdateMp();
+void UpdatePosition();
+void ShotSkill();
+void AddGravity();
+void UpdateStateCount(int &StateCount);
+void RollingState();
+void LockOnInput();
+void LockOnRot();
 void SetState(PLAYERSTATE State);
 void SetActionFlame(int ActionIndx,int StartKey, int EndKey, int StartFlame, int EndFlame);
 
@@ -159,56 +176,9 @@ void UpdatePlayer(void)
 		if (isStateType(PLAYERSTATE_NORMAL) == true|| isStateType(PLAYERSTATE_ROLL) == true)
 		{
 			//魔法発射
-			if (OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true
-				&& isActionCondition() == true)
+			if (isActionCondition() == true)
 			{
-				if (g_player.Skilltype == SKILLTYPE_NONE)
-				{
-					SetState(PLAYERSTATE_ACTION);
-
-					SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion);
-
-					SetActionFlame(0, 3, 3, 18, 19);
-					SetActionFlame(1, 3, 3, 15, 19);
-					SetActionFlame(2, 0, 0, 1, 2);
-				}
-				else if (g_player.Skilltype == SKILLTYPE_HORMING)
-				{
-					if (g_player.bSkillUse == false)
-					{
-						SetState(PLAYERSTATE_ACTION);
-
-						g_player.bSkillUse = true;
-						SetMotion(MOTIONTYPE_ACTION_HORMING, &g_player.PlayerMotion);
-
-						SetActionFlame(0, 2, 2, 23, 24);
-						SetActionFlame(2, 0, 0, 1, 2);
-					}
-				}
-				else if (g_player.Skilltype == SKILLTYPE_EXPLOSION)
-				{
-					SetState(PLAYERSTATE_ACTION);
-
-					SetMotion(MOTIONTYPE_ACTION_EXPLOSION, &g_player.PlayerMotion);
-
-					SetActionFlame(0, 0, 0, 15, 16);
-					SetActionFlame(1, 0, 0, 15, 16);
-				}
-			}
-		}
-		//ロックオン
-		if ((GetJoypadTrigger(JOYKEY_R1) == true) ||
-			OnMouseDown(1))
-		{
-			if (g_player.bLockOn == false)
-			{
-				g_player.bWantLockOn = true;
-				PlaySound(SOUND_LABEL_LOCKON);
-			}
-			else if (g_player.bLockOn == true)
-			{
-				g_player.bLockOn = false;
-				g_player.bWantLockOn = false;
+				ShotSkill();
 			}
 		}
 
@@ -218,55 +188,29 @@ void UpdatePlayer(void)
 			UseItem(g_player.ItemType);
 		}
 
-		SkillChange(0);
+		LockOnInput();
 
-		//ローリング
-		if (g_player.bRolling == true)
-		{
-			g_player.nCntRollingState++;
-			if (g_player.nCntRollingState >= 40)
-			{
-				g_player.bRolling = false;
-				g_player.nCntRollingState = 0;
-				g_player.state = PLAYERSTATE_NORMAL;
-			}
-		}
+		RollingState();
 
+		UpdateMp();
 		//MP回復
-		if (g_player.Status.nMP < PLAYER_MP)
-		{//MPが減っていたら
-			g_nCntHealMP++;
-		}
-		if (g_nCntHealMP >= 120)
-		{
-			g_player.Status.nMP += 5;
-			g_nCntHealMP = 0;
-		}
-
-		if (g_player.Status.nMP >= PLAYER_MP)
+		if (isGreaterCount(g_player.Status.nMP, PLAYER_MP) == true)
 		{
 			g_player.Status.nMP = PLAYER_MP;
 		}
-		else if (g_player.Status.fHP >= PLAYER_HP)
+		else if (isGreaterCount(g_player.Status.nMP, PLAYER_MP) == true)
 		{
 			g_player.Status.fHP = PLAYER_HP;
 		}
 
-		if (g_player.bLanding == false)
-		{
-			g_player.move.y -= GRAVITY; //重力加算	
-		}
-
+		AddGravity();
 		CollisionEnemy();
 		CollisionBoss();
 
 		//前回の位置を保存
 		g_player.posOld = g_player.pos;
 
-		//位置を更新
-		g_player.pos.x += g_player.move.x;
-		g_player.pos.y += g_player.move.y;
-		g_player.pos.z += g_player.move.z;
+		UpdatePosition();
 
 		//地面との判定
 		if (g_player.pos.y <= 0)
@@ -563,21 +507,12 @@ void PlayerMove(void)
 	Camera* pCamera;
 	pCamera = GetCamera();
 
-	float Speed;
-	if (g_player.bLockOn == true)
-	{
-		Speed = g_player.Status.fSpeed / 2;
-	}
-	else
-	{
-		Speed = g_player.Status.fSpeed;
-	}
+	float Speed1 = Speed();
 	
-	if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && g_player.bRolling == false)
+	if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && isRolling() == false)
 	{
 		PlaySound(SOUND_LABEL_ROLLING);
 		g_player.bSkillUse = false;
-		Speed = g_player.Status.fSpeed * 20;
 		g_player.bRolling = true;
 		g_player.state = PLAYERSTATE_ROLL;
 	}
@@ -591,18 +526,15 @@ void PlayerMove(void)
 			//モーション
 			if (g_player.bRolling == false)
 			{
-				if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_L_MOVE)
+				if (g_player.bLockOn == false && isMotionType(MOTIONTYPE_MOVE) == false)
 				{
-					if (g_player.bLockOn == false)
-					{
-						SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
-						SetActionFlame(0, 1, 1, 1, 2);
-						SetActionFlame(1, 3, 3, 1, 2);
-					}
-					else if (g_player.bLockOn == true)
-					{
-						SetMotion(MOTIONTYPE_LOCKON_L_MOVE, &g_player.PlayerMotion);
-					}
+					SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+					SetActionFlame(0, 1, 1, 1, 2);
+					SetActionFlame(1, 3, 3, 1, 2);
+				}
+				else if (g_player.bLockOn == true && isMotionType(MOTIONTYPE_LOCKON_L_MOVE) == false)
+				{
+					SetMotion(MOTIONTYPE_LOCKON_L_MOVE, &g_player.PlayerMotion);
 				}
 			}
 			else
@@ -623,21 +555,21 @@ void PlayerMove(void)
 			//前
 			if (GetKeyboardPress(DIK_W) || GetJoypadPress(JOYKEY_DOWN))
 			{
-				g_player.move.x += sinf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
-				g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
+				g_player.move.x += sinf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed1;
+				g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed1;
 				g_player.rotDest.y = pCamera->rot.y + D3DX_PI * 0.75f;
 			}
 			//後
 			else if (GetKeyboardPress(DIK_S) || GetJoypadPress(JOYKEY_UP))
 			{
-				g_player.move.x += sinf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
-				g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
+				g_player.move.x += sinf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed1;
+				g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed1;
 				g_player.rotDest.y = pCamera->rot.y + D3DX_PI * 0.25f;
 			}
 			else
 			{
-				g_player.move.x += cosf(pCamera->rot.y - D3DX_PI) * Speed;
-				g_player.move.z -= sinf(pCamera->rot.y - D3DX_PI) * Speed;
+				g_player.move.x += cosf(pCamera->rot.y - D3DX_PI) * Speed1;
+				g_player.move.z -= sinf(pCamera->rot.y - D3DX_PI) * Speed1;
 				g_player.rotDest.y = pCamera->rot.y + D3DX_PI / 2;
 			}
 		}
@@ -647,18 +579,15 @@ void PlayerMove(void)
 				//モーション
 				if (g_player.bRolling == false)
 				{
-					if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_R_MOVE)
+					if (g_player.bLockOn == false && isMotionType(MOTIONTYPE_MOVE) == false)
 					{
-						if (g_player.bLockOn == false)
-						{
-							SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
-							SetActionFlame(0, 1, 1, 1, 2);
-							SetActionFlame(1, 3, 3, 1, 2);
-						}
-						else if (g_player.bLockOn == true)
-						{
-							SetMotion(MOTIONTYPE_LOCKON_R_MOVE, &g_player.PlayerMotion);
-						}
+						SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+						SetActionFlame(0, 1, 1, 1, 2);
+						SetActionFlame(1, 3, 3, 1, 2);
+					}
+					else if (g_player.bLockOn == true && isMotionType(MOTIONTYPE_LOCKON_R_MOVE) == false)
+					{
+						SetMotion(MOTIONTYPE_LOCKON_R_MOVE, &g_player.PlayerMotion);
 					}
 				}
 				else
@@ -679,21 +608,21 @@ void PlayerMove(void)
 				//前
 				if (GetKeyboardPress(DIK_W) || GetJoypadPress(JOYKEY_DOWN))
 				{
-					g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
-					g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
+					g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed1;
+					g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed1;
 					g_player.rotDest.y = pCamera->rot.y - D3DX_PI * 0.75f;
 				}
 				//後
 				else if (GetKeyboardPress(DIK_S) || GetJoypadPress(JOYKEY_UP))
 				{
-					g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
-					g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
+					g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed1;
+					g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed1;
 					g_player.rotDest.y = pCamera->rot.y - D3DX_PI * 0.25f;
 				}
 				else
 				{
-					g_player.move.x -= cosf(pCamera->rot.y - D3DX_PI) * Speed;
-					g_player.move.z += sinf(pCamera->rot.y - D3DX_PI) * Speed;
+					g_player.move.x -= cosf(pCamera->rot.y - D3DX_PI) * Speed1;
+					g_player.move.z += sinf(pCamera->rot.y - D3DX_PI) * Speed1;
 					g_player.rotDest.y = pCamera->rot.y - D3DX_PI / 2;
 				}
 			}
@@ -703,18 +632,15 @@ void PlayerMove(void)
 				//モーション
 				if (g_player.bRolling == false)
 				{
-					if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_F_MOVE)
+					if (g_player.bLockOn == false && isMotionType(MOTIONTYPE_MOVE) == false)
 					{
-						if (g_player.bLockOn == false)
-						{
-							SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
-							SetActionFlame(0, 1, 1, 1, 2);
-							SetActionFlame(1, 3, 3, 1, 2);
-						}
-						else if (g_player.bLockOn == true)
-						{
-							SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion);
-						}
+						SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+						SetActionFlame(0, 1, 1, 1, 2);
+						SetActionFlame(1, 3, 3, 1, 2);
+					}
+					else if (g_player.bLockOn == true && isMotionType(MOTIONTYPE_LOCKON_F_MOVE) == false)
+					{
+						SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion);
 					}
 				}
 				else
@@ -729,21 +655,21 @@ void PlayerMove(void)
 				//左
 				if (GetKeyboardPress(DIK_A) || GetJoypadPress(JOYKEY_DOWN))
 				{
-					g_player.move.x += sinf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
-					g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
+					g_player.move.x += sinf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed1;
+					g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed1;
 					g_player.rotDest.y = pCamera->rot.y + D3DX_PI * 0.75f;
 				}
 				//右
 				else if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_UP))
 				{
-					g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
-					g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
+					g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed1;
+					g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed1;
 					g_player.rotDest.y = pCamera->rot.y - D3DX_PI * 0.75f;
 				}
 				else
 				{
-					g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI) * Speed;
-					g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI) * Speed;
+					g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI) * Speed1;
+					g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI) * Speed1;
 					g_player.rotDest.y = pCamera->rot.y - D3DX_PI;
 				}
 			}
@@ -753,18 +679,15 @@ void PlayerMove(void)
 				//モーション
 				if (g_player.bRolling == false)
 				{
-					if (g_player.PlayerMotion.motionType != MOTIONTYPE_MOVE && g_player.PlayerMotion.motionType != MOTIONTYPE_LOCKON_F_MOVE)
+					if (g_player.bLockOn == false && isMotionType(MOTIONTYPE_MOVE) == false)
 					{
-						if (g_player.bLockOn == false)
-						{
-							SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
-							SetActionFlame(0, 1, 1, 1, 2);
-							SetActionFlame(1, 3, 3, 1, 2);
-						}
-						else if (g_player.bLockOn == true)
-						{
-							SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion);
-						}
+						SetMotion(MOTIONTYPE_MOVE, &g_player.PlayerMotion);
+						SetActionFlame(0, 1, 1, 1, 2);
+						SetActionFlame(1, 3, 3, 1, 2);
+					}
+					else if (g_player.bLockOn == true && isMotionType(MOTIONTYPE_LOCKON_F_MOVE) == false)
+					{
+						SetMotion(MOTIONTYPE_LOCKON_F_MOVE, &g_player.PlayerMotion);
 					}
 				}
 				else
@@ -785,28 +708,28 @@ void PlayerMove(void)
 				//左
 				if (GetKeyboardPress(DIK_A) || GetJoypadPress(JOYKEY_DOWN))
 				{
-					g_player.move.x += sinf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
-					g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed;
+					g_player.move.x += sinf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed1;
+					g_player.move.z += cosf(pCamera->rot.y - D3DX_PI * 0.75f) * Speed1;
 					g_player.rotDest.y = pCamera->rot.y + D3DX_PI * 0.25f;
 				}
 				//右
 				else if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_UP))
 				{
-					g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
-					g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed;
+					g_player.move.x -= sinf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed1;
+					g_player.move.z -= cosf(pCamera->rot.y - D3DX_PI * 0.25f) * Speed1;
 					g_player.rotDest.y = pCamera->rot.y - D3DX_PI * 0.25f;
 				}
 				else
 				{
-					g_player.move.x += sinf(pCamera->rot.y - D3DX_PI) * Speed;
-					g_player.move.z += cosf(pCamera->rot.y - D3DX_PI) * Speed;
+					g_player.move.x += sinf(pCamera->rot.y - D3DX_PI) * Speed1;
+					g_player.move.z += cosf(pCamera->rot.y - D3DX_PI) * Speed1;
 					g_player.rotDest.y = pCamera->rot.y;
 				}
 			}
 		//
 		else if (GetJoyStickL() == true)
 		{
-			PlayerMoveJoyPad(Speed);
+			PlayerMoveJoyPad(Speed1);
 		}
 		//
 		else
@@ -1171,28 +1094,87 @@ void MatrixWand(void)
 	pDevice->SetTransform(D3DTS_WORLD,
 		&g_player.mtxWand);
 }
+
+//***********************************
+// 第一引数が第二引数より大きかったら
+//***********************************
+bool isGreaterCount(int Counter, int Max)
+{
+	if(Counter != NULL) return Counter >= Max;
+	return false;
+}
+
+//*********************
+// 使われているかどうか
+//*********************
 bool isUse()
 {
 	return g_player.bUse;
 }
+
+//*********************
+// ロックオン中かどうか
+//*********************
 bool isLockOn()
 {
 	return g_player.bLockOn;
 }
+
+//***********************
+// 地面に足がついているか
+//***********************
+bool isLanding()
+{
+	return g_player.bLanding;
+}
+
+//*******************************************************
+// 第一引数とプレイヤーのスキルタイプがあっているかどうか
+//*******************************************************
+bool isSkillType(SKILLTYPE SkillType)
+{
+	if(SkillType >= 0 && SkillType <= SKILLTYPE_MAX) return g_player.Skilltype == SkillType;
+	return false;
+}
+//*********************
+// ローリング中かどうか
+//*********************
+bool isRolling()
+{
+	return g_player.bRolling;
+}
+
+//***************************************************
+// 第一引数とプレイヤーのステートがあっているかどうか
+//***************************************************
 bool isStateType(PLAYERSTATE State)
 {
-	return g_player.state == State;
+	if(State >= PLAYERSTATE_NORMAL && State <= PLAYERSTATE_MAX) return g_player.state == State;
+	return false;
 }
+
+//***************************************************
+// 第一引数とプレイヤーのモーションがあっているかどうか
+//***************************************************
 bool isMotionType(MOTIONTYPE MotionType)
 {
-	return g_player.PlayerMotion.motionType == MotionType;
+	if(MotionType >= MOTIONTYPE_NEUTRAL && MotionType <= MOTIONTYPE_MAX) return g_player.PlayerMotion.motionType == MotionType;
+	return false;
 }
+
+//*************************
+// 攻撃モーション中かどうか
+//*************************
 bool isMotionAction()
 {
 	return isMotionType(MOTIONTYPE_ACTION) == true
 		|| isMotionType(MOTIONTYPE_ACTION_HORMING) == true
 		|| isMotionType(MOTIONTYPE_ACTION_EXPLOSION) == true;
 }
+
+//*************************
+// 回避モーション中かどうか
+//*************************
 bool isMotionRoll()
 {
 	return isMotionType(MOTIONTYPE_KAIHI_HIDARI) == true
@@ -1200,13 +1182,155 @@ bool isMotionRoll()
 		|| isMotionType(MOTIONTYPE_KAIHI_MAE) == true
 		|| isMotionType(MOTIONTYPE_KAIHI_USIRO) == true;
 }
+
+//***********************
+// 攻撃できる状況下どうか
+//***********************
 bool isActionCondition()
 {
-	return isMotionAction() == false
+	return OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true
+		&& isMotionAction() == false
 		&& isMotionRoll() == false
 		&& isStateType(PLAYERSTATE_NORMAL) == true
 		&& g_player.PlayerMotion.bBlendMotion == false;
 }
+
+//***********************
+// 状況に応じた速さを設定
+//***********************
+float Speed()
+{
+	if(KeyboardTrigger(DIK_SPACE) == true && isRolling() == false) return g_player.Status.fSpeed * 20;
+	if (isLockOn() == true) return g_player.Status.fSpeed * 0.5f;
+	return g_player.Status.fSpeed;
+}
+
+//***********************
+// プレイヤーのポスを移動
+//***********************
+void UpdatePosition()
+{
+	//位置を更新
+	g_player.pos.x += g_player.move.x;
+	g_player.pos.y += g_player.move.y;
+	g_player.pos.z += g_player.move.z;
+}
+//*******************************
+// プレイヤーのMpに関する更新処理
+//*******************************
+void UpdateMp()
+{
+	if (isGreaterCount(PLAYER_MP, g_player.Status.nMP) == true)
+	{
+		UpdateStateCount(g_nCntHealMP);
+		if (isGreaterCount(g_nCntHealMP,120) == true)
+		{
+			g_player.Status.nMP += 5;
+			g_nCntHealMP = 0;
+		}
+	}
+}
+
+//*************************
+// 状況に応じたスキルを発射
+//*************************
+void ShotSkill()
+{
+	if (isSkillType(SKILLTYPE_NONE) == true)
+	{
+		SetState(PLAYERSTATE_ACTION);
+
+		SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion);
+
+		SetActionFlame(0, 3, 3, 18, 19);
+		SetActionFlame(1, 3, 3, 15, 19);
+		SetActionFlame(2, 0, 0, 1, 2);
+	}
+	else if (isSkillType(SKILLTYPE_HORMING) == true)
+	{
+		if (g_player.bSkillUse == false)
+		{
+			SetState(PLAYERSTATE_ACTION);
+
+			g_player.bSkillUse = true;
+			SetMotion(MOTIONTYPE_ACTION_HORMING, &g_player.PlayerMotion);
+
+			SetActionFlame(0, 2, 2, 23, 24);
+			SetActionFlame(2, 0, 0, 1, 2);
+		}
+	}
+	else if (isSkillType(SKILLTYPE_EXPLOSION) == true)
+	{
+		SetState(PLAYERSTATE_ACTION);
+
+		SetMotion(MOTIONTYPE_ACTION_EXPLOSION, &g_player.PlayerMotion);
+
+		SetActionFlame(0, 0, 0, 15, 16);
+		SetActionFlame(1, 0, 0, 15, 16);
+	}
+}
+//***********
+// 重力を加算
+//***********
+void AddGravity()
+{
+	if (isLanding() == false)
+	{
+		g_player.move.y -= GRAVITY; //重力加算	
+	}
+}
+
+//***************
+// 第一引数を加算
+//***************
+void UpdateStateCount(int &StateCount)
+{
+	StateCount++;
+}
+
+//*************************************
+// ローリング中のからノーマルに戻す処理
+//*************************************
+void RollingState()
+{
+	//ローリング
+	if (isRolling() == true)
+	{
+		UpdateStateCount(g_player.nCntRollingState);
+		if (isGreaterCount(g_player.nCntRollingState, 40) == true)
+		{
+			g_player.bRolling = false;
+			g_player.nCntRollingState = 0;
+			SetState(PLAYERSTATE_NORMAL);
+		}
+	}
+}
+
+//*****************************
+// ロックオンできる状況かどうか
+//*****************************
+void LockOnInput()
+{
+	//ロックオン
+	if ((GetJoypadTrigger(JOYKEY_R1) == true) ||
+		OnMouseDown(1))
+	{
+		if (isLockOn() == false)
+		{
+			g_player.bWantLockOn = true;
+			PlaySound(SOUND_LABEL_LOCKON);
+		}
+		else if (isLockOn() == true)
+		{
+			g_player.bLockOn = false;
+			g_player.bWantLockOn = false;
+		}
+	}
+}
+
+//*************************************
+// ロックオン中のプレイヤーの向きの処理
+//*************************************
 void LockOnRot()
 {
 	Lockon* pLockon = GetLockOn();
@@ -1217,23 +1341,42 @@ void LockOnRot()
 	float fAngle = Angle(D3DXVECTOR2(fMathDistance, fMathDistance1));
 	SetAngle(fAngle + D3DX_PI,g_player.rotDest.y);
 
-	SetCameraRotY(g_player.rot.y - D3DX_PI);
+	SetCameraRotY(fAngle);
 }
+
+//***********************************
+// プレイヤーの向きを近いほうから回す
+//***********************************
 void NearPlayerRot()
 {
 	NearRot(g_player.rotDest.y - g_player.rot.y,g_player.rot.y);
 }
+
+//*******************************
+// 向きを目標の向きに徐々に向ける
+//*******************************
 void UpdateRotation()
 {
 	g_player.rot += (g_player.rotDest - g_player.rot) * 0.5f;
 }
 
+//***************************
+// プレイヤーのステートを設定
+//***************************
 void SetState(PLAYERSTATE State)
 {
 	g_player.state = State;
 }
+
+//*************************
+// アクションフレームを設定
+//*************************
 void SetActionFlame(int ActionIndx, int StartKey, int EndKey, int StartFlame, int EndFlame)
 {
+#ifdef DEBUG
+	assert(ActionIndx <= MAX_ACTION || StartKey <= 0 || EndKey <= g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].nNumKey);
+#endif // DEBUG
+
 	g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[ActionIndx].bActionStart = false;
 	g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[ActionIndx].bFirst = false;
 	g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[ActionIndx].nStartKey = StartKey;
