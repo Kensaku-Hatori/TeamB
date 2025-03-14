@@ -44,32 +44,32 @@ void InitEnemy(void)
 	//敵の数の初期化
 	g_nNumEnemy = 0;
 
-	for (int i = 0; i < MAX_ENEMY; i++)
+	for (int EnmyCount = 0; EnmyCount < MAX_ENEMY; EnmyCount++)
 	{
-		g_Enemy[i].state = ENEMYSTATE_NORMAL;								// 敵の状態
-		g_Enemy[i].ActionType = ENEMYACTION_WELL;							// モーションの種類
-		g_Enemy[i].Status.fPower = ENEMY_AP;								// 攻撃力
-		g_Enemy[i].Status.fSpeed = ENEMY_SPEED;								// スピード
-		g_Enemy[i].Status.fHP = ENEMY_HP;									// HP
-		g_Enemy[i].EnemyMotion.motionType = MOTIONTYPE_NEUTRAL;				// モーションの種類
-		g_Enemy[i].EnemyMotion.nKey = 0;									// モーションのキー
-		g_Enemy[i].EnemyMotion.NextKey = 1;									// モーションの次のキー
-		g_Enemy[i].EnemyMotion.bBlendMotion = true;
-		g_Enemy[i].Object.Pos = D3DXVECTOR3(0.0f, 0.0f, -100.0f);			// 位置
-		g_Enemy[i].Object.Rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				// 向き
-		g_Enemy[i].rotDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);					// 向き(目標)
-		g_Enemy[i].bUse = false;											// 使用しているかどうか
-		g_Enemy[i].nActionCount = 0;										// アクションカウンター
-		g_Enemy[i].nActionCounter = 0;										// アクションカウンター
-		g_Enemy[i].Action = ENEMYACTION_WELL;								// 行動の種類
-		g_Enemy[i].Radius = 4.4f;											// 半径
+		g_Enemy[EnmyCount].state = ENEMYSTATE_NORMAL;								// 敵の状態
+		g_Enemy[EnmyCount].ActionType = ENEMYACTION_WELL;							// モーションの種類
+		g_Enemy[EnmyCount].Status.fPower = ENEMY_AP;								// 攻撃力
+		g_Enemy[EnmyCount].Status.fSpeed = ENEMY_SPEED;								// スピード
+		g_Enemy[EnmyCount].Status.fHP = ENEMY_HP;									// HP
+		g_Enemy[EnmyCount].EnemyMotion.motionType = MOTIONTYPE_NEUTRAL;				// モーションの種類
+		g_Enemy[EnmyCount].EnemyMotion.nKey = 0;									// モーションのキー
+		g_Enemy[EnmyCount].EnemyMotion.NextKey = 1;									// モーションの次のキー
+		g_Enemy[EnmyCount].EnemyMotion.bBlendMotion = true;
+		g_Enemy[EnmyCount].Object.Pos = D3DXVECTOR3(0.0f, 0.0f, -100.0f);			// 位置
+		g_Enemy[EnmyCount].Object.Rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				// 向き
+		g_Enemy[EnmyCount].rotDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);					// 向き(目標)
+		g_Enemy[EnmyCount].bUse = false;											// 使用しているかどうか
+		g_Enemy[EnmyCount].nActionCount = 0;										// アクションカウンター
+		g_Enemy[EnmyCount].nActionCounter = 0;										// アクションカウンター
+		g_Enemy[EnmyCount].Action = ENEMYACTION_WELL;								// 行動の種類
+		g_Enemy[EnmyCount].Radius = 4.4f;											// 半径
 
-		g_Enemy[i].bLockOn = false;
-		g_Enemy[i].fSightRange = 200.0f;									// 視界距離
-		g_Enemy[i].fSightAngle = D3DXToRadian(110.0f);						// 視界の葉に
-		g_Enemy[i].fDistance = g_Enemy[i].fSightRange / 2;
+		g_Enemy[EnmyCount].bLockOn = false;
+		g_Enemy[EnmyCount].fSightRange = 200.0f;									// 視界距離
+		g_Enemy[EnmyCount].fSightAngle = D3DXToRadian(110.0f);						// 視界の葉に
+		g_Enemy[EnmyCount].fDistance = g_Enemy[EnmyCount].fSightRange / 2;
 
-		g_fDistance[i] = 0.0f;
+		g_fDistance[EnmyCount] = 0.0f;
 	}
 }
 //*************
@@ -91,28 +91,28 @@ void UninitEnemy(void)
 		}
 	}
 
-	for (int i = 0; i < MAX_ENEMY; i++)
+	for (int EnmyCount = 0; EnmyCount < MAX_ENEMY; EnmyCount++)
 	{
-		for (int i1 = 0; i1 < MAX_ENEMYPARTS; i1++)
+		for (int PartsCount = 0; PartsCount < MAX_ENEMYPARTS; PartsCount++)
 		{
 			// メッシュの破棄
-			if (g_Enemy[i].EnemyMotion.aModel[i1].pMesh != NULL)
+			if (g_Enemy[EnmyCount].EnemyMotion.aModel[PartsCount].pMesh != NULL)
 			{
-				g_Enemy[i].EnemyMotion.aModel[i1].pMesh = NULL;
+				g_Enemy[EnmyCount].EnemyMotion.aModel[PartsCount].pMesh = NULL;
 			}
 
 			// マテリアルの破棄
-			if (g_Enemy[i].EnemyMotion.aModel[i1].pBuffMat != NULL)
+			if (g_Enemy[EnmyCount].EnemyMotion.aModel[PartsCount].pBuffMat != NULL)
 			{
-				g_Enemy[i].EnemyMotion.aModel[i1].pBuffMat = NULL;
+				g_Enemy[EnmyCount].EnemyMotion.aModel[PartsCount].pBuffMat = NULL;
 			}
 
 			for (int TexCount = 0; TexCount < MAX_TEX; TexCount++)
 			{
 				//テクスチャの破棄
-				if (g_Enemy[i].EnemyMotion.aModel[i1].pTexture[TexCount] != NULL)
+				if (g_Enemy[EnmyCount].EnemyMotion.aModel[PartsCount].pTexture[TexCount] != NULL)
 				{
-					g_Enemy[i].EnemyMotion.aModel[i1].pTexture[TexCount] = NULL;
+					g_Enemy[EnmyCount].EnemyMotion.aModel[PartsCount].pTexture[TexCount] = NULL;
 				}
 			}
 		}
