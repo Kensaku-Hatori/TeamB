@@ -25,6 +25,7 @@
 #include "game.h"
 #include "sound.h"
 #include "minimap.h"
+#include "bossgauge.h"
 
 //*******************
 // グローバル変数宣言
@@ -149,7 +150,7 @@ void UpdateBoss(void)
 
 		// モーションの更新
 		UpdateMotion(&g_Boss.BossMotion);
-
+		RedBossgaugeDeff();
 		CollisionBosstoModel();
 		CollisionBosstoSkill();
 	}
@@ -304,6 +305,8 @@ void HitBoss(float Atack)
 		D3DXVec3Normalize(&Vec, &Vec);
 		g_Boss.move = Vec * move;
 	}
+
+	BossgaugeDeff();
 
 	if (Atack >= 10)
 	{// ダメージが最小値以上なら

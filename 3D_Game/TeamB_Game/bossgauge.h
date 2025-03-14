@@ -22,5 +22,7 @@ void InitBossGauge(void);
 void UninitBossGauge(void);
 void UpdateBossGauge(void);
 void DrawBossGauge(void);
+void BossgaugeDeff(void);
+void RedBossgaugeDeff(void);
 
 #endif
