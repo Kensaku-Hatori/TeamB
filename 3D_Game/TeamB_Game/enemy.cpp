@@ -719,7 +719,7 @@ void CollisionEnemy(void)
 
 			float RADIUS = ((PLAYER_RADIUS / 2) + g_Enemy[nCntEnemy].Radius) * ((PLAYER_RADIUS / 2) + g_Enemy[nCntEnemy].Radius);
 
-			if (g_Enemy[nCntEnemy].fDistance <= RADIUS)
+			if (g_Enemy[nCntEnemy].fDistance <= RADIUS && pPlayer->state != PLAYERSTATE_KNOCKUP)
 			{
 				HitPlayer(g_Enemy[nCntEnemy].Status.fPower,g_Enemy[nCntEnemy].Object.Pos);
 			}
@@ -749,7 +749,7 @@ void CollisionEnemyAction(int nCnt)
 		D3DXVECTOR3 sabun1 = Pos1 - sabun * division * (FLOAT)n;
 		D3DXVECTOR3 CollPos = sabun1 - sabun;
 
-		if (collisioncircle(CollPos, radius, pPlayer->pos, PLAYER_RADIUS) == true)
+		if (collisioncircle(CollPos, radius, pPlayer->pos, PLAYER_RADIUS) == true && pPlayer->state != PLAYERSTATE_KNOCKUP)
 		{
 			HitPlayer(g_Enemy[nCnt].Status.fPower, g_Enemy[nCnt].Object.Pos);
 

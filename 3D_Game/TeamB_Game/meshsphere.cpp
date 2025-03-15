@@ -113,8 +113,11 @@ void DrawSphere(void)
 			// 頂点フォーマットの設定
 			pDevice->SetFVF(FVF_VERTEX_3D);
 
+			//テクスチャのポインタを取得
+			LPDIRECT3DTEXTURE9 pTexture = GetTexture2(g_Sphere[nCnt].textype);
+
 			// テクスチャの設定
-			pDevice->SetTexture(0, g_pTexture);
+			pDevice->SetTexture(0, pTexture);
 
 			// ポリゴンを描画
 			pDevice->DrawPrimitive(D3DPT_TRIANGLEFAN, 0, g_Sphere[nCnt].DiviX);

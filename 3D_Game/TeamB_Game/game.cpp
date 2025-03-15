@@ -137,8 +137,8 @@ void InitGame(void)
 	//ウェーブの読込処理
 	LoadWave();
 
-	// 球体の設定処理
-	SetSphere(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 100, 50, 300.0f, true, true);
+	//// 球体の設定処理
+	//SetSphere(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 100, 50, 300.0f, true, true);
 
 	// 見えない壁の初期化処理
 	InitInvisibleWall();

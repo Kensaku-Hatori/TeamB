@@ -337,8 +337,11 @@ void UpdatePlayer(void)
 		//影の位置の更新処理
 		SetPositionShadow(g_player.nIdxShadow, g_player.pos, g_player.bUse);//影
 
-		//モーションの更新処理
-		UpdateMotion(&g_player.PlayerMotion);
+		if (isStateType(PLAYERSTATE_KNOCKUP) == false)
+		{
+			//モーションの更新処理
+			UpdateMotion(&g_player.PlayerMotion);
+		}
 
 		g_player.nScore = GetScore();
 	}
@@ -420,8 +423,18 @@ void DrawPlayer(void)
 
 			for (int nCntMat = 0; nCntMat < (int)g_player.PlayerMotion.aModel[nCntModel].dwNumMat; nCntMat++)
 			{
-				//マテリアルの設定
-				pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
+				if (isStateType(PLAYERSTATE_KNOCKUP) == true)
+				{
+					D3DXMATERIAL DamageColor = pMat[nCntMat];
+					DamageColor.MatD3D.Diffuse.r = 255;
+					//マテリアルの設定
+					pDevice->SetMaterial(&DamageColor.MatD3D);
+				}
+				else
+				{
+					//マテリアルの設定
+					pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
+				}
 				//テクスチャの設定
 				pDevice->SetTexture(0, g_player.PlayerMotion.aModel[nCntModel].pTexture[nCntMat]);
 				//プレイヤーの描画
@@ -509,7 +522,7 @@ void PlayerMove(void)
 
 	float Speed1 = Speed();
 	
-	if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && isRolling() == false)
+	if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && isRolling() == false && isStateType(PLAYERSTATE_KNOCKUP) == false)
 	{
 		PlaySound(SOUND_LABEL_ROLLING);
 		g_player.bSkillUse = false;

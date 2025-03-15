@@ -16,7 +16,7 @@
 #include "Item.h"
 
 #define PLAYER_RADIUS (3)			// プレイヤーの半径
-#define PLAYER_DOWNTIME (60)		// ダウン時間
+#define PLAYER_DOWNTIME (15)		// ダウン時間
 
 #define PLAYER_MP (500)				// MP
 #define PLAYER_HP (float)(1000)		// HP
