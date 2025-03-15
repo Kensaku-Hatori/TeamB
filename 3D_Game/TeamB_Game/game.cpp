@@ -65,13 +65,6 @@ void InitGame(void)
 	//サークルの初期化
 	InitCircle();
 
-	SetCircle(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 
-		D3DXVECTOR3(0.0f, 0.0f, 0.0f), 
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-		8, 0, 500.0f, 1500.0f, 
-		false, false, 
-		1);
-
 	//矢印の初期化
 	InitArrow();
 
@@ -137,8 +130,18 @@ void InitGame(void)
 	//ウェーブの読込処理
 	LoadWave();
 
-	//// 球体の設定処理
-	//SetSphere(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 100, 50, 300.0f, true, true);
+	if (Mode != MODE_STAGEFOUR)
+	{
+		SetCircle(D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			8, 0, 500.0f, 1500.0f,
+			false, false,
+			1);
+
+		// 球体の設定処理
+		SetSphere(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 16, 5, 2000.0f, false, true);
+	}
 
 	// 見えない壁の初期化処理
 	InitInvisibleWall();
