@@ -25,6 +25,7 @@ D3DXVECTOR3 g_BossGauge;
 D3DXVECTOR3 g_BossGaugeSize;
 D3DXVECTOR3 g_BossRedGaugeSize;
 D3DXVECTOR3 g_BossName;
+D3DXVECTOR3 g_BossFrameSize;;
 
 //=============
 // 初期化処理
@@ -45,7 +46,7 @@ void InitBossGauge(void)
 	g_BossGaugeSize = D3DXVECTOR3(BOSSGAUGE_FRAME_X, BOSSGAUGE_FRAME_Y, 0.0f);
 	g_BossName = D3DXVECTOR3(SCREEN_WIDTH / 6 + 200.0f, SCREEN_HEIGHT - 50.0f, 0.0f);
 	g_BossRedGaugeSize = D3DXVECTOR3(BOSSGAUGE_FRAME_X, BOSSGAUGE_FRAME_Y, 0.0f);
-
+	g_BossFrameSize = D3DXVECTOR3(BOSSGAUGE_FRAME_X - 20.0f, BOSSGAUGE_FRAME_Y, 0.0f);
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
 
@@ -72,10 +73,10 @@ void InitBossGauge(void)
 		pVtx[2].rhw = 1.0f;
 		pVtx[3].rhw = 1.0f;
 		//頂点カラーの設定
-		pVtx[0].col = D3DCOLOR_RGBA(1, 127, 255, 255);
-		pVtx[1].col = D3DCOLOR_RGBA(1, 127, 255, 255);
-		pVtx[2].col = D3DCOLOR_RGBA(1, 127, 255, 255);
-		pVtx[3].col = D3DCOLOR_RGBA(1, 127, 255, 255);
+		pVtx[0].col = D3DCOLOR_RGBA(1, 255, 127, 255);
+		pVtx[1].col = D3DCOLOR_RGBA(1, 255, 127, 255);
+		pVtx[2].col = D3DCOLOR_RGBA(1, 255, 127, 255);
+		pVtx[3].col = D3DCOLOR_RGBA(1, 255, 127, 255);
 		//テクスチャ座標の設定
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
 		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
@@ -137,10 +138,10 @@ void InitBossGauge(void)
 		g_pVtxBuffBossGaugeBack->Lock(0, 0, (void**)&pVtx, 0);
 
 		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(g_BossGauge.x, g_BossGauge.y - g_BossGaugeSize.y, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(g_BossGauge.x + g_BossGaugeSize.x , g_BossGauge.y - g_BossGaugeSize.y, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(g_BossGauge.x, g_BossGauge.y + g_BossGaugeSize.y, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(g_BossGauge.x + g_BossGaugeSize.x , g_BossGauge.y + g_BossGaugeSize.y, 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(g_BossGauge.x + 20.0f, g_BossGauge.y - g_BossFrameSize.y, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(g_BossGauge.x + g_BossFrameSize.x , g_BossGauge.y - g_BossFrameSize.y, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(g_BossGauge.x + 20.0f, g_BossGauge.y + g_BossFrameSize.y, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(g_BossGauge.x + g_BossFrameSize.x , g_BossGauge.y + g_BossFrameSize.y, 0.0f);
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;
@@ -243,6 +244,7 @@ void UninitBossGauge(void)
 //==========
 void UpdateBossGauge(void)
 {
+
 }
 //===========
 // 描画処理
