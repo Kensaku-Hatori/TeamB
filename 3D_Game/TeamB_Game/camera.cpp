@@ -142,11 +142,6 @@ void UpdateCamera(void)
 			SetCursorPos(640, 360);
 		}
 
-		//if (GetKeyboardPress(DIK_S) || pStick->Gamepad.sThumbLY < 0)
-		//{
-
-		//}
-
 		g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
 		g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
 	}
