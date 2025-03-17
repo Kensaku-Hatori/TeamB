@@ -166,8 +166,8 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 
 			g_Sphere[nCnt].nMaxVtx = (g_Sphere[nCnt].DiviX + 1) * (g_Sphere[nCnt].DiviY) + 1;// 頂点数
 
-			//テクスチャの設定
-			SetSphereTexture(nCnt);
+			////テクスチャの設定
+			//SetSphereTexture(nCnt);
 
 			//頂点バッファの生成
 			pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) *g_Sphere[nCnt].nMaxVtx,
