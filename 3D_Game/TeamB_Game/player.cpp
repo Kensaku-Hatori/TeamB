@@ -1238,7 +1238,7 @@ void UpdateMp()
 		UpdateStateCount(g_nCntHealMP);
 		if (isGreaterCount(g_nCntHealMP,120) == true)
 		{
-			g_player.Status.nMP += 5;
+			g_player.Status.nMP += 10;
 			g_nCntHealMP = 0;
 		}
 	}
