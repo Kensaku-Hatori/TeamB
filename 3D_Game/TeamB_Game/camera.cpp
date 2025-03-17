@@ -27,7 +27,6 @@ void InitCamera(void)
 	g_camera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
 	g_camera.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	g_camera.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_camera.fDistance = sqrtf(((g_camera.posV.x - g_camera.posR.x) * (g_camera.posV.x - g_camera.posR.x))
 							 + ((g_camera.posV.y - g_camera.posR.y) * (g_camera.posV.y - g_camera.posR.y))
 							 + ((g_camera.posV.z - g_camera.posR.z) * (g_camera.posV.z - g_camera.posR.z)));
@@ -79,15 +78,14 @@ void UpdateCamera(void)
 	//プレイヤーがロックオンしているなら
 	if (pPlayer->bLockOn == true)
 	{
-		g_camera.posRDest.x = pLockon->pos.x + sinf(pPlayer->rot.x) * (pLockon->pos.x - g_camera.posR.x);
-		g_camera.posRDest.y = pLockon->pos.y;
-		g_camera.posRDest.z = pLockon->pos.z + cosf(pPlayer->rot.z) * (pLockon->pos.z - g_camera.posR.z);
-
-		g_camera.posVDest.x = pLockon->pos.x + sinf(g_camera.rot.y - D3DX_PI) * g_camera.fDistance;
-		g_camera.posVDest.z = pLockon->pos.z + cosf(g_camera.rot.y - D3DX_PI) * g_camera.fDistance;
+		lockOnCamera();
 	}
 	else
 	{
+		g_camera.fDistance = sqrtf(((0.0f - 0.0f) * (0.0f - 0.0f))
+						       + ((200.0f - 0.0f) * (200.0f - 0.0f))
+						      + ((-300.0f - 0.0f) * (-300.0f - 0.0f)));
+
 		g_camera.posRDest.x = pPlayer->pos.x + sinf(pPlayer->rot.x) * (pPlayer->pos.x - g_camera.posR.x);
 		g_camera.posRDest.y = pPlayer->pos.y;
 		g_camera.posRDest.z = pPlayer->pos.z + cosf(pPlayer->rot.z) * (pPlayer->pos.z - g_camera.posR.z);
@@ -134,22 +132,6 @@ void UpdateCamera(void)
 		}
 #endif
 
-		if (pPlayer->bLockOn == true)
-		{
-			lockOnCamera();
-			//if (GetKeyboardPress(DIK_S) || pStick->Gamepad.sThumbLY < 0)
-			//{
-			//	if (g_camera.posV.y <= 500)
-			//	{
-			//		g_camera.posV.y += 1.0f;
-			//		if (pBoss->bUse == true)
-			//		{
-			//			g_camera.posV.y += 3.0f;
-			//		}
-			//	}
-			//}		
-		}
-
 		if (pPlayer->bLockOn == false)
 		{
 			UpdateCameratoMousePos();
@@ -159,6 +141,11 @@ void UpdateCamera(void)
 		{
 			SetCursorPos(640, 360);
 		}
+
+		//if (GetKeyboardPress(DIK_S) || pStick->Gamepad.sThumbLY < 0)
+		//{
+
+		//}
 
 		g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
 		g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
@@ -212,20 +199,30 @@ void UpdateCameratoJoyPadPos(void)
 	}
 }
 //=========================
-// ロックオン中の視点のＹ
+// ロックオン中のカメラ
 //=========================
 void lockOnCamera(void)
 {
 	Player* pPlayer = GetPlayer();				//プレイヤー
 	Lockon* pLockon = GetLockOn();				//ロックオン
 
-	//距離による解除
-	float Dis = sqrtf((pPlayer->pos.x - pLockon->pos.x) * (pPlayer->pos.x - pLockon->pos.x))
-				   + ((pPlayer->pos.y - pLockon->pos.y) * (pPlayer->pos.y - pLockon->pos.y))
-				   + ((pPlayer->pos.z - pLockon->pos.z) * (pPlayer->pos.z - pLockon->pos.z));
-	Dis /= 300;
+	float Dis = ((pPlayer->pos.x - pLockon->pos.x) * (pPlayer->pos.x - pLockon->pos.x))
+		      + ((pPlayer->pos.y - pLockon->pos.y) * (pPlayer->pos.y - pLockon->pos.y))
+		      + ((pPlayer->pos.z - pLockon->pos.z) * (pPlayer->pos.z - pLockon->pos.z));
 
-	g_camera.posV.y = 200.0f + Dis;
+	if (Dis >= pPlayer->fSightRange * pPlayer->fSightRange * 2)
+	{
+		Dis = pPlayer->fSightRange * pPlayer->fSightRange * 2;
+	}
+
+	g_camera.fDistance = sqrtf(Dis) * 2.6f;
+
+	g_camera.posRDest.x = pLockon->pos.x + sinf(pPlayer->rot.x) * (pLockon->pos.x - g_camera.posR.x);
+	g_camera.posRDest.y = pLockon->pos.y;
+	g_camera.posRDest.z = pLockon->pos.z + cosf(pPlayer->rot.z) * (pLockon->pos.z - g_camera.posR.z);
+
+	g_camera.posVDest.x = pLockon->pos.x + sinf(g_camera.rot.y - D3DX_PI) * g_camera.fDistance;
+	g_camera.posVDest.z = pLockon->pos.z + cosf(g_camera.rot.y - D3DX_PI) * g_camera.fDistance;
 }
 
 //================
