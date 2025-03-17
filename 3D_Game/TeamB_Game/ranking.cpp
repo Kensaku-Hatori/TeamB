@@ -107,7 +107,7 @@ void InitRanking(void)
 
 
 	//順位
-	g_Rankpos = D3DXVECTOR3(300.0f, 180.0f, 0.0f);
+	g_Rankpos = D3DXVECTOR3(400.0f, 180.0f, 0.0f);
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_RANKING,
@@ -148,7 +148,7 @@ void InitRanking(void)
 
 
 	//スコア
-	g_Rankscorepos = D3DXVECTOR3(400.0f, 180.0f, 0.0f);
+	g_Rankscorepos = D3DXVECTOR3(500.0f, 180.0f, 0.0f);
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_RANKING * MAX_SCORE,
@@ -171,22 +171,22 @@ void InitRanking(void)
 
 		if (nCnt == MAX_SCORE - 1)
 		{
-			g_Rankscorepos.x = 400.0f;
+			g_Rankscorepos.x = 500.0f;
 			g_Rankscorepos.y += 120.0f;
 		}
 		else if (nCnt == MAX_SCORE * 2 - 1)
 		{
-			g_Rankscorepos.x = 400.0f;
+			g_Rankscorepos.x = 500.0f;
 			g_Rankscorepos.y += 120.0f;
 		}
 		else if (nCnt == MAX_SCORE * 3 - 1)
 		{
-			g_Rankscorepos.x = 400.0f;
+			g_Rankscorepos.x = 500.0f;
 			g_Rankscorepos.y += 120.0f;
 		}
 		else if (nCnt == MAX_SCORE * 4 - 1)
 		{
-			g_Rankscorepos.x = 400.0f;
+			g_Rankscorepos.x = 500.0f;
 			g_Rankscorepos.y += 120.0f;
 		}
 		//rhwの設定

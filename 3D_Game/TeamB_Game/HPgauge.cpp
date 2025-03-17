@@ -21,7 +21,7 @@ void InitHPgauge()
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	for (int nCntTex = 0; nCntTex < MAX_POLY; nCntTex++)
+	for (int nCntTex = 0; nCntTex < HPGAUGETYPE_MAX; nCntTex++)
 	{
 		//テクスチャの読み込み
 		D3DXCreateTextureFromFile(pDevice,

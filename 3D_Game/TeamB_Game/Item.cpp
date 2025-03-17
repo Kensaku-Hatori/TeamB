@@ -244,14 +244,8 @@ void DrawItemBillboard()
 //============================================================
 void SetItem(D3DXVECTOR3 pos, ITEMTYPE type)
 {
-	//頂点情報へのポインタ
-	VERTEX_3D* pVtx = NULL;
-
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-
-	//頂点バッファをロック
-	g_pVtxBuffItemBill->Lock(0, 0, (void**)&pVtx, 0);
 
 	for (int nCntItem = 0; nCntItem < MAX_ITEM; nCntItem++)
 	{
@@ -274,10 +268,6 @@ void SetItem(D3DXVECTOR3 pos, ITEMTYPE type)
 			break;
 		}
 	}
-
-	//頂点バッファのアンロック
-	g_pVtxBuffItemBill->Unlock();
-
 }
 
 //============================================================

@@ -7,6 +7,7 @@
 
 #include "meshfield.h"
 #include <string.h>
+#include <cassert>
 
 //グローバル変数宣言
 LPDIRECT3DTEXTURE9 g_pTextureMeshfield[MAX_TEX_FIELD] = { NULL };		//テクスチャへのポインタ
@@ -195,6 +196,7 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 					nCntVtx++;
 				}
 			}
+			assert(nCntVtx <= g_Meshfield[nCnt].nMaxVtx);
 
 			//頂点バッファをアンロック　
 			g_Meshfield[nCnt].pVtxBuffMeshfield->Unlock();
@@ -211,6 +213,7 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 			g_Meshfield[nCnt].IdxBuffMeshField->Lock(0, 0, (void**)&pIdx, 0);
 
 			int nCntX;
+			int Indx = 0;
 			for (int nCntZ = 0; nCntZ < g_Meshfield[nCnt].nDiviZ; nCntZ++)
 			{
 				for (nCntX = 0; nCntX <= g_Meshfield[nCnt].nDiviX; nCntX++)
@@ -220,6 +223,7 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 					pIdx[1] = nCntX + (nCntZ * (g_Meshfield[nCnt].nDiviX + 1));
 
 					pIdx += 2;
+					Indx += 2;
 				}
 
 				if (nCntZ < g_Meshfield[nCnt].nDiviZ - 1)
@@ -228,8 +232,10 @@ void SetMeshfield(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int textype, int nDiviX,int 
 					pIdx[1] = nCntX + ((nCntZ + 1) * (g_Meshfield[nCnt].nDiviX + 1));
 
 					pIdx += 2;
+					Indx += 2;
 				}
 			}
+			assert(Indx <= flindexNum);
 
 			//インデックスバッファのアンロック
 			g_Meshfield[nCnt].IdxBuffMeshField->Unlock();

@@ -14,6 +14,7 @@ LPDIRECT3DTEXTURE9 g_pTextureGauge = {};
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffGauge = NULL;
 
 Gauge g_gauge[GAUGETYPE_MAX];
+
 //=============
 // 初期化処理
 //=============
@@ -283,7 +284,7 @@ void DrawGauge(void)
 void SetGauge(GAUGETYPE type, D3DXVECTOR3 pos, D3DXVECTOR2 size)
 {
 	//頂点バッファの生成・頂点情報の設定
-	VERTEX_2D* pVtx;
+	VERTEX_2D* pVtx = NULL;
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffGaugeBack->Lock(0, 0, (void**)&pVtx, 0);
 
@@ -291,7 +292,7 @@ void SetGauge(GAUGETYPE type, D3DXVECTOR3 pos, D3DXVECTOR2 size)
 	{
 		if (g_gauge[nCnt].bUse == false)
 		{
-			VERTEX_2D* pVtx1;
+			VERTEX_2D* pVtx1 = NULL;
 			//頂点バッファをロックし、頂点情報へのポインタを取得
 			g_pVtxBuffGauge->Lock(0, 0, (void**)&pVtx1, 0);
 

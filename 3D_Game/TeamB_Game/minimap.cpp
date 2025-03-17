@@ -245,7 +245,7 @@ void UpdateMiniMapSight(void)
 {
 	Camera* pCamera = GetCamera();
 	//頂点バッファの生成・頂点情報の設定
-	VERTEX_2D* pVtx;
+	VERTEX_2D* pVtx = NULL;
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffMapSight->Lock(0, 0, (void**)&pVtx, 0);

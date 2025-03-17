@@ -143,10 +143,13 @@ void UninitSkillUI(void)
 	}
 
 	//頂点バッファの破棄
-	if (g_pVtxBuffSkillUIframe != NULL && g_pVtxBuffSkillUI != NULL)
+	if (g_pVtxBuffSkillUIframe != NULL)
 	{
 		g_pVtxBuffSkillUIframe->Release();
 		g_pVtxBuffSkillUIframe = NULL;
+	}
+	if (g_pVtxBuffSkillUI != NULL)
+	{
 		g_pVtxBuffSkillUI->Release();
 		g_pVtxBuffSkillUI = NULL;
 	}

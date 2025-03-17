@@ -5,6 +5,7 @@
 //
 //==============================
 #include "score.h"
+#include <cassert>
 
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureScore = NULL;
@@ -194,6 +195,7 @@ void AddScore(int nValue)
 		nData3++;
 		nCnt += 3;
 	}
+	assert(nCnt <= 4 * MAX_SCORE);
 	//頂点バッファをアンロック
 	g_pVtxBuffScore->Unlock();
 }

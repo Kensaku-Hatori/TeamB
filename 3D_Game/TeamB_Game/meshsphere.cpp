@@ -8,6 +8,7 @@
 // インクルード
 #include "meshSphere.h"
 #include "meshfield.h"
+#include <cassert>
 
 // グローバル変数宣言
 MeshSphere g_Sphere[MAX_MESHSPHERE];									// 球体構造体
@@ -219,7 +220,7 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 
 					//頂点インデックスを進める
 					indx++;
-
+					assert(indx >= 0 && indx <= g_Sphere[nCnt].nMaxVtx);
 					//頂点が0番目だったなら
 					if (indx == 1)
 					{
@@ -252,6 +253,7 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
   				g_Sphere[nCnt].pIndxBuff->Lock(0, 0, (void**)&pIdx, 0);
 
 				int nCntX = 0;
+				int Indx = 0;
 				for (int nCntY = 0; nCntY < g_Sphere[nCnt].DiviY-1; nCntY++)
 				{
 					for (nCntX = g_Sphere[nCnt].DiviX; nCntX >= 0; nCntX--)
@@ -261,6 +263,7 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 						pIdx[1] = nCntX + (nCntY * (g_Sphere[nCnt].DiviX + 1));
 
 						pIdx += 2;
+						Indx += 2;
 					}
 
 					//衰退ポリゴン分
@@ -271,7 +274,10 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 						pIdx[1] = (g_Sphere[nCnt].DiviX + 1) * (nCntY + 2) + g_Sphere[nCnt].DiviX;
 
 						pIdx += 2;
+						Indx += 2;
 					}
+					assert(Indx <= indexNum);
+					assert(nCntY >= 0 && nCntY <= g_Sphere[nCnt].DiviY);
 				}
 
 				//インデックスバッファをアンロック

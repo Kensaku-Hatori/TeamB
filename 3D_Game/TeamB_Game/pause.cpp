@@ -13,6 +13,7 @@
 #include "mouse.h"
 
 #define MAX_TEXTURE (4)
+
 //ƒOƒ[ƒoƒ‹•Ï”
 LPDIRECT3DTEXTURE9 g_pTexturePause[MAX_TEXTURE] = {};
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPause = NULL;

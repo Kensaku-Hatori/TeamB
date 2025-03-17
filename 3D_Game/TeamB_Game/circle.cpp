@@ -6,6 +6,7 @@
 //=======================================================
 
 #include "circle.h"
+#include <cassert>
 
 //グローバル変数宣言
 Circle g_Circle[MAX_CIRCLE];
@@ -77,7 +78,6 @@ void UpdateCircle()
 
 	for (int nCnt = 0; nCnt < MAX_CIRCLE; nCnt++)
 	{
-		int  i = 0;
 		if (g_Circle[nCnt].bUse == true)
 		{
 			if (g_Circle[nCnt].bAnime == true && g_Circle[nCnt].frame >= 0)
@@ -95,13 +95,14 @@ void UpdateCircle()
 					for (int nCntX = 0; nCntX <= g_Circle[nCnt].nDiviX; nCntX++)
 					{
 						//頂点カラーの設定
-						pVtx[indx].col = D3DXCOLOR((FLOAT)g_Circle[nCnt].col.r + (g_Circle[nCnt].AddCol.r * (g_Circle[nCnt].nCntFrame)),
-							(FLOAT)g_Circle[nCnt].col.g + (g_Circle[nCnt].AddCol.g * (g_Circle[nCnt].nCntFrame)),
-							(FLOAT)g_Circle[nCnt].col.b + (g_Circle[nCnt].AddCol.b * (g_Circle[nCnt].nCntFrame)),
-							(FLOAT)g_Circle[nCnt].col.a + (g_Circle[nCnt].AddCol.a * (g_Circle[nCnt].nCntFrame)));
+						pVtx[indx].col = D3DXCOLOR(g_Circle[nCnt].col.r + (g_Circle[nCnt].AddCol.r * (g_Circle[nCnt].nCntFrame)),
+							g_Circle[nCnt].col.g + (g_Circle[nCnt].AddCol.g * (g_Circle[nCnt].nCntFrame)),
+							g_Circle[nCnt].col.b + (g_Circle[nCnt].AddCol.b * (g_Circle[nCnt].nCntFrame)),
+							g_Circle[nCnt].col.a + (g_Circle[nCnt].AddCol.a * (g_Circle[nCnt].nCntFrame)));
 
 						//インデックスを進める
 						indx++;
+						assert(indx <= g_Circle[nCnt].nMaxVtx);
 					}
 				}
 
@@ -318,10 +319,10 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 
 					//テクスチャ座標の設定
 					pVtx[indx].tex = D3DXVECTOR2(1.0f * nCntX,1.0f * nCntY);
-					//pVtx[indx].tex = D3DXVECTOR2((1.0f / g_Circle[nCnt].nDiviX) * nCntX, (1.0f / g_Circle[nCnt].nDiviY) * nCntY);
 					indx++;
 				}
 			}
+			assert(indx <= g_Circle[nCnt].nMaxVtx);
 
 			//頂点バッファをアンロック　
 			g_Circle[nCnt].pVtxBuff->Unlock();
@@ -338,6 +339,7 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 			g_Circle[nCnt].IndxBuff->Lock(0, 0, (void**)&pIdx, 0);
 
 			int nCntX = 0;
+			int Indx = 0;
 			for (int nCntY = 0; nCntY < g_Circle[nCnt].nDiviY; nCntY++)
 			{
 				for (nCntX = 0; nCntX <= g_Circle[nCnt].nDiviX; nCntX++)
@@ -347,6 +349,7 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 					pIdx[1] = nCntX + (nCntY * (g_Circle[nCnt].nDiviX + 1));
 
 					pIdx += 2;
+					Indx += 2;
 				}
 
 				//衰退ポリゴン分
@@ -357,8 +360,10 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 					pIdx[1] = nCntX + ((nCntY + 1) * (g_Circle[nCnt].nDiviX + 1));
 
 					pIdx += 2;
+					Indx += 2;
 				}
 			}
+			assert(indx <= g_Circle[nCnt].nMaxVtx);
 
 			//インデックスバッファをアンロック
 			g_Circle[nCnt].IndxBuff->Unlock();
