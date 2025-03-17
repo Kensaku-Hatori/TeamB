@@ -311,6 +311,7 @@ void DrawEffect(void)
 	}
 	// Ý’è‚ðŒ³‚É–ß‚·
 	 pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
 	 pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);

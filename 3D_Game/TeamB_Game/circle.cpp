@@ -135,9 +135,6 @@ void DrawCircle()
 	//ライトを切る
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
-	//カリングをつける
-	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-
 	// ALPHAテストの設定
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
@@ -148,11 +145,14 @@ void DrawCircle()
 		if (g_Circle[nCnt].bUse == true)
 		{
 			if (g_Circle[nCnt].type == 1)
+			{// 壁のはず
+				//カリングを切る
+				pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+			}
+			else
 			{
-				// 加算合成を設定する
-				pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-				pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-				pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+				//カリングをつける
+				pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 			}
 
 			// ワールドマトリックスの初期化
@@ -195,8 +195,8 @@ void DrawCircle()
 	//ライトをつける
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 
-	//カリングを切る
-	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	//カリングをつける
+	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 	// アルファテストを元に戻す
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
@@ -232,6 +232,8 @@ int SetCircle(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXCOLOR col, int DiviX, int Di
 			g_Circle[nCnt].fRadius = fRadius;
 			g_Circle[nCnt].bGradation = bGradation;	//グラデーションの有無
 			g_Circle[nCnt].bAnime = bAnime;			//動きの有無
+			g_Circle[nCnt].type = (ANIMETYPE)type;
+
 			if (type == 1)
 			{
 				//テクスチャの読込
