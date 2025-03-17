@@ -964,6 +964,7 @@ void HitPlayer(float Atack,D3DXVECTOR3 Pos)
 					EFFECT_NONE);
 				SetGameState(GAMESTATE_GAMEOVER);
 			}
+			SetShake(10);
 		}
 	}
 }

@@ -8,6 +8,7 @@
 #define _CAMERA_H_
 
 #define CAMERA_DISTANCESPEED (float)(0.1f)
+#define CAMERASHAKE_VALUE (20)
 #include "main.h"
 
 typedef struct
@@ -22,8 +23,10 @@ typedef struct
 	D3DXMATRIX mtxProjection;//プロジェクションマトリックス
 	D3DXMATRIX mtxView;//ビューマトリックス
 	D3DXVECTOR3 rot;//向き
+	int ShakeCount;
 	float fDistance;//視点から注視点の距離
 	bool bResete;
+	bool bShake;
 }Camera;
 
 //プロトタイプ宣言
@@ -38,7 +41,14 @@ void SetMouseWheel(int zDelta);
 void ResetCameraPos(D3DXVECTOR3 posV, D3DXVECTOR3 posR);
 void lockOnCamera(void);
 
+// 条件文の関数化
+bool isShake();
+bool isGreaterCount(int Counter);
+
 // 実作業の関数化
+void SetShake(int ShakeCount);
+void UpdateShakeCounter();
+void UpdateShake();
 void SetCameraDistance(float Distance);
 void SetCameraRotX(float Rot);
 void SetCameraRotY(float Rot);

@@ -154,7 +154,6 @@ void DrawCircle()
 				//カリングをつける
 				pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 			}
-
 			// ワールドマトリックスの初期化
 			D3DXMatrixIdentity(&g_Circle[nCnt].mtxWorld);
 

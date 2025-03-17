@@ -32,6 +32,8 @@ void InitCamera(void)
 							 + ((g_camera.posV.z - g_camera.posR.z) * (g_camera.posV.z - g_camera.posR.z)));
 
 	g_camera.bResete = false;
+	g_camera.ShakeCount = 0;
+	g_camera.bShake = false;
 }
 
 //===================
@@ -83,8 +85,8 @@ void UpdateCamera(void)
 	else
 	{
 		g_camera.fDistance = sqrtf(((0.0f - 0.0f) * (0.0f - 0.0f))
-						       + ((200.0f - 0.0f) * (200.0f - 0.0f))
-						      + ((-300.0f - 0.0f) * (-300.0f - 0.0f)));
+			+ ((200.0f - 0.0f) * (200.0f - 0.0f))
+			+ ((-300.0f - 0.0f) * (-300.0f - 0.0f)));
 
 		g_camera.posRDest.x = pPlayer->pos.x + sinf(pPlayer->rot.x) * (pPlayer->pos.x - g_camera.posR.x);
 		g_camera.posRDest.y = pPlayer->pos.y;
@@ -142,8 +144,15 @@ void UpdateCamera(void)
 			SetCursorPos(640, 360);
 		}
 
-		g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
-		g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
+		if (isShake() == false)
+		{
+			g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
+			g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
+		}
+		else
+		{
+			UpdateShakeCounter();
+		}
 	}
 }
 
@@ -288,6 +297,68 @@ void ResetCameraPos(D3DXVECTOR3 posV, D3DXVECTOR3 posR)
 		g_camera.bResete = true;
 	}
 }
+
+//*******************
+// シェイク中かどうか
+//*******************
+bool isShake()
+{
+	return g_camera.bShake;
+}
+
+//*************************************************
+// シェイクカウンターがカウントを超えているかどうか
+//*************************************************
+bool isGreaterCount(int Counter)
+{
+	return Counter >= g_camera.ShakeCount ? true : false;
+}
+
+//*******************
+// シェイクの設定処理
+//*******************
+void SetShake(int ShakeCount)
+{
+	g_camera.ShakeCount = ShakeCount;
+	g_camera.bShake = true;
+}
+
+//*************************
+// シェイクカウンターを更新
+//*************************
+void UpdateShakeCounter()
+{
+	static int ShakeCounter = 0;
+	if (isShake() == true)
+	{
+		ShakeCounter++;
+		if (isGreaterCount(ShakeCounter) == true)
+		{
+			ShakeCounter = 0;
+			g_camera.bShake = false;
+			ShakeCounter = 0;
+		}
+		else
+		{
+			UpdateShake();
+		}
+	}
+}
+
+//*******************************
+// シェイク中のカメラの位置を更新
+//*******************************
+void UpdateShake()
+{
+	const int ShakeValueMax = CAMERASHAKE_VALUE;
+	const int ShakeValue = (rand() % (ShakeValueMax * 2)) - ShakeValueMax;
+	g_camera.posV.x += cosf(g_camera.rot.y) * ShakeValue;
+	g_camera.posV.z -= sinf(g_camera.rot.y) * ShakeValue;
+}
+
+//*****************
+// 使うかわからない
+//*****************
 void SetCameraDistance(float Distance)
 {
 	g_camera.fDistance = Distance;

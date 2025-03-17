@@ -394,4 +394,3 @@ HRESULT ReadChunkData(HANDLE hFile, void *pBuffer, DWORD dwBuffersize, DWORD dwB
 	
 	return S_OK;
 }
-
