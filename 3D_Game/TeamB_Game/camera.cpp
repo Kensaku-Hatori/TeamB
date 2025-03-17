@@ -11,6 +11,7 @@
 #include "player.h"
 #include "mouse.h"
 #include "lockon.h"
+#include "boss.h"
 
 //グローバル変数
 Camera g_camera;
@@ -51,6 +52,8 @@ void UpdateCamera(void)
 	Player* pPlayer = GetPlayer();				//プレイヤー
 	Lockon* pLockon = GetLockOn();				//ロックオン
 	MODE pMode = GetMode();						//ゲームモード
+	BOSS* pBoss = GetBoss();
+	XINPUT_STATE* pStick = GetJoyStickAngle();
 
 	ResetCameraPos(D3DXVECTOR3(350.0f, 200.0f, 1245.0f), pPlayer->pos);
 
@@ -72,6 +75,7 @@ void UpdateCamera(void)
 	{
 		g_camera.rot.x += D3DX_PI * 2.0f;
 	}
+
 	//プレイヤーがロックオンしているなら
 	if (pPlayer->bLockOn == true)
 	{
@@ -130,7 +134,22 @@ void UpdateCamera(void)
 		}
 #endif
 
-		Player* pPlayer = GetPlayer();
+		if (pPlayer->bLockOn == true)
+		{
+			lockOnCamera();
+			//if (GetKeyboardPress(DIK_S) || pStick->Gamepad.sThumbLY < 0)
+			//{
+			//	if (g_camera.posV.y <= 500)
+			//	{
+			//		g_camera.posV.y += 1.0f;
+			//		if (pBoss->bUse == true)
+			//		{
+			//			g_camera.posV.y += 3.0f;
+			//		}
+			//	}
+			//}		
+		}
+
 		if (pPlayer->bLockOn == false)
 		{
 			UpdateCameratoMousePos();
@@ -191,6 +210,22 @@ void UpdateCameratoJoyPadPos(void)
 			}
 		}
 	}
+}
+//=========================
+// ロックオン中の視点のＹ
+//=========================
+void lockOnCamera(void)
+{
+	Player* pPlayer = GetPlayer();				//プレイヤー
+	Lockon* pLockon = GetLockOn();				//ロックオン
+
+	//距離による解除
+	float Dis = sqrtf((pPlayer->pos.x - pLockon->pos.x) * (pPlayer->pos.x - pLockon->pos.x))
+				   + ((pPlayer->pos.y - pLockon->pos.y) * (pPlayer->pos.y - pLockon->pos.y))
+				   + ((pPlayer->pos.z - pLockon->pos.z) * (pPlayer->pos.z - pLockon->pos.z));
+	Dis /= 300;
+
+	g_camera.posV.y = 200.0f + Dis;
 }
 
 //================

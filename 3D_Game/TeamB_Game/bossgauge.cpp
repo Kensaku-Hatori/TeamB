@@ -38,7 +38,7 @@ void InitBossGauge(void)
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\bossgauge1.png", &g_pTextureBossGaugeBack);	//HP 枠	
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\GUAGE.png", &g_pTextureBossGauge);	//
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\gauge00.jpeg", &g_pTextureBossGauge);	//
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\GUAGE.png", &g_pTextureBossRedGauge);	//
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\bossname.png", &g_pTextureBossName);	//
 
@@ -46,7 +46,7 @@ void InitBossGauge(void)
 	g_BossGaugeSize = D3DXVECTOR3(BOSSGAUGE_FRAME_X, BOSSGAUGE_FRAME_Y, 0.0f);
 	g_BossName = D3DXVECTOR3(SCREEN_WIDTH / 6 + 200.0f, SCREEN_HEIGHT - 50.0f, 0.0f);
 	g_BossRedGaugeSize = D3DXVECTOR3(BOSSGAUGE_FRAME_X, BOSSGAUGE_FRAME_Y, 0.0f);
-	g_BossFrameSize = D3DXVECTOR3(BOSSGAUGE_FRAME_X - 20.0f, BOSSGAUGE_FRAME_Y, 0.0f);
+	g_BossFrameSize = D3DXVECTOR3(BOSSGAUGE_FRAME_X, BOSSGAUGE_FRAME_Y, 0.0f);
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
 
@@ -138,9 +138,9 @@ void InitBossGauge(void)
 		g_pVtxBuffBossGaugeBack->Lock(0, 0, (void**)&pVtx, 0);
 
 		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(g_BossGauge.x + 20.0f, g_BossGauge.y - g_BossFrameSize.y, 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(g_BossGauge.x, g_BossGauge.y - g_BossFrameSize.y, 0.0f);
 		pVtx[1].pos = D3DXVECTOR3(g_BossGauge.x + g_BossFrameSize.x , g_BossGauge.y - g_BossFrameSize.y, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(g_BossGauge.x + 20.0f, g_BossGauge.y + g_BossFrameSize.y, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(g_BossGauge.x, g_BossGauge.y + g_BossFrameSize.y, 0.0f);
 		pVtx[3].pos = D3DXVECTOR3(g_BossGauge.x + g_BossFrameSize.x , g_BossGauge.y + g_BossFrameSize.y, 0.0f);
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
@@ -221,6 +221,11 @@ void UninitBossGauge(void)
 		g_pTextureBossName->Release();
 		g_pTextureBossName = NULL;
 	}
+	if (g_pTextureBossRedGauge != NULL)
+	{
+		g_pTextureBossRedGauge->Release();
+		g_pTextureBossRedGauge = NULL;
+	}
 
 	//頂点バッファの破棄
 	if (g_pVtxBuffBossGauge != NULL)
@@ -238,6 +243,12 @@ void UninitBossGauge(void)
 		g_pVtxBuffBossName->Release();
 		g_pVtxBuffBossName = NULL;
 	}
+	if (g_pVtxBuffBossRedGauge != NULL)
+	{
+		g_pVtxBuffBossRedGauge->Release();
+		g_pVtxBuffBossRedGauge = NULL;
+	}
+
 }
 //==========
 // 更新処理
@@ -291,9 +302,9 @@ void DrawBossGauge(void)
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 
 }
-//
-// 
-// 
+//================
+// ゲージを減らす
+//================
 void BossgaugeDeff(void)
 {
 	BOSS* pBoss = GetBoss();
@@ -304,9 +315,7 @@ void BossgaugeDeff(void)
 	g_BossGaugeSize.x = pBoss->Status.fHP / BOSSGAUGE_DIVISION;
 
 	//頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(g_BossGauge.x, g_BossGauge.y - g_BossGaugeSize.y, 0.0f);
 	pVtx[1].pos = D3DXVECTOR3(g_BossGauge.x + g_BossGaugeSize.x, g_BossGauge.y - g_BossGaugeSize.y, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(g_BossGauge.x, g_BossGauge.y + g_BossGaugeSize.y, 0.0f);
 	pVtx[3].pos = D3DXVECTOR3(g_BossGauge.x + g_BossGaugeSize.x, g_BossGauge.y + g_BossGaugeSize.y, 0.0f);
 
 	if (pBoss->Status.fHP <= BOSS_HP / 5)
@@ -337,9 +346,9 @@ void BossgaugeDeff(void)
 	//頂点バッファをアンロック
 	g_pVtxBuffBossGauge->Unlock();
 }
-//
-//
-//
+//===================
+// 赤ゲージを減らす
+//===================
 void RedBossgaugeDeff(void)
 {
 	BOSS* pBoss = GetBoss();
@@ -359,9 +368,7 @@ void RedBossgaugeDeff(void)
 	}
 
 	//頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(g_BossGauge.x, g_BossGauge.y - g_BossRedGaugeSize.y, 0.0f);
 	pVtx[1].pos = D3DXVECTOR3(g_BossGauge.x + g_BossRedGaugeSize.x, g_BossGauge.y - g_BossRedGaugeSize.y, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(g_BossGauge.x, g_BossGauge.y + g_BossRedGaugeSize.y, 0.0f);
 	pVtx[3].pos = D3DXVECTOR3(g_BossGauge.x + g_BossRedGaugeSize.x, g_BossGauge.y + g_BossRedGaugeSize.y, 0.0f);
 
 	//頂点バッファをアンロック

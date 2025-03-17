@@ -36,6 +36,7 @@ void SetCamera(void);
 Camera * GetCamera(void);
 void SetMouseWheel(int zDelta);
 void ResetCameraPos(D3DXVECTOR3 posV, D3DXVECTOR3 posR);
+void lockOnCamera(void);
 
 // Àì‹Æ‚ÌŠÖ”‰»
 void SetCameraDistance(float Distance);

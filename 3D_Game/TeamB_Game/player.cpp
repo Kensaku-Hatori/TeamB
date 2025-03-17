@@ -1324,6 +1324,7 @@ void RollingState()
 //*****************************
 void LockOnInput()
 {
+	Camera* pCamera = GetCamera();
 	//ƒƒbƒNƒIƒ“
 	if ((GetJoypadTrigger(JOYKEY_R1) == true) ||
 		OnMouseDown(1))
@@ -1337,6 +1338,7 @@ void LockOnInput()
 		{
 			g_player.bLockOn = false;
 			g_player.bWantLockOn = false;
+			pCamera->posV.y = 200.0f;
 		}
 	}
 }

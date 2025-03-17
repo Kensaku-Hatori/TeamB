@@ -93,6 +93,7 @@ void UpdateLockon(void)
 	Player* pPlayer = GetPlayer();
 	ENEMY* pEnemy = GetEnemy();
 	BOSS* pBoss = GetBoss();
+	Camera* pCamera = GetCamera();				//ƒJƒƒ‰‚Ìî•ñŽæ“¾
 
 	bool bUse = true;
 
@@ -118,6 +119,7 @@ void UpdateLockon(void)
 		if (bUse == false)
 		{
 			pPlayer->bLockOn = false;
+			pCamera->posV.y = 200.0f;
 		}
 
 		g_Lockon.pos = g_LockonEnemy.pos;
@@ -137,6 +139,7 @@ void UpdateLockon(void)
 		if (Dis >= pPlayer->fSightRange * pPlayer->fSightRange * 2)
 		{
 			pPlayer->bLockOn = false;
+			pCamera->posV.y = 200.0f;
 		}
 	}
 	else
