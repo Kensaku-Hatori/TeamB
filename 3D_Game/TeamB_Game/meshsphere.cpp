@@ -230,7 +230,7 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 				}
 			}
 
-			//頂点バッファをアンロック　
+			//頂点バッファをアンロック
 			g_Sphere[nCnt].pVtxBuff->Unlock();
 
 			//インデックスバッファの設定

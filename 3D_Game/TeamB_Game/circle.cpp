@@ -135,8 +135,8 @@ void DrawCircle()
 	//ライトを切る
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
-	//カリングを切る
-	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	//カリングをつける
+	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 	// ALPHAテストの設定
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
@@ -195,11 +195,11 @@ void DrawCircle()
 	//ライトをつける
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 
+	//カリングを切る
+	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
 	// アルファテストを元に戻す
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-
-	//カリングをつける
-	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 //=========================
