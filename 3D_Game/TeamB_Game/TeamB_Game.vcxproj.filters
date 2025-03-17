@@ -163,6 +163,9 @@
     <ClCompile Include="meshSphere.cpp">
       <Filter>O_R\.cpp</Filter>
     </ClCompile>
+    <ClCompile Include="option.cpp">
+      <Filter>K_A\.cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="wall.h">
@@ -335,6 +338,9 @@
     </ClInclude>
     <ClInclude Include="meshSphere.h">
       <Filter>O_R\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="option.h">
+      <Filter>K_A\.h</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

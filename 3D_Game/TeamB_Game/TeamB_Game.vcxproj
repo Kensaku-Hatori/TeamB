@@ -179,6 +179,7 @@
     <ClCompile Include="mission.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="mouse.cpp" />
+    <ClCompile Include="option.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="particleEditer.cpp" />
     <ClCompile Include="pause.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="model.h" />
     <ClInclude Include="mouse.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="option.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="particleEditer.h" />
     <ClInclude Include="pause.h" />

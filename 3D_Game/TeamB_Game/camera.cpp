@@ -218,7 +218,6 @@ void lockOnCamera(void)
 	{
 		Dis = pPlayer->fSightRange * pPlayer->fSightRange * 2;
 	}
-
 	g_camera.fDistance = sqrtf(Dis) * 2.6f;
 
 	g_camera.posRDest.x = pLockon->pos.x + sinf(pPlayer->rot.x) * (pLockon->pos.x - g_camera.posR.x);
