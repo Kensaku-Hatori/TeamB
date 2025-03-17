@@ -14,9 +14,8 @@
 #include "player.h"
 #include "mouse.h"
 
-#define MAX_TEXTURE (3)
 //グローバル変数
-LPDIRECT3DTEXTURE9 g_pTexturetitleinfo[MAX_TEXTURE] = {};
+LPDIRECT3DTEXTURE9 g_pTexturetitleinfo[TITLE_MAX] = {};
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBufftitleinfo = NULL;
 D3DXVECTOR3 g_Selectpos;
 //ロゴ
@@ -24,7 +23,7 @@ LPDIRECT3DTEXTURE9 g_pTexturetitleinfoLogo = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBufftitleinfoLogo = NULL;
 D3DXVECTOR3 g_Logopos;
 
-TITLEINFO g_titleinfoMenu=TITLE_START;
+int g_titleinfoMenu;
 //============
 //初期化処理
 //============
@@ -46,7 +45,7 @@ void InitTitleInfo(void)
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
 	//頂点バッファの生成
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_TEXTURE,
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * TITLE_MAX,
 		                        D3DUSAGE_WRITEONLY,
 		                        FVF_VERTEX_2D,
 		                        D3DPOOL_MANAGED,
@@ -55,7 +54,7 @@ void InitTitleInfo(void)
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBufftitleinfo->Lock(0, 0, (void**)&pVtx, 0);
-	for (int nCnt = 0; nCnt < MAX_TEXTURE; nCnt++)
+	for (int nCnt = 0; nCnt < TITLE_MAX; nCnt++)
 	{//メニュー
 		//頂点座標の設定
 		pVtx[0].pos = D3DXVECTOR3(g_Selectpos.x - TITLESELECT_WIDTH / 2, g_Selectpos.y - TITLESELECT_HEIGHT / 2, 0.0f);
@@ -129,7 +128,7 @@ void InitTitleInfo(void)
 void UninitTitleInfo(void)
 {
 	// テクスチャの破棄
-	for (int nCnt = 0; nCnt < MAX_TEXTURE; nCnt++)
+	for (int nCnt = 0; nCnt < TITLE_MAX; nCnt++)
 	{
 		UninitTexture(g_pTexturetitleinfo[nCnt]);
 	}
@@ -149,108 +148,9 @@ void UpdateTitleInfo(int zDelta)
 
 	Player* pPlayer = GetPlayer();
 
-	VERTEX_2D* pVtx;
-	//頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBufftitleinfo->Lock(0, 0, (void**)&pVtx, 0);
+	UpdateSelect(zDelta);
 
-	//メニューの選択(上下)
-	if (KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true || zDelta > 0)
-	{
-		PlaySound(SOUND_LABEL_SELECT);
-
-		switch (g_titleinfoMenu)
-		{
-		case TITLE_START:
-			g_titleinfoMenu = TITLE_FIN;
-			break;
-		case TITLE_RANK:
-			g_titleinfoMenu = TITLE_START;
-			break;
-		case TITLE_FIN:
-			g_titleinfoMenu = TITLE_RANK;
-			break;
-		default:
-			break;
-		}
-	}
-	else if (KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true || zDelta < 0)
-	{
-		PlaySound(SOUND_LABEL_SELECT);
-
-		switch (g_titleinfoMenu)
-		{
-		case TITLE_START:
-			g_titleinfoMenu = TITLE_RANK;
-			break;
-		case TITLE_RANK:
-			g_titleinfoMenu = TITLE_FIN;
-			break;
-		case TITLE_FIN:
-			g_titleinfoMenu = TITLE_START;
-			break;
-		default:
-			break;
-		}
-	}
-
-	//頂点カラーの設定(明るく)
-	if (g_titleinfoMenu == TITLE_START)
-	{	//STARTにいる場合
-		pVtx[0].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		pVtx[1].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		pVtx[2].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		pVtx[3].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		
-		pVtx[4].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[5].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[6].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[7].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		
-		pVtx[8].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[9].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[10].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[11].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	}
-	else if (g_titleinfoMenu == TITLE_RANK)
-	{	//RULEにいる場合
-		pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-
-		pVtx[4].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		pVtx[5].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		pVtx[6].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		pVtx[7].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-
-		pVtx[8].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[9].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[10].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[11].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-
-	}
-	else if (g_titleinfoMenu == TITLE_FIN)
-	{	//RULEにいる場合
-		pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-
-		pVtx[4].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[5].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[6].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[7].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-
-		pVtx[8].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		pVtx[9].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		pVtx[10].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		pVtx[11].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-
-	}
-
-	//頂点バッファをアンロック
-	g_pVtxBufftitleinfo->Unlock();
-
+	UpdateLighting();
 
 	if ((KeyboardTrigger(DIK_RETURN) == true|| GetJoypadTrigger(JOYKEY_A) == true || OnMouseDown(0) == true) && g_fade == FADE_NONE)
 	{//ENTERが押された
@@ -283,6 +183,8 @@ void UpdateTitleInfo(int zDelta)
 			}
 		}
 	}
+
+	VERTEX_2D* pVtx = NULL;
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBufftitleinfoLogo->Lock(0, 0, (void**)&pVtx, 0);
@@ -324,7 +226,7 @@ void DrawTitleInfo(void)
 	pDevice->SetStreamSource(0, g_pVtxBufftitleinfo, 0, sizeof(VERTEX_2D));
 
 	int nCnt;
-	for (nCnt = 0; nCnt < MAX_TEXTURE; nCnt++)
+	for (nCnt = 0; nCnt < TITLE_MAX; nCnt++)
 	{
 		//テクスチャの設定
 		pDevice->SetTexture(0, g_pTexturetitleinfo[nCnt]);
@@ -339,4 +241,123 @@ void DrawTitleInfo(void)
 	//プレイヤーの描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 
+}
+
+//*********************
+// 下のモードを選べるか
+//*********************
+bool isSelectUpCondition(int zDelta)
+{
+	FADE g_fade;
+	g_fade = GetFade();
+	return KeyboardTrigger(DIK_S) == true || KeyboardTrigger(DIK_DOWN) == true || GetJoypadTrigger(JOYKEY_DOWN) == true || zDelta < 0;
+}
+
+//*********************
+// 上のモードを選べるか
+//*********************
+bool isSelectDownCondition(int zDelta)
+{
+	FADE g_fade;
+	g_fade = GetFade();
+	return KeyboardTrigger(DIK_W) == true || KeyboardTrigger(DIK_UP) == true || GetJoypadTrigger(JOYKEY_UP) == true || zDelta > 0;
+}
+
+//*********************************
+// 引数が現在のモードと同じだったら
+//*********************************
+bool isTitleMode(TITLEINFO TitleType)
+{
+	return g_titleinfoMenu == TitleType;
+}
+
+//*******************************
+// 引数が現在のモード以下だったら
+//*******************************
+bool isLessMode(TITLEINFO TitleType)
+{
+	return g_titleinfoMenu < TitleType;
+}
+
+//*******************************
+// 引数が現在のモード以上だったら
+//*******************************
+bool isGreaterMode(TITLEINFO TitleType)
+{
+	return g_titleinfoMenu > TitleType;
+}
+
+//*******************
+// 選んでる項目を更新
+//*******************
+void UpdateSelect(int zDelta)
+{
+	//メニューの選択(上下)
+	if (isSelectDownCondition(zDelta) == true)
+	{
+		PlaySound(SOUND_LABEL_SELECT);
+
+		g_titleinfoMenu--;
+		if (isLessMode(TITLE_START) == true)
+		{
+			g_titleinfoMenu = TITLE_FIN;
+		}
+	}
+	else if (isSelectUpCondition(zDelta) == true)
+	{
+		PlaySound(SOUND_LABEL_SELECT);
+
+		g_titleinfoMenu++;
+		if (isGreaterMode(TITLE_FIN) == true)
+		{
+			g_titleinfoMenu = TITLE_START;
+		}
+	}
+}
+
+//*****************************
+// 選んでる項目を目立たせる処理
+//*****************************
+void UpdateLighting()
+{
+	VERTEX_2D* pVtx = NULL;
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	g_pVtxBufftitleinfo->Lock(0, 0, (void**)&pVtx, 0);
+
+	g_Selectpos = D3DXVECTOR3(640.0f, 360.0f, 0.0f);
+
+	for (int TypeCount = 0; TypeCount < TITLE_MAX; TypeCount++)
+	{
+		if (isTitleMode((TITLEINFO)TypeCount) == true)
+		{
+			//頂点座標の設定
+			pVtx[0].pos = D3DXVECTOR3(g_Selectpos.x - TITLESELECT_WIDTH / 2 * ZOOM_SELECT, g_Selectpos.y - TITLESELECT_HEIGHT / 2 * ZOOM_SELECT, 0.0f);
+			pVtx[1].pos = D3DXVECTOR3(g_Selectpos.x + TITLESELECT_WIDTH / 2 * ZOOM_SELECT, g_Selectpos.y - TITLESELECT_HEIGHT / 2 * ZOOM_SELECT, 0.0f);
+			pVtx[2].pos = D3DXVECTOR3(g_Selectpos.x - TITLESELECT_WIDTH / 2 * ZOOM_SELECT, g_Selectpos.y + TITLESELECT_HEIGHT / 2 * ZOOM_SELECT, 0.0f);
+			pVtx[3].pos = D3DXVECTOR3(g_Selectpos.x + TITLESELECT_WIDTH / 2 * ZOOM_SELECT, g_Selectpos.y + TITLESELECT_HEIGHT / 2 * ZOOM_SELECT, 0.0f);
+
+			pVtx[0].col = D3DCOLOR_RGBA(255, 0, 0, 255);
+			pVtx[1].col = D3DCOLOR_RGBA(255, 0, 0, 255);
+			pVtx[2].col = D3DCOLOR_RGBA(255, 0, 0, 255);
+			pVtx[3].col = D3DCOLOR_RGBA(255, 0, 0, 255);
+
+		}
+		else
+		{
+			//頂点座標の設定
+			pVtx[0].pos = D3DXVECTOR3(g_Selectpos.x - TITLESELECT_WIDTH / 2, g_Selectpos.y - TITLESELECT_HEIGHT / 2, 0.0f);
+			pVtx[1].pos = D3DXVECTOR3(g_Selectpos.x + TITLESELECT_WIDTH / 2, g_Selectpos.y - TITLESELECT_HEIGHT / 2, 0.0f);
+			pVtx[2].pos = D3DXVECTOR3(g_Selectpos.x - TITLESELECT_WIDTH / 2, g_Selectpos.y + TITLESELECT_HEIGHT / 2, 0.0f);
+			pVtx[3].pos = D3DXVECTOR3(g_Selectpos.x + TITLESELECT_WIDTH / 2, g_Selectpos.y + TITLESELECT_HEIGHT / 2, 0.0f);
+
+			pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		}
+		g_Selectpos.y += 120.0f;
+		pVtx += 4;
+	}
+	//頂点バッファをアンロック
+	g_pVtxBufftitleinfo->Unlock();
 }

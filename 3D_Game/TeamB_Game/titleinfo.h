@@ -16,6 +16,7 @@
 #define TITLELOGO_WIDTH (600)
 
 #define LOGO_END_Y (200)
+#define ZOOM_SELECT (float)(1.3f)
 
 //ポーズメニュー
 typedef enum
@@ -32,4 +33,14 @@ void UninitTitleInfo(void);
 void UpdateTitleInfo(int zDelta);
 void DrawTitleInfo(void);
 
+// 条件式の関数化
+bool isSelectUpCondition();
+bool isSelectDownCondition();
+bool isTitleMode(TITLEINFO TitleType);
+bool isLessMode(TITLEINFO TitleType);
+bool isGreaterMode(TITLEINFO TitleType);
+
+// 実作業の関数化
+void UpdateSelect(int zDelta);
+void UpdateLighting();
 #endif
