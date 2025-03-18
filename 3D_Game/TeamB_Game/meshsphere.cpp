@@ -114,7 +114,7 @@ void DrawSphere(void)
 			// 頂点フォーマットの設定
 			pDevice->SetFVF(FVF_VERTEX_3D);
 
-			//テクスチャのポインタを取得
+			// テクスチャのポインタを取得
 			LPDIRECT3DTEXTURE9 pTexture = GetTexture2(g_Sphere[nCnt].textype);
 
 			// テクスチャの設定
@@ -217,6 +217,7 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 					//テクスチャ座標の設定
 					pVtx[indx].tex = D3DXVECTOR2((1.0f / g_Sphere[nCnt].DiviX) * nCntX, (1.0f / g_Sphere[nCnt].DiviY) * nCntY);
 
+					// 0番目だったら
 					if (indx == 0)
 					{
 						//テクスチャ座標の設定
@@ -283,6 +284,7 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 						pIdx += 2;
 						Indx += 2;
 					}
+
 					assert(Indx <= indexNum);
 					assert(nCntY >= 0 && nCntY <= g_Sphere[nCnt].DiviY);
 				}
