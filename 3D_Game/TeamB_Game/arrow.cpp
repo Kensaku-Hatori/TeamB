@@ -188,13 +188,13 @@ void SetArrow(D3DXVECTOR3 DestPos, D3DXVECTOR3 pos, D3DXCOLOR col, float fWidth,
 			}
 
 			//各種設定
-			g_Arrow[nCnt].Destpos = DestPos;
-			g_Arrow[nCnt].pos = pos;
-			g_Arrow[nCnt].col = col;
-			g_Arrow[nCnt].fWidth = fWidth;
-			g_Arrow[nCnt].fHeight = fHeight;
-			g_Arrow[nCnt].fRadius = fRadius;
-			g_Arrow[nCnt].bUse = true;
+			g_Arrow[nCnt].Destpos = DestPos;			// 目的地
+			g_Arrow[nCnt].pos = pos;					// 原点
+			g_Arrow[nCnt].col = col;					// 色
+			g_Arrow[nCnt].fWidth = fWidth;				// 幅
+			g_Arrow[nCnt].fHeight = fHeight;			// 高さ
+			g_Arrow[nCnt].fRadius = fRadius;			// 半径
+			g_Arrow[nCnt].bUse = true;					// 使用している状態にする
 
 			//向きの設定------------------------------------------------------------
 			D3DXVECTOR3 vec = g_Arrow[nCnt].Destpos - g_Arrow[nCnt].pos;

@@ -35,7 +35,7 @@ void InitSphere(void)
 		g_Sphere[nCnt].bHead = true;									// 法線を表に向ける
 		g_Sphere[nCnt].bUse = false;									// 使用していない状態にする
 	}
-	g_pTexture = NULL;													//テクスチャポインタ
+	g_pTexture = NULL;													// テクスチャポインタ
 }
 
 //======================================
@@ -87,8 +87,8 @@ void DrawSphere(void)
 	// 計算用マトリックス
 	D3DXMATRIX mtxRot, mtxTrans;
 
-	////ライトを切る
-	//pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+	// ライトを切る
+	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	for (int nCnt = 0; nCnt < MAX_MESHSPHERE; nCnt++)
 	{
@@ -114,7 +114,7 @@ void DrawSphere(void)
 			// 頂点フォーマットの設定
 			pDevice->SetFVF(FVF_VERTEX_3D);
 
-			//テクスチャのポインタを取得
+			// テクスチャのポインタを取得
 			LPDIRECT3DTEXTURE9 pTexture = GetTexture2(g_Sphere[nCnt].textype);
 
 			// テクスチャの設定
@@ -123,6 +123,7 @@ void DrawSphere(void)
 			// ポリゴンを描画
 			pDevice->DrawPrimitive(D3DPT_TRIANGLEFAN, 0, g_Sphere[nCnt].DiviX);
 
+			// 二段以上なら
 			if (g_Sphere[nCnt].DiviY >= 2)
 			{
 				// インデックスバッファをデータストリームに設定
@@ -133,8 +134,8 @@ void DrawSphere(void)
 			}
 		}
 	}
-	////ライトをつける
-	//pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+	// ライトをつける
+	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 }
 
 //======================================
@@ -166,9 +167,6 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 
 			g_Sphere[nCnt].nMaxVtx = (g_Sphere[nCnt].DiviX + 1) * (g_Sphere[nCnt].DiviY) + 1;// 頂点数
 
-			////テクスチャの設定
-			//SetSphereTexture(nCnt);
-
 			//頂点バッファの生成
 			pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) *g_Sphere[nCnt].nMaxVtx,
 				D3DUSAGE_WRITEONLY,
@@ -186,14 +184,15 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 				{
 					int i = nCntX;
 
+					// 半球ではないなら
 					if (g_Sphere[nCnt].bHead == false)
 					{
 						i = g_Sphere[nCnt].DiviX - nCntX;
 					}
 				
 					//角度格納
-					float fAngle = ((D3DX_PI * 2 / g_Sphere[nCnt].DiviX) * i);						//y軸
-					float fAngle2 = (D3DX_PI / g_Sphere[nCnt].DiviY) * (g_Sphere[nCnt].DiviY - nCntY);				//z軸
+					float fAngle = ((D3DX_PI * 2 / g_Sphere[nCnt].DiviX) * i);									//y軸
+					float fAngle2 = (D3DX_PI / g_Sphere[nCnt].DiviY) * (g_Sphere[nCnt].DiviY - nCntY);			//z軸
 
 					//半球なら
 					if (g_Sphere[nCnt].bHalf == true)
@@ -201,7 +200,7 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 						fAngle2 = (((D3DX_PI * 0.5f) / g_Sphere[nCnt].DiviY)* nCntY);
 					}
 
-					//頂点の設定
+					//頂点の位置の設定
 					pVtx[indx].pos.x = (float)g_Sphere[nCnt].fRadius * sinf(fAngle2) * sinf(fAngle);
 					pVtx[indx].pos.y = (float)g_Sphere[nCnt].fRadius * cosf(fAngle2);
 					pVtx[indx].pos.z = (float)g_Sphere[nCnt].fRadius * sinf(fAngle2) * cosf(fAngle);
@@ -218,9 +217,17 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 					//テクスチャ座標の設定
 					pVtx[indx].tex = D3DXVECTOR2((1.0f / g_Sphere[nCnt].DiviX) * nCntX, (1.0f / g_Sphere[nCnt].DiviY) * nCntY);
 
+					// 0番目だったら
+					if (indx == 0)
+					{
+						//テクスチャ座標の設定
+						pVtx[indx].tex = D3DXVECTOR2((1.0f / g_Sphere[nCnt].DiviX) * (g_Sphere[nCnt].DiviX * 0.5f), 0.0f);
+					}
+
 					//頂点インデックスを進める
 					indx++;
 					assert(indx >= 0 && indx <= g_Sphere[nCnt].nMaxVtx);
+
 					//頂点が0番目だったなら
 					if (indx == 1)
 					{
@@ -254,6 +261,7 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 
 				int nCntX = 0;
 				int Indx = 0;
+
 				for (int nCntY = 0; nCntY < g_Sphere[nCnt].DiviY-1; nCntY++)
 				{
 					for (nCntX = g_Sphere[nCnt].DiviX; nCntX >= 0; nCntX--)
@@ -276,6 +284,7 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 						pIdx += 2;
 						Indx += 2;
 					}
+
 					assert(Indx <= indexNum);
 					assert(nCntY >= 0 && nCntY <= g_Sphere[nCnt].DiviY);
 				}
@@ -300,9 +309,9 @@ void SetSpherePos(int indx, D3DXVECTOR3 pos)
 	g_Sphere[indx].pos = pos;
 }
 
-//===================
+//======================================
 // メッシュ壁のテクスチャ設定
-//===================
+//======================================
 void SetSphereTexture(int indx)
 {
 	//テクスチャのポインタを取得
@@ -319,5 +328,6 @@ void SetSphereTexture(int indx)
 //======================================
 void DeleteSphere(int indx)
 {
+	//使用していない状態にする
 	g_Sphere[indx].bUse = false;
 }
