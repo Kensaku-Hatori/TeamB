@@ -23,6 +23,7 @@
 #include "pause.h"
 #include <crtdbg.h>
 #include <stdio.h>
+#include "option.h"
 
 //ƒOƒ[ƒoƒ‹•Ï”éŒ¾
 LPDIRECT3D9 g_pD3D = NULL;
@@ -214,6 +215,10 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		if(state == GAMESTATE_PAUSE)
 		{
 			UpdatePause(zDelta);
+		}
+		else if (state == GAMESTATE_OPTION)
+		{
+			SelectOption(zDelta);
 		}
 	}
 		break;
