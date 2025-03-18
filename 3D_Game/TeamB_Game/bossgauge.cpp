@@ -353,24 +353,27 @@ void RedBossgaugeDeff(void)
 {
 	BOSS* pBoss = GetBoss();
 
-	//頂点情報へのポインタ
-	VERTEX_2D* pVtx;
-	//頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffBossRedGauge->Lock(0, 0, (void**)&pVtx, 0);
-
-	if (g_BossGaugeSize.x < g_BossRedGaugeSize.x)
+	if (g_pVtxBuffBossRedGauge != NULL)
 	{
-		g_BossRedGaugeSize.x -= 0.5f;
-		if (g_BossGaugeSize.x > g_BossRedGaugeSize.x)
+		//頂点情報へのポインタ
+		VERTEX_2D* pVtx = NULL;
+		//頂点バッファをロックし、頂点情報へのポインタを取得
+		g_pVtxBuffBossRedGauge->Lock(0, 0, (void**)&pVtx, 0);
+
+		if (g_BossGaugeSize.x < g_BossRedGaugeSize.x)
 		{
-			g_BossRedGaugeSize.x = g_BossGaugeSize.x;
+			g_BossRedGaugeSize.x -= 0.5f;
+			if (g_BossGaugeSize.x > g_BossRedGaugeSize.x)
+			{
+				g_BossRedGaugeSize.x = g_BossGaugeSize.x;
+			}
 		}
+
+		//頂点座標の設定
+		pVtx[1].pos = D3DXVECTOR3(g_BossGauge.x + g_BossRedGaugeSize.x, g_BossGauge.y - g_BossRedGaugeSize.y, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(g_BossGauge.x + g_BossRedGaugeSize.x, g_BossGauge.y + g_BossRedGaugeSize.y, 0.0f);
+
+		//頂点バッファをアンロック
+		g_pVtxBuffBossRedGauge->Unlock();
 	}
-
-	//頂点座標の設定
-	pVtx[1].pos = D3DXVECTOR3(g_BossGauge.x + g_BossRedGaugeSize.x, g_BossGauge.y - g_BossRedGaugeSize.y, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(g_BossGauge.x + g_BossRedGaugeSize.x, g_BossGauge.y + g_BossRedGaugeSize.y, 0.0f);
-
-	//頂点バッファをアンロック
-	g_pVtxBuffBossRedGauge->Unlock();
 }

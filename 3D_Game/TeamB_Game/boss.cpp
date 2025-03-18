@@ -84,13 +84,14 @@ void UpdateBoss(void)
 {
 	Player* pPlayer = GetPlayer();
 	Skill* pSkill = GetSkill();
+	MODE Mode = GetMode();
 
 	if (g_Boss.bUse == true)
 	{
 		Routine();
 		EndAction();
 		UpdateMiniMapEnemy(g_Boss.MiniMapIndx, g_Boss.Object.Pos);
-		if (g_Boss.BossAi.bFinishAction == true)
+		if (g_Boss.BossAi.bFinishAction == true && Mode != MODE_BOSSMOVIE)
 		{
 			// çsìÆÇÃçXêV
 			UpdateBossAction();

@@ -10,6 +10,7 @@
 #define CAMERA_DISTANCESPEED (float)(0.1f)
 #define CAMERASHAKE_VALUE (20)
 #include "main.h"
+#include "cameraanim.h"
 
 typedef struct
 {
@@ -23,6 +24,7 @@ typedef struct
 	D3DXMATRIX mtxProjection;//プロジェクションマトリックス
 	D3DXMATRIX mtxView;//ビューマトリックス
 	D3DXVECTOR3 rot;//向き
+	CameraAnim Anim;
 	int ShakeCount;
 	float fDistance;//視点から注視点の距離
 	bool bResete;
@@ -49,7 +51,13 @@ bool isGreaterCount(int Counter);
 void SetShake(int ShakeCount);
 void UpdateShakeCounter();
 void UpdateShake();
+void UpdateGameCamera();
 void SetCameraDistance(float Distance);
 void SetCameraRotX(float Rot);
 void SetCameraRotY(float Rot);
+void CameraMove();
+void SetEditerInfo(CameraKey*Out,int AnimType,int KeyCount,int Frame);
+void UpdateMovie();
+void SetNumKey(int AnimCount, int NumKey);
+void SetCameraWorkInfo(D3DXVECTOR3 PosV, D3DXVECTOR3 PosR, D3DXVECTOR3 Rot,int Frame, int AnimCount, int KeyCount);
 #endif

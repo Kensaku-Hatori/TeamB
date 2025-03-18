@@ -16,6 +16,10 @@
 //グローバル変数
 Camera g_camera;
 
+void UpdateGameCamera();
+void UpdateSequenceCamera();
+void UpdateMousePosEditer();
+void UpdateCameraPositionR();
 //=================
 // カメラの初期化
 //=================
@@ -58,101 +62,10 @@ void UpdateCamera(void)
 
 	ResetCameraPos(D3DXVECTOR3(350.0f, 200.0f, 1245.0f), pPlayer->pos);
 
-	// 角度の近道
-	if (g_camera.rot.y >= D3DX_PI)
-	{
-		g_camera.rot.y -= D3DX_PI * 2.0f;
-	}
-	else if (g_camera.rot.y <= -D3DX_PI)
-	{
-		g_camera.rot.y += D3DX_PI * 2.0f;
-	}
-	// 角度の近道
-	if (g_camera.rot.x >= D3DX_PI)
-	{
-		g_camera.rot.x -= D3DX_PI * 2.0f;
-	}
-	else if ((g_camera.rot.x) <= -D3DX_PI)
-	{
-		g_camera.rot.x += D3DX_PI * 2.0f;
-	}
-
-	//プレイヤーがロックオンしているなら
-	if (pPlayer->bLockOn == true)
-	{
-		lockOnCamera();
-	}
-	else
-	{
-		g_camera.fDistance = sqrtf(((0.0f - 0.0f) * (0.0f - 0.0f))
-			+ ((200.0f - 0.0f) * (200.0f - 0.0f))
-			+ ((-300.0f - 0.0f) * (-300.0f - 0.0f)));
-
-		g_camera.posRDest.x = pPlayer->pos.x + sinf(pPlayer->rot.x) * (pPlayer->pos.x - g_camera.posR.x);
-		g_camera.posRDest.y = pPlayer->pos.y;
-		g_camera.posRDest.z = pPlayer->pos.z + cosf(pPlayer->rot.z) * (pPlayer->pos.z - g_camera.posR.z);
-
-		g_camera.posVDest.x = pPlayer->pos.x + sinf(g_camera.rot.y - D3DX_PI) * g_camera.fDistance;
-		g_camera.posVDest.z = pPlayer->pos.z + cosf(g_camera.rot.y - D3DX_PI) * g_camera.fDistance;
-	}
-
-	g_camera.posR.x += (g_camera.posRDest.x - g_camera.posR.x) * 0.08f;
-	g_camera.posR.y += (g_camera.posRDest.y - g_camera.posR.y) * 1.0f;
-	g_camera.posR.z += (g_camera.posRDest.z - g_camera.posR.z) * 0.08f;
-
-	g_camera.posV.x += (g_camera.posVDest.x - g_camera.posV.x) * 0.08f;
-	g_camera.posV.z += (g_camera.posVDest.z - g_camera.posV.z) * 0.08f;
-
-
 	//タイトルとリザルトの時
 	if (pMode == MODE_TITLE || pMode == MODE_RESULT)
 	{//カメラの自動回転
-		pPlayer->pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//プレイヤーの位置を０に
-
-		//回転
-		g_camera.rot.y += 0.01f;
-	}
-	//それ以外
-	else
-	{
-#ifdef _DEBUG
-
-		//視点の上下
-		if (GetKeyboardPress(DIK_UP) == true)
-		{//上
-			if (g_camera.posV.y <= 500)
-			{
-				g_camera.posV.y += 5;
-			}
-		}
-		if (GetKeyboardPress(DIK_DOWN) == true)
-		{//下
-			if (g_camera.posV.y >= -500)
-			{
-				g_camera.posV.y -= 5;
-			}
-		}
-#endif
-
-		if (pPlayer->bLockOn == false)
-		{
-			UpdateCameratoMousePos();
-			UpdateCameratoJoyPadPos();
-		}
-		else
-		{
-			SetCursorPos(640, 360);
-		}
-
-		if (isShake() == false)
-		{
-			g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
-			g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
-		}
-		else
-		{
-			UpdateShakeCounter();
-		}
+		UpdateSequenceCamera();
 	}
 }
 
@@ -369,4 +282,245 @@ void SetCameraRotX(float Rot)
 void SetCameraRotY(float Rot)
 {
 	g_camera.rot.y = Rot;
+}
+
+void UpdateGameCamera()
+{
+	Player* pPlayer = GetPlayer();				//プレイヤー
+	
+// 角度の近道
+	if (g_camera.rot.y >= D3DX_PI)
+	{
+		g_camera.rot.y -= D3DX_PI * 2.0f;
+	}
+	else if (g_camera.rot.y <= -D3DX_PI)
+	{
+		g_camera.rot.y += D3DX_PI * 2.0f;
+	}
+	// 角度の近道
+	if (g_camera.rot.x >= D3DX_PI)
+	{
+		g_camera.rot.x -= D3DX_PI * 2.0f;
+	}
+	else if ((g_camera.rot.x) <= -D3DX_PI)
+	{
+		g_camera.rot.x += D3DX_PI * 2.0f;
+	}
+
+	//プレイヤーがロックオンしているなら
+	if (pPlayer->bLockOn == true)
+	{
+		lockOnCamera();
+	}
+	else
+	{
+		g_camera.fDistance = sqrtf(((0.0f - 0.0f) * (0.0f - 0.0f))
+			+ ((200.0f - 0.0f) * (200.0f - 0.0f))
+			+ ((-300.0f - 0.0f) * (-300.0f - 0.0f)));
+
+		g_camera.posRDest.x = pPlayer->pos.x + sinf(pPlayer->rot.x) * (pPlayer->pos.x - g_camera.posR.x);
+		g_camera.posRDest.y = pPlayer->pos.y;
+		g_camera.posRDest.z = pPlayer->pos.z + cosf(pPlayer->rot.z) * (pPlayer->pos.z - g_camera.posR.z);
+
+		g_camera.posVDest.x = pPlayer->pos.x + sinf(g_camera.rot.y - D3DX_PI) * g_camera.fDistance;
+		g_camera.posVDest.z = pPlayer->pos.z + cosf(g_camera.rot.y - D3DX_PI) * g_camera.fDistance;
+	}
+
+	g_camera.posR.x += (g_camera.posRDest.x - g_camera.posR.x) * 0.08f;
+	g_camera.posR.y += (g_camera.posRDest.y - g_camera.posR.y) * 1.0f;
+	g_camera.posR.z += (g_camera.posRDest.z - g_camera.posR.z) * 0.08f;
+
+	g_camera.posV.x += (g_camera.posVDest.x - g_camera.posV.x) * 0.08f;
+	g_camera.posV.z += (g_camera.posVDest.z - g_camera.posV.z) * 0.08f;
+
+#ifdef _DEBUG
+
+	//視点の上下
+	if (GetKeyboardPress(DIK_UP) == true)
+	{//上
+		if (g_camera.posV.y <= 500)
+		{
+			g_camera.posV.y += 5;
+		}
+	}
+	if (GetKeyboardPress(DIK_DOWN) == true)
+	{//下
+		if (g_camera.posV.y >= -500)
+		{
+			g_camera.posV.y -= 5;
+		}
+	}
+#endif
+
+	if (pPlayer->bLockOn == false)
+	{
+		UpdateCameratoMousePos();
+		UpdateCameratoJoyPadPos();
+	}
+	else
+	{
+		SetCursorPos(640, 360);
+	}
+
+	if (isShake() == false)
+	{
+		g_camera.posV.x = g_camera.posR.x - sinf(g_camera.rot.y) * g_camera.fDistance;
+		g_camera.posV.z = g_camera.posR.z - cosf(g_camera.rot.y) * g_camera.fDistance;
+	}
+	else
+	{
+		UpdateShakeCounter();
+	}
+}
+void UpdateSequenceCamera()
+{
+	Player* pPlayer = GetPlayer();				//プレイヤー
+
+	pPlayer->pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);//プレイヤーの位置を０に
+
+	UpdateCameraWork(&g_camera.Anim, &g_camera.posVDest, &g_camera.posRDest, &g_camera.rot);
+
+	g_camera.posR.x += (g_camera.posRDest.x - g_camera.posR.x) * 1.0f;
+	g_camera.posR.y += (g_camera.posRDest.y - g_camera.posR.y) * 1.0f;
+	g_camera.posR.z += (g_camera.posRDest.z - g_camera.posR.z) * 1.0f;
+
+	g_camera.posV.x += (g_camera.posVDest.x - g_camera.posV.x) * 1.0f;
+	g_camera.posV.y += (g_camera.posVDest.y - g_camera.posV.y) * 1.0f;
+	g_camera.posV.z += (g_camera.posVDest.z - g_camera.posV.z) * 1.0f;
+}
+
+void CameraMove()
+{
+	ShowCursor(TRUE);
+	const float EditerSpeed = 5.0f;
+	float fAngle = g_camera.rot.y;
+	D3DXVECTOR3 Move;
+	if (OnMousePress(1) == true)
+	{
+		UpdateMousePosEditer();
+	}
+	else
+	{
+		if (GetKeyboardPress(DIK_A) == true)
+		{
+			if (GetKeyboardPress(DIK_W) == true)
+			{
+				fAngle += -D3DX_PI * 0.25f;
+			}
+			else if (GetKeyboardPress(DIK_S) == true)
+			{
+				fAngle += -D3DX_PI * 0.75f;
+			}
+			else
+			{
+				fAngle += -D3DX_PI * 0.5f;
+			}
+			Move.x = sinf(fAngle) * EditerSpeed;
+			Move.y = 0.0f;
+			Move.z = cosf(fAngle) * EditerSpeed;
+		}
+		else if (GetKeyboardPress(DIK_D) == true)
+		{
+			if (GetKeyboardPress(DIK_W) == true)
+			{
+				fAngle -= -D3DX_PI * 0.25f;
+			}
+			else if (GetKeyboardPress(DIK_S) == true)
+			{
+				fAngle -= -D3DX_PI * 0.75f;
+			}
+			else
+			{
+				fAngle -= -D3DX_PI * 0.5f;
+			}
+			Move.x = sinf(fAngle) * EditerSpeed;
+			Move.y = 0.0f;
+			Move.z = cosf(fAngle) * EditerSpeed;
+		}
+		else if (GetKeyboardPress(DIK_W) == true)
+		{
+			Move.x = sinf(fAngle) * EditerSpeed;
+			Move.y = 0.0f;
+			Move.z = cosf(fAngle) * EditerSpeed;
+		}
+		else if (GetKeyboardPress(DIK_S) == true)
+		{
+			fAngle += D3DX_PI;
+			Move.x = sinf(fAngle) * EditerSpeed;
+			Move.y = 0.0f;
+			Move.z = cosf(fAngle) * EditerSpeed;
+		}
+		else if (GetKeyboardPress(DIK_Y) == true)
+		{
+			Move.x = 0.0f;
+			Move.y = 1.0f;
+			Move.z = 0.0f;
+		}
+		else if (GetKeyboardPress(DIK_N) == true)
+		{
+			Move.x = 0.0f;
+			Move.y = -1.0f;
+			Move.z = 0.0f;
+		}
+		else
+		{
+			Move.x = 0.0f;
+			Move.y = 0.0f;
+			Move.z = 0.0f;
+		}
+		g_camera.posV.x += Move.x;
+		g_camera.posV.y += Move.y;
+		g_camera.posV.z += Move.z;
+
+		g_camera.posR.x += Move.x;
+		g_camera.posR.y += Move.y;
+		g_camera.posR.z += Move.z;
+	}
+}
+
+void UpdateMousePosEditer()
+{
+	D3DXVECTOR2 Diff;
+	Diff = GetMouseVelocity() - GetMouseVelocityOld();
+
+	g_camera.rot.x += Diff.y * 0.001f;
+	g_camera.rot.y += Diff.x * 0.001f;
+	UpdateCameraPositionR();
+}
+void UpdateCameraPositionR()
+{
+	g_camera.posR.x = g_camera.posV.x + cosf(g_camera.rot.x) * sinf(g_camera.rot.y) * -g_camera.fDistance;
+	g_camera.posR.y = g_camera.posV.y + sinf(g_camera.rot.x) * -g_camera.fDistance;
+	g_camera.posR.z = g_camera.posV.z + cosf(g_camera.rot.x) * cosf(g_camera.rot.y) * -g_camera.fDistance;
+}
+void SetEditerInfo(CameraKey* Out, int AnimType, int KeyCount, int Frame)
+{
+	Out->PosV = g_camera.posV;
+	Out->PosR = g_camera.posR;
+	Out->nFrame = Frame;
+	Out->Rot = g_camera.rot;
+}
+
+void UpdateMovie()
+{
+	UpdateCameraWork(&g_camera.Anim, &g_camera.posVDest, &g_camera.posRDest, &g_camera.rot);
+
+	g_camera.posR.x += (g_camera.posRDest.x - g_camera.posR.x) * 1.0f;
+	g_camera.posR.y += (g_camera.posRDest.y - g_camera.posR.y) * 1.0f;
+	g_camera.posR.z += (g_camera.posRDest.z - g_camera.posR.z) * 1.0f;
+
+	g_camera.posV.x += (g_camera.posVDest.x - g_camera.posV.x) * 1.0f;
+	g_camera.posV.y += (g_camera.posVDest.y - g_camera.posV.y) * 1.0f;
+	g_camera.posV.z += (g_camera.posVDest.z - g_camera.posV.z) * 1.0f;
+}
+void SetNumKey(int AnimCount, int NumKey)
+{
+	g_camera.Anim.Anim[AnimCount].nNumKey = NumKey;
+}
+void SetCameraWorkInfo(D3DXVECTOR3 PosV, D3DXVECTOR3 PosR, D3DXVECTOR3 Rot, int Frame, int AnimCount, int KeyCount)
+{
+	g_camera.Anim.Anim[AnimCount].KeyInfo[KeyCount].PosV = PosV;
+	g_camera.Anim.Anim[AnimCount].KeyInfo[KeyCount].PosR = PosR;
+	g_camera.Anim.Anim[AnimCount].KeyInfo[KeyCount].Rot = Rot;
+	g_camera.Anim.Anim[AnimCount].KeyInfo[KeyCount].nFrame = Frame;
 }

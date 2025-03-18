@@ -261,6 +261,10 @@ void UpdatePlayer(void)
 		}
 		else if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_8))
 		{
+			SetFade(MODE_BOSSMOVIE);
+		}
+		else if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_9))
+		{
 			SetFade(MODE_STAGEFOUR);
 		}
 		if (KeyboardTrigger(DIK_3) == true)
