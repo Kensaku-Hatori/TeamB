@@ -167,7 +167,7 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 			g_Sphere[nCnt].nMaxVtx = (g_Sphere[nCnt].DiviX + 1) * (g_Sphere[nCnt].DiviY) + 1;// 頂点数
 
 			//テクスチャの設定
-			SetSphereTexture(g_Sphere[nCnt].textype);
+			SetSphereTexture(nCnt);
 
 			//頂点バッファの生成
 			pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) *g_Sphere[nCnt].nMaxVtx,
@@ -261,6 +261,7 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 
 				int nCntX = 0;
 				int Indx = 0;
+
 				for (int nCntY = 0; nCntY < g_Sphere[nCnt].DiviY-1; nCntY++)
 				{
 					for (nCntX = g_Sphere[nCnt].DiviX; nCntX >= 0; nCntX--)
@@ -326,5 +327,6 @@ void SetSphereTexture(int indx)
 //======================================
 void DeleteSphere(int indx)
 {
+	//使用していない状態にする
 	g_Sphere[indx].bUse = false;
 }
