@@ -17,6 +17,7 @@ typedef enum
 	GAMESTATE_NONE = 0,	//何もしていない状態
 	GAMESTATE_NORMAL,	//通常状態（ゲームプレイ中）
 	GAMESTATE_PAUSE,	//
+	GAMESTATE_OPTION,	//
 	GAMESTATE_CLEAR,	//クリア
 	GAMESTATE_GAMEOVER,	//ゲームオーバー
 	GAMESTATE_EFFECTEDITER,	//ゲームオーバー
@@ -43,5 +44,6 @@ void SetGameState(GAMESTATE state);
 GAMESTATE GetGameSatate(void);
 void SetEnablePause(bool bPause);
 void SetEnableTutorial(bool bTutorial);
+void SetEnableOption(bool bOption);
 
 #endif

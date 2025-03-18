@@ -12,6 +12,7 @@
 #include "mouse.h"
 #include "lockon.h"
 #include "boss.h"
+#include "option.h"
 
 //ƒOƒ[ƒoƒ‹•Ï”
 Camera g_camera;
@@ -74,13 +75,15 @@ void UpdateCamera(void)
 //=============================
 void UpdateCameratoMousePos(void)
 {
+	Option* pOption = GetOption();
+
 	static POINT SetMousePos = { (LONG)SCREEN_WIDTH / (LONG)2.0f,(LONG)SCREEN_HEIGHT / (LONG)2.0f };
 	POINT MousePos;
 	GetCursorPos(&MousePos);
 	D3DXVECTOR2 DiffMouse = D3DXVECTOR2((FLOAT)MousePos.x - (FLOAT)SetMousePos.x,
 		(FLOAT)MousePos.y - (FLOAT)SetMousePos.y);
 	
-	const FLOAT MouseSensitivity = 0.0008f;
+	const FLOAT MouseSensitivity = pOption->cameraSP / 1000;
 	DiffMouse *= MouseSensitivity;
 	g_camera.rot.x += DiffMouse.y;
 	g_camera.rot.y += DiffMouse.x;
@@ -93,6 +96,7 @@ void UpdateCameratoMousePos(void)
 //====================================
 void UpdateCameratoJoyPadPos(void)
 {
+	Option* pOption = GetOption();
 	XINPUT_STATE* pStick = GetJoyStickAngle();
 	if (GetJoyStickR() == true)
 	{
@@ -106,11 +110,11 @@ void UpdateCameratoJoyPadPos(void)
 		{
 			if (pStick->Gamepad.sThumbRX < -DeadZone)
 			{
-				g_camera.rot.y -= 0.03f;
+				g_camera.rot.y -= pOption->cameraSP / 10;
 			}
 			else if (pStick->Gamepad.sThumbRX > DeadZone)
 			{
-				g_camera.rot.y += 0.03f;
+				g_camera.rot.y += pOption->cameraSP / 10;
 			}
 		}
 	}

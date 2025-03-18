@@ -43,14 +43,14 @@
 #include "buttonUI.h"
 #include "meshsphere.h"
 #include "cameraediter.h"
-
+#include "option.h"
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
 int g_nCounterGameState = 0;
 bool g_bPause = false;  //ポーズ中かどうか
 bool bAbo = false;//全滅フラグ
 bool g_bTutorial = true;
-
+bool g_bOption = false;
 bool isState(GAMESTATE State);
 bool isUpdateGameCondition();
 
@@ -154,6 +154,8 @@ void InitGame(void)
 
 	InitTutorial();
 
+	InitOption();
+
 	//プレイヤーの情報取得
 	Player* pPlayer = GetPlayer();
 
@@ -164,6 +166,7 @@ void InitGame(void)
 
 	g_bPause = false;					//ポーズしていない状態へ
 	bAbo = false;						//全滅していない状態へ
+	g_bOption = false;
 
 	if (Mode == MODE_STAGEONE)
 	{
@@ -270,6 +273,8 @@ void UninitGame(void)
 	UninitSphere();
 
 	UninitTutorial();
+
+	UninitOption();
 }
 
 //===========
@@ -283,6 +288,10 @@ void UpdateGame(void)
 	{//ポーズキーが押された
 		PlaySound(SOUND_LABEL_DESICION);
 		g_bPause = g_bPause ? false : true;
+	}
+	else if (KeyboardTrigger(DIK_O) == true || GetJoypadTrigger(JOYKEY_START) == true)
+	{//ポーズキーが押された
+		g_bOption = g_bOption ? false : true;
 	}
 	else if ((KeyboardTrigger(DIK_TAB) == true || GetJoypadTrigger(JOYKEY_BACK) == true) && g_bPause == false)
 	{
@@ -311,6 +320,13 @@ void UpdateGame(void)
 			//ポーズの更新処理
 			UpdateTutorial();
 		}
+		else if (g_bOption == true && g_bPause == false)
+		{//ポーズ中
+			//ポーズの更新処理
+			g_gamestate = GAMESTATE_OPTION;
+			UpdateOption();
+		}
+
 		else if (g_bPause == false && g_bTutorial == false)
 		{
 			//メッシュフィールドの更新処理
@@ -562,6 +578,11 @@ void DrawGame(void)
 		DrawTutorial();
 		DrawTutorialButtonUi();
 	}
+	else if (g_bOption == true)
+	{//ポーズ中
+		//ポーズの描画処理
+		DrawOption();
+	}
 }
 
 //===============
@@ -617,4 +638,11 @@ void UpdateEditer()
 		UpdateCameraEditer();
 		CameraMove();
 	}
+}
+//
+//
+//
+void SetEnableOption(bool bOption)
+{
+	g_bOption = bOption;
 }
