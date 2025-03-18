@@ -664,9 +664,9 @@ void DrawCameraInfo()
 	rect = { 0,280,SCREEN_WIDTH,SCREEN_HEIGHT };
 
 	// 文字列に代入
-	sprintf(&aStr[0], "カメラの視点の向き:%3.2f,%3.2f,%3.2f", pCamera->posR.x,
-		pCamera->posR.y,
-		pCamera->posR.z);
+	sprintf(&aStr[0], "カメラの視点の向き:%3.2f,%3.2f,%3.2f", pCamera->rot.x,
+		pCamera->rot.y,
+		pCamera->rot.z);
 
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));

@@ -154,200 +154,202 @@ void UninitPlayer(void)
 //=======================
 void UpdatePlayer(void)
 {
+	MODE Mode = GetMode();
 	Camera *pCamera = GetCamera();				//カメラの情報取得
 	Mission* pMission = GetMission();
 	int* NumEnemy = GetNumEnemy();				//敵の数取得
 
 	if (isUse() == true)
 	{
-		//プレイヤー移動
-		PlayerMove();
-
-		//ロックオン状態なら
-		if (isLockOn() == true)
+		if (Mode != MODE_BOSSMOVIE)
 		{
-			LockOnRot();
-		}
+			//プレイヤー移動
+			PlayerMove();
 
-		NearPlayerRot();
-
-		UpdateRotation();
-
-		if (isStateType(PLAYERSTATE_NORMAL) == true|| isStateType(PLAYERSTATE_ROLL) == true)
-		{
-			//魔法発射
-			if (isActionCondition() == true)
+			//ロックオン状態なら
+			if (isLockOn() == true)
 			{
-				ShotSkill();
+				LockOnRot();
 			}
-		}
 
-		//アイテム回復
-		if (KeyboardTrigger(DIK_R) || GetJoypadTrigger(JOYKEY_X))
-		{
-			UseItem(g_player.ItemType);
-		}
+			NearPlayerRot();
 
-		LockOnInput();
+			if (isStateType(PLAYERSTATE_NORMAL) == true || isStateType(PLAYERSTATE_ROLL) == true)
+			{
+				//魔法発射
+				if (isActionCondition() == true)
+				{
+					ShotSkill();
+				}
+			}
 
-		RollingState();
+			//アイテム回復
+			if (KeyboardTrigger(DIK_R) || GetJoypadTrigger(JOYKEY_X))
+			{
+				UseItem(g_player.ItemType);
+			}
 
-		UpdateMp();
-		//MP回復
-		if (isGreaterCount(g_player.Status.nMP, PLAYER_MP) == true)
-		{
-			g_player.Status.nMP = PLAYER_MP;
-		}
-		else if (isGreaterCount(g_player.Status.nMP, PLAYER_MP) == true)
-		{
-			g_player.Status.fHP = PLAYER_HP;
-		}
+			LockOnInput();
 
-		AddGravity();
-		CollisionEnemy();
-		CollisionBoss();
+			RollingState();
 
-		//前回の位置を保存
-		g_player.posOld = g_player.pos;
+			UpdateMp();
+			//MP回復
+			if (isGreaterCount(g_player.Status.nMP, PLAYER_MP) == true)
+			{
+				g_player.Status.nMP = PLAYER_MP;
+			}
+			else if (isGreaterCount(g_player.Status.nMP, PLAYER_MP) == true)
+			{
+				g_player.Status.fHP = PLAYER_HP;
+			}
 
-		UpdatePosition();
+			AddGravity();
+			CollisionEnemy();
+			CollisionBoss();
 
-		//地面との判定
-		if (g_player.pos.y <= 0)
-		{
-			g_player.pos.y = 0.0;
-			g_player.move.y = 0.0;
-		}
+			//前回の位置を保存
+			g_player.posOld = g_player.pos;
 
-		//移動量を更新
-		g_player.move.x = 0.0f;
-		g_player.move.z = 0.0f;
+			UpdatePosition();
+
+			//地面との判定
+			if (g_player.pos.y <= 0)
+			{
+				g_player.pos.y = 0.0;
+				g_player.move.y = 0.0;
+			}
+
+			//移動量を更新
+			g_player.move.x = 0.0f;
+			g_player.move.z = 0.0f;
 
 #ifdef _DEBUG
-		//位置を０に
-		if (KeyboardTrigger(DIK_0) == true)
-		{
-			g_player.pos = D3DXVECTOR3(0.0f, 0.0f, 400.0f);
-			g_player.posOld = D3DXVECTOR3(0.0f, 0.0f, 400.0f);
-		}
-		//HP減らす
-		if (KeyboardTrigger(DIK_9) == true)
-		{
-			g_player.Status.nMP = 0;
-			g_player.Status.fHP -= 100;
-			if (g_player.Status.fHP <= 0)
+			//位置を０に
+			if (KeyboardTrigger(DIK_0) == true)
 			{
-				g_player.Status.fHP = 0;
+				g_player.pos = D3DXVECTOR3(0.0f, 0.0f, 400.0f);
+				g_player.posOld = D3DXVECTOR3(0.0f, 0.0f, 400.0f);
 			}
-		}
-		//回復
-		if (KeyboardTrigger(DIK_8) == true)
-		{
-			g_player.Status.nMP = PLAYER_MP;
-			g_player.Status.fHP = PLAYER_HP;
-		}
-		//ステージ移動
-		if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_5))
-		{
-			SetFade(MODE_STAGEONE);
-		}
-		else if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_6))
-		{
-			SetFade(MODE_STAGETWO);
-		}
-		else if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_7))
-		{
-			SetFade(MODE_STAGETHREE);
-		}
-		else if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_8))
-		{
-			SetFade(MODE_BOSSMOVIE);
-		}
-		else if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_9))
-		{
-			SetFade(MODE_STAGEFOUR);
-		}
-		if (KeyboardTrigger(DIK_3) == true)
-		{
-			SetEnemy(D3DXVECTOR3(0.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-			SetEnemy(D3DXVECTOR3(100.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		}
-		if (KeyboardTrigger(DIK_4) == true)
-		{
-			SetItem(D3DXVECTOR3(0.0f, 0.0f, -100.0f), ITEMTYPE_HP);
-			SetItem(D3DXVECTOR3(100.0f, 0.0f, -100.0f), ITEMTYPE_MP);
-			SetItem(D3DXVECTOR3(-100.0f, 0.0f, -100.0f), ITEMTYPE_POWER);
-		}
+			//HP減らす
+			if (KeyboardTrigger(DIK_9) == true)
+			{
+				g_player.Status.nMP = 0;
+				g_player.Status.fHP -= 100;
+				if (g_player.Status.fHP <= 0)
+				{
+					g_player.Status.fHP = 0;
+				}
+			}
+			//回復
+			if (KeyboardTrigger(DIK_8) == true)
+			{
+				g_player.Status.nMP = PLAYER_MP;
+				g_player.Status.fHP = PLAYER_HP;
+			}
+			//ステージ移動
+			if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_5))
+			{
+				SetFade(MODE_STAGEONE);
+			}
+			else if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_6))
+			{
+				SetFade(MODE_STAGETWO);
+			}
+			else if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_7))
+			{
+				SetFade(MODE_STAGETHREE);
+			}
+			else if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_8))
+			{
+				SetFade(MODE_BOSSMOVIE);
+			}
+			else if (KeyboardTrigger(DIK_DELETE) && GetKeyboardPress(DIK_9))
+			{
+				SetFade(MODE_STAGEFOUR);
+			}
+			if (KeyboardTrigger(DIK_3) == true)
+			{
+				SetEnemy(D3DXVECTOR3(0.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+				SetEnemy(D3DXVECTOR3(100.0f, 0.0f, 100.0f), 0, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+			}
+			if (KeyboardTrigger(DIK_4) == true)
+			{
+				SetItem(D3DXVECTOR3(0.0f, 0.0f, -100.0f), ITEMTYPE_HP);
+				SetItem(D3DXVECTOR3(100.0f, 0.0f, -100.0f), ITEMTYPE_MP);
+				SetItem(D3DXVECTOR3(-100.0f, 0.0f, -100.0f), ITEMTYPE_POWER);
+			}
 
 #endif
 
-		//敵を全て倒しているなら
-		if (*(NumEnemy) <= 0)
-		{
-			if (g_player.bAbolition != true)
+			//敵を全て倒しているなら
+			if (*(NumEnemy) <= 0)
 			{
-				//エリア移動位置の取得
-				D3DXVECTOR3 Destpos = GetBottom();
+				if (g_player.bAbolition != true)
+				{
+					//エリア移動位置の取得
+					D3DXVECTOR3 Destpos = GetBottom();
+					MODE mode = GetMode();
+
+					if (mode != MODE_STAGEFOUR)
+					{
+						PlaySound(SOUND_LABEL_ZENMETU);
+						//サークルの設定処理
+						g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DCOLOR_RGBA(255, 255, 50, 204), 12, 0, 10.0f, 20.0f, true, false, 0);
+
+						//矢印の設定処理
+						SetArrow(Destpos, g_player.pos, D3DCOLOR_RGBA(255, 200, 0, 200), 35.0f, 15.0f, 21.0f, true, false);
+
+					}
+					//ボスが死んだなら
+					else if ((DethBoss()) == false)
+					{
+						//サークルの設定処理
+						g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DCOLOR_RGBA(255, 255, 50, 204), 12, 0, 10.0f, 20.0f, true, false, 0);
+					}
+
+					else
+					{
+						pMission->mission = MISSION_BOSS;
+					}
+					TimeScore();
+					//全滅している状態にする
+					g_player.bAbolition = true;
+				}
+			}
+
+			//敵が全滅しているなら
+			if (g_player.bAbolition == true)
+			{
 				MODE mode = GetMode();
+
+				//サークルの位置の更新処理
+				SetPositionCircle(g_player.nIndxCircle, g_player.pos, g_player.rot);
 
 				if (mode != MODE_STAGEFOUR)
 				{
-					PlaySound(SOUND_LABEL_ZENMETU);
-					//サークルの設定処理
-					g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DCOLOR_RGBA(255, 255, 50, 204), 12, 0, 10.0f, 20.0f, true, false, 0);
+					pMission->mission = MISSION_IDOU;
+					//矢印の位置更新
+					SetPositonArrow(g_player.nIdxArrow, g_player.pos);
 
-					//矢印の設定処理
-					SetArrow(Destpos, g_player.pos, D3DCOLOR_RGBA(255, 200, 0, 200), 35.0f, 15.0f, 21.0f, true, false);
-
+					g_player.Status.fSpeed = PLAYER_SPEED * 1.5f;
 				}
-				//ボスが死んだなら
-				else if ((DethBoss()) == false)
-				{
-					//サークルの設定処理
-					g_player.nIndxCircle = SetCircle(g_player.pos, g_player.rot, D3DCOLOR_RGBA(255, 255, 50, 204), 12, 0, 10.0f, 20.0f, true, false, 0);
-				}
-
-				else
-				{
-					pMission->mission = MISSION_BOSS;
-				}
-				TimeScore();
-				//全滅している状態にする
-				g_player.bAbolition = true;
 			}
+
+			//影の大きさの更新処理
+			SetSizeShadow(g_player.pos, g_player.nIdxShadow);
+
+			//影の位置の更新処理
+			SetPositionShadow(g_player.nIdxShadow, g_player.pos, g_player.bUse);//影
+
+			g_player.nScore = GetScore();
 		}
-
-		//敵が全滅しているなら
-		if (g_player.bAbolition == true)
-		{
-			MODE mode = GetMode();
-
-			//サークルの位置の更新処理
-			SetPositionCircle(g_player.nIndxCircle, g_player.pos, g_player.rot);
-
-			if (mode != MODE_STAGEFOUR)
-			{
-				pMission->mission = MISSION_IDOU;
-				//矢印の位置更新
-				SetPositonArrow(g_player.nIdxArrow, g_player.pos);
-
-				g_player.Status.fSpeed = PLAYER_SPEED * 1.5f;
-			}
-		}
-
-		//影の大きさの更新処理
-		SetSizeShadow(g_player.pos, g_player.nIdxShadow);
-
-		//影の位置の更新処理
-		SetPositionShadow(g_player.nIdxShadow, g_player.pos, g_player.bUse);//影
-
 		if (isStateType(PLAYERSTATE_KNOCKUP) == false)
 		{
+			UpdateRotation();
 			//モーションの更新処理
 			UpdateMotion(&g_player.PlayerMotion);
 		}
-
-		g_player.nScore = GetScore();
 	}
 }
 
@@ -1401,4 +1403,9 @@ void SetActionFlame(int ActionIndx, int StartKey, int EndKey, int StartFlame, in
 	g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[ActionIndx].nEndKey = EndKey;
 	g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[ActionIndx].nStartFrame = StartFlame;
 	g_player.PlayerMotion.aMotionInfo[g_player.PlayerMotion.motionType].ActionFrameInfo[ActionIndx].nEndFrame = EndFlame;
+}
+
+void SetRotDest(D3DXVECTOR3 Rot)
+{
+	g_player.rotDest = Rot;
 }

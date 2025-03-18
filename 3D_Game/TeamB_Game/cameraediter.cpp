@@ -157,6 +157,12 @@ void LoadKeyNum(FILE* pFile)
 				SkipEqual(pFile);
 				SetNumKey(g_LoadAnimCount, LoadInt(pFile));
 			}
+			if (strcmp(&cData1[0], "LOOP") == 0)
+			{
+				cData1[0] = { NULL };
+				SkipEqual(pFile);
+				SetLoop(g_LoadAnimCount, LoadInt(pFile));
+			}
 			if (strcmp(&cData1[0], "SET_KEY") == 0)
 			{
 				cData1[0] = { NULL };

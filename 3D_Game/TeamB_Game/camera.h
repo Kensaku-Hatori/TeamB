@@ -59,5 +59,6 @@ void CameraMove();
 void SetEditerInfo(CameraKey*Out,int AnimType,int KeyCount,int Frame);
 void UpdateMovie();
 void SetNumKey(int AnimCount, int NumKey);
+void SetLoop(int AnimCount, int Loop);
 void SetCameraWorkInfo(D3DXVECTOR3 PosV, D3DXVECTOR3 PosR, D3DXVECTOR3 Rot,int Frame, int AnimCount, int KeyCount);
 #endif

@@ -104,4 +104,5 @@ bool isUse();
 // Àì‹Æ‚ÌŠÖ”‰»
 void NearPlayerRot();
 void UpdateRotation();
+void SetRotDest(D3DXVECTOR3 Rot);
 #endif

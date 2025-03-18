@@ -288,7 +288,7 @@ void UpdateGameCamera()
 {
 	Player* pPlayer = GetPlayer();				//プレイヤー
 	
-// 角度の近道
+	// 角度の近道
 	if (g_camera.rot.y >= D3DX_PI)
 	{
 		g_camera.rot.y -= D3DX_PI * 2.0f;
@@ -503,6 +503,8 @@ void SetEditerInfo(CameraKey* Out, int AnimType, int KeyCount, int Frame)
 
 void UpdateMovie()
 {
+	static POINT SetMousePos = { (LONG)SCREEN_WIDTH / (LONG)2.0f,(LONG)SCREEN_HEIGHT / (LONG)2.0f };
+	SetCursorPos((int)SetMousePos.x, (int)SetMousePos.y);
 	UpdateCameraWork(&g_camera.Anim, &g_camera.posVDest, &g_camera.posRDest, &g_camera.rot);
 
 	g_camera.posR.x += (g_camera.posRDest.x - g_camera.posR.x) * 1.0f;
@@ -512,10 +514,19 @@ void UpdateMovie()
 	g_camera.posV.x += (g_camera.posVDest.x - g_camera.posV.x) * 1.0f;
 	g_camera.posV.y += (g_camera.posVDest.y - g_camera.posV.y) * 1.0f;
 	g_camera.posV.z += (g_camera.posVDest.z - g_camera.posV.z) * 1.0f;
+
+	if (g_camera.Anim.bFinish == true)
+	{
+		SetMode(MODE_STAGEFOUR);
+	}
 }
 void SetNumKey(int AnimCount, int NumKey)
 {
 	g_camera.Anim.Anim[AnimCount].nNumKey = NumKey;
+}
+void SetLoop(int AnimCount, int Loop)
+{
+	g_camera.Anim.Anim[AnimCount].bLoop = Loop;
 }
 void SetCameraWorkInfo(D3DXVECTOR3 PosV, D3DXVECTOR3 PosR, D3DXVECTOR3 Rot, int Frame, int AnimCount, int KeyCount)
 {

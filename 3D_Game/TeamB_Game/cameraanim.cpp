@@ -8,6 +8,7 @@ void UpdateCameraWork(CameraAnim* Anim, D3DXVECTOR3* PosV, D3DXVECTOR3* PosR, D3
 	{
 		Anim->nFrameCount = 0;
 		if (Anim->Anim[Anim->AnimType].nNumKey != NULL) Anim->nKey = (Anim->nKey + 1) % Anim->Anim[Anim->AnimType].nNumKey;
+		if (Anim->nKey >= Anim->Anim[Anim->AnimType].nNumKey - 1 && Anim->Anim[Anim->AnimType].bLoop == false) Anim->bFinish = true;
 	}
 	CameraKey nKey = Anim->Anim[Anim->AnimType].KeyInfo[Anim->nKey];
 	CameraKey nNexKey = Anim->Anim[Anim->AnimType].KeyInfo[Anim->nNexKey];

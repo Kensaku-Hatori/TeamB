@@ -32,6 +32,7 @@ typedef struct
 	CameraAnimInfo Anim[ANIMTYPE_MAX];
 	ANIMTYPE AnimType;
 	int nKey, nNexKey, nFrameCount;
+	bool bFinish;
 }CameraAnim;
 
 void UpdateCameraWork(CameraAnim *Anim,D3DXVECTOR3 *PosV,D3DXVECTOR3 *PosR,D3DXVECTOR3 *Rot);

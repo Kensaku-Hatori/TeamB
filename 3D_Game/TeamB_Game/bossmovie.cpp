@@ -7,11 +7,13 @@
 #include "wave.h"
 #include "invisiblewall.h"
 #include "shadow.h"
+#include "player.h"
 
 void InitBossMovie()
 {
 	Camera* pCamera = GetCamera();
 	MODE Mode = GetMode();
+
 
 	//メッシュフィールドの初期化
 	InitMeshfield();
@@ -36,6 +38,10 @@ void InitBossMovie()
 
 	InitShadow();
 
+	InitPlayer();
+
+	SetRotDest(D3DXVECTOR3(0.0f,D3DX_PI,0.0f));
+
 	//モデルビューワーの読込
 	LoadModelViewer(MODE_STAGEFOUR);
 
@@ -57,6 +63,7 @@ void InitBossMovie()
 }
 void UninitBossMovie()
 {
+	UninitPlayer();
 	UninitMeshfield();
 	UninitBoss();
 	UninitCamera();
@@ -69,6 +76,7 @@ void UpdateBossMovie()
 {
 	UpdateBoss();
 	UpdateMovie();
+	UpdatePlayer();
 }
 void DrawBossMovie()
 {
@@ -85,4 +93,6 @@ void DrawBossMovie()
 
 	//ステージの描画処理
 	DrawStageModel();
+
+	DrawPlayer();
 }

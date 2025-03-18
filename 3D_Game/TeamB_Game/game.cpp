@@ -196,6 +196,7 @@ void InitGame(void)
 	case MODE_STAGEFOUR:
 
 		CameraPos = D3DXVECTOR3(45.0f, 200.0f, -860.0f);
+		SetRotDest(D3DXVECTOR3(0.0f, D3DX_PI, 0.0f));
 		break;
 
 	default:
