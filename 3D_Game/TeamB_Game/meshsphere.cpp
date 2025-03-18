@@ -35,7 +35,7 @@ void InitSphere(void)
 		g_Sphere[nCnt].bHead = true;									// 法線を表に向ける
 		g_Sphere[nCnt].bUse = false;									// 使用していない状態にする
 	}
-	g_pTexture = NULL;													//テクスチャポインタ
+	g_pTexture = NULL;													// テクスチャポインタ
 }
 
 //======================================
@@ -87,7 +87,7 @@ void DrawSphere(void)
 	// 計算用マトリックス
 	D3DXMATRIX mtxRot, mtxTrans;
 
-	//ライトを切る
+	// ライトを切る
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	for (int nCnt = 0; nCnt < MAX_MESHSPHERE; nCnt++)
@@ -123,6 +123,7 @@ void DrawSphere(void)
 			// ポリゴンを描画
 			pDevice->DrawPrimitive(D3DPT_TRIANGLEFAN, 0, g_Sphere[nCnt].DiviX);
 
+			// 二段以上なら
 			if (g_Sphere[nCnt].DiviY >= 2)
 			{
 				// インデックスバッファをデータストリームに設定
@@ -133,7 +134,7 @@ void DrawSphere(void)
 			}
 		}
 	}
-	//ライトをつける
+	// ライトをつける
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 }
 
@@ -166,9 +167,6 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 
 			g_Sphere[nCnt].nMaxVtx = (g_Sphere[nCnt].DiviX + 1) * (g_Sphere[nCnt].DiviY) + 1;// 頂点数
 
-			//テクスチャの設定
-			SetSphereTexture(nCnt);
-
 			//頂点バッファの生成
 			pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) *g_Sphere[nCnt].nMaxVtx,
 				D3DUSAGE_WRITEONLY,
@@ -186,14 +184,15 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 				{
 					int i = nCntX;
 
+					// 半球ではないなら
 					if (g_Sphere[nCnt].bHead == false)
 					{
 						i = g_Sphere[nCnt].DiviX - nCntX;
 					}
 				
 					//角度格納
-					float fAngle = ((D3DX_PI * 2 / g_Sphere[nCnt].DiviX) * i);						//y軸
-					float fAngle2 = (D3DX_PI / g_Sphere[nCnt].DiviY) * (g_Sphere[nCnt].DiviY - nCntY);				//z軸
+					float fAngle = ((D3DX_PI * 2 / g_Sphere[nCnt].DiviX) * i);									//y軸
+					float fAngle2 = (D3DX_PI / g_Sphere[nCnt].DiviY) * (g_Sphere[nCnt].DiviY - nCntY);			//z軸
 
 					//半球なら
 					if (g_Sphere[nCnt].bHalf == true)
@@ -201,7 +200,7 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 						fAngle2 = (((D3DX_PI * 0.5f) / g_Sphere[nCnt].DiviY)* nCntY);
 					}
 
-					//頂点の設定
+					//頂点の位置の設定
 					pVtx[indx].pos.x = (float)g_Sphere[nCnt].fRadius * sinf(fAngle2) * sinf(fAngle);
 					pVtx[indx].pos.y = (float)g_Sphere[nCnt].fRadius * cosf(fAngle2);
 					pVtx[indx].pos.z = (float)g_Sphere[nCnt].fRadius * sinf(fAngle2) * cosf(fAngle);
@@ -308,9 +307,9 @@ void SetSpherePos(int indx, D3DXVECTOR3 pos)
 	g_Sphere[indx].pos = pos;
 }
 
-//===================
+//======================================
 // メッシュ壁のテクスチャ設定
-//===================
+//======================================
 void SetSphereTexture(int indx)
 {
 	//テクスチャのポインタを取得
