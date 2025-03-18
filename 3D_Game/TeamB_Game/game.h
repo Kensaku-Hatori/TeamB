@@ -44,6 +44,6 @@ void SetGameState(GAMESTATE state);
 GAMESTATE GetGameSatate(void);
 void SetEnablePause(bool bPause);
 void SetEnableTutorial(bool bTutorial);
-void SetEnableoption(bool bOption);
+void SetEnableOption(bool bOption);
 
 #endif

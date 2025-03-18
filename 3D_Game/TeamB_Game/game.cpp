@@ -637,10 +637,11 @@ void UpdateEditer()
 		UpdateCameraEditer();
 		CameraMove();
 	}
+}
 //
 //
 //
-void SetEnableoption(bool bOption)
+void SetEnableOption(bool bOption)
 {
 	g_bOption = bOption;
 }
