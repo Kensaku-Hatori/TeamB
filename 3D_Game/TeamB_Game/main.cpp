@@ -21,6 +21,7 @@
 #include "mouse.h"
 #include "titleinfo.h"
 #include "pause.h"
+#include "bossmovie.h"
 #include <crtdbg.h>
 #include <stdio.h>
 #include "option.h"
@@ -242,6 +243,9 @@ LPDIRECT3DDEVICE9 GetDevice(void)
 //=============
 HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 {
+	// マウスカーソルの非表示
+	ShowCursor(FALSE);
+
 	D3DDISPLAYMODE d3ddm;
 	D3DPRESENT_PARAMETERS d3dpp;
 	//Direct3Dオブジェクトの生成
@@ -409,6 +413,9 @@ void Update(void)
 	case MODE_STAGETHREE:
 		UpdateGame();
 		break;
+	case MODE_BOSSMOVIE:
+		UpdateBossMovie();
+		break;
 	case MODE_STAGEFOUR:
 		UpdateGame();
 		break;
@@ -442,8 +449,6 @@ void Update(void)
 	}
 
 #endif 
-	// マウスカーソルの非表示
-	ShowCursor(FALSE);
 }
 
 //==========
@@ -477,6 +482,9 @@ void Draw(void)
 			break;
 		case MODE_STAGEFOUR:
 			DrawGame();
+			break;
+		case MODE_BOSSMOVIE:
+			DrawBossMovie();
 			break;
 		case MODE_RESULT:
 			DrawResult();
@@ -534,6 +542,9 @@ void SetMode(MODE mode)
 	case MODE_STAGEFOUR:
 		UninitGame();
 		break;
+	case MODE_BOSSMOVIE:
+		UninitBossMovie();
+		break;
 	case MODE_RESULT:
 		UninitResult();
 		break;
@@ -563,6 +574,9 @@ void SetMode(MODE mode)
 		break;
 	case MODE_STAGEFOUR:
 		InitGame();
+		break;
+	case MODE_BOSSMOVIE:
+		InitBossMovie();
 		break;
 	case MODE_RESULT:
 		InitResult();
@@ -655,9 +669,9 @@ void DrawCameraInfo()
 	rect = { 0,280,SCREEN_WIDTH,SCREEN_HEIGHT };
 
 	// 文字列に代入
-	sprintf(&aStr[0], "カメラの視点の向き:%3.2f,%3.2f,%3.2f", pCamera->rot.x,
-		pCamera->rot.y,
-		pCamera->rot.z);
+	sprintf(&aStr[0], "カメラの視点の向き:%3.2f,%3.2f,%3.2f", pCamera->posR.x,
+		pCamera->posR.y,
+		pCamera->posR.z);
 
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));

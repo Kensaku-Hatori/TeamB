@@ -15,6 +15,7 @@
 #include "loadmotion.h"
 #include "model.h"
 #include "meshfield.h"
+#include "cameraediter.h"
 
 //グローバル変数
 int g_nTimeTitle; //タイトルからランキングへの時間
@@ -33,6 +34,7 @@ void InitTitle(void)
 	InitLight();
 
 	InitMotion();
+
 	InitStageModel();
 
 	LoadModelViewer(MODE_STAGEONE);
@@ -40,6 +42,12 @@ void InitTitle(void)
 	InitTitleInfo();
 
 	PlaySound(SOUND_LABEL_TITLE);
+
+	LoadCameraWork();
+
+	Camera* pCamera = GetCamera();
+
+	SetCameraWork(&pCamera->Anim, ANIMTYPE_ONE);
 }
 //==========
 //終了処理

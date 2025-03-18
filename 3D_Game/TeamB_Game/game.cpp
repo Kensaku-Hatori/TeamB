@@ -42,8 +42,8 @@
 #include "tutorial.h"
 #include "buttonUI.h"
 #include "meshsphere.h"
+#include "cameraediter.h"
 #include "option.h"
-
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
 int g_nCounterGameState = 0;
@@ -51,6 +51,11 @@ bool g_bPause = false;  //ポーズ中かどうか
 bool bAbo = false;//全滅フラグ
 bool g_bTutorial = true;
 bool g_bOption = false;
+bool isState(GAMESTATE State);
+bool isUpdateGameCondition();
+
+void UpdateEditer();
+
 //=============
 // 初期化処理
 //=============
@@ -300,7 +305,7 @@ void UpdateGame(void)
 		}
 	}
 
-	if (g_gamestate != GAMESTATE_EFFECTEDITER)
+	if (isUpdateGameCondition() == true)
 	{
 		if (g_bPause == true)
 		{//ポーズ中
@@ -372,6 +377,11 @@ void UpdateGame(void)
 				InitParticleEditer();
 				SetGameState(GAMESTATE_EFFECTEDITER);
 			}
+			//エディターの切り替え
+			if (GetKeyboardPress(DIK_E) && GetKeyboardPress(DIK_F3))
+			{
+				SetGameState(GAMESTATE_CAMERAEDITER);
+			}
 			//リザルトに飛ぶ
 			if (KeyboardTrigger(DIK_1) == true || GetJoypadTrigger(JOYKEY_START) == true)
 			{//Clear
@@ -386,18 +396,6 @@ void UpdateGame(void)
 
 #endif // DEBUG
 
-			////ブロックの更新処理
-			//UpdateBlock();
-
-			////爆発の更新処理
-			//UpdateExplosion();
-
-			////メッシュシリンダーの更新処理
-			//UpdateMeshCylinder();
-
-			////壁の更新処理
-			//UpdateWall();
-
 			//メッシュ壁の更新処理
 			UpdateMeshWall();
 
@@ -406,6 +404,8 @@ void UpdateGame(void)
 
 			//カメラの更新処理
 			UpdateCamera();
+
+			UpdateGameCamera();
 
 			//ライトの更新処理
 			UpdateLight();
@@ -490,7 +490,7 @@ void UpdateGame(void)
 	else
 	{
 		//パーティクルエディターの更新処理
-		UpdateParticleEditer();
+		UpdateEditer();
 	}
 }
 
@@ -615,6 +615,28 @@ void SetEnableTutorial(bool bTutorial)
 {
 	g_bTutorial = bTutorial;
 }
+
+bool isState(GAMESTATE State)
+{
+	return g_gamestate == State;
+}
+
+bool isUpdateGameCondition()
+{
+	return isState(GAMESTATE_EFFECTEDITER) == false && isState(GAMESTATE_CAMERAEDITER) == false;
+}
+
+void UpdateEditer()
+{
+	if (isState(GAMESTATE_EFFECTEDITER) == true)
+	{
+		UpdateEffect();
+	}
+	else if (isState(GAMESTATE_CAMERAEDITER) == true)
+	{
+		UpdateCameraEditer();
+		CameraMove();
+	}
 //
 //
 //
