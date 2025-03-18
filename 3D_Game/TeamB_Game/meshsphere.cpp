@@ -87,8 +87,8 @@ void DrawSphere(void)
 	// 計算用マトリックス
 	D3DXMATRIX mtxRot, mtxTrans;
 
-	////ライトを切る
-	//pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+	//ライトを切る
+	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	for (int nCnt = 0; nCnt < MAX_MESHSPHERE; nCnt++)
 	{
@@ -133,8 +133,8 @@ void DrawSphere(void)
 			}
 		}
 	}
-	////ライトをつける
-	//pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+	//ライトをつける
+	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 }
 
 //======================================
