@@ -957,7 +957,9 @@ void HitPlayer(float Atack,D3DXVECTOR3 Pos)
 
 			if (g_player.Status.fHP <= 0.0f && g_player.bUse == true)
 			{// Žg‚í‚ê‚Ä‚¢‚Ä‘Ì—Í‚ª‚OˆÈ‰º‚È‚ç
-				g_player.bUse = false;
+
+				SetMotion(MOTIONTYPE_DOWN, &g_player.PlayerMotion);
+
 				SetParticle(g_player.pos,
 					D3DXVECTOR3(162, 1, 1),
 					D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
@@ -969,6 +971,7 @@ void HitPlayer(float Atack,D3DXVECTOR3 Pos)
 					500.0f,
 					0.0f,
 					EFFECT_NONE);
+
 				SetGameState(GAMESTATE_GAMEOVER);
 			}
 			SetShake(10);
