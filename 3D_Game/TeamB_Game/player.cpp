@@ -534,7 +534,6 @@ void PlayerMove(void)
 	if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && isRolling() == false && isStateType(PLAYERSTATE_KNOCKUP) == false)
 	{
 		PlaySound(SOUND_LABEL_ROLLING);
-		g_player.bSkillUse = false;
 		g_player.bRolling = true;
 		g_player.state = PLAYERSTATE_ROLL;
 	}
@@ -768,11 +767,14 @@ void PlayerMove(void)
 	}
 	else if(g_player.state == PLAYERSTATE_KNOCKUP)
 	{//ƒ_ƒEƒ“ó‘Ô
+		if (isMotionType(MOTIONTYPE_ACTION_HORMING) == true)
+		{
+			g_player.bSkillUse = false;
+		}
 		if (g_player.PlayerMotion.motionType != MOTIONTYPE_DOWN)
 		{
 			SetMotion(MOTIONTYPE_DOWN, &g_player.PlayerMotion);
 		}
-		g_player.bSkillUse = false;
 		g_player.nCntState++;
 		if (g_player.nCntState >= PLAYER_DOWNTIME)
 		{
