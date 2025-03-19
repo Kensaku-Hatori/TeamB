@@ -310,13 +310,12 @@ void CollisionItem(int nIndexItem)
 				col,
 				PARTICLE_NONE,
 				D3DXVECTOR3(1.0f, 1.0f, 1.0f),
-				30,
+				40,
 				300,
 				100.0f,
 				100.0f,
 				-0.1f,
 				EFFECT_NONE);
-
 
 			g_Item[nIndexItem].bUse = false;						//使用していない状態にする
 			g_Item[nIndexItem].nCntTime = 0;						//消えるまでのフレーム初期化
