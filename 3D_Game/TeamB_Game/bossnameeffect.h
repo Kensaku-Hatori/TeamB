@@ -2,6 +2,15 @@
 #define _BOSSNAMEEFFECT_H_
 
 #include "main.h"
+#define FADE_TIME (float)(120)
+
+typedef enum
+{
+	NAMEFADE_NONE = 0,
+	NAMEFADE_IN,
+	NAMEFADE_OUT,
+	NAMEFADE_MAX
+}NAMEFADE;
 
 typedef struct
 {
@@ -11,9 +20,11 @@ typedef struct
 	D3DXVECTOR3 Rot;
 	D3DXVECTOR2 Scale;
 	D3DXCOLOR Col;
+	NAMEFADE Fade;
 	float fAngle;
 	float Length;
 	int nLife;
+	int FadeCounter;
 	bool bUse;
 }BOSSNAMEEFFECT;
 

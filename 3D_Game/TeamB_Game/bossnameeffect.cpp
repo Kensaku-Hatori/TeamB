@@ -6,10 +6,13 @@
 
 BOSSNAMEEFFECT g_BossName;
 
+bool isReVerse(float V);
+bool isFade(NAMEFADE FadeType);
 bool isSetCondition();
 bool isUseNameEffect();
 bool CreatNameBuffer();
 bool isGreaterLife(int Count);
+bool isGreaterFade();
 
 void UpdateTexUV(float U,float V);
 void UpdateSizeAnim(float U, float V);
@@ -42,9 +45,27 @@ void UpdateBossNameEffect()
 
 		UpdateAlphaAnim();
 
-		g_BossName.Col.a += (1.2f - g_BossName.Col.a) * 0.05f;
-		U += (1.0f - U) * 0.1f;
-		V += (1.0f - V) * 0.1f;
+		if (isReVerse(V) == true)
+		{
+			g_BossName.FadeCounter++;
+			if (isGreaterFade() == true)
+			{
+				g_BossName.FadeCounter = 0;
+				g_BossName.Fade = NAMEFADE_OUT;
+			}
+		}
+		if (isFade(NAMEFADE_IN) == true)
+		{
+			g_BossName.Col.a += (1.1f - g_BossName.Col.a) * 0.05f;
+			U += (1.0f - U) * 0.1f;
+			V += (1.0f - V) * 0.1f;
+		}
+		else if (isFade(NAMEFADE_OUT) == true)
+		{
+			g_BossName.Col.a += (-0.1f - g_BossName.Col.a) * 0.05f;
+			U += (-0.1f - U) * 0.1f;
+			V += (-0.1f - V) * 0.1f;
+		}
 
 		g_BossName.nLife--;
 		if (isGreaterLife(0) == false)
@@ -82,6 +103,8 @@ void SetBossNameEffect(D3DXVECTOR3 Pos, D3DXVECTOR3 Rot, D3DXVECTOR2 Scale, D3DX
 		g_BossName.Scale = Scale;
 		g_BossName.Col = Col;
 		g_BossName.nLife = nLife;
+		g_BossName.Fade = NAMEFADE_IN;
+		g_BossName.FadeCounter = 0;
 
 		//頂点バッファの生成・頂点情報の設定
 		VERTEX_2D* pVtx;
@@ -215,4 +238,16 @@ void UpdateAlphaAnim()
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_BossName.Buff->Unlock();
+}
+bool isFade(NAMEFADE FadeType)
+{
+	return g_BossName.Fade == FadeType;
+}
+bool isReVerse(float V)
+{
+	return V >= 0.8f;
+}
+bool isGreaterFade()
+{
+	return g_BossName.FadeCounter >= FADE_TIME;
 }
