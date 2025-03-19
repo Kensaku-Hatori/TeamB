@@ -771,10 +771,6 @@ void PlayerMove(void)
 		{
 			g_player.bSkillUse = false;
 		}
-		//if (g_player.PlayerMotion.motionType != MOTIONTYPE_DOWN)
-		//{
-		//	SetMotion(MOTIONTYPE_DOWN, &g_player.PlayerMotion);
-		//}
 		g_player.nCntState++;
 		if (g_player.nCntState >= PLAYER_DOWNTIME)
 		{
