@@ -450,7 +450,7 @@ void CollisionEffect(int Indx)
 
 	for (int EnemyCount = 0; EnemyCount < MAX_ENEMY; EnemyCount++,pEnemy++)
 	{
-		if (pEnemy->bUse == true && pEnemy->bHit == false)
+		if (pEnemy->bUse == true && pEnemy->bHit == false && pEnemy->state != ENEMYSTATE_DEAD)
 		{
 			if (collisioncircle(g_effect[Indx].Object.Pos, g_effect[Indx].Scale.x * 0.5f, pEnemy->Object.Pos, ENEMY_RADIUS * 0.5f) == true)
 			{

@@ -186,17 +186,20 @@ void InitGame(void)
 	case MODE_STAGEONE:
 
 		CameraPos = D3DXVECTOR3(350.0f, 200.0f, 1245.0f);
+		SetRotDest(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		break;
 
 	case MODE_STAGETWO:
 		pPlayer->Status.fHP = PLAYER_HP;
 		pPlayer->Status.nMP = PLAYER_MP;
 		CameraPos = D3DXVECTOR3(1245.0f, 200.0f, 645.0f);
+		SetRotDest(D3DXVECTOR3(0.0f,D3DX_PI * 0.5f,0.0f));
 		break;
 
 	case MODE_STAGETHREE:
 
 		CameraPos = D3DXVECTOR3(85.0f, 200.0f, -1025.0f);
+		SetRotDest(D3DXVECTOR3(0.0f, -D3DX_PI, 0.0f));
 		break;
 
 	case MODE_STAGEFOUR:

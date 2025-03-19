@@ -173,7 +173,8 @@ void UpdateEnemy(void)
 					if (pSkill[SkillCount].bUse == true)
 					{
 						// “–‚½‚è”»’è
-						if (collisioncircle(g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].Radius, pSkill[SkillCount].pos, SKILL_SIZE) == true)
+						if (collisioncircle(g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].Radius, pSkill[SkillCount].pos, SKILL_SIZE) == true
+							&& g_Enemy[EnemyCount].state != ENEMYSTATE_DEAD)
 						{
 							pSkill[SkillCount].nLife = 1;
 							pSkill[SkillCount].bHit = true;

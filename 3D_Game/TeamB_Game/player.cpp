@@ -1279,7 +1279,6 @@ void ShotSkill()
 			{
 				SetState(PLAYERSTATE_ACTION);
 
-				g_player.bSkillUse = true;
 				SetMotion(MOTIONTYPE_ACTION_HORMING, &g_player.PlayerMotion);
 
 				SetActionFlame(0, 2, 2, 23, 24);

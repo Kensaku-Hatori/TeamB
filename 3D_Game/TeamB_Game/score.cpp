@@ -25,7 +25,7 @@ void InitScore(void)
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number200.png", &g_pTextureScore); //1
 	
-	g_posScore = D3DXVECTOR3(800.0f, 0.0f, 0.0f);
+	g_posScore = D3DXVECTOR3(750.0f, 0.0f, 0.0f);
 	g_nScore = 0;
 	g_nDestScore = 0;
 

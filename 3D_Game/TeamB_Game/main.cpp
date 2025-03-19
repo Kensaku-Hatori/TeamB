@@ -21,6 +21,7 @@
 #include "mouse.h"
 #include "titleinfo.h"
 #include "pause.h"
+#include "enemy.h"
 #include "bossmovie.h"
 #include <crtdbg.h>
 #include <stdio.h>
@@ -750,7 +751,7 @@ void DrawPlayerInfo()
 	rect = { 0,420,SCREEN_WIDTH,SCREEN_HEIGHT };
 
 	// 文字列に代入
-	sprintf(&aStr[0], "プレイヤーの今のキー:%d", pPlayer->PlayerMotion.nKey);
+	sprintf(&aStr[0], "プレイヤーの今のモーション:%d", pPlayer->PlayerMotion.motionType);
 
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));
@@ -760,9 +761,9 @@ void DrawTestInfo()
 	D3DXVECTOR2 test = Gettest();
 	RECT rect = { 0,440,SCREEN_WIDTH,SCREEN_HEIGHT };
 	char aStr[256];
-
+	int *Num = GetNumEnemy();
 	// 文字列に代入
-	sprintf(&aStr[0], "内積結果:%3.2f,%3.2f",test.x,test.y);
+	sprintf(&aStr[0], "敵の総数:%d", *Num);
 
 	// テキスト表示
 	g_pFont->DrawText(NULL, &aStr[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(200, 255, 0, 255));

@@ -619,7 +619,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 				D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
 				if (osiete <= 0.0f)
 				{
-					pPlayer->pos = pPlayer->pos + test1;
+					pPlayer->pos += test1;
 				}
 			}
 			if (fDotX1 < fDotX && fDotX1 < fDotZ && fDotX1 < fDotZ1)
@@ -631,7 +631,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 				D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
 				if (osiete <= 0.0f)
 				{
-					pPlayer->pos = pPlayer->pos + test1;
+					pPlayer->pos += test1;
 				}
 			}
 			if (fDotZ < fDotZ1 && fDotZ <= fDotX && fDotZ <= fDotX1)
@@ -643,7 +643,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 				D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
 				if (osiete <= 0.0f)
 				{
-					pPlayer->pos = pPlayer->pos + test1;
+					pPlayer->pos += test1;
 				}
 			}
 			if (fDotZ1 < fDotZ && fDotZ1 < fDotX && fDotZ1 < fDotX1)
@@ -655,7 +655,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 				D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
 				if (osiete <= 0.0f)
 				{
-					pPlayer->pos = pPlayer->pos + test1;
+					pPlayer->pos += test1;
 				}
 			}
 		}
@@ -669,7 +669,7 @@ void CollOBBs(OBB& obb, D3DXVECTOR3& p,int Indx)
 			D3DXVECTOR3 test1 = nor * D3DXVec3Dot(&pVec, &nor);
 			if (osiete >= 0.0f)
 			{
-				pPlayer->pos = pPlayer->pos + test1;
+				pPlayer->pos += test1;
 			}
 		}
 		// Å™Ç©ÇÁÅ´

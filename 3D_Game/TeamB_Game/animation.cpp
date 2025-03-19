@@ -352,6 +352,7 @@ void CaceOneAction(OBJECTINFO* Motion)
 		pPlayer->state = PLAYERSTATE_NORMAL;
 		if (pPlayer->Status.nMP >= 100)
 		{
+			pPlayer->bSkillUse = true;
 			for (int nCount = 0; nCount < 5; nCount++)
 			{
 				D3DXVECTOR3 fDistance;
