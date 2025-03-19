@@ -1222,7 +1222,7 @@ bool isActionCondition()
 //***********************
 float Speed()
 {
-	if(KeyboardTrigger(DIK_SPACE) == true && isRolling() == false) return g_player.Status.fSpeed * 20;
+	if((KeyboardTrigger(DIK_SPACE) == true || GetJoypadTrigger(JOYKEY_A))&& isRolling() == false) return g_player.Status.fSpeed * 20;
 	if (isLockOn() == true) return g_player.Status.fSpeed * 0.5f;
 	return g_player.Status.fSpeed;
 }
