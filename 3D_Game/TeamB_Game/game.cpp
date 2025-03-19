@@ -477,7 +477,7 @@ void UpdateGame(void)
 			case GAMESTATE_GAMEOVER:
 
 				g_nCounterGameState++;
-				if (g_nCounterGameState >= 30)
+				if (g_nCounterGameState >= 40)
 				{
 					g_gamestate = GAMESTATE_NONE;
 					//モードをリザルトにする
