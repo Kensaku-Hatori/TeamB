@@ -13,6 +13,7 @@ bool isGreaterLife(int Count);
 
 void UpdateTexUV(float U,float V);
 void UpdateSizeAnim(float U, float V);
+void UpdateAlphaAnim();
 
 void InitBossNameEffect()
 {
@@ -39,6 +40,9 @@ void UpdateBossNameEffect()
 
 		UpdateSizeAnim(U,V);
 
+		UpdateAlphaAnim();
+
+		g_BossName.Col.a += (1.2f - g_BossName.Col.a) * 0.05f;
 		U += (1.0f - U) * 0.1f;
 		V += (1.0f - V) * 0.1f;
 
@@ -106,12 +110,6 @@ void SetBossNameEffect(D3DXVECTOR3 Pos, D3DXVECTOR3 Rot, D3DXVECTOR2 Scale, D3DX
 		pVtx[1].rhw = 1.0f;
 		pVtx[2].rhw = 1.0f;
 		pVtx[3].rhw = 1.0f;
-
-		//頂点カラーの設定
-		pVtx[0].col = D3DXCOLOR(Col);
-		pVtx[1].col = D3DXCOLOR(Col);
-		pVtx[2].col = D3DXCOLOR(Col);
-		pVtx[3].col = D3DXCOLOR(Col);
 
 		////テクスチャ座標の設定
 		//pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -198,6 +196,22 @@ void UpdateSizeAnim(float U, float V)
 	pVtx[3].pos.x = Pos.x + sinf(Rot.z + g_BossName.fAngle) * g_BossName.Length * Scale.x * U;//pos.x + 150.0f;
 	pVtx[3].pos.y = Pos.y + cosf(Rot.z + g_BossName.fAngle) * g_BossName.Length * Scale.y * V;//pos.y + 25.0f;
 	pVtx[3].pos.z = 0.0f;
+
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	g_BossName.Buff->Unlock();
+}
+void UpdateAlphaAnim()
+{
+	//頂点バッファの生成・頂点情報の設定
+	VERTEX_2D* pVtx;
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	g_BossName.Buff->Lock(0, 0, (void**)&pVtx, 0);
+
+	//頂点カラーの設定
+	pVtx[0].col = D3DXCOLOR(g_BossName.Col);
+	pVtx[1].col = D3DXCOLOR(g_BossName.Col);
+	pVtx[2].col = D3DXCOLOR(g_BossName.Col);
+	pVtx[3].col = D3DXCOLOR(g_BossName.Col);
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_BossName.Buff->Unlock();
