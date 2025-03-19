@@ -14,6 +14,7 @@ void InitBossMovie()
 	Camera* pCamera = GetCamera();
 	MODE Mode = GetMode();
 
+	InitBossNameEffect();
 
 	//メッシュフィールドの初期化
 	InitMeshfield();
@@ -63,6 +64,7 @@ void InitBossMovie()
 }
 void UninitBossMovie()
 {
+	UninitBossNameEffect();
 	UninitPlayer();
 	UninitMeshfield();
 	UninitBoss();
@@ -74,6 +76,7 @@ void UninitBossMovie()
 }
 void UpdateBossMovie()
 {
+	UpdateBossNameEffect();
 	UpdateBoss();
 	UpdateMovie();
 	UpdatePlayer();
@@ -95,4 +98,6 @@ void DrawBossMovie()
 	DrawStageModel();
 
 	DrawPlayer();
+
+	DrawBossNameEffect();
 }

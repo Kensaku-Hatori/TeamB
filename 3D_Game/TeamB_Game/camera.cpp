@@ -539,3 +539,14 @@ void SetCameraWorkInfo(D3DXVECTOR3 PosV, D3DXVECTOR3 PosR, D3DXVECTOR3 Rot, int 
 	g_camera.Anim.Anim[AnimCount].KeyInfo[KeyCount].Rot = Rot;
 	g_camera.Anim.Anim[AnimCount].KeyInfo[KeyCount].nFrame = Frame;
 }
+void SetNameEffectInfo(D3DXVECTOR3 Pos, D3DXVECTOR3 Rot, D3DXVECTOR2 Scale, D3DXCOLOR Col, int AnimCount, int EffectCount, int StartFrame, int EndFrame, int nLife,MovieEffectType nType)
+{
+	g_camera.Anim.Anim[AnimCount].MovieEffect[EffectCount].SetNameEffect.Pos = Pos;
+	g_camera.Anim.Anim[AnimCount].MovieEffect[EffectCount].SetNameEffect.Rot = Rot;
+	g_camera.Anim.Anim[AnimCount].MovieEffect[EffectCount].SetNameEffect.Scale = Scale;
+	g_camera.Anim.Anim[AnimCount].MovieEffect[EffectCount].SetNameEffect.Col = Col;
+	g_camera.Anim.Anim[AnimCount].MovieEffect[EffectCount].SetNameEffect.nLife = nLife;
+	g_camera.Anim.Anim[AnimCount].MovieEffect[EffectCount].EffectType = nType;
+	g_camera.Anim.Anim[AnimCount].MovieEffect[EffectCount].StartFrame = StartFrame;
+	g_camera.Anim.Anim[AnimCount].MovieEffect[EffectCount].EndFrame = EndFrame;
+}

@@ -151,6 +151,7 @@
     <ClCompile Include="boss.cpp" />
     <ClCompile Include="bossgauge.cpp" />
     <ClCompile Include="bossmovie.cpp" />
+    <ClCompile Include="bossnameeffect.cpp" />
     <ClCompile Include="buttonUI.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="cameraanim.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="boss.h" />
     <ClInclude Include="bossgauge.h" />
     <ClInclude Include="bossmovie.h" />
+    <ClInclude Include="bossnameeffect.h" />
     <ClInclude Include="buttonUI.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="cameraanim.h" />

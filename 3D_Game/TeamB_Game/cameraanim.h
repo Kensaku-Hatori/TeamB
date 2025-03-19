@@ -2,8 +2,10 @@
 #define _CAMERAANIM_H_
 
 #include "main.h"
+#include "bossnameeffect.h"
 
 #define MAX_CAMERAKEY (15)
+#define MAX_MOVIEEFFECTTYPE (1)
 
 typedef enum
 {
@@ -12,16 +14,33 @@ typedef enum
 	ANIMTYPE_MAX
 }ANIMTYPE;
 
+typedef enum
+{
+	MOVIEEFFECT_NONE = 0,
+	MOVIEEFFECT_NAME,
+	MOVIEEFFECT_MAX,
+}MovieEffectType;
+
+typedef struct
+{
+	MovieEffectType EffectType;
+	int StartFrame;
+	int EndFrame;
+	BOSSNAMEEFFECT SetNameEffect;
+}MovieEffect;
+
 typedef struct
 {
 	D3DXVECTOR3 PosV;
 	D3DXVECTOR3 PosR;
 	D3DXVECTOR3 Rot;
 	int nFrame;
+	int nLife;
 }CameraKey;
 
 typedef struct
 {
+	MovieEffect MovieEffect[MAX_MOVIEEFFECTTYPE];
 	CameraKey KeyInfo[MAX_CAMERAKEY];
 	int nNumKey;
 	bool bLoop,bTracking;
@@ -31,7 +50,7 @@ typedef struct
 {
 	CameraAnimInfo Anim[ANIMTYPE_MAX];
 	ANIMTYPE AnimType;
-	int nKey, nNexKey, nFrameCount;
+	int nKey, nNexKey, nFrameCount,AllFrame;
 	bool bFinish;
 }CameraAnim;
 

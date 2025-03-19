@@ -1,15 +1,28 @@
 #include "cameraanim.h"
 
+bool isMovieEffect(CameraAnim* Anim,int EffectIndx);
+void UpdateMovieEffect(CameraAnim* Anim);
+void SetMovieEffect(CameraAnim* Anim, int Indx);
+
 void UpdateCameraWork(CameraAnim* Anim, D3DXVECTOR3* PosV, D3DXVECTOR3* PosR, D3DXVECTOR3* Rot)
 {
 	Anim->nFrameCount++;
+	Anim->AllFrame++;
 	if(Anim->Anim[Anim->AnimType].nNumKey != NULL) Anim->nNexKey = (Anim->nKey + 1) % Anim->Anim[Anim->AnimType].nNumKey;
 	if (Anim->nFrameCount >= Anim->Anim[Anim->AnimType].KeyInfo[Anim->nKey].nFrame)
 	{
 		Anim->nFrameCount = 0;
 		if (Anim->Anim[Anim->AnimType].nNumKey != NULL) Anim->nKey = (Anim->nKey + 1) % Anim->Anim[Anim->AnimType].nNumKey;
-		if (Anim->nKey >= Anim->Anim[Anim->AnimType].nNumKey - 1 && Anim->Anim[Anim->AnimType].bLoop == false) Anim->bFinish = true;
+		if (Anim->nKey >= Anim->Anim[Anim->AnimType].nNumKey - 1)
+		{
+			Anim->AllFrame = 0;
+			if (Anim->Anim[Anim->AnimType].bLoop == false)
+			{
+				Anim->bFinish = true;
+			}
+		}
 	}
+	UpdateMovieEffect(Anim);
 	CameraKey nKey = Anim->Anim[Anim->AnimType].KeyInfo[Anim->nKey];
 	CameraKey nNexKey = Anim->Anim[Anim->AnimType].KeyInfo[Anim->nNexKey];
 
@@ -95,4 +108,33 @@ void SetCameraWork(CameraAnim *Anim, ANIMTYPE nType)
 	Anim->nKey = 0;
 	Anim->nNexKey = 0;
 	Anim->nFrameCount = 0;
+}
+bool isMovieEffect(CameraAnim* Anim, int EffectIndx)
+{
+	return Anim->AllFrame >= Anim->Anim[Anim->AnimType].MovieEffect[EffectIndx].StartFrame && Anim->AllFrame <= Anim->Anim[Anim->AnimType].MovieEffect[EffectIndx].EndFrame;
+}
+void UpdateMovieEffect(CameraAnim* Anim)
+{
+	for (int MovieEffectCount = 0; MovieEffectCount < MAX_MOVIEEFFECTTYPE; MovieEffectCount++)
+	{
+		if (isMovieEffect(Anim, MovieEffectCount) == true)
+		{
+			SetMovieEffect(Anim, MovieEffectCount);
+		}
+	}
+}
+void SetMovieEffect(CameraAnim* Anim,int Indx)
+{
+	switch (Anim->Anim[Anim->AnimType].MovieEffect[Indx].EffectType)
+	{
+	case MOVIEEFFECT_NAME:
+		SetBossNameEffect(Anim->Anim[Anim->AnimType].MovieEffect[Indx].SetNameEffect.Pos,
+			Anim->Anim[Anim->AnimType].MovieEffect[Indx].SetNameEffect.Rot,
+			Anim->Anim[Anim->AnimType].MovieEffect[Indx].SetNameEffect.Scale,
+			Anim->Anim[Anim->AnimType].MovieEffect[Indx].SetNameEffect.Col,
+			Anim->Anim[Anim->AnimType].MovieEffect[Indx].SetNameEffect.nLife);
+		break;
+	default:
+		break;
+	}
 }
