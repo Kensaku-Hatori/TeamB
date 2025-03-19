@@ -15,8 +15,7 @@
 #include "meshfield.h"
 #include "player.h"
 
-//グローバル変数宣言
-
+bool isMode(ANIMTYPE *SetAnim,MODE DeadStage);
 //===========
 //初期化処理
 //===========
@@ -35,6 +34,13 @@ void InitResult(MODE OldMode)
 	InitStageModel();
 
 	LoadModelViewer(OldMode);
+
+	ANIMTYPE AnimInfo;
+	Camera* pCamera = GetCamera();
+	if (isMode(&AnimInfo, OldMode) == true)
+	{
+		SetCameraWork(&pCamera->Anim, AnimInfo);
+	}
 }
 //==========
 //終了処理
@@ -78,4 +84,30 @@ void DrawResult(void)
 	DrawStageModel();
 
 	DrawResultInfo();
+}
+
+bool isMode(ANIMTYPE *SetAnim,MODE DeadStage)
+{
+	switch (DeadStage)
+	{
+	case MODE_STAGEONE:
+		*SetAnim = ANIMTYPE_THREE;
+		return true;
+		break;
+	case MODE_STAGETWO:
+		*SetAnim = ANIMTYPE_FOUR;
+		return true;
+		break;
+	case MODE_STAGETHREE:
+		*SetAnim = ANIMTYPE_FIVE;
+		return true;
+		break;
+	case MODE_STAGEFOUR:
+		*SetAnim = ANIMTYPE_SIX;
+		return true;
+		break;
+	default:
+		return false;
+		break;
+	}
 }

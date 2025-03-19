@@ -99,7 +99,7 @@ void LoadCameraWork()
 	char cData1[64] = { NULL };
 	FILE* pFile;
 
-	pFile = fopen("data\\TEXT\\CameraWork.txt", "r");
+	pFile = fopen("data\\TEXT\\CameraWork00.txt", "r");
 
 	if (pFile != NULL)
 	{
