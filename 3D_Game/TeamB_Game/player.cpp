@@ -1261,7 +1261,7 @@ void UpdateMp()
 //*************************
 void ShotSkill()
 {
-	if (isMotionRoll() == false)
+	if (isMotionRoll() == false && g_player.PlayerMotion.bBlendMotion == false)
 	{
 		if (isSkillType(SKILLTYPE_NONE) == true)
 		{

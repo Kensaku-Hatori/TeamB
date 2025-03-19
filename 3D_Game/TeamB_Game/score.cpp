@@ -12,6 +12,7 @@ LPDIRECT3DTEXTURE9 g_pTextureScore = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffScore = NULL;
 D3DXVECTOR3 g_posScore;
 int g_nScore;
+int g_nDestScore;
 //=============
 //初期化処理
 //=============
@@ -26,6 +27,7 @@ void InitScore(void)
 	
 	g_posScore = D3DXVECTOR3(800.0f, 0.0f, 0.0f);
 	g_nScore = 0;
+	g_nDestScore = 0;
 
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
@@ -94,7 +96,39 @@ void UninitScore(void)
 //==========
 void UpdateScore(void)
 {
+	if (g_nScore <= g_nDestScore - 1)
+	{
+		g_nScore += g_nDestScore / SCORE_SPEED;
+	}
+	int aPosTexU[MAX_SCORE];
+	int nData = SCOREDATA * 10;
+	int nData2 = SCOREDATA;
+	int nCnt;
+	for (nCnt = 0; nCnt < MAX_SCORE; nCnt++)
+	{
+		aPosTexU[nCnt] = g_nScore % nData / nData2;
+		nData /= 10;
+		nData2 /= 10;
+	}
 
+	VERTEX_2D* pVtx;
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	g_pVtxBuffScore->Lock(0, 0, (void**)&pVtx, 0);
+	int nData3 = 0;
+	for (nCnt = 0; nCnt < 4 * MAX_SCORE; nCnt++)
+	{
+		//テクスチャ座標の設定
+		pVtx[nCnt].tex = D3DXVECTOR2((aPosTexU[nData3] / 10.0f), 0.0f);
+		pVtx[nCnt + 1].tex = D3DXVECTOR2((aPosTexU[nData3] / 10.0f) + 0.1f, 0.0f);
+		pVtx[nCnt + 2].tex = D3DXVECTOR2((aPosTexU[nData3] / 10.0f), 1.0f);
+		pVtx[nCnt + 3].tex = D3DXVECTOR2((aPosTexU[nData3] / 10.0f) + 0.1f, 1.0f);
+
+		nData3++;
+		nCnt += 3;
+	}
+	assert(nCnt <= 4 * MAX_SCORE);
+	//頂点バッファをアンロック
+	g_pVtxBuffScore->Unlock();
 }
 //===========
 //描画処理
@@ -163,41 +197,11 @@ void SetScore(int nScore)
 //==================
 void AddScore(int nValue)
 {
-	int aPosTexU[MAX_SCORE];
-	g_nScore += nValue;
-	if (g_nScore <= 0)
+	g_nDestScore += nValue;
+	if (g_nDestScore <= 0)
 	{
-		g_nScore = 0;
+		g_nDestScore = 0;
 	}
-
-	int nData = SCOREDATA * 10;
-	int nData2 = SCOREDATA;
-	int nCnt;
-	for (nCnt = 0; nCnt < MAX_SCORE; nCnt++)
-	{
-		aPosTexU[nCnt] = g_nScore % nData / nData2;
-		nData /= 10;
-		nData2 /= 10;
-	}
-
-	VERTEX_2D* pVtx;
-	//頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffScore->Lock(0, 0, (void**)&pVtx, 0);
-	int nData3 = 0;
-	for (nCnt = 0; nCnt < 4 * MAX_SCORE; nCnt++)
-	{
-		//テクスチャ座標の設定
-		pVtx[nCnt].tex = D3DXVECTOR2((aPosTexU[nData3] / 10.0f), 0.0f);
-		pVtx[nCnt + 1].tex = D3DXVECTOR2((aPosTexU[nData3] / 10.0f) + 0.1f, 0.0f);
-		pVtx[nCnt + 2].tex = D3DXVECTOR2((aPosTexU[nData3] / 10.0f), 1.0f);
-		pVtx[nCnt + 3].tex = D3DXVECTOR2((aPosTexU[nData3] / 10.0f) + 0.1f, 1.0f);
-
-		nData3++;
-		nCnt += 3;
-	}
-	assert(nCnt <= 4 * MAX_SCORE);
-	//頂点バッファをアンロック
-	g_pVtxBuffScore->Unlock();
 }
 //==============
 //スコアの取得
