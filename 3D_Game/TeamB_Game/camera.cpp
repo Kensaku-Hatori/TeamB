@@ -13,6 +13,7 @@
 #include "lockon.h"
 #include "boss.h"
 #include "option.h"
+#include "sound.h"
 
 //ƒOƒ[ƒoƒ‹•Ï”
 Camera g_camera;
@@ -522,6 +523,8 @@ void UpdateMovie()
 	if (g_camera.Anim.bFinish == true)
 	{
 		SetMode(MODE_STAGEFOUR);
+		StopSound();
+		PlaySound(SOUND_LABEL_BOSS);
 	}
 }
 void SetNumKey(int AnimCount, int NumKey)

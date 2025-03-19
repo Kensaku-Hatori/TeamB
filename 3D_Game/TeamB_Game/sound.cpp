@@ -39,7 +39,9 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] =
 	{"data/BGM/gameover.wav", -1},
 	{"data/BGM/ranking.wav", -1},
 	{"data/BGM/title.wav", -1},
-	
+	{"data/BGM/BossBattle.wav", -1},
+	{"data/BGM/BossMovie.wav", -1},
+
 	// SE
 	{"data/SE/desicionsound.wav", 0},
 	{"data/SE/magic.wav", 0},

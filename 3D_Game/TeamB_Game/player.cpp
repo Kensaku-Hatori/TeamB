@@ -189,6 +189,8 @@ void UpdatePlayer(void)
 				UseItem(g_player.ItemType);
 			}
 
+			SkillChange(0);
+
 			LockOnInput();
 
 			RollingState();
@@ -1243,7 +1245,7 @@ void UpdateMp()
 	if (isGreaterCount(PLAYER_MP, g_player.Status.nMP) == true)
 	{
 		UpdateStateCount(g_nCntHealMP);
-		if (isGreaterCount(g_nCntHealMP,120) == true)
+		if (isGreaterCount(g_nCntHealMP,180) == true)
 		{
 			g_player.Status.nMP += 10;
 			g_nCntHealMP = 0;

@@ -17,7 +17,7 @@
 //ƒOƒ[ƒoƒ‹•Ï”
 LPDIRECT3DTEXTURE9 g_pTexturePause[MAX_TEXTURE] = {};
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPause = NULL;
-PAUSE_MENU g_pauseMenu=PAUSE_MENU_CONTNUE;
+PAUSE_MENU g_pauseMenu = PAUSE_MENU_CONTNUE;
 D3DXVECTOR3 g_Pausepos;
 //============
 //‰Šú‰»ˆ—
