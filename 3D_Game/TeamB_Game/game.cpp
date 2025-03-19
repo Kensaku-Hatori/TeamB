@@ -197,7 +197,6 @@ void InitGame(void)
 		break;
 
 	case MODE_STAGEFOUR:
-
 		CameraPos = D3DXVECTOR3(45.0f, 200.0f, -860.0f);
 		SetRotDest(D3DXVECTOR3(0.0f, D3DX_PI, 0.0f));
 		break;
@@ -380,12 +379,12 @@ void UpdateGame(void)
 				SetGameState(GAMESTATE_CAMERAEDITER);
 			}
 			//ƒŠƒUƒ‹ƒg‚É”ò‚Ô
-			if (KeyboardTrigger(DIK_1) == true || GetJoypadTrigger(JOYKEY_START) == true)
+			if (KeyboardTrigger(DIK_1) == true)
 			{//Clear
 				SetFade(MODE_RESULT);
 				SetResult(RESULT_CLEAR);
 			}
-			if (KeyboardTrigger(DIK_2) == true || GetJoypadTrigger(JOYKEY_START) == true)
+			if (KeyboardTrigger(DIK_2) == true)
 			{//over
 				SetFade(MODE_RESULT);
 				SetResult(RESULT_GAMEOVER);

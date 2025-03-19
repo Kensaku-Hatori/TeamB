@@ -43,9 +43,9 @@ void InitOption(void)
 
 	//テクスチャの読み込み
 	{
-		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\setting.png", &g_pTextureOption[OPTION_KANDO]);		 //
-		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\sirusi.png", &g_pTextureOptionArrow);		 //
-		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number002.png", &g_pTextureOptionNo);		 //
+		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\setting.png", &g_pTextureOption[OPTION_KANDO]);	 // 設定項目
+		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\sirusi.png", &g_pTextureOptionArrow);			 // 矢印
+		D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\number002.png", &g_pTextureOptionNo);			 // 数字
 	}
 
 	if (pPlayer->bfirst == true || mode == MODE_STAGEONE)
@@ -283,7 +283,7 @@ void UpdateOption(void)
 		break;
 	}
 
-	if (OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true)
+	if (OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_A) == true)
 	{
 		SetEnableOption(false);
 	}
@@ -348,31 +348,39 @@ Option* GetOption(void)
 {
 	return &g_Option;
 }
-//
-//
-//
+//===========
+// 感度設定
+//===========
 void OptionKando(void)
 {
-	if ((KeyboardTrigger(DIK_D) == true || GetJoypadTrigger(JOYKEY_R1) == true) && g_Option.cameraSP <= 1.0f)
+	if (KeyboardTrigger(DIK_D) == true || GetJoypadTrigger(JOYKEY_RIGHT) == true)
 	{
 		g_Option.cameraSP += 0.1f;
+		if (g_Option.cameraSP >= 1.0f)
+		{
+			g_Option.cameraSP = 1.0f;
+		}
 		g_bRight = true;
 	}
-	else if ((KeyboardTrigger(DIK_A) == true || GetJoypadTrigger(JOYKEY_L1) == true) && g_Option.cameraSP > 0.1f)
+	else if (KeyboardTrigger(DIK_A) == true || GetJoypadTrigger(JOYKEY_LEFT) == true)
 	{
 		g_Option.cameraSP -= 0.1f;
+		if (g_Option.cameraSP <= 0.1f)
+		{
+			g_Option.cameraSP = 0.1f;
+		}
 		g_bRight = false;
 	}
 
 	SetOptionKando();
 }
-//
-//
-//
+//===========
+// 感度設定
+//===========
 void SetOptionKando(void)
 {
 	int aPosTexU[2];
-	int nkando = g_Option.cameraSP * 10;
+	float nkando = g_Option.cameraSP * 10;
 
 	int nData = 100;
 	int nData2 = 10;
@@ -384,7 +392,7 @@ void SetOptionKando(void)
 
 	for (nCnt = 0; nCnt < 2; nCnt++)
 	{
-		aPosTexU[nCnt] = (nkando % nData) / nData2;
+		aPosTexU[nCnt] = ((int)nkando % nData) / nData2;
 		nData /= 10;
 		nData2 /= 10;
 
@@ -400,9 +408,9 @@ void SetOptionKando(void)
 	g_pVtxBuffOptionNo->Unlock();
 }
 
-//
-//
-//
+//=================
+// 設定項目の選択
+//=================
 void SelectOption(int zDelta)
 {
 	VERTEX_2D* pVtx;

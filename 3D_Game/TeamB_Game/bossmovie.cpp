@@ -15,6 +15,7 @@
 #include "invisiblewall.h"
 #include "shadow.h"
 #include "player.h"
+#include "sound.h"
 
 //***********************************
 // ボスのムービーに関する処理の初期化
@@ -71,6 +72,9 @@ void InitBossMovie()
 	ResetCameraPos(CameraPos, D3DXVECTOR3(0.0f,100.0f,300.0f));
 
 	SetCameraWork(&pCamera->Anim, ANIMTYPE_TWO);
+
+	StopSound();
+	PlaySound(SOUND_LABEL_BOSSMOVIE);
 }
 
 //*************************************
