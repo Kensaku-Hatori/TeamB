@@ -776,7 +776,7 @@ void CollisionEnemyAction(int nCnt)
 			0,
 			D3DXVECTOR3(radius, radius, radius),
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-			EFFECT_SKILL,
+			EFFECT_NONE,
 			0,
 			0.0f,
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f));
