@@ -166,6 +166,18 @@
     <ClCompile Include="option.cpp">
       <Filter>K_A\.cpp</Filter>
     </ClCompile>
+    <ClCompile Include="cameraanim.cpp">
+      <Filter>H_K\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="cameraediter.cpp">
+      <Filter>H_K\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="bossmovie.cpp">
+      <Filter>H_K\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="bossnameeffect.cpp">
+      <Filter>H_K\.cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="wall.h">
@@ -341,6 +353,18 @@
     </ClInclude>
     <ClInclude Include="option.h">
       <Filter>K_A\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="cameraanim.h">
+      <Filter>H_K\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="cameraediter.h">
+      <Filter>H_K\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="bossmovie.h">
+      <Filter>H_K\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="bossnameeffect.h">
+      <Filter>H_K\.h</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

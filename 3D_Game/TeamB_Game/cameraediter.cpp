@@ -7,7 +7,7 @@
 
 CameraAnim CameraEditer;
 int KeyCount = 0,AnimCount = 0;
-int g_LoadAnimCount, g_LoadKeyCount;
+int g_LoadAnimCount, g_LoadKeyCount,EffectCount;
 
 void LoadAnimInfo(FILE* pFile);
 void LoadKeyNum(FILE* pFile);
@@ -144,6 +144,8 @@ void LoadKeyNum(FILE* pFile)
 	NTYPE nType = {};
 	int ModelPathCount = 0;
 	int PolygonePathCount = 0;
+	int StartFrame,EndFrame,nLife;
+	BOSSNAMEEFFECT In;
 
 	while (1)
 	{
@@ -156,6 +158,34 @@ void LoadKeyNum(FILE* pFile)
 				cData1[0] = { NULL };
 				SkipEqual(pFile);
 				SetNumKey(g_LoadAnimCount, LoadInt(pFile));
+			}
+			if (strcmp(&cData1[0], "SETNAMEEFFECT") == 0)
+			{
+				cData1[0] = { NULL };
+
+				fgets(cData, 2, pFile);
+
+				In.Pos.x = LoadFloat(pFile);
+				In.Pos.y = LoadFloat(pFile);
+				In.Pos.z = LoadFloat(pFile);
+
+				In.Rot.x = LoadFloat(pFile);
+				In.Rot.y = LoadFloat(pFile);
+				In.Rot.z = LoadFloat(pFile);
+
+				In.Scale.x = LoadFloat(pFile);
+				In.Scale.y = LoadFloat(pFile);
+
+				In.Col.r = LoadFloat(pFile);
+				In.Col.g = LoadFloat(pFile);
+				In.Col.b = LoadFloat(pFile);
+				In.Col.a = LoadFloat(pFile);
+
+				StartFrame = LoadInt(pFile);
+				EndFrame = LoadInt(pFile);
+				nLife = LoadInt(pFile);
+
+				SetNameEffectInfo(In.Pos, In.Rot, In.Scale, In.Col, g_LoadAnimCount, EffectCount,StartFrame,EndFrame, nLife,MOVIEEFFECT_NAME);
 			}
 			if (strcmp(&cData1[0], "LOOP") == 0)
 			{
@@ -170,6 +200,7 @@ void LoadKeyNum(FILE* pFile)
 			}
 			else if (strcmp(&cData1[0], "END_CAMERAWORK") == 0)
 			{
+				EffectCount = 0;
 				g_LoadKeyCount = 0;
 				g_LoadAnimCount++;
 				break;

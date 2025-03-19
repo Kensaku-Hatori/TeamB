@@ -61,4 +61,5 @@ void UpdateMovie();
 void SetNumKey(int AnimCount, int NumKey);
 void SetLoop(int AnimCount, int Loop);
 void SetCameraWorkInfo(D3DXVECTOR3 PosV, D3DXVECTOR3 PosR, D3DXVECTOR3 Rot,int Frame, int AnimCount, int KeyCount);
+void SetNameEffectInfo(D3DXVECTOR3 Pos, D3DXVECTOR3 Rot, D3DXVECTOR2 Scale, D3DXCOLOR Col, int AnimCount, int EffectCount,int StartFrame,int EndFrame,int nLife,MovieEffectType nTypr);
 #endif
