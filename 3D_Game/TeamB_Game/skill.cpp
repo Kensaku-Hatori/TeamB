@@ -428,7 +428,7 @@ void SetSkill(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot, SKILLTYPE ntyp
 			// ”š”­–‚–@
 			else if (ntype == SKILLTYPE_EXPLOSION)
 			{
-				g_Skill[nCnt].fPower = pPlayer->Status.fPower * 0.5f;
+				g_Skill[nCnt].fPower = pPlayer->Status.fPower * 0.3f;
 			}
 			g_Skill[nCnt].bHit = false;
 			g_Skill[nCnt].bUse = true;

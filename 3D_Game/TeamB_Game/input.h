@@ -49,4 +49,5 @@ bool GetJoyStickL();
 bool GetJoyStickR();
 XINPUT_STATE* GetJoyStickAngle(void);
 
+void SetVibRation(int RightVib,int LeftVib,int Frame);
 #endif

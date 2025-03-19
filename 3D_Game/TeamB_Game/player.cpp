@@ -94,7 +94,7 @@ void InitPlayer(void)
 		g_player.Skilltype = SKILLTYPE_NONE;
 		g_player.ItemType = ITEMTYPE_HP;
 		g_player.nScore = 0;
-	}
+	}	
 
 	g_player.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -533,7 +533,6 @@ void PlayerMove(void)
 	if ((KeyboardTrigger(DIK_SPACE) || GetJoypadTrigger(JOYKEY_A)) && isRolling() == false && isStateType(PLAYERSTATE_KNOCKUP) == false)
 	{
 		PlaySound(SOUND_LABEL_ROLLING);
-		g_player.bSkillUse = false;
 		g_player.bRolling = true;
 		g_player.state = PLAYERSTATE_ROLL;
 	}
@@ -767,11 +766,14 @@ void PlayerMove(void)
 	}
 	else if(g_player.state == PLAYERSTATE_KNOCKUP)
 	{//ƒ_ƒEƒ“ó‘Ô
+		if (isMotionType(MOTIONTYPE_ACTION_HORMING) == true)
+		{
+			g_player.bSkillUse = false;
+		}
 		if (g_player.PlayerMotion.motionType != MOTIONTYPE_DOWN)
 		{
 			SetMotion(MOTIONTYPE_DOWN, &g_player.PlayerMotion);
 		}
-		g_player.bSkillUse = false;
 		g_player.nCntState++;
 		if (g_player.nCntState >= PLAYER_DOWNTIME)
 		{
@@ -973,6 +975,7 @@ void HitPlayer(float Atack,D3DXVECTOR3 Pos)
 				SetGameState(GAMESTATE_GAMEOVER);
 			}
 			SetShake(10);
+			SetVibRation(50000, 50000, 30);
 		}
 	}
 }
@@ -1258,37 +1261,40 @@ void UpdateMp()
 //*************************
 void ShotSkill()
 {
-	if (isSkillType(SKILLTYPE_NONE) == true)
+	if (isMotionRoll() == false)
 	{
-		SetState(PLAYERSTATE_ACTION);
-
-		SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion);
-
-		SetActionFlame(0, 3, 3, 18, 19);
-		SetActionFlame(1, 3, 3, 15, 19);
-		SetActionFlame(2, 0, 0, 1, 2);
-	}
-	else if (isSkillType(SKILLTYPE_HORMING) == true)
-	{
-		if (g_player.bSkillUse == false)
+		if (isSkillType(SKILLTYPE_NONE) == true)
 		{
 			SetState(PLAYERSTATE_ACTION);
 
-			g_player.bSkillUse = true;
-			SetMotion(MOTIONTYPE_ACTION_HORMING, &g_player.PlayerMotion);
+			SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion);
 
-			SetActionFlame(0, 2, 2, 23, 24);
+			SetActionFlame(0, 3, 3, 18, 19);
+			SetActionFlame(1, 3, 3, 15, 19);
 			SetActionFlame(2, 0, 0, 1, 2);
 		}
-	}
-	else if (isSkillType(SKILLTYPE_EXPLOSION) == true)
-	{
-		SetState(PLAYERSTATE_ACTION);
+		else if (isSkillType(SKILLTYPE_HORMING) == true)
+		{
+			if (g_player.bSkillUse == false)
+			{
+				SetState(PLAYERSTATE_ACTION);
 
-		SetMotion(MOTIONTYPE_ACTION_EXPLOSION, &g_player.PlayerMotion);
+				g_player.bSkillUse = true;
+				SetMotion(MOTIONTYPE_ACTION_HORMING, &g_player.PlayerMotion);
 
-		SetActionFlame(0, 0, 0, 15, 16);
-		SetActionFlame(1, 0, 0, 15, 16);
+				SetActionFlame(0, 2, 2, 23, 24);
+				SetActionFlame(2, 0, 0, 1, 2);
+			}
+		}
+		else if (isSkillType(SKILLTYPE_EXPLOSION) == true)
+		{
+			SetState(PLAYERSTATE_ACTION);
+
+			SetMotion(MOTIONTYPE_ACTION_EXPLOSION, &g_player.PlayerMotion);
+
+			SetActionFlame(0, 0, 0, 15, 16);
+			SetActionFlame(1, 0, 0, 15, 16);
+		}
 	}
 }
 //***********

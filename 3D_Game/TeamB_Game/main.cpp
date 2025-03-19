@@ -554,7 +554,7 @@ void SetMode(MODE mode)
 	default:
 		break;
 	}
-
+	MODE OldMode = g_mode;
 	g_mode = mode;
 
 	//V‚µ‚¢‰æ–Ê‚Ì‰Šú‰»ˆ—
@@ -579,7 +579,7 @@ void SetMode(MODE mode)
 		InitBossMovie();
 		break;
 	case MODE_RESULT:
-		InitResult();
+		InitResult(OldMode);
 		break;
 	case MODE_RANK:
 		InitRanking();

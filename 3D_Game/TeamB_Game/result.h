@@ -18,7 +18,7 @@ typedef enum
 }RESULT;
 
 //プロトタイプ宣言
-void InitResult(void);
+void InitResult(MODE OldMode);
 void UninitResult(void);
 void UpdateResult(void);
 void DrawResult(void);

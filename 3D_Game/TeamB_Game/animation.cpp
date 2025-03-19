@@ -16,6 +16,7 @@
 #include "particle.h"
 #include "circle.h"
 #include "sound.h"
+#include "input.h"
 
 //***************
 // ƒOƒ[ƒoƒ‹•Ï”
@@ -267,6 +268,10 @@ void UpdateMotion(OBJECTINFO* Motion)
 				Motion->nCntMotion >= Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].nEndFrame)
 			{
 				Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].bActionStart = false;
+				if (Motion->motionType == MOTIONTYPE_MOVE)
+				{
+					Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].bFirst = false;
+				}
 			}
 		}
 		if (Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].bActionStart == true)
@@ -340,6 +345,7 @@ void CaceOneAction(OBJECTINFO* Motion)
 					SKILLTYPE_NONE,
 					0.0f);
 			PlaySound(SOUND_LABEL_MAGIC);
+			SetVibRation(10000, 10000, 60);
 		}
 		break;
 	case MOTIONTYPE_ACTION_HORMING:
@@ -361,6 +367,8 @@ void CaceOneAction(OBJECTINFO* Motion)
 					pPlayer->rot,
 					SKILLTYPE_HORMING,
 					fRatio);
+
+				SetVibRation(10000, 10000, 60);
 			}
 			// MP‚ðŒ¸‚ç‚·
 			SubMP(pPlayer->Skilltype);
@@ -388,6 +396,7 @@ void CaceOneAction(OBJECTINFO* Motion)
 			SubMP(pPlayer->Skilltype);
 
 			PlaySound(SOUND_LABEL_EXPROSION);
+			SetVibRation(20000, 20000, 30);
 		}
 		break;
 	case MOTIONTYPE_LANDING:

@@ -277,28 +277,28 @@ void UpdateItemUI(void)
 	if (pPlayer->ItemType == ITEMTYPE_HP)
 	{
 		//頂点カラーの設定
-		pVtx[0].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		pVtx[1].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		pVtx[2].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		pVtx[3].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		//頂点カラーの設定
-		pVtx[4].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[5].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[6].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[7].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	}
-	else if (pPlayer->ItemType == ITEMTYPE_MP)
-	{
-		//頂点カラーの設定
 		pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 		pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 		pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 		pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 		//頂点カラーの設定
-		pVtx[4].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		pVtx[5].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		pVtx[6].col = D3DCOLOR_RGBA(255, 0, 0, 255);
-		pVtx[7].col = D3DCOLOR_RGBA(255, 0, 0, 255);
+		pVtx[4].col = D3DCOLOR_RGBA(255, 255, 255, 100);
+		pVtx[5].col = D3DCOLOR_RGBA(255, 255, 255, 100);
+		pVtx[6].col = D3DCOLOR_RGBA(255, 255, 255, 100);
+		pVtx[7].col = D3DCOLOR_RGBA(255, 255, 255, 100);
+	}
+	else if (pPlayer->ItemType == ITEMTYPE_MP)
+	{
+		//頂点カラーの設定
+		pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 100);
+		pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 100);
+		pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 100);
+		pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 100);
+		//頂点カラーの設定
+		pVtx[4].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[5].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[6].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		pVtx[7].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 	}
 
 	//頂点バッファをアンロック
@@ -454,6 +454,7 @@ void UseItem(ITEMTYPE type)
 	{
 		if (g_nCntItemHP >= 1)
 		{
+			SetVibRation(1000, 1000, 60);
 			PlaySound(SOUND_LABEL_POTION);
 
 			pPlayer->Status.fHP += ITEMABILITY_HP;
@@ -491,13 +492,10 @@ void UseItem(ITEMTYPE type)
 	{
 		if (g_nCntItemMP >= 1)
 		{
+			SetVibRation(1000, 1000, 60);
 			PlaySound(SOUND_LABEL_POTION);
 
-			pPlayer->Status.nMP += ITEMABILITY_MP;
-			if (pPlayer->Status.nMP >= PLAYER_MP)
-			{
-				pPlayer->Status.nMP = PLAYER_MP;
-			}
+			pPlayer->Status.nMP = PLAYER_MP;
 
 			//サークルの設定
 			circleIndx = SetCircle(D3DXVECTOR3(pPlayer->pos.x, pPlayer->pos.y + 1.0f, pPlayer->pos.z),

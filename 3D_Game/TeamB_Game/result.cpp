@@ -13,13 +13,14 @@
 #include "loadmotion.h"
 #include "model.h"
 #include "meshfield.h"
+#include "player.h"
 
 //グローバル変数宣言
 
 //===========
 //初期化処理
 //===========
-void InitResult(void)
+void InitResult(MODE OldMode)
 {
 	InitMeshfield();
 
@@ -30,9 +31,10 @@ void InitResult(void)
 	InitResultInfo();
 
 	InitMotion();
+
 	InitStageModel();
 
-	LoadModelViewer(MODE_STAGEONE);
+	LoadModelViewer(OldMode);
 }
 //==========
 //終了処理
