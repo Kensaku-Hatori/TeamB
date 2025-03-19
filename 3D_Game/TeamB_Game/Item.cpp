@@ -10,6 +10,8 @@
 #include "itemui.h"
 #include "score.h"
 #include "sound.h"
+#include "particle.h"
+#include "effect.h"
 
 //グロ－バル変数宣言
 Item g_Item[MAX_ITEM];
@@ -293,6 +295,29 @@ void CollisionItem(int nIndexItem)
 
 		if (Distance <= Radius)//当たってるなら
 		{
+			D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			if (g_Item[nIndexItem].type == ITEMTYPE_HP)
+			{
+				col = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
+			}
+			else if (g_Item[nIndexItem].type == ITEMTYPE_MP)
+			{
+				col = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
+			}
+
+			SetParticle(pPlayer->pos,
+				D3DXVECTOR3(1.0f, 628.0f, 1.0f),
+				col,
+				PARTICLE_NONE,
+				D3DXVECTOR3(1.0f, 1.0f, 1.0f),
+				30,
+				300,
+				100.0f,
+				100.0f,
+				-0.1f,
+				EFFECT_NONE);
+
+
 			g_Item[nIndexItem].bUse = false;						//使用していない状態にする
 			g_Item[nIndexItem].nCntTime = 0;						//消えるまでのフレーム初期化
 			g_nCntItem--;											//ドロップ中のアイテム数デクリメント
