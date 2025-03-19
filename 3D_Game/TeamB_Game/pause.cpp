@@ -31,13 +31,12 @@ void InitPause(void)
 	pDevice = GetDevice();
 
 	//テクスチャの読み込み
-	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\pause.jpg", &g_pTexturePause[0]); //ポーズの背景
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\settei.png", &g_pTexturePause[1]); //戻る
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\continue.png", &g_pTexturePause[2]); //やり直し
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\retry.png", &g_pTexturePause[3]); //タイトルに戻る
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\quit.png", &g_pTexturePause[4]); //タイトルに戻る
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\settei01.png", &g_pTexturePause[1]); //設定
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\quit01.png", &g_pTexturePause[2]); //戻る
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\retry2.png", &g_pTexturePause[3]); //やり直し
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\exit2.png", &g_pTexturePause[4]); //タイトルに戻る
 
-	g_Pausepos = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - PAUSESELECT_HEIGHT, 0.0f);
+	g_Pausepos = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - PAUSESELECT_HEIGHT * 1.5f, 0.0f);
 
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
@@ -62,10 +61,10 @@ void InitPause(void)
 			pVtx[2].pos = D3DXVECTOR3(0.0f, 720.0f, 0.0f);
 			pVtx[3].pos = D3DXVECTOR3(1280.0f, 720.0f, 0.0f);
 			//頂点カラーの設定
-			pVtx[0].col = D3DCOLOR_RGBA(1, 1, 1, 127);
-			pVtx[1].col = D3DCOLOR_RGBA(1, 1, 1, 127);
-			pVtx[2].col = D3DCOLOR_RGBA(1, 1, 1, 127);
-			pVtx[3].col = D3DCOLOR_RGBA(1, 1, 1, 127);
+			pVtx[0].col = D3DCOLOR_RGBA(1, 1, 1, 190);
+			pVtx[1].col = D3DCOLOR_RGBA(1, 1, 1, 190);
+			pVtx[2].col = D3DCOLOR_RGBA(1, 1, 1, 190);
+			pVtx[3].col = D3DCOLOR_RGBA(1, 1, 1, 190);
 
 		}
 		else
