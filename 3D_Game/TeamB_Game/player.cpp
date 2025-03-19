@@ -1259,37 +1259,40 @@ void UpdateMp()
 //*************************
 void ShotSkill()
 {
-	if (isSkillType(SKILLTYPE_NONE) == true)
+	if (isMotionRoll() == false)
 	{
-		SetState(PLAYERSTATE_ACTION);
-
-		SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion);
-
-		SetActionFlame(0, 3, 3, 18, 19);
-		SetActionFlame(1, 3, 3, 15, 19);
-		SetActionFlame(2, 0, 0, 1, 2);
-	}
-	else if (isSkillType(SKILLTYPE_HORMING) == true)
-	{
-		if (g_player.bSkillUse == false)
+		if (isSkillType(SKILLTYPE_NONE) == true)
 		{
 			SetState(PLAYERSTATE_ACTION);
 
-			g_player.bSkillUse = true;
-			SetMotion(MOTIONTYPE_ACTION_HORMING, &g_player.PlayerMotion);
+			SetMotion(MOTIONTYPE_ACTION, &g_player.PlayerMotion);
 
-			SetActionFlame(0, 2, 2, 23, 24);
+			SetActionFlame(0, 3, 3, 18, 19);
+			SetActionFlame(1, 3, 3, 15, 19);
 			SetActionFlame(2, 0, 0, 1, 2);
 		}
-	}
-	else if (isSkillType(SKILLTYPE_EXPLOSION) == true)
-	{
-		SetState(PLAYERSTATE_ACTION);
+		else if (isSkillType(SKILLTYPE_HORMING) == true)
+		{
+			if (g_player.bSkillUse == false)
+			{
+				SetState(PLAYERSTATE_ACTION);
 
-		SetMotion(MOTIONTYPE_ACTION_EXPLOSION, &g_player.PlayerMotion);
+				g_player.bSkillUse = true;
+				SetMotion(MOTIONTYPE_ACTION_HORMING, &g_player.PlayerMotion);
 
-		SetActionFlame(0, 0, 0, 15, 16);
-		SetActionFlame(1, 0, 0, 15, 16);
+				SetActionFlame(0, 2, 2, 23, 24);
+				SetActionFlame(2, 0, 0, 1, 2);
+			}
+		}
+		else if (isSkillType(SKILLTYPE_EXPLOSION) == true)
+		{
+			SetState(PLAYERSTATE_ACTION);
+
+			SetMotion(MOTIONTYPE_ACTION_EXPLOSION, &g_player.PlayerMotion);
+
+			SetActionFlame(0, 0, 0, 15, 16);
+			SetActionFlame(1, 0, 0, 15, 16);
+		}
 	}
 }
 //***********
