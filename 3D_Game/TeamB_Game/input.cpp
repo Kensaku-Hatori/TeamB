@@ -15,6 +15,15 @@ LPDIRECTINPUT8 g_pInput = NULL;
 LPDIRECTINPUTDEVICE8 g_pDevKeyboard = NULL;
 BYTE g_aKeyState[NUM_KEY_MAX];
 BYTE g_aOldState[NUM_KEY_MAX];
+
+bool g_Vib;
+int g_VibCounter;
+int g_VibFrame;
+
+bool isVib();
+bool isGreaterVib();
+
+void EndVib();
 //=======================
 //キーボードの初期化処理
 //=======================
@@ -165,6 +174,14 @@ void UpdateJoypad(void)
 
 		g_joyKeyState = joykeyState;
 	}
+	if (isVib() == true)
+	{
+		g_VibCounter++;
+		if (isGreaterVib() == true)
+		{
+			EndVib();
+		}
+	}
 }
 //=================================
 //コントローラーのプレス情報を取得
@@ -215,4 +232,34 @@ bool GetJoyStickR()
 XINPUT_STATE* GetJoyStickAngle(void)
 {
 	return &g_joyKeyState;
+}
+
+bool isVib()
+{
+	return g_Vib;
+}
+
+bool isGreaterVib()
+{
+	return g_VibCounter >= g_VibFrame;
+}
+
+void SetVibRation(int RightVib, int LeftVib, int Frame)
+{
+	g_Vib = true;
+	g_VibFrame = Frame;
+	g_VibCounter = 0;
+	XINPUT_VIBRATION LocalVib = {};
+	LocalVib.wRightMotorSpeed = RightVib;
+	LocalVib.wLeftMotorSpeed = LeftVib;
+	XInputSetState(0, &LocalVib);
+}
+
+void EndVib()
+{
+	g_VibCounter = 0;
+	g_VibFrame = 0;
+	g_Vib = false;
+	XINPUT_VIBRATION ResetVib = {};
+	XInputSetState(0,&ResetVib);
 }

@@ -179,6 +179,7 @@ void UpdatePlayer(void)
 				//–‚–@”­ŽË
 				if (isActionCondition() == true)
 				{
+					SetVibRation(1000, 1000, 60);
 					ShotSkill();
 				}
 			}
