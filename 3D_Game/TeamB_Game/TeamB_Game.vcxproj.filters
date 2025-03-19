@@ -166,6 +166,9 @@
     <ClCompile Include="option.cpp">
       <Filter>K_A\.cpp</Filter>
     </ClCompile>
+    <ClCompile Include="bossmovie.cpp" />
+    <ClCompile Include="cameraanim.cpp" />
+    <ClCompile Include="cameraediter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="wall.h">
@@ -342,6 +345,9 @@
     <ClInclude Include="option.h">
       <Filter>K_A\.h</Filter>
     </ClInclude>
+    <ClInclude Include="bossmovie.h" />
+    <ClInclude Include="cameraanim.h" />
+    <ClInclude Include="cameraediter.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="H_K">

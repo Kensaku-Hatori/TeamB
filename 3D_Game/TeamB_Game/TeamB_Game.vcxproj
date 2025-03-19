@@ -150,8 +150,11 @@
     <ClCompile Include="billboard.cpp" />
     <ClCompile Include="boss.cpp" />
     <ClCompile Include="bossgauge.cpp" />
+    <ClCompile Include="bossmovie.cpp" />
     <ClCompile Include="buttonUI.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="cameraanim.cpp" />
+    <ClCompile Include="cameraediter.cpp" />
     <ClCompile Include="circle.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="effect.cpp" />
@@ -207,8 +210,11 @@
     <ClInclude Include="billboard.h" />
     <ClInclude Include="boss.h" />
     <ClInclude Include="bossgauge.h" />
+    <ClInclude Include="bossmovie.h" />
     <ClInclude Include="buttonUI.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="cameraanim.h" />
+    <ClInclude Include="cameraediter.h" />
     <ClInclude Include="circle.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="effect.h" />
