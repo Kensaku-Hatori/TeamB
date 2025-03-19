@@ -44,6 +44,8 @@
 #include "meshsphere.h"
 #include "cameraediter.h"
 #include "option.h"
+#include "score.h"
+
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
 int g_nCounterGameState = 0;
@@ -187,7 +189,8 @@ void InitGame(void)
 		break;
 
 	case MODE_STAGETWO:
-
+		pPlayer->Status.fHP = PLAYER_HP;
+		pPlayer->Status.nMP = PLAYER_MP;
 		CameraPos = D3DXVECTOR3(1245.0f, 200.0f, 645.0f);
 		break;
 
@@ -456,6 +459,15 @@ void UpdateGame(void)
 					//モードをリザルトにする
 					SetFade(MODE_RESULT);
 					SetResult(RESULT_CLEAR);
+
+					if (pPlayer->Status.fHP == PLAYER_HP)
+					{
+						AddScore(1000);
+					}
+					else if (pPlayer->Status.fHP >= PLAYER_HP / 2)
+					{
+						AddScore(500);
+					}
 
 					StopSound();
 					PlaySound(SOUND_LABEL_GAMECLEAR);
