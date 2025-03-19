@@ -27,6 +27,7 @@ LPDIRECT3DTEXTURE9 g_pTextureOptionNo = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffOptionNo = NULL;
 
 Option g_Option;
+bool g_bRight;
 //============
 // 初期化処理
 //============
@@ -53,6 +54,7 @@ void InitOption(void)
 	}
 
 	g_Option.type = OPTION_KANDO;
+	g_bRight = true;
 
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
@@ -281,6 +283,11 @@ void UpdateOption(void)
 		break;
 	}
 
+	if (OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_B) == true)
+	{
+		SetEnableOption(false);
+	}
+
 }
 //===========
 //描画処理
@@ -349,10 +356,12 @@ void OptionKando(void)
 	if ((KeyboardTrigger(DIK_D) == true || GetJoypadTrigger(JOYKEY_R1) == true) && g_Option.cameraSP <= 1.0f)
 	{
 		g_Option.cameraSP += 0.1f;
+		g_bRight = true;
 	}
 	else if ((KeyboardTrigger(DIK_A) == true || GetJoypadTrigger(JOYKEY_L1) == true) && g_Option.cameraSP > 0.1f)
 	{
 		g_Option.cameraSP -= 0.1f;
+		g_bRight = false;
 	}
 
 	SetOptionKando();

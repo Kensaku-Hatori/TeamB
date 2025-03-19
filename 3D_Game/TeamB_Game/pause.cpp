@@ -12,7 +12,7 @@
 #include "player.h"
 #include "mouse.h"
 
-#define MAX_TEXTURE (4)
+#define MAX_TEXTURE (5)
 
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTexturePause[MAX_TEXTURE] = {};
@@ -31,12 +31,12 @@ void InitPause(void)
 	pDevice = GetDevice();
 
 	//テクスチャの読み込み
-	//D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\pause.jpg", &g_pTexturePause[0]); //ポーズの背景
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\continue.png", &g_pTexturePause[1]); //戻る
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\retry.png", &g_pTexturePause[2]); //やり直し
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\quit.png", &g_pTexturePause[3]); //タイトルに戻る
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\settei01.png", &g_pTexturePause[1]); //設定
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\quit01.png", &g_pTexturePause[2]); //戻る
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\retry2.png", &g_pTexturePause[3]); //やり直し
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\exit2.png", &g_pTexturePause[4]); //タイトルに戻る
 
-	g_Pausepos = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - PAUSESELECT_HEIGHT, 0.0f);
+	g_Pausepos = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - PAUSESELECT_HEIGHT * 1.5f, 0.0f);
 
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
@@ -61,10 +61,10 @@ void InitPause(void)
 			pVtx[2].pos = D3DXVECTOR3(0.0f, 720.0f, 0.0f);
 			pVtx[3].pos = D3DXVECTOR3(1280.0f, 720.0f, 0.0f);
 			//頂点カラーの設定
-			pVtx[0].col = D3DCOLOR_RGBA(1, 1, 1, 127);
-			pVtx[1].col = D3DCOLOR_RGBA(1, 1, 1, 127);
-			pVtx[2].col = D3DCOLOR_RGBA(1, 1, 1, 127);
-			pVtx[3].col = D3DCOLOR_RGBA(1, 1, 1, 127);
+			pVtx[0].col = D3DCOLOR_RGBA(1, 1, 1, 190);
+			pVtx[1].col = D3DCOLOR_RGBA(1, 1, 1, 190);
+			pVtx[2].col = D3DCOLOR_RGBA(1, 1, 1, 190);
+			pVtx[3].col = D3DCOLOR_RGBA(1, 1, 1, 190);
 
 		}
 		else
@@ -140,8 +140,11 @@ void UpdatePause(int zDelta)
 		PlaySound(SOUND_LABEL_SELECT);
 		switch (g_pauseMenu)
 		{
-		case PAUSE_MENU_CONTNUE:
+		case PAUSE_MENU_OPTION:
 			g_pauseMenu = PAUSE_MENU_QUIT;
+			break;
+		case PAUSE_MENU_CONTNUE:
+			g_pauseMenu = PAUSE_MENU_OPTION;
 			break;
 		case PAUSE_MENU_RETRY:
 			g_pauseMenu = PAUSE_MENU_CONTNUE;
@@ -158,6 +161,9 @@ void UpdatePause(int zDelta)
 		PlaySound(SOUND_LABEL_SELECT);
 		switch (g_pauseMenu)
 		{
+		case PAUSE_MENU_OPTION:
+			g_pauseMenu = PAUSE_MENU_CONTNUE;
+			break;
 		case PAUSE_MENU_CONTNUE:
 			g_pauseMenu = PAUSE_MENU_RETRY;
 			break;
@@ -165,65 +171,31 @@ void UpdatePause(int zDelta)
 			g_pauseMenu = PAUSE_MENU_QUIT;
 			break;
 		case PAUSE_MENU_QUIT:
-			g_pauseMenu = PAUSE_MENU_CONTNUE;
+			g_pauseMenu = PAUSE_MENU_OPTION;
 			break;
 		default:
 			break;
 		}
 	}
 
-	//頂点カラーの設定(明るく)
-	if (g_pauseMenu == PAUSE_MENU_CONTNUE)
-	{	//Contnueにいる場合
-		pVtx[4].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-		pVtx[5].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-		pVtx[6].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-		pVtx[7].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-
-		pVtx[8].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[9].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[10].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[11].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-
-		pVtx[12].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[13].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[14].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[15].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-
-	}
-	else if (g_pauseMenu == PAUSE_MENU_RETRY)
-	{	//RETRYにいる場合
-		pVtx[4].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[5].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[6].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[7].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-
-		pVtx[8].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-		pVtx[9].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-		pVtx[10].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-		pVtx[11].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-
-		pVtx[12].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[13].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[14].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[15].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	}
-	else if (g_pauseMenu == PAUSE_MENU_QUIT)
-	{	//QUITにいる場合
-		pVtx[4].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[5].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[6].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[7].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-
-		pVtx[8].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[9].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[10].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[11].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-
-		pVtx[12].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-		pVtx[13].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-		pVtx[14].col = D3DCOLOR_RGBA(255, 255, 0, 255);
-		pVtx[15].col = D3DCOLOR_RGBA(255, 255, 0, 255);
+	pVtx += 4;
+	for (int nCnt = 0; nCnt < PAUSE_MENU_MAX; nCnt++)
+	{
+		if (nCnt == g_pauseMenu)
+		{
+			pVtx[0].col = D3DCOLOR_RGBA(255, 255, 1, 255);
+			pVtx[1].col = D3DCOLOR_RGBA(255, 255, 1, 255);
+			pVtx[2].col = D3DCOLOR_RGBA(255, 255, 1, 255);
+			pVtx[3].col = D3DCOLOR_RGBA(255, 255, 1, 255);
+		}
+		else
+		{
+			pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+		}
+		pVtx += 4;
 	}
 
 	//頂点バッファをアンロック
@@ -252,6 +224,12 @@ void UpdatePause(int zDelta)
 
 			StopSound();
 			PlaySound(SOUND_LABEL_TITLE);
+		}
+		else if (g_pauseMenu == PAUSE_MENU_OPTION)
+		{	//QUITにいる場合
+			SetEnableOption(true);
+			SetEnablePause(false);
+			SetGameState(GAMESTATE_OPTION);
 		}
 	}
 }

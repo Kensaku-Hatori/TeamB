@@ -27,7 +27,6 @@ typedef struct
 	OPTION type;
 }Option;
 
-
 //プロトタイプ宣言
 void InitOption(void);
 void UninitOption(void);

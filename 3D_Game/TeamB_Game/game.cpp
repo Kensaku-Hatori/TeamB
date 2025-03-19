@@ -284,16 +284,12 @@ void UpdateGame(void)
 {
 	MODE Mode = GetMode();
 
-	if (KeyboardTrigger(DIK_P) == true || GetJoypadTrigger(JOYKEY_START) == true)
+	if ((KeyboardTrigger(DIK_P) == true || GetJoypadTrigger(JOYKEY_START) == true) && g_bOption == false)
 	{//ポーズキーが押された
 		PlaySound(SOUND_LABEL_DESICION);
 		g_bPause = g_bPause ? false : true;
 	}
-	else if (KeyboardTrigger(DIK_O) == true || GetJoypadTrigger(JOYKEY_START) == true)
-	{//ポーズキーが押された
-		g_bOption = g_bOption ? false : true;
-	}
-	else if ((KeyboardTrigger(DIK_TAB) == true || GetJoypadTrigger(JOYKEY_BACK) == true) && g_bPause == false)
+	else if ((KeyboardTrigger(DIK_TAB) == true || GetJoypadTrigger(JOYKEY_BACK) == true) && g_bPause == false && g_bOption == false)
 	{
 		if (Mode == MODE_STAGEONE)
 		{
@@ -327,7 +323,7 @@ void UpdateGame(void)
 			UpdateOption();
 		}
 
-		else if (g_bPause == false && g_bTutorial == false)
+		else if (g_bPause == false && g_bTutorial == false && g_bOption == false)
 		{
 			//メッシュフィールドの更新処理
 			UpdateMeshfield();
