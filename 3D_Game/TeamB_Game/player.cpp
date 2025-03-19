@@ -756,8 +756,9 @@ void PlayerMove(void)
 		{
 			if (g_player.PlayerMotion.motionType == MOTIONTYPE_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_R_MOVE
 				|| g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_L_MOVE || g_player.PlayerMotion.motionType == MOTIONTYPE_LOCKON_F_MOVE
-				|| isMotionRoll() == true
-				|| isMotionAction() == true)
+				&& isMotionRoll() == true
+				&& isMotionAction() == true
+				&& isRolling() == false)
 			{
 				SetMotion(MOTIONTYPE_NEUTRAL, &g_player.PlayerMotion);
 				SetState(PLAYERSTATE_NORMAL);
