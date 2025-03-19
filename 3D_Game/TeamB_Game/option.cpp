@@ -281,6 +281,11 @@ void UpdateOption(void)
 		break;
 	}
 
+	if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true))
+	{
+		SetEnableOption(false);
+	}
+
 }
 //===========
 //•`‰æˆ—

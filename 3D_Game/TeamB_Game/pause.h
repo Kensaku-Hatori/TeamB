@@ -14,7 +14,8 @@
 //ポーズメニュー
 typedef enum
 {
-	PAUSE_MENU_CONTNUE=0,//戻る
+	PAUSE_MENU_OPTION=0,//戻る
+	PAUSE_MENU_CONTNUE,//戻る
 	PAUSE_MENU_RETRY,    //やり直す
 	PAUSE_MENU_QUIT,     //タイトルに戻る
 	PAUSE_MENU_MAX,
