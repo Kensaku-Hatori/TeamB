@@ -267,6 +267,10 @@ void UpdateMotion(OBJECTINFO* Motion)
 				Motion->nCntMotion >= Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].nEndFrame)
 			{
 				Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].bActionStart = false;
+				if (Motion->motionType == MOTIONTYPE_MOVE)
+				{
+					Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].bFirst = false;
+				}
 			}
 		}
 		if (Motion->aMotionInfo[Motion->motionType].ActionFrameInfo[ActionFrameCount].bActionStart == true)
