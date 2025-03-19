@@ -35,7 +35,6 @@ ENEMY g_Enemy[MAX_ENEMY];
 EnemyOrigin g_EnemyOrigin[ENEMYTYPE_MAX];
 int g_nNumEnemy;
 float g_fDistance[MAX_ENEMY];//デバックフォント用
-
 //***************
 // 敵の初期化処理
 //***************
@@ -43,7 +42,6 @@ void InitEnemy(void)
 {
 	//敵の数の初期化
 	g_nNumEnemy = 0;
-
 	for (int EnmyCount = 0; EnmyCount < MAX_ENEMY; EnmyCount++)
 	{
 		g_Enemy[EnmyCount].state = ENEMYSTATE_NORMAL;								// 敵の状態
@@ -63,7 +61,7 @@ void InitEnemy(void)
 		g_Enemy[EnmyCount].nActionCounter = 0;										// アクションカウンター
 		g_Enemy[EnmyCount].Action = ENEMYACTION_WELL;								// 行動の種類
 		g_Enemy[EnmyCount].Radius = 4.4f;											// 半径
-
+		g_Enemy[EnmyCount].statecount = 0;
 		g_Enemy[EnmyCount].bLockOn = false;
 		g_Enemy[EnmyCount].fSightRange = 200.0f;									// 視界距離
 		g_Enemy[EnmyCount].fSightAngle = D3DXToRadian(110.0f);						// 視界の葉に
@@ -133,122 +131,134 @@ void UpdateEnemy(void)
 	{
 		if (g_Enemy[EnemyCount].bUse == true)
 		{
-			UpdateMiniMapEnemy(g_Enemy[EnemyCount].IndxMiniMap,g_Enemy[EnemyCount].Object.Pos);
-			STAGEMODEL*pObb = GetModel();
-			for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++, pObb++)
+			if (g_Enemy[EnemyCount].state != ENEMYSTATE_DEAD)
 			{
-				if (pObb->bUse == true)
+				UpdateMiniMapEnemy(g_Enemy[EnemyCount].IndxMiniMap, g_Enemy[EnemyCount].Object.Pos);
+				STAGEMODEL* pObb = GetModel();
+				for (int ModelCount = 0; ModelCount < MAX_STAGEMODEL; ModelCount++, pObb++)
 				{
-					OBB EnemyObb;
-					EnemyObb.CenterPos = g_Enemy[EnemyCount].Object.Pos;
-
-					EnemyObb.fLength[0] = 10.0f;
-					EnemyObb.fLength[1] = 20.0f;
-					EnemyObb.fLength[2] = 10.0f;
-
-					EnemyObb.RotVec[0] = D3DXVECTOR3(1.0f,0.0f,0.0f);
-					EnemyObb.RotVec[1] = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-					EnemyObb.RotVec[2] = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
-					bool bCollision = collisionobb(EnemyObb, pObb->ObbModel, g_Enemy[EnemyCount].Object.Pos, pObb->pos);
-					if (bCollision == true)
+					if (pObb->bUse == true)
 					{
-						D3DXVECTOR3 VecMove = g_Enemy[EnemyCount].Object.OldPos - g_Enemy[EnemyCount].Object.Pos;
-						D3DXVECTOR3 NorFace = collisionobbfacedot(pObb->ObbModel, D3DXVECTOR3(g_Enemy[EnemyCount].Object.Pos.x,
-							g_Enemy[EnemyCount].Object.Pos.y + 10.0f, 
-							g_Enemy[EnemyCount].Object.Pos.z), VecMove);
-						PushPosition(&g_Enemy[EnemyCount].Object.Pos, VecMove, NorFace);
+						OBB EnemyObb;
+						EnemyObb.CenterPos = g_Enemy[EnemyCount].Object.Pos;
+
+						EnemyObb.fLength[0] = 10.0f;
+						EnemyObb.fLength[1] = 20.0f;
+						EnemyObb.fLength[2] = 10.0f;
+
+						EnemyObb.RotVec[0] = D3DXVECTOR3(1.0f, 0.0f, 0.0f);
+						EnemyObb.RotVec[1] = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+						EnemyObb.RotVec[2] = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+						bool bCollision = collisionobb(EnemyObb, pObb->ObbModel, g_Enemy[EnemyCount].Object.Pos, pObb->pos);
+						if (bCollision == true)
+						{
+							D3DXVECTOR3 VecMove = g_Enemy[EnemyCount].Object.OldPos - g_Enemy[EnemyCount].Object.Pos;
+							D3DXVECTOR3 NorFace = collisionobbfacedot(pObb->ObbModel, D3DXVECTOR3(g_Enemy[EnemyCount].Object.Pos.x,
+								g_Enemy[EnemyCount].Object.Pos.y + 10.0f,
+								g_Enemy[EnemyCount].Object.Pos.z), VecMove);
+							PushPosition(&g_Enemy[EnemyCount].Object.Pos, VecMove, NorFace);
+						}
 					}
 				}
-			}
 
-			if (g_Enemy[EnemyCount].state != ENEMYSTATE_KNOCKUP)
-			{
-				// 行動の更新
-				UpdateAction(EnemyCount);
-			}
-
-			// 魔法との当たり判定
-			for (int SkillCount = 0; SkillCount < MAX_SKILL; SkillCount++)
-			{
-				if (pSkill[SkillCount].bUse == true)
+				if (g_Enemy[EnemyCount].state != ENEMYSTATE_KNOCKUP)
 				{
-					// 当たり判定
-					if (collisioncircle(g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].Radius, pSkill[SkillCount].pos, SKILL_SIZE) == true)
+					// 行動の更新
+					UpdateAction(EnemyCount);
+				}
+
+				// 魔法との当たり判定
+				for (int SkillCount = 0; SkillCount < MAX_SKILL; SkillCount++)
+				{
+					if (pSkill[SkillCount].bUse == true)
 					{
-						pSkill[SkillCount].nLife = 1;
-						pSkill[SkillCount].bHit = true;
-						HitEnemy(pSkill[SkillCount].fPower, EnemyCount);
+						// 当たり判定
+						if (collisioncircle(g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].Radius, pSkill[SkillCount].pos, SKILL_SIZE) == true)
+						{
+							pSkill[SkillCount].nLife = 1;
+							pSkill[SkillCount].bHit = true;
+							HitEnemy(pSkill[SkillCount].fPower, EnemyCount);
+						}
 					}
 				}
-			}
 
-			// 攻撃時の当たり判定
-			if (pPlayer->state != PLAYERSTATE_KNOCKUP)
-			{
-				if (g_Enemy[EnemyCount].EnemyMotion.motionType == MOTIONTYPE_ACTION)
+				// 攻撃時の当たり判定
+				if (pPlayer->state != PLAYERSTATE_KNOCKUP)
 				{
-					CollisionEnemyAction(EnemyCount);
+					if (g_Enemy[EnemyCount].EnemyMotion.motionType == MOTIONTYPE_ACTION)
+					{
+						CollisionEnemyAction(EnemyCount);
+					}
+				}
+
+				// ロックオン
+				if (pPlayer->bWantLockOn == true)
+				{
+					if (IsEnemyInsight(g_Enemy[EnemyCount].Object.Pos, 0) == true)
+					{
+						EnemyDistanceSort(EnemyCount);
+						pPlayer->bLockOn = true;
+					}
+				}
+
+				g_Enemy[EnemyCount].bLockOn = IsPlayerInsight(EnemyCount);
+
+				// 角度の近道
+				if (g_Enemy[EnemyCount].rotDest.y - g_Enemy[EnemyCount].Object.Rot.y >= D3DX_PI)
+				{
+					g_Enemy[EnemyCount].Object.Rot.y += D3DX_PI * 2.0f;
+				}
+				else if (g_Enemy[EnemyCount].rotDest.y - g_Enemy[EnemyCount].Object.Rot.y <= -D3DX_PI)
+				{
+					g_Enemy[EnemyCount].Object.Rot.y -= D3DX_PI * 2.0f;
+				}
+
+				if (g_Enemy[EnemyCount].statecount <= 0)
+				{
+					g_Enemy[EnemyCount].state = ENEMYSTATE_NORMAL;
+					g_Enemy[EnemyCount].bHit = false;
+					g_Enemy[EnemyCount].statecount = 0;
+				}
+				g_Enemy[EnemyCount].statecount--;
+
+				//床判定
+				if (g_Enemy[EnemyCount].Object.Pos.y < 0)
+				{
+					g_Enemy[EnemyCount].Object.Pos.y = 0;
+				}
+
+				//向きの更新
+				g_Enemy[EnemyCount].Object.Rot.y += (g_Enemy[EnemyCount].rotDest.y - g_Enemy[EnemyCount].Object.Rot.y) * 0.05f;
+
+				//前の位置の保存
+				g_Enemy[EnemyCount].Object.OldPos = g_Enemy[EnemyCount].Object.Pos;
+
+				//位置の更新
+				g_Enemy[EnemyCount].Object.Pos += g_Enemy[EnemyCount].move;
+
+				//影の更新
+				SetPositionShadow(g_Enemy[EnemyCount].IndxShadow, g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].bUse);		// 位置
+				SetSizeShadow(g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].IndxShadow);										// サイズの更新
+
+				//HPゲージの更新
+				float Y = 50.0f;
+				if (g_Enemy[EnemyCount].type == ENEMYTYPE_MIDBOSS)
+				{
+					Y = 70.0f;
+				}
+				SetPositionHPgauge(g_Enemy[EnemyCount].IndxGuage, D3DXVECTOR3(g_Enemy[EnemyCount].Object.Pos.x, (float)g_Enemy[EnemyCount].Object.Pos.y + Y, g_Enemy[EnemyCount].Object.Pos.z));
+				RedgaugeDeff(g_Enemy[EnemyCount].IndxGuage, g_Enemy[EnemyCount].Status.fHP);
+
+			}
+			else if (g_Enemy[EnemyCount].state == ENEMYSTATE_DEAD)
+			{
+				g_Enemy[EnemyCount].statecount++;
+				if (g_Enemy[EnemyCount].statecount >= 50)
+				{
+					g_Enemy[EnemyCount].bUse = false;
+					g_Enemy[EnemyCount].statecount = 0;
 				}
 			}
-
-			// ロックオン
-			if (pPlayer->bWantLockOn == true)
-			{
-				if (IsEnemyInsight(g_Enemy[EnemyCount].Object.Pos, 0) == true)
-				{
-					EnemyDistanceSort(EnemyCount);
-					pPlayer->bLockOn = true;
-				}
-			}
-
-			g_Enemy[EnemyCount].bLockOn = IsPlayerInsight(EnemyCount);
-
-			// 角度の近道
-			if (g_Enemy[EnemyCount].rotDest.y - g_Enemy[EnemyCount].Object.Rot.y >= D3DX_PI)
-			{
-				g_Enemy[EnemyCount].Object.Rot.y += D3DX_PI * 2.0f;
-			}
-			else if (g_Enemy[EnemyCount].rotDest.y - g_Enemy[EnemyCount].Object.Rot.y <= -D3DX_PI)
-			{
-				g_Enemy[EnemyCount].Object.Rot.y -= D3DX_PI * 2.0f;
-			}
-
-			if (g_Enemy[EnemyCount].statecount <= 0)
-			{
-				g_Enemy[EnemyCount].state = ENEMYSTATE_NORMAL;
-				g_Enemy[EnemyCount].bHit = false;
-				g_Enemy[EnemyCount].statecount = 0;
-			}
-			g_Enemy[EnemyCount].statecount--;
-
-			//床判定
-			if (g_Enemy[EnemyCount].Object.Pos.y < 0)
-			{
-				g_Enemy[EnemyCount].Object.Pos.y = 0;
-			}
-
-			//向きの更新
-			g_Enemy[EnemyCount].Object.Rot.y += (g_Enemy[EnemyCount].rotDest.y - g_Enemy[EnemyCount].Object.Rot.y) * 0.05f;
-
-			//前の位置の保存
-			g_Enemy[EnemyCount].Object.OldPos = g_Enemy[EnemyCount].Object.Pos;
-
-			//位置の更新
-			g_Enemy[EnemyCount].Object.Pos += g_Enemy[EnemyCount].move;
-
-			//影の更新
-			SetPositionShadow(g_Enemy[EnemyCount].IndxShadow, g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].bUse);		// 位置
-			SetSizeShadow(g_Enemy[EnemyCount].Object.Pos, g_Enemy[EnemyCount].IndxShadow);										// サイズの更新
-
-			//HPゲージの更新
-			float Y = 50.0f;
-			if (g_Enemy[EnemyCount].type == ENEMYTYPE_MIDBOSS)
-			{
-				Y = 70.0f;
-			}
-			SetPositionHPgauge(g_Enemy[EnemyCount].IndxGuage, D3DXVECTOR3(g_Enemy[EnemyCount].Object.Pos.x, (float)g_Enemy[EnemyCount].Object.Pos.y + Y, g_Enemy[EnemyCount].Object.Pos.z));
-			RedgaugeDeff(g_Enemy[EnemyCount].IndxGuage, g_Enemy[EnemyCount].Status.fHP);
-
 			//モーションの更新
 			UpdateMotion(&g_Enemy[EnemyCount].EnemyMotion);
 		}
@@ -511,13 +521,22 @@ void DeadEnemy(int Indx)
 	int Drop = 0;			//ドロップ確率
 	int Itemtype = 0;		//アイテムの種類
 
-	g_Enemy[Indx].bUse = false;
+	if (g_Enemy[Indx].type == ENEMYTYPE_MIDBOSS)
+	{
+		g_Enemy[Indx].bUse = false;
+	}
+	else
+	{
+		g_Enemy[Indx].state = ENEMYSTATE_DEAD;
+
+		SetMotion(MOTIONTYPE_LOCKON_R_MOVE, &g_Enemy[Indx].EnemyMotion);
+	}
+
 	g_nNumEnemy--;
 	SetPositionShadow(g_Enemy[Indx].IndxShadow,g_Enemy[Indx].Object.Pos,g_Enemy[Indx].bUse);
 
 	//HPゲージを消す
 	DeleteHPGuage(g_Enemy[Indx].IndxGuage);
-
 	//アイテムドロップ
 	Itemtype = rand() % 9;
 	if (Itemtype == 1 || Itemtype == 2 || Itemtype == 3 || Itemtype == 4)
@@ -532,7 +551,6 @@ void DeadEnemy(int Indx)
 	{
 		Itemtype = ITEMTYPE_POWER;
 	}
-
 
 	//アイテムの設定
 	SetItem(g_Enemy[Indx].Object.Pos, (ITEMTYPE)Itemtype);
@@ -710,7 +728,7 @@ void CollisionEnemy(void)
 
 	for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
 	{
-		if (g_Enemy[nCntEnemy].bUse == true)
+		if (g_Enemy[nCntEnemy].bUse == true && g_Enemy[nCntEnemy].state != ENEMYSTATE_DEAD)
 		{
 			//敵との距離
 			g_Enemy[nCntEnemy].fDistance = sqrtf(((g_Enemy[nCntEnemy].Object.Pos.x - pPlayer->pos.x) * (g_Enemy[nCntEnemy].Object.Pos.x - pPlayer->pos.x))
