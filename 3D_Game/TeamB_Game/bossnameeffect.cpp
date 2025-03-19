@@ -16,7 +16,7 @@ void InitBossNameEffect()
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\bossname.png", &g_BossName.Tex);	//
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\bossname.png", &g_BossName.Tex);
 
 	g_BossName.fAngle = atan2f(BACESIZEX,BACESIZEY);
 	g_BossName.Length = sqrtf(BACESIZEX + BACESIZEY);
@@ -69,27 +69,23 @@ void SetBossNameEffect(D3DXVECTOR3 Pos, D3DXVECTOR3 Rot, D3DXVECTOR2 Scale, D3DX
 		VERTEX_2D* pVtx;
 		//頂点バッファをロックし、頂点情報へのポインタを取得
 		g_BossName.Buff->Lock(0, 0, (void**)&pVtx, 0);
-		D3DXVECTOR3 unti[4];
+
 		//一個目のポリゴン
 		pVtx[0].pos.x = Pos.x + sinf(Rot.z - g_BossName.fAngle) * g_BossName.Length * Scale.x;//pos.y - 25.0f;
 		pVtx[0].pos.y = Pos.y - cosf(Rot.z - g_BossName.fAngle) * g_BossName.Length * Scale.y;//pos.x - 150.0f;
 		pVtx[0].pos.z = 0.0f;//0.0f;
-		unti[0] = pVtx[0].pos;
 
 		pVtx[1].pos.x = Pos.x - sinf(Rot.z - g_BossName.fAngle) * g_BossName.Length * Scale.x;//pos.x + 150.0f;
 		pVtx[1].pos.y = Pos.y - cosf(Rot.z + g_BossName.fAngle) * g_BossName.Length * Scale.y;//pos.y - 25.0f;
 		pVtx[1].pos.z = 0.0f;//0.0f;
-		unti[1] = pVtx[1].pos;
 
 		pVtx[2].pos.x = Pos.x + sinf(Rot.z - g_BossName.fAngle) * g_BossName.Length * Scale.x;//pos.x - 150.0f;
 		pVtx[2].pos.y = Pos.y + cosf(Rot.z + g_BossName.fAngle) * g_BossName.Length * Scale.y;//pos.y + 25.0f;
 		pVtx[2].pos.z = 0.0f;//0.0f;
-		unti[2] = pVtx[2].pos;
 
 		pVtx[3].pos.x = Pos.x + sinf(Rot.z + g_BossName.fAngle) * g_BossName.Length * Scale.x;//pos.x + 150.0f;
 		pVtx[3].pos.y = Pos.y + cosf(Rot.z + g_BossName.fAngle) * g_BossName.Length * Scale.y;//pos.y + 25.0f;
 		pVtx[3].pos.z = 0.0f;
-		unti[3] = pVtx[3].pos;
 
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
@@ -111,7 +107,6 @@ void SetBossNameEffect(D3DXVECTOR3 Pos, D3DXVECTOR3 Rot, D3DXVECTOR2 Scale, D3DX
 
 		//頂点バッファをロックし、頂点情報へのポインタを取得
 		g_BossName.Buff->Unlock();
-		int i = 0;
 	}
 	else
 	{

@@ -86,7 +86,6 @@ void DrawBossMovie()
 	//カメラの設定処理
 	SetCamera();
 
-	DrawBossNameEffect();
 	//メッシュフィールドの描画処理
 	DrawMeshfield();
 
@@ -99,4 +98,6 @@ void DrawBossMovie()
 	DrawStageModel();
 
 	DrawPlayer();
+
+	DrawBossNameEffect();
 }
