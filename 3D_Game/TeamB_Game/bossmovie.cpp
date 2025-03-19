@@ -1,3 +1,10 @@
+//*********************************************************
+// 
+// ボスのムービー[bossmovie.cpp]
+// Author:Hatori
+// 
+//*********************************************************
+
 #include "bossmovie.h"
 #include "meshfield.h"
 #include "boss.h"
@@ -9,6 +16,9 @@
 #include "shadow.h"
 #include "player.h"
 
+//***********************************
+// ボスのムービーに関する処理の初期化
+//***********************************
 void InitBossMovie()
 {
 	Camera* pCamera = GetCamera();
@@ -62,6 +72,10 @@ void InitBossMovie()
 
 	SetCameraWork(&pCamera->Anim, ANIMTYPE_TWO);
 }
+
+//*************************************
+// ボスのムービーに関する処理の終了処理
+//*************************************
 void UninitBossMovie()
 {
 	UninitBossNameEffect();
@@ -74,6 +88,10 @@ void UninitBossMovie()
 	UninitStageModel();
 	UninitShadow();
 }
+
+//*************************************
+// ボスのムービーに関する処理の更新処理
+//*************************************
 void UpdateBossMovie()
 {
 	UpdateBossNameEffect();
@@ -81,6 +99,10 @@ void UpdateBossMovie()
 	UpdateMovie();
 	UpdatePlayer();
 }
+
+//*************************************
+// ボスのムービーに関する処理の描画処理
+//*************************************
 void DrawBossMovie()
 {
 	//カメラの設定処理

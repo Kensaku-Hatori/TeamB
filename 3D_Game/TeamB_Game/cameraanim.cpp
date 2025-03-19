@@ -108,6 +108,7 @@ void SetCameraWork(CameraAnim *Anim, ANIMTYPE nType)
 	Anim->nKey = 0;
 	Anim->nNexKey = 0;
 	Anim->nFrameCount = 0;
+	Anim->bFinish = false;
 }
 bool isMovieEffect(CameraAnim* Anim, int EffectIndx)
 {
