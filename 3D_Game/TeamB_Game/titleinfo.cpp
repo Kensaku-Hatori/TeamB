@@ -87,7 +87,7 @@ void InitTitleInfo(void)
 	//ロゴ
 	g_Logopos = D3DXVECTOR3(640.0f, 0.0f, 0.0f);
 
-	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\title.png", &g_pTexturetitleinfoLogo); //START
+	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\title2.png", &g_pTexturetitleinfoLogo); //START
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
 		D3DUSAGE_WRITEONLY,
