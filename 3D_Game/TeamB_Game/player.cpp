@@ -94,7 +94,7 @@ void InitPlayer(void)
 		g_player.Skilltype = SKILLTYPE_NONE;
 		g_player.ItemType = ITEMTYPE_HP;
 		g_player.nScore = 0;
-	}
+	}	
 
 	g_player.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);

@@ -454,7 +454,7 @@ void CollisionEffect(int Indx)
 		{
 			if (collisioncircle(g_effect[Indx].Object.Pos, g_effect[Indx].Scale.x * 0.5f, pEnemy->Object.Pos, ENEMY_RADIUS * 0.5f) == true)
 			{
-				HitEnemy(pPlayer->Status.fPower * 0.5f, EnemyCount);
+				HitEnemy(pPlayer->Status.fPower * 0.3f, EnemyCount);
 			}
 		}
 	}
@@ -462,7 +462,7 @@ void CollisionEffect(int Indx)
 	{
 		if (collisioncircle(g_effect[Indx].Object.Pos, g_effect[Indx].Scale.x * 0.5f, pBoss->Object.Pos, pBoss->Radius * 0.5f) == true)
 		{
-			HitBoss(pPlayer->Status.fPower * 0.5f);
+			HitBoss(pPlayer->Status.fPower * 0.3f);
 		}
 	}
 }

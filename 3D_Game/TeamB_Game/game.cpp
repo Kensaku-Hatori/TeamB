@@ -187,7 +187,8 @@ void InitGame(void)
 		break;
 
 	case MODE_STAGETWO:
-
+		pPlayer->Status.fHP = PLAYER_HP;
+		pPlayer->Status.nMP = PLAYER_MP;
 		CameraPos = D3DXVECTOR3(1245.0f, 200.0f, 645.0f);
 		break;
 
