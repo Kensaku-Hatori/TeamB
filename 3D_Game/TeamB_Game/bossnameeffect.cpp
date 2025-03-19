@@ -13,6 +13,7 @@
 
 BOSSNAMEEFFECT g_BossName;
 
+// 条件式の関数化
 bool isReVerse(float V);
 bool isFade(NAMEFADE FadeType);
 bool isSetCondition();
@@ -21,10 +22,14 @@ bool CreatNameBuffer();
 bool isGreaterLife(int Count);
 bool isGreaterFade();
 
+// 実作業の関数化
 void UpdateTexUV(float U,float V);
 void UpdateSizeAnim(float U, float V);
 void UpdateAlphaAnim();
 
+//*********************************
+// ボスムービーの名前の初期化処理
+//*********************************
 void InitBossNameEffect()
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
@@ -35,11 +40,19 @@ void InitBossNameEffect()
 	g_BossName.fAngle = atan2f(BACESIZEX,BACESIZEY);
 	g_BossName.Length = sqrtf(BACESIZEX + BACESIZEY);
 }
+
+//*******************************
+// ボスムービーの名前の終了処理
+//*******************************
 void UninitBossNameEffect()
 {
 	UninitBuffer(g_BossName.Buff);
 	UninitTexture(g_BossName.Tex);
 }
+
+//*******************************
+// ボスムービーの名前の更新処理
+//*******************************
 void UpdateBossNameEffect()
 {
 	static float U = 0.0f;
@@ -83,6 +96,10 @@ void UpdateBossNameEffect()
 		}
 	}
 }
+
+//*******************************
+// ボスムービーの名前の描画処理
+//*******************************
 void DrawBossNameEffect()
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
@@ -100,6 +117,10 @@ void DrawBossNameEffect()
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 	}
 }
+
+//*******************************
+// ボスムービーの名前の設定処理
+//*******************************
 void SetBossNameEffect(D3DXVECTOR3 Pos, D3DXVECTOR3 Rot, D3DXVECTOR2 Scale, D3DXCOLOR Col,int nLife)
 {
 	if (isSetCondition() == true)
@@ -118,34 +139,11 @@ void SetBossNameEffect(D3DXVECTOR3 Pos, D3DXVECTOR3 Rot, D3DXVECTOR2 Scale, D3DX
 		//頂点バッファをロックし、頂点情報へのポインタを取得
 		g_BossName.Buff->Lock(0, 0, (void**)&pVtx, 0);
 
-		////一個目のポリゴン
-		//pVtx[0].pos.x = Pos.x + sinf(Rot.z - g_BossName.fAngle) * g_BossName.Length * Scale.x;//pos.y - 25.0f;
-		//pVtx[0].pos.y = Pos.y - cosf(Rot.z - g_BossName.fAngle) * g_BossName.Length * Scale.y;//pos.x - 150.0f;
-		//pVtx[0].pos.z = 0.0f;//0.0f;
-
-		//pVtx[1].pos.x = Pos.x - sinf(Rot.z - g_BossName.fAngle) * g_BossName.Length * Scale.x;//pos.x + 150.0f;
-		//pVtx[1].pos.y = Pos.y - cosf(Rot.z + g_BossName.fAngle) * g_BossName.Length * Scale.y;//pos.y - 25.0f;
-		//pVtx[1].pos.z = 0.0f;//0.0f;
-
-		//pVtx[2].pos.x = Pos.x + sinf(Rot.z - g_BossName.fAngle) * g_BossName.Length * Scale.x;//pos.x - 150.0f;
-		//pVtx[2].pos.y = Pos.y + cosf(Rot.z + g_BossName.fAngle) * g_BossName.Length * Scale.y;//pos.y + 25.0f;
-		//pVtx[2].pos.z = 0.0f;//0.0f;
-
-		//pVtx[3].pos.x = Pos.x + sinf(Rot.z + g_BossName.fAngle) * g_BossName.Length * Scale.x;//pos.x + 150.0f;
-		//pVtx[3].pos.y = Pos.y + cosf(Rot.z + g_BossName.fAngle) * g_BossName.Length * Scale.y;//pos.y + 25.0f;
-		//pVtx[3].pos.z = 0.0f;
-
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;
 		pVtx[2].rhw = 1.0f;
 		pVtx[3].rhw = 1.0f;
-
-		////テクスチャ座標の設定
-		//pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-		//pVtx[1].tex = D3DXVECTOR2(0.0f, 0.0f);
-		//pVtx[2].tex = D3DXVECTOR2(0.0f, 0.0f);
-		//pVtx[3].tex = D3DXVECTOR2(0.0f, 0.0f);
 
 		//頂点バッファをロックし、頂点情報へのポインタを取得
 		g_BossName.Buff->Unlock();
@@ -156,14 +154,25 @@ void SetBossNameEffect(D3DXVECTOR3 Pos, D3DXVECTOR3 Rot, D3DXVECTOR2 Scale, D3DX
 	}
 }
 
+//*****************************************
+// ボスムービーの名前が設定できるかどうか
+//*****************************************
 bool isSetCondition()
 {
 	return isUseNameEffect() == false && CreatNameBuffer() == true;
 }
+
+//*************************************
+// ボスムービーの名前が使用中かどうか
+//*************************************
 bool isUseNameEffect()
 {
 	return g_BossName.bUse;
 }
+
+//*************************************
+// ボスムービーの名前のバッファを作る
+//*************************************
 bool CreatNameBuffer()
 {
 	HRESULT hresult;
@@ -179,11 +188,18 @@ bool CreatNameBuffer()
 	if (FAILED(hresult)) return false;
 	else return true;
 }
+
+//***********************************
+// ボスムービーの名前の寿命を比べる
+//***********************************
 bool isGreaterLife(int Count)
 {
 	return g_BossName.nLife > Count;
 }
 
+//*******************************************
+// ボスムービーの名前のテクスチャ座標を更新
+//*******************************************
 void UpdateTexUV(float U,float V)
 {
 	//頂点バッファの生成・頂点情報の設定
@@ -200,6 +216,10 @@ void UpdateTexUV(float U,float V)
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_BossName.Buff->Unlock();
 }
+
+//***********************************
+// ボスムービーの名前の大きさを更新
+//***********************************
 void UpdateSizeAnim(float U, float V)
 {
 	D3DXVECTOR3 Pos = g_BossName.Pos;
@@ -230,6 +250,10 @@ void UpdateSizeAnim(float U, float V)
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_BossName.Buff->Unlock();
 }
+
+//*********************************
+// ボスムービーの名前の透明度更新
+//*********************************
 void UpdateAlphaAnim()
 {
 	//頂点バッファの生成・頂点情報の設定
@@ -246,14 +270,26 @@ void UpdateAlphaAnim()
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_BossName.Buff->Unlock();
 }
+
+//*******************************************
+// ボスムービーの名前のフェードの状況を比較
+//*******************************************
 bool isFade(NAMEFADE FadeType)
 {
 	return g_BossName.Fade == FadeType;
 }
+
+//*********************************
+// ボスムービーの名前が出切ったら
+//*********************************
 bool isReVerse(float V)
 {
 	return V >= 0.8f;
 }
+
+//*****************************************************
+// ボスムービーの名前のフェード時間より大きかったら
+//*****************************************************
 bool isGreaterFade()
 {
 	return g_BossName.FadeCounter >= FADE_TIME;

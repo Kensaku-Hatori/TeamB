@@ -1,9 +1,22 @@
+//*********************************************************
+// 
+// カメラのアニメーション[cameraanim.cpp]
+// Author:Hatori
+// 
+//*********************************************************
+
 #include "cameraanim.h"
 
+// 条件式の関数化
 bool isMovieEffect(CameraAnim* Anim,int EffectIndx);
+
+// 条件式の関数
 void UpdateMovieEffect(CameraAnim* Anim);
 void SetMovieEffect(CameraAnim* Anim, int Indx);
 
+//*****************************
+// カメラのアニメーションを更新
+//*****************************
 void UpdateCameraWork(CameraAnim* Anim, D3DXVECTOR3* PosV, D3DXVECTOR3* PosR, D3DXVECTOR3* Rot)
 {
 	Anim->nFrameCount++;
@@ -102,6 +115,10 @@ void UpdateCameraWork(CameraAnim* Anim, D3DXVECTOR3* PosV, D3DXVECTOR3* PosR, D3
 	Rot->y = KeyDest.Rot.y;
 	Rot->z = KeyDest.Rot.z;
 }
+
+//*****************************
+// カメラのアニメーションを設定
+//*****************************
 void SetCameraWork(CameraAnim *Anim, ANIMTYPE nType)
 {
 	Anim->AnimType = nType;
@@ -110,10 +127,18 @@ void SetCameraWork(CameraAnim *Anim, ANIMTYPE nType)
 	Anim->nFrameCount = 0;
 	Anim->bFinish = false;
 }
+
+//***************************
+// ムービーエフェクトの条件式
+//***************************
 bool isMovieEffect(CameraAnim* Anim, int EffectIndx)
 {
 	return Anim->AllFrame >= Anim->Anim[Anim->AnimType].MovieEffect[EffectIndx].StartFrame && Anim->AllFrame <= Anim->Anim[Anim->AnimType].MovieEffect[EffectIndx].EndFrame;
 }
+
+//*****************************
+// ムービーエフェクトの更新処理
+//*****************************
 void UpdateMovieEffect(CameraAnim* Anim)
 {
 	for (int MovieEffectCount = 0; MovieEffectCount < MAX_MOVIEEFFECTTYPE; MovieEffectCount++)
@@ -124,6 +149,10 @@ void UpdateMovieEffect(CameraAnim* Anim)
 		}
 	}
 }
+
+//*****************************
+// ムービーエフェクトの設定処理
+//*****************************
 void SetMovieEffect(CameraAnim* Anim,int Indx)
 {
 	switch (Anim->Anim[Anim->AnimType].MovieEffect[Indx].EffectType)

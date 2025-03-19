@@ -1,3 +1,10 @@
+//*********************************************************
+// 
+// カメラエディター[cameraediter.cpp]
+// Author:Hatori
+// 
+//*********************************************************
+
 #include "cameraediter.h"
 #include "input.h"
 #include "mouse.h"
@@ -9,9 +16,14 @@ CameraAnim CameraEditer;
 int KeyCount = 0,AnimCount = 0;
 int g_LoadAnimCount, g_LoadKeyCount,EffectCount;
 
+// 実作業の関数化
 void LoadAnimInfo(FILE* pFile);
 void LoadKeyNum(FILE* pFile);
 void LoadKeyInfo(FILE* pFile);
+
+//***********************
+// カメラエディターを更新
+//***********************
 void UpdateCameraEditer()
 {
 	CameraMove();
@@ -29,11 +41,18 @@ void UpdateCameraEditer()
 		SaveCameraWork();
 	}
 }
+
+//***********************
+// カメラエディターを描画
+//***********************
 void DrawCameraEditer()
 {
 
 }
 
+//*********************************
+// カメラエディターのキー情報を保存
+//*********************************
 void SaveCameraWork()
 {
 	FILE* pFile = fopen("data\\TEXT\\CameraWork.txt", "w");
@@ -70,6 +89,10 @@ void SaveCameraWork()
 	fprintf(pFile, "END_SCRIPT\n");
 	fclose(pFile);
 }
+
+//***************************
+// カメラモーションの読み込み
+//***************************
 void LoadCameraWork()
 {
 	char cData[2] = { NULL };
@@ -103,6 +126,10 @@ void LoadCameraWork()
 	}
 	fclose(pFile);
 }
+
+//*******************************************
+// カメラのアニメーションの情報を読み込み
+//*******************************************
 void LoadAnimInfo(FILE* pFile)
 {
 	char cData[2] = {};
@@ -134,6 +161,10 @@ void LoadAnimInfo(FILE* pFile)
 		}
 	}
 }
+
+//*********************************************
+// カメラのアニメーションのキーの総数を読み込み
+//*********************************************
 void LoadKeyNum(FILE* pFile)
 {
 	char cData[2] = {};
@@ -216,6 +247,10 @@ void LoadKeyNum(FILE* pFile)
 		}
 	}
 }
+
+//*******************************************
+// カメラのアニメーションのキー情報を読み込み
+//*******************************************
 void LoadKeyInfo(FILE* pFile)
 {
 	D3DXVECTOR3 PosV,PosR,Rot;

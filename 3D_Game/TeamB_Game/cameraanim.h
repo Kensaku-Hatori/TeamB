@@ -1,3 +1,10 @@
+//*********************************************************
+// 
+// カメラアニメーション[cameraanim.h]
+// Author:Hatori
+// 
+//*********************************************************
+
 #ifndef _CAMERAANIM_H_
 #define _CAMERAANIM_H_
 
@@ -7,6 +14,7 @@
 #define MAX_CAMERAKEY (15)
 #define MAX_MOVIEEFFECTTYPE (1)
 
+// カメラアニメーションの列挙型
 typedef enum
 {
 	ANIMTYPE_ONE = 0,
@@ -14,6 +22,7 @@ typedef enum
 	ANIMTYPE_MAX
 }ANIMTYPE;
 
+// カメラアニメーションエフェクトの列挙型
 typedef enum
 {
 	MOVIEEFFECT_NONE = 0,
@@ -21,6 +30,7 @@ typedef enum
 	MOVIEEFFECT_MAX,
 }MovieEffectType;
 
+// カメラアニメーションエフェクトの構造体
 typedef struct
 {
 	MovieEffectType EffectType;
@@ -29,6 +39,7 @@ typedef struct
 	BOSSNAMEEFFECT SetNameEffect;
 }MovieEffect;
 
+// カメラアニメーションのキーの構造体
 typedef struct
 {
 	D3DXVECTOR3 PosV;
@@ -38,6 +49,7 @@ typedef struct
 	int nLife;
 }CameraKey;
 
+// カメラアニメーションの構造体
 typedef struct
 {
 	MovieEffect MovieEffect[MAX_MOVIEEFFECTTYPE];
@@ -46,6 +58,7 @@ typedef struct
 	bool bLoop,bTracking;
 }CameraAnimInfo;
 
+// カメラアニメーションをまとめた列挙型
 typedef struct
 {
 	CameraAnimInfo Anim[ANIMTYPE_MAX];
@@ -54,6 +67,9 @@ typedef struct
 	bool bFinish;
 }CameraAnim;
 
+//*****************
+// プロトタイプ宣言
+//*****************
 void UpdateCameraWork(CameraAnim *Anim,D3DXVECTOR3 *PosV,D3DXVECTOR3 *PosR,D3DXVECTOR3 *Rot);
 void SetCameraWork(CameraAnim *Anim,ANIMTYPE nType);
 #endif // !_CAMERAANIM_H_
