@@ -146,10 +146,10 @@ void InitGame(void)
 			8, 0, 500.0f, 1500.0f,
 			false, false,
 			1);
-
-		// ‹…‘Ì‚Ìİ’èˆ—
-		SetSphere(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 16, 5, 2000.0f, false, true);
 	}
+
+	// ‹…‘Ì‚Ìİ’èˆ—
+	SetSphere(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 16, 5, 2000.0f, false, true);
 
 	// Œ©‚¦‚È‚¢•Ç‚Ì‰Šú‰»ˆ—
 	InitInvisibleWall();

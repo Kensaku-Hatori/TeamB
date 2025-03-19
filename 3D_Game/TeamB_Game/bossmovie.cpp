@@ -16,6 +16,7 @@
 #include "shadow.h"
 #include "player.h"
 #include "sound.h"
+#include "meshsphere.h"
 
 //***********************************
 // ボスのムービーに関する処理の初期化
@@ -66,6 +67,11 @@ void InitBossMovie()
 	// 見えない壁の初期化処理
 	InitInvisibleWall();
 
+	InitSphere();
+
+	// 球体の設定処理
+	SetSphere(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0, 16, 5, 2000.0f, false, true);
+
 	//カメラの位置設定
 	D3DXVECTOR3 CameraPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
@@ -91,6 +97,7 @@ void UninitBossMovie()
 	UninitPause();
 	UninitStageModel();
 	UninitShadow();
+	UninitSphere();
 }
 
 //*************************************
@@ -126,4 +133,6 @@ void DrawBossMovie()
 	DrawPlayer();
 
 	DrawBossNameEffect();
+
+	DrawSphere();
 }
