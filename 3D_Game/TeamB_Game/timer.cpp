@@ -440,15 +440,36 @@ void TimeScore(void)
 	{
 		if (g_nMinutes == 0)
 		{
-			AddScore(1000);
+			if (g_nTimer <= 30)
+			{
+				AddScore(1000);
+			}
+			else if(g_nTimer > 30)
+			{
+				AddScore(800);
+			}
 		}
 		else if (g_nMinutes == 1)
 		{
-			AddScore(500);
+			if (g_nTimer <= 30)
+			{
+				AddScore(500);
+			}
+			else if (g_nTimer > 30)
+			{
+				AddScore(300);
+			}
 		}
 		else if (g_nMinutes == 2)
 		{
-			AddScore(250);
+			if (g_nTimer <= 30)
+			{
+				AddScore(200);
+			}
+			else if (g_nTimer > 30)
+			{
+				AddScore(100);
+			}
 		}
 		else
 		{
