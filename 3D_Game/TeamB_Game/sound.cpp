@@ -198,6 +198,7 @@ HRESULT InitSound(HWND hWnd)
 		// ファイルをクローズ
 		CloseHandle(hFile);
 	}
+
 	return S_OK;
 }
 
@@ -393,6 +394,15 @@ HRESULT ReadChunkData(HANDLE hFile, void *pBuffer, DWORD dwBuffersize, DWORD dwB
 	{// データの読み込み
 		return HRESULT_FROM_WIN32(GetLastError());
 	}
-	
+
 	return S_OK;
+}
+
+//=========================
+// マスターボリュームの設定
+//=========================
+bool SetMasterVolume(float Volume)
+{
+	if (g_pMasteringVoice == nullptr || Volume < 0.0f || Volume > 1.0f) return false;
+	return SUCCEEDED(g_pMasteringVoice->SetVolume(Volume));
 }

@@ -45,6 +45,7 @@
 #include "cameraediter.h"
 #include "option.h"
 #include "score.h"
+#include <cassert>
 
 //グローバル変数
 GAMESTATE g_gamestate = GAMESTATE_NONE;
@@ -63,6 +64,12 @@ void UpdateEditer();
 //=============
 void InitGame(void)
 {
+	if (SetMasterVolume(1.0f) == false)
+	{
+		HWND hWnd = GetActiveWindow();
+		MessageBox(hWnd, "マスターボリュームの設定に失敗", "警告！", MB_ICONWARNING);
+	}
+
 	MODE Mode = GetMode();
 	//メッシュフィールドの初期化
 	InitMeshfield();
