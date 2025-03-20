@@ -10,7 +10,7 @@
 #include "main.h"
 #include "Item.h"
 
-#define ITEMUIFRAME_X (280)
+#define ITEMUIFRAME_X (350)
 #define ITEMUIFRAME_Y (160)
 
 #define ITEMUI_X (180)
@@ -30,5 +30,6 @@ void DrawItemUI(void);
 void SetItemUI(ITEMTYPE type);
 void AddItemUI(ITEMTYPE type);
 void UseItem(ITEMTYPE type);
+void UpdateItemUIArrow(void);
 
 #endif
