@@ -17,7 +17,9 @@
 #include "player.h"
 #include "sound.h"
 #include "meshsphere.h"
+#include "input.h"
 
+bool isSkip();
 //***********************************
 // ボスのムービーに関する処理の初期化
 //***********************************
@@ -109,6 +111,11 @@ void UpdateBossMovie()
 	UpdateBoss();
 	UpdateMovie();
 	UpdatePlayer();
+
+	if (isSkip() == true)
+	{
+		SetFade(MODE_STAGEFOUR);
+	}
 }
 
 //*************************************
@@ -135,4 +142,12 @@ void DrawBossMovie()
 	DrawBossNameEffect();
 
 	DrawSphere();
+}
+
+//*********************
+// スキップしたかどうか
+//*********************
+bool isSkip()
+{
+	return KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_START) == true;
 }
