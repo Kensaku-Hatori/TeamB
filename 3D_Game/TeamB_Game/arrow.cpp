@@ -19,17 +19,17 @@ void InitArrow(void)
 	for (int nCnt = 0; nCnt < MAX_ARROW; nCnt++)
 	{
 		//各種初期化
-		g_Arrow[nCnt].Destpos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			//目的位置
-		g_Arrow[nCnt].Destrot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			//目的への向き
-		g_Arrow[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				//位置
-		g_Arrow[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				//向き
-		g_Arrow[nCnt].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);			//色
-		g_Arrow[nCnt].VtxBuff = { NULL };								//頂点情報
-		g_Arrow[nCnt].tex = { NULL };									//テクスチャポインタ
-		g_Arrow[nCnt].fHeight = 0.0;									//ポリゴンの高さ
-		g_Arrow[nCnt].fWidth = 0.0f;									//ポリゴンの幅
-		g_Arrow[nCnt].fRadius = 0.0f;									//posからどれだけ離すか
-		g_Arrow[nCnt].bUse = false;										//使用していない状態にする
+		g_Arrow[nCnt].Destpos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 目的位置
+		g_Arrow[nCnt].Destrot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 目的への向き
+		g_Arrow[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				// 位置
+		g_Arrow[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);				// 向き
+		g_Arrow[nCnt].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);			// 色
+		g_Arrow[nCnt].VtxBuff = { NULL };								// 頂点情報
+		g_Arrow[nCnt].tex = { NULL };									// テクスチャポインタ
+		g_Arrow[nCnt].fHeight = 0.0;									// ポリゴンの高さ
+		g_Arrow[nCnt].fWidth = 0.0f;									// ポリゴンの幅
+		g_Arrow[nCnt].fRadius = 0.0f;									// posからどれだけ離すか
+		g_Arrow[nCnt].bUse = false;										// 使用していない状態にする
 	}
 }
 
@@ -67,9 +67,9 @@ void UpdateArrow(void)
 		{
 			//目的地へのベクトル
 			D3DXVECTOR3 vec = g_Arrow[nCnt].Destpos - g_Arrow[nCnt].pos;
-			float fDistance = (vec.x) * (vec.x) + (vec.z) * (vec.z);			//距離
-			float fAngle = 0.0f;												//角度
-			float rotData = 0.0f;												//角度の差
+			float fDistance = (vec.x) * (vec.x) + (vec.z) * (vec.z);			// 距離
+			float fAngle = 0.0f;												// 角度
+			float rotData = 0.0f;												// 角度の差
 
 			//距離の取得
 			fDistance = sqrtf(fDistance);
