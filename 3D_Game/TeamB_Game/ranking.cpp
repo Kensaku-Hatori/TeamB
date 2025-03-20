@@ -35,7 +35,9 @@ int g_nTimerRanking = 0;             //ランキング画面表示タイマー
 RANK_MODE g_RankMode = RANKMODE_RESULT;
 int g_RankColor;
 int g_RankState;
-
+float g_ScorePosAdd;
+float g_RankPosAdd;
+int g_Rank;
 //=============
 // 初期化処理
 //=============
@@ -66,65 +68,31 @@ void InitRanking(void)
 	}
 	g_RankColor = 255;
 	g_RankState = 0;
-
+	g_ScorePosAdd = 0;
+	g_RankPosAdd = 0;
+	g_Rankpos = D3DXVECTOR3(-600.0f, 180.0f, 0.0f);
+	g_Rankscorepos = D3DXVECTOR3(-500.0f, 180.0f, 0.0f);
+	g_Rank = 0;
 	//頂点バッファの生成・頂点情報の設定
 	VERTEX_2D* pVtx;
 
 	//背景
-	//頂点バッファの生成
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
-		D3DUSAGE_WRITEONLY,
-		FVF_VERTEX_2D,
-		D3DPOOL_MANAGED,
-		&g_pVtxBuffRankBack,
-		NULL);
-	//頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffRankBack->Lock(0, 0, (void**)&pVtx, 0);
-	
-	//頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	pVtx[1].pos = D3DXVECTOR3(1280.0f, 0.0f, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(0.0f, 720.0f, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(1280.0f, 720.0f, 0.0f);
-	//rhwの設定
-	pVtx[0].rhw = 1.0f;
-	pVtx[1].rhw = 1.0f;
-	pVtx[2].rhw = 1.0f;
-	pVtx[3].rhw = 1.0f;
-	//頂点カラーの設定
-	pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	//テクスチャ座標の設定
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-
-	//頂点バッファをアンロック
-	g_pVtxBuffRankBack->Unlock();
-
-
-	//順位
-	g_Rankpos = D3DXVECTOR3(400.0f, 180.0f, 0.0f);
-
-	//頂点バッファの生成
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_RANKING,
-		D3DUSAGE_WRITEONLY,
-		FVF_VERTEX_2D,
-		D3DPOOL_MANAGED,
-		&g_pVtxBuffRank,
-		NULL);
-	//頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffRank->Lock(0, 0, (void**)&pVtx, 0);
-	for (int nCnt = 0; nCnt < MAX_RANKING; nCnt++)
 	{
+		//頂点バッファの生成
+		pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
+			D3DUSAGE_WRITEONLY,
+			FVF_VERTEX_2D,
+			D3DPOOL_MANAGED,
+			&g_pVtxBuffRankBack,
+			NULL);
+		//頂点バッファをロックし、頂点情報へのポインタを取得
+		g_pVtxBuffRankBack->Lock(0, 0, (void**)&pVtx, 0);
+
 		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(g_Rankpos.x - RANK_SIZE, g_Rankpos.y - RANK_SIZE, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(g_Rankpos.x + RANK_SIZE, g_Rankpos.y - RANK_SIZE, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(g_Rankpos.x - RANK_SIZE, g_Rankpos.y + RANK_SIZE, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(g_Rankpos.x + RANK_SIZE, g_Rankpos.y + RANK_SIZE, 0.0f);
+		pVtx[0].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(1280.0f, 0.0f, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(0.0f, 720.0f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(1280.0f, 720.0f, 0.0f);
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
 		pVtx[1].rhw = 1.0f;
@@ -140,76 +108,114 @@ void InitRanking(void)
 		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
 		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
 		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-		g_Rankpos.y += 120.0f;
-		pVtx += 4;
+
+		//頂点バッファをアンロック
+		g_pVtxBuffRankBack->Unlock();
 	}
-	//頂点バッファをアンロック
-	g_pVtxBuffRank->Unlock();
+
+	//順位
+	{
+		//頂点バッファの生成
+		pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_RANKING,
+			D3DUSAGE_WRITEONLY,
+			FVF_VERTEX_2D,
+			D3DPOOL_MANAGED,
+			&g_pVtxBuffRank,
+			NULL);
+		//頂点バッファをロックし、頂点情報へのポインタを取得
+		g_pVtxBuffRank->Lock(0, 0, (void**)&pVtx, 0);
+		for (int nCnt = 0; nCnt < MAX_RANKING; nCnt++)
+		{
+			//頂点座標の設定
+			pVtx[0].pos = D3DXVECTOR3(g_Rankpos.x - RANK_SIZE, g_Rankpos.y - RANK_SIZE, 0.0f);
+			pVtx[1].pos = D3DXVECTOR3(g_Rankpos.x + RANK_SIZE, g_Rankpos.y - RANK_SIZE, 0.0f);
+			pVtx[2].pos = D3DXVECTOR3(g_Rankpos.x - RANK_SIZE, g_Rankpos.y + RANK_SIZE, 0.0f);
+			pVtx[3].pos = D3DXVECTOR3(g_Rankpos.x + RANK_SIZE, g_Rankpos.y + RANK_SIZE, 0.0f);
+			//rhwの設定
+			pVtx[0].rhw = 1.0f;
+			pVtx[1].rhw = 1.0f;
+			pVtx[2].rhw = 1.0f;
+			pVtx[3].rhw = 1.0f;
+			//頂点カラーの設定
+			pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			//テクスチャ座標の設定
+			pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+			pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+			pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+			pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+			g_Rankpos.y += 120.0f;
+			pVtx += 4;
+		}
+		//頂点バッファをアンロック
+		g_pVtxBuffRank->Unlock();
+	}
 
 
 	//スコア
-	g_Rankscorepos = D3DXVECTOR3(500.0f, 180.0f, 0.0f);
-
-	//頂点バッファの生成
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_RANKING * MAX_SCORE,
-		D3DUSAGE_WRITEONLY,
-		FVF_VERTEX_2D,
-		D3DPOOL_MANAGED,
-		&g_pVtxBuffRankScore,
-		NULL);
-	//頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffRankScore->Lock(0, 0, (void**)&pVtx, 0);
-	for (int nCnt = 0; nCnt < MAX_RANKING * MAX_SCORE; nCnt++)
 	{
-		//頂点座標の設定
-		pVtx[0].pos = D3DXVECTOR3(g_Rankscorepos.x - RANK_SIZE, g_Rankscorepos.y - RANK_SIZE, 0.0f);
-		pVtx[1].pos = D3DXVECTOR3(g_Rankscorepos.x + RANK_SIZE, g_Rankscorepos.y - RANK_SIZE, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(g_Rankscorepos.x - RANK_SIZE, g_Rankscorepos.y + RANK_SIZE, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(g_Rankscorepos.x + RANK_SIZE, g_Rankscorepos.y + RANK_SIZE, 0.0f);
-		
-		g_Rankscorepos.x += RANK_SIZE * 2;
+		//頂点バッファの生成
+		pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * MAX_RANKING * MAX_SCORE,
+			D3DUSAGE_WRITEONLY,
+			FVF_VERTEX_2D,
+			D3DPOOL_MANAGED,
+			&g_pVtxBuffRankScore,
+			NULL);
+		//頂点バッファをロックし、頂点情報へのポインタを取得
+		g_pVtxBuffRankScore->Lock(0, 0, (void**)&pVtx, 0);
+		for (int nCnt = 0; nCnt < MAX_RANKING * MAX_SCORE; nCnt++)
+		{
+			//頂点座標の設定
+			pVtx[0].pos = D3DXVECTOR3(g_Rankscorepos.x - RANK_SIZE, g_Rankscorepos.y - RANK_SIZE, 0.0f);
+			pVtx[1].pos = D3DXVECTOR3(g_Rankscorepos.x + RANK_SIZE, g_Rankscorepos.y - RANK_SIZE, 0.0f);
+			pVtx[2].pos = D3DXVECTOR3(g_Rankscorepos.x - RANK_SIZE, g_Rankscorepos.y + RANK_SIZE, 0.0f);
+			pVtx[3].pos = D3DXVECTOR3(g_Rankscorepos.x + RANK_SIZE, g_Rankscorepos.y + RANK_SIZE, 0.0f);
 
-		if (nCnt == MAX_SCORE - 1)
-		{
-			g_Rankscorepos.x = 500.0f;
-			g_Rankscorepos.y += 120.0f;
-		}
-		else if (nCnt == MAX_SCORE * 2 - 1)
-		{
-			g_Rankscorepos.x = 500.0f;
-			g_Rankscorepos.y += 120.0f;
-		}
-		else if (nCnt == MAX_SCORE * 3 - 1)
-		{
-			g_Rankscorepos.x = 500.0f;
-			g_Rankscorepos.y += 120.0f;
-		}
-		else if (nCnt == MAX_SCORE * 4 - 1)
-		{
-			g_Rankscorepos.x = 500.0f;
-			g_Rankscorepos.y += 120.0f;
-		}
-		//rhwの設定
-		pVtx[0].rhw = 1.0f;
-		pVtx[1].rhw = 1.0f;
-		pVtx[2].rhw = 1.0f;
-		pVtx[3].rhw = 1.0f;
-		//頂点カラーの設定
-		pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-		//テクスチャ座標の設定
-		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-		pVtx[1].tex = D3DXVECTOR2(0.1f, 0.0f);
-		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-		pVtx[3].tex = D3DXVECTOR2(0.1f, 1.0f);
+			g_Rankscorepos.x += RANK_SIZE * 2;
 
-		pVtx += 4;
+			if (nCnt == MAX_SCORE - 1)
+			{
+				g_Rankscorepos.x = -500.0f;
+				g_Rankscorepos.y += 120.0f;
+			}
+			else if (nCnt == MAX_SCORE * 2 - 1)
+			{
+				g_Rankscorepos.x = -500.0f;
+				g_Rankscorepos.y += 120.0f;
+			}
+			else if (nCnt == MAX_SCORE * 3 - 1)
+			{
+				g_Rankscorepos.x = -500.0f;
+				g_Rankscorepos.y += 120.0f;
+			}
+			else if (nCnt == MAX_SCORE * 4 - 1)
+			{
+				g_Rankscorepos.x = -500.0f;
+				g_Rankscorepos.y += 120.0f;
+			}
+			//rhwの設定
+			pVtx[0].rhw = 1.0f;
+			pVtx[1].rhw = 1.0f;
+			pVtx[2].rhw = 1.0f;
+			pVtx[3].rhw = 1.0f;
+			//頂点カラーの設定
+			pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+			//テクスチャ座標の設定
+			pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+			pVtx[1].tex = D3DXVECTOR2(0.1f, 0.0f);
+			pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+			pVtx[3].tex = D3DXVECTOR2(0.1f, 1.0f);
+
+			pVtx += 4;
+		}
+		//頂点バッファをアンロック
+		g_pVtxBuffRankScore->Unlock();
 	}
-	//頂点バッファをアンロック
-	g_pVtxBuffRankScore->Unlock();
-
 	ResetRanking();
 }
 //==========
@@ -267,81 +273,83 @@ void UpdateRanking(void)
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffRankScore->Lock(0, 0, (void**)&pVtx, 0);
 
-	if (g_nRankUpdata != -1)
-	{
-		g_RankState++;
-		if (g_RankColor == 255 && g_RankState == RANKSCORE_TIME)
-		{
-			g_RankColor = 0;
-			g_RankState = 0;
-		}
-		if (g_RankColor == 0 && g_RankState == RANKSCORE_TIME)
-		{
-			g_RankColor = 255;
-			g_RankState = 0;
-		}
+	MoveRanking();
 
-		for (int nCnt = 0; nCnt < MAX_RANKING * MAX_SCORE; nCnt++)
+	if (g_nRankUpdata != -1)
 		{
-			//スコア
-			if (nCnt >= 0 && nCnt < MAX_SCORE)
+			g_RankState++;
+			if (g_RankColor == 255 && g_RankState == RANKSCORE_TIME)
 			{
-				if (g_nRankUpdata == 0)
-				{
-					//頂点カラーの設定
-					pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
-					pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
-					pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
-					pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
-				}
+				g_RankColor = 0;
+				g_RankState = 0;
 			}
-			else if (nCnt >= MAX_SCORE && nCnt < MAX_SCORE * 2)
+			if (g_RankColor == 0 && g_RankState == RANKSCORE_TIME)
 			{
-				if (g_nRankUpdata == 1)
-				{
-					//頂点カラーの設定
-					pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
-					pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
-					pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
-					pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
-				}
+				g_RankColor = 255;
+				g_RankState = 0;
 			}
-			else if (nCnt >= MAX_SCORE * 2 && nCnt < MAX_SCORE * 3)
+
+			for (int nCnt = 0; nCnt < MAX_RANKING * MAX_SCORE; nCnt++)
 			{
-				if (g_nRankUpdata == 2)
+				//スコア
+				if (nCnt >= 0 && nCnt < MAX_SCORE)
 				{
-					//頂点カラーの設定
-					pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
-					pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
-					pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
-					pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+					if (g_nRankUpdata == 0)
+					{
+						//頂点カラーの設定
+						pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+						pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+						pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+						pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+					}
 				}
-			}
-			else if (nCnt >= MAX_SCORE * 3 && nCnt < MAX_SCORE * 4)
-			{
-				if (g_nRankUpdata == 3)
+				else if (nCnt >= MAX_SCORE && nCnt < MAX_SCORE * 2)
 				{
-					//頂点カラーの設定
-					pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
-					pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
-					pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
-					pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+					if (g_nRankUpdata == 1)
+					{
+						//頂点カラーの設定
+						pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+						pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+						pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+						pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+					}
 				}
-			}
-			else if (nCnt >= MAX_SCORE * 4 && nCnt < MAX_SCORE * 5)
-			{
-				if (g_nRankUpdata == 4)
+				else if (nCnt >= MAX_SCORE * 2 && nCnt < MAX_SCORE * 3)
 				{
-					//頂点カラーの設定
-					pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
-					pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
-					pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
-					pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+					if (g_nRankUpdata == 2)
+					{
+						//頂点カラーの設定
+						pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+						pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+						pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+						pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+					}
 				}
+				else if (nCnt >= MAX_SCORE * 3 && nCnt < MAX_SCORE * 4)
+				{
+					if (g_nRankUpdata == 3)
+					{
+						//頂点カラーの設定
+						pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+						pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+						pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+						pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+					}
+				}
+				else if (nCnt >= MAX_SCORE * 4 && nCnt < MAX_SCORE * 5)
+				{
+					if (g_nRankUpdata == 4)
+					{
+						//頂点カラーの設定
+						pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+						pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+						pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+						pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, g_RankColor);
+					}
+				}
+				pVtx += 4;
 			}
-			pVtx += 4;
 		}
-	}
 	if ((KeyboardTrigger(DIK_RETURN) == true || GetJoypadTrigger(JOYKEY_A) == true || OnMouseDown(0) == true) && g_fade == FADE_NONE)
 	{
 		if (g_RankMode == RANKMODE_RESULT || g_RankMode == RANKMODE_SELECT)
@@ -558,4 +566,70 @@ void SetRankMode(RANK_MODE mode)
 {
 	g_RankMode = mode;
 	g_nRankUpdata = -1;
+}
+
+//
+//
+//
+void MoveRanking(void)
+{
+	g_Rankpos.y = 180.0f;
+	if (g_RankPosAdd >= 950.0f && g_Rank < 4)
+	{
+		g_Rank++;
+		g_RankPosAdd = 0;
+		g_ScorePosAdd = 0;
+	}
+
+	if (g_RankPosAdd <= 950.0f)
+	{
+		g_RankPosAdd += 40;
+		g_ScorePosAdd += 40;
+	}
+	Ranking();
+}
+void Ranking(void)
+{
+	//頂点バッファの生成・頂点情報の設定
+	VERTEX_2D* pVtx;
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	g_pVtxBuffRank->Lock(0, 0, (void**)&pVtx, 0);
+
+	VERTEX_2D* pVtx1;
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	g_pVtxBuffRankScore->Lock(0, 0, (void**)&pVtx1, 0);
+
+	g_Rankscorepos = D3DXVECTOR3(-500.0f, 180.0f, 0.0f);
+
+	g_Rankpos.y += 120.0f * g_Rank;
+	g_Rankscorepos.y += 120.0f * g_Rank;
+	g_Rankpos.x = -600.0f;
+
+	pVtx += 4 * g_Rank;
+	pVtx1 += 4 * (g_Rank * (MAX_SCORE));
+	
+	//頂点座標の設定
+	pVtx[0].pos = D3DXVECTOR3(g_Rankpos.x - RANK_SIZE + g_RankPosAdd, g_Rankpos.y - RANK_SIZE, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(g_Rankpos.x + RANK_SIZE + g_RankPosAdd, g_Rankpos.y - RANK_SIZE, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(g_Rankpos.x - RANK_SIZE + g_RankPosAdd, g_Rankpos.y + RANK_SIZE, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(g_Rankpos.x + RANK_SIZE + g_RankPosAdd, g_Rankpos.y + RANK_SIZE, 0.0f);
+
+	for (int nCnt = 0; nCnt < MAX_SCORE; nCnt++)
+	{
+		//頂点座標の設定
+		pVtx1[0].pos = D3DXVECTOR3(g_Rankscorepos.x - RANK_SIZE + g_ScorePosAdd, g_Rankscorepos.y - RANK_SIZE, 0.0f);
+		pVtx1[1].pos = D3DXVECTOR3(g_Rankscorepos.x + RANK_SIZE + g_ScorePosAdd, g_Rankscorepos.y - RANK_SIZE, 0.0f);
+		pVtx1[2].pos = D3DXVECTOR3(g_Rankscorepos.x - RANK_SIZE + g_ScorePosAdd, g_Rankscorepos.y + RANK_SIZE, 0.0f);
+		pVtx1[3].pos = D3DXVECTOR3(g_Rankscorepos.x + RANK_SIZE + g_ScorePosAdd, g_Rankscorepos.y + RANK_SIZE, 0.0f);
+
+		g_Rankscorepos.x += RANK_SIZE * 2;
+
+		pVtx1 += 4;
+	}
+
+	//頂点バッファをアンロック
+	g_pVtxBuffRank->Unlock();
+
+	//頂点バッファをアンロック
+	g_pVtxBuffRankScore->Unlock();
 }

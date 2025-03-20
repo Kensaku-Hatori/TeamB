@@ -161,7 +161,7 @@ void UpdatePlayer(void)
 
 	if (isUse() == true)
 	{
-		if (Mode != MODE_BOSSMOVIE)
+		if (Mode != MODE_BOSSMOVIE && g_player.state != PLAYERSTATE_DEAD)
 		{
 			//ÉvÉåÉCÉÑÅ[à⁄ìÆ
 			PlayerMove();
@@ -971,6 +971,8 @@ void HitPlayer(float Atack,D3DXVECTOR3 Pos)
 					500.0f,
 					0.0f,
 					EFFECT_NONE);
+
+				g_player.state = PLAYERSTATE_DEAD;
 
 				SetGameState(GAMESTATE_GAMEOVER);
 			}

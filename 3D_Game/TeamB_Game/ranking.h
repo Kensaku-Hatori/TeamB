@@ -31,5 +31,6 @@ void DrawRanking(void);
 void ResetRanking(void);
 void SetRanking(int nScore);
 void SetRankMode(RANK_MODE mode);
-
+void MoveRanking(void);
+void Ranking(void);
 #endif
