@@ -406,3 +406,12 @@ bool SetMasterVolume(float Volume)
 	if (g_pMasteringVoice == nullptr || Volume < 0.0f || Volume > 1.0f) return false;
 	return SUCCEEDED(g_pMasteringVoice->SetVolume(Volume));
 }
+
+//=======================
+// ソースボリュームの設定
+//=======================
+bool SetSourceVolume(float Volume, SOUND_LABEL label)
+{
+	if (g_apSourceVoice[label] == nullptr || Volume < 0.0f || Volume > 1.0f) return false;
+	return SUCCEEDED(g_apSourceVoice[label]->SetVolume(Volume));
+}

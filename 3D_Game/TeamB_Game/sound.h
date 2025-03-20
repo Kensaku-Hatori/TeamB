@@ -52,4 +52,5 @@ HRESULT PlaySound(SOUND_LABEL label);
 void StopSound(SOUND_LABEL label);
 void StopSound(void);
 bool SetMasterVolume(float Volume);
+bool SetSourceVolume(float Volume, SOUND_LABEL label);
 #endif

@@ -64,12 +64,6 @@ void UpdateEditer();
 //=============
 void InitGame(void)
 {
-	if (SetMasterVolume(1.0f) == false)
-	{
-		HWND hWnd = GetActiveWindow();
-		MessageBox(hWnd, "マスターボリュームの設定に失敗", "警告！", MB_ICONWARNING);
-	}
-
 	MODE Mode = GetMode();
 	//メッシュフィールドの初期化
 	InitMeshfield();
