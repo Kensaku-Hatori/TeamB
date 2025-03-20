@@ -289,6 +289,13 @@ void UninitGame(void)
 void UpdateGame(void)
 {
 	MODE Mode = GetMode();
+	Option* pOption = GetOption();
+
+	if (SetMasterVolume(pOption->Sound) == false)
+	{
+		HWND hWnd = GetActiveWindow();
+		MessageBox(hWnd, "マスターボリュームの設定に失敗", "警告！", MB_ICONWARNING);
+	}
 
 	if ((KeyboardTrigger(DIK_P) == true || GetJoypadTrigger(JOYKEY_START) == true) && g_bOption == false)
 	{//ポーズキーが押された

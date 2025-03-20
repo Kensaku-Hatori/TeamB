@@ -18,12 +18,14 @@
 typedef enum
 {
 	OPTION_KANDO = 0,
+	OPTION_SOUND,
 	OPTION_MAX,
 }OPTION;
 
 typedef struct
 {
 	float cameraSP;
+	float Sound;
 	OPTION type;
 }Option;
 
@@ -36,4 +38,6 @@ Option* GetOption(void);
 void SelectOption(int zDelta);
 void OptionKando(void);
 void SetOptionKando(void);
+void OptionSound(void);
+void SetOptionSound(void);
 #endif
