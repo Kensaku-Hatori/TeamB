@@ -33,7 +33,7 @@
 #define HOMING_MOVE (float)(0.8f)		// ホーミング
 #define WELL_MOVE (float)(0.2f)			// 様子見
 
-#define ENEMY_SCORE (100)
+#define ENEMY_SCORE (1500)
 // 敵の状態
 typedef enum
 {

@@ -16,7 +16,7 @@
 #define MAX_BOSSACTIONRANK (2)
 #define BOSSACTION_JUSTIS (70)
 #define MOVEEND_FLAME (180)
-#define BOSS_SCORE (500)
+#define BOSS_SCORE (5000)
 
 #include "main.h"
 #include "key.h"

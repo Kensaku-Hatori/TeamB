@@ -337,18 +337,18 @@ void ItemAbility(int nIndexItem)
 	{
 	case ITEMTYPE_HP:
 		AddItemUI(g_Item[nIndexItem].type);
-		AddScore(100);
+		AddScore(1000);
 		break;
 
 	case ITEMTYPE_MP:
 		AddItemUI(g_Item[nIndexItem].type);
-		AddScore(100);
+		AddScore(1000);
 		break;
 
 	case ITEMTYPE_POWER:
 		PlaySound(SOUND_LABEL_POTION);
 		pPlayer->Status.fPower += 40.0f;
-		AddScore(150);
+		AddScore(1500);
 		break;
 
 	default:

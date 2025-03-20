@@ -438,37 +438,39 @@ void TimeScore(void)
 
 	if (mode != MODE_STAGEONE)
 	{
+		AddScore(500 - ((g_nMinutes * 60) + g_nTimer));
+
 		if (g_nMinutes == 0)
 		{
 			if (g_nTimer <= 30)
 			{
-				AddScore(1000);
+				AddScore(10000);
 			}
 			else if(g_nTimer > 30)
 			{
-				AddScore(800);
+				AddScore(8000);
 			}
 		}
 		else if (g_nMinutes == 1)
 		{
 			if (g_nTimer <= 30)
 			{
-				AddScore(500);
+				AddScore(5000);
 			}
 			else if (g_nTimer > 30)
 			{
-				AddScore(300);
+				AddScore(3000);
 			}
 		}
 		else if (g_nMinutes == 2)
 		{
 			if (g_nTimer <= 30)
 			{
-				AddScore(200);
+				AddScore(2000);
 			}
 			else if (g_nTimer > 30)
 			{
-				AddScore(100);
+				AddScore(1000);
 			}
 		}
 		else

@@ -42,9 +42,9 @@ void InitBossGauge(void)
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\GUAGE.png", &g_pTextureBossRedGauge);	//
 	D3DXCreateTextureFromFile(pDevice, "data\\TEXTURE\\bossname.png", &g_pTextureBossName);	//
 
-	g_BossGauge = D3DXVECTOR3(SCREEN_WIDTH / 6 + 100.0f, SCREEN_HEIGHT - 25.0f, 0.0f);
+	g_BossGauge = D3DXVECTOR3(SCREEN_WIDTH / 6, SCREEN_HEIGHT - 25.0f, 0.0f);
 	g_BossGaugeSize = D3DXVECTOR3(BOSSGAUGE_FRAME_X, BOSSGAUGE_FRAME_Y, 0.0f);
-	g_BossName = D3DXVECTOR3(SCREEN_WIDTH / 6 + 200.0f, SCREEN_HEIGHT - 50.0f, 0.0f);
+	g_BossName = D3DXVECTOR3(SCREEN_WIDTH / 6 + 100.0f, SCREEN_HEIGHT - 50.0f, 0.0f);
 	g_BossRedGaugeSize = D3DXVECTOR3(BOSSGAUGE_FRAME_X, BOSSGAUGE_FRAME_Y, 0.0f);
 	g_BossFrameSize = D3DXVECTOR3(BOSSGAUGE_FRAME_X, BOSSGAUGE_FRAME_Y, 0.0f);
 	//頂点バッファの生成・頂点情報の設定

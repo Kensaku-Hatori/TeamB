@@ -466,11 +466,11 @@ void UpdateGame(void)
 
 					if (pPlayer->Status.fHP == PLAYER_HP)
 					{
-						AddScore(1000);
+						AddScore(10000);
 					}
 					else if (pPlayer->Status.fHP >= PLAYER_HP / 2)
 					{
-						AddScore(500);
+						AddScore(5000);
 					}
 
 					StopSound();
