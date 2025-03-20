@@ -153,19 +153,21 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 		if (g_Sphere[nCnt].bUse == false)
 		{
 			//変数宣言
-			int indx = 0;//頂点インデックス
-			D3DXVECTOR3 vec = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			//ベクトルの保存用
+			int indx = 0;																		// 頂点インデックス
+			float q, q2 = 0;																	// 計算結果保存用
+			D3DXVECTOR3 vec = D3DXVECTOR3(0.0f, 0.0f, 0.0f);									// ベクトルの保存用
+			D3DXVECTOR3 VtxPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);									// 頂点座標保存用
 
 			//各種設定
-			g_Sphere[nCnt].pos = pos;									// 位置
-			g_Sphere[nCnt].textype = textype;							// テクスチャの種類
-			g_Sphere[nCnt].DiviX = DiviX;								// 分割数
-			g_Sphere[nCnt].DiviY = DiviY;								// 分割数
-			g_Sphere[nCnt].fRadius = fRadius;							// 半径
-			g_Sphere[nCnt].bHead = bHead;								// 法線
-			g_Sphere[nCnt].bHalf = bHalf;								// 半球かどうか
+			g_Sphere[nCnt].pos = pos;															// 位置
+			g_Sphere[nCnt].textype = textype;													// テクスチャの種類
+			g_Sphere[nCnt].DiviX = DiviX;														// 分割数
+			g_Sphere[nCnt].DiviY = DiviY;														// 分割数
+			g_Sphere[nCnt].fRadius = fRadius;													// 半径
+			g_Sphere[nCnt].bHead = bHead;														// 法線
+			g_Sphere[nCnt].bHalf = bHalf;														// 半球かどうか
 
-			g_Sphere[nCnt].nMaxVtx = (g_Sphere[nCnt].DiviX + 1) * (g_Sphere[nCnt].DiviY) + 1;// 頂点数
+			g_Sphere[nCnt].nMaxVtx = (g_Sphere[nCnt].DiviX + 1) * (g_Sphere[nCnt].DiviY) + 1;	// 頂点数
 
 			//頂点バッファの生成
 			pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) *g_Sphere[nCnt].nMaxVtx,
@@ -191,8 +193,8 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 					}
 				
 					//角度格納
-					float fAngle = ((D3DX_PI * 2 / g_Sphere[nCnt].DiviX) * i);									//y軸
-					float fAngle2 = (D3DX_PI / g_Sphere[nCnt].DiviY) * (g_Sphere[nCnt].DiviY - nCntY);			//z軸
+					float fAngle = ((D3DX_PI * 2 / g_Sphere[nCnt].DiviX) * i);									// y軸
+					float fAngle2 = (D3DX_PI / g_Sphere[nCnt].DiviY) * (g_Sphere[nCnt].DiviY - nCntY);			// z軸
 
 					//半球なら
 					if (g_Sphere[nCnt].bHalf == true)
@@ -201,9 +203,13 @@ int SetSphere(D3DXVECTOR3 pos, int textype, int DiviX, int DiviY, float fRadius,
 					}
 
 					//頂点の位置の設定
-					pVtx[indx].pos.x = (float)g_Sphere[nCnt].fRadius * sinf(fAngle2) * sinf(fAngle);
-					pVtx[indx].pos.y = (float)g_Sphere[nCnt].fRadius * cosf(fAngle2);
-					pVtx[indx].pos.z = (float)g_Sphere[nCnt].fRadius * sinf(fAngle2) * cosf(fAngle);
+
+					VtxPos = D3DXVECTOR3(
+						(float)g_Sphere[nCnt].fRadius * sinf(fAngle2) * sinf(fAngle), 
+						(float)g_Sphere[nCnt].fRadius * cosf(fAngle2), 
+						(float)g_Sphere[nCnt].fRadius * sinf(fAngle2) * cosf(fAngle));
+
+					pVtx[indx].pos = VtxPos;
 
 					//外側へのベクトル
 					vec = pVtx[indx].pos - g_Sphere[nCnt].pos;
