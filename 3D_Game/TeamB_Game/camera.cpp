@@ -40,6 +40,11 @@ void InitCamera(void)
 	g_camera.bResete = false;
 	g_camera.ShakeCount = 0;
 	g_camera.bShake = false;
+
+	g_camera.Anim.AllFrame = 0;
+	g_camera.Anim.nFrameCount = 0;
+	g_camera.Anim.nKey = 0;
+	g_camera.Anim.nNexKey = 0;
 }
 
 //===================
