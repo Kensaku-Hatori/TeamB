@@ -24,6 +24,7 @@ void InitMotion()
 		g_LoadInfo[LoadCount] = {NULL};
 	}
 }
+
 //*****************************
 // スクリプト以前を読み込む処理
 //*****************************
@@ -58,6 +59,7 @@ void LoadMotionViewer(char* cMotionPath)
 		fclose(pFile);
 	}
 }
+
 //*****************************
 // スクリプト以降を読み込む処理
 //*****************************
@@ -152,6 +154,7 @@ void LoadMotionStart(FILE* pFile)
 		}
 	}
 }
+
 //*************************************
 // キャラクター情報を読み込む処理
 //*************************************
@@ -223,6 +226,7 @@ void LoadCharactorInfo(FILE* pFile,int *nCharactor,int *nParts,MODELINFO *ModelI
 		}
 	}
 }
+
 //*************************
 // パーツ情報を読み込む処理
 //*************************
@@ -284,6 +288,7 @@ void LoadPartsInfo(FILE* pFile,int *Parts)
 		}
 	}
 }
+
 //*************************************
 // モーション情報を読み込む処理
 //*************************************
@@ -378,6 +383,7 @@ void LoadMotionInfo(FILE* pFile,int *Motion,int *Key, int* nKeyParts,MOTIONINFO 
 		}
 	}
 }
+
 //*****************************
 // キー情報を読み込む処理
 //*****************************
@@ -422,6 +428,7 @@ void LoadKeyInfo(FILE* pFile, int* nKey, int* nKeyParts, MOTIONINFO* Motion)
 		}
 	}
 }
+
 //***********************************
 // パーツごとのキー情報を読み込む処理
 //***********************************

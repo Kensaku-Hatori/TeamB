@@ -28,6 +28,10 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffOptionNo = NULL;
 
 Option g_Option;
 bool g_bRight;
+
+// 条件式の関数化
+bool isEnter();
+
 //============
 // 初期化処理
 //============
@@ -300,7 +304,7 @@ void UpdateOption(void)
 		break;
 	}
 
-	if (OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_A) == true)
+	if (isEnter() == true)
 	{
 		SetEnableOption(false);
 	}
@@ -424,6 +428,10 @@ void SetOptionKando(void)
 	//頂点バッファをアンロック
 	g_pVtxBuffOptionNo->Unlock();
 }
+
+//*************************
+// サウンドオプションの設定
+//*************************
 void OptionSound(void)
 {
 	if (KeyboardTrigger(DIK_D) == true || GetJoypadTrigger(JOYKEY_RIGHT) == true)
@@ -448,6 +456,10 @@ void OptionSound(void)
 	SetOptionSound();
 
 }
+
+//*********************************
+// サウンドオプションのポリゴン設定
+//*********************************
 void SetOptionSound(void)
 {
 	int aPosTexU[2];
@@ -565,4 +577,12 @@ void SelectOption(int zDelta)
 	}
 	//頂点バッファをアンロック
 	g_pVtxBuffOption->Unlock();
+}
+
+//***************************
+// オプション決定したかどうか
+//***************************
+bool isEnter()
+{
+	return OnMouseDown(0) == true || GetJoypadTrigger(JOYKEY_A) == true || KeyboardTrigger(DIK_RETURN) == true;
 }
