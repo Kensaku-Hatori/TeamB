@@ -977,7 +977,7 @@ void HitPlayer(float Atack,D3DXVECTOR3 Pos)
 				SetGameState(GAMESTATE_GAMEOVER);
 			}
 			SetShake(10);
-			SetVibRation(50000, 50000, 30);
+			SetVibRation(10000, 10000, 30);
 		}
 	}
 }
