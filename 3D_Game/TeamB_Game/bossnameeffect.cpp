@@ -6,6 +6,7 @@
 //*********************************************************
 
 #include "bossnameeffect.h"
+#include "input.h"
 #include <cassert>
 
 #define BACESIZEX (float)(10)
@@ -125,6 +126,7 @@ void SetBossNameEffect(D3DXVECTOR3 Pos, D3DXVECTOR3 Rot, D3DXVECTOR2 Scale, D3DX
 {
 	if (isSetCondition() == true)
 	{
+		SetVibRation(1000, 1000, 200);
 		g_BossName.bUse = true;
 		g_BossName.Pos = Pos;
 		g_BossName.Rot = Rot;
