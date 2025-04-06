@@ -540,6 +540,12 @@ void DeadEnemy(int Indx)
 	DeleteHPGuage(g_Enemy[Indx].IndxGuage);
 	//アイテムドロップ
 	Itemtype = rand() % 9;
+
+	if (pPlayer->Status.nMP <= PLAYER_MP * 0.5f)
+	{
+		Itemtype = 5;
+	}
+
 	if (Itemtype == 1 || Itemtype == 2 || Itemtype == 3 || Itemtype == 4)
 	{
 		Itemtype = ITEMTYPE_HP;
